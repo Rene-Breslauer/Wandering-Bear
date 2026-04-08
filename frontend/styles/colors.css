@@ -1,0 +1,48 @@
+
+.text-espresso {
+    color: var(--color-brand-espresso);
+}
+
+.text-sky_blue {
+    color: var(--color-brand-sky_blue);
+}
+
+.text-cream {
+    color: var(--color-brand-cream);
+}
+
+.text-gold {
+    color: var(--color-brand-gold);
+}
+
+.text-bear_black {
+    color: var(--color-brand-bear_black);
+}
+
+.text-kraft {
+    color: var(--color-brand-kraft);
+}
+
+.text-sunrise_orange {
+    color: var(--color-brand-sunrise_orange);
+}
+
+.text-sunshine_yellow {
+    color: var(--color-brand-sunshine_yellow);
+}
+
+.text-light_cream {
+    color: var(--color-brand-light_cream);
+}
+
+.text-beige {
+    color: var(--color-brand-beige);
+}
+
+.text-foam {
+    color: var(--color-brand-foam);
+}
+
+.text-grey_tag {
+    color: var(--color-brand-grey_tag);
+}

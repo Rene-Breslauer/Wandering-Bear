@@ -60,6 +60,88 @@
     "name": "t:names.colors",
     "settings": [
       {
+        "type": "header",
+        "content": "Brand Colors"
+      },
+      {
+        "type": "color",
+        "id": "espresso",
+        "label": "Espresso",
+        "default": "#431A03"
+      },
+      {
+        "type": "color",
+        "id": "sky_blue",
+        "label": "Sky Blue",
+        "default": "#BFD7E9"
+      },
+      {
+        "type": "color",
+        "id": "cream",
+        "label": "Cream",
+        "default": "#F2E6DC"
+      },
+      {
+        "type": "color",
+        "id": "gold",
+        "label": "Gold",
+        "default": "#AF7404"
+      },
+      {
+        "type": "color",
+        "id": "bear_black",
+        "label": "Bear Black",
+        "default": "#1B1B1B"
+      },
+      {
+        "type": "color",
+        "id": "kraft",
+        "label": "Kraft",
+        "default": "#955325"
+      },
+      {
+        "type": "color",
+        "id": "sunrise_orange",
+        "label": "Sunrise Orange",
+        "default": "#F86C2F"
+      },
+      {
+        "type": "color",
+        "id": "sunshine_yellow",
+        "label": "Sunshine Yellow",
+        "default": "#FFCB3B"
+      },
+      {
+        "type": "color",
+        "id": "light_cream",
+        "label": "Light Cream",
+        "default": "#F4ECE5"
+      },
+      {
+        "type": "color",
+        "id": "beige",
+        "label": "Beige",
+        "default": "#E6CDB7"
+      },
+      {
+        "type": "color",
+        "id": "foam",
+        "label": "Foam",
+        "default": "#FEF8F3"
+      },
+      {
+        "type": "color",
+        "id": "light_sky",
+        "label": "Light Sky",
+        "default": "#D9EAF7"
+      },
+      {
+        "type": "color",
+        "id": "grey_tag",
+        "label": "Grey Tag",
+        "default": "#E1E1E1B2"
+      },
+      {
         "type": "color_scheme_group",
         "id": "color_schemes",
         "definition": [

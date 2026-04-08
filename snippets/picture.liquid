@@ -1,0 +1,58 @@
+{%- doc -%}
+    Renders a picture element with the given source and sources.
+    @param {object} source - The source image
+    @param {object} [sources] - The sources for the picture element (optional)
+    @param {string} [class] - The class for the picture element (optional)
+    @param {string} [loading] - The loading attribute for the picture element (optional)
+    @param {string} [preload] - The preload attribute for the picture element (optional)
+    @param {number} [width] - The width of the image (optional)
+    @param {number} [height] - The height of the image (optional)
+    @param {string} [alt] - The alt text for the image (optional)
+{%- enddoc -%}
+
+{% capture picture_sources %}
+{% if sources %}
+    {{ sources }}
+{% else %}
+    <source srcset="{{ source | image_url: width: 1920 }}" media="(min-width: 1024px)">
+    <source srcset="{{ source | image_url: width: 1024 }}" media="(min-width: 768px)">
+    <source srcset="{{ source | image_url: width: 768 }}" media="(min-width: 480px)">
+    <source srcset="{{ source | image_url: width: 480 }}" media="(min-width: 320px)">
+{% endif %}
+{% endcapture %}
+
+{% if loading %}
+    {% assign loading = loading %}
+{% else %}
+    {% assign loading = 'lazy' %}
+{% endif %}
+
+{% if alt %}
+    {% assign alt = alt %}
+{% else %}
+    {% assign alt = source.alt %}
+{% endif %}
+
+{% if width %}
+    {% assign width = width %}
+{% else %}
+    {% assign width = image.width %}
+{% endif %}
+
+{% if height %}
+    {% assign height = height %}
+{% else %}
+    {% assign height = image.height %}
+{% endif %}
+
+{% capture img_parameters %}
+    loading="{{ loading }}"
+    preload="{{ preload }}"
+    alt="{{ source.alt }}"
+    class="{{ class }}"
+{% endcapture %}
+
+<picture>
+    {{ picture_sources }}
+    <img src="{{ source | image_url: width: 1920 }}" height="1080" width="1920" {{ img_parameters }}>
+</picture>

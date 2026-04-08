@@ -1,0 +1,232 @@
+/* TYPOGRAPHY */
+
+@font-face {
+    font-family: "GT Pressura";
+    src:
+        url("//wanderingbearcoffee.com/cdn/shop/t/315/assets/GT-Pressura-Regular.woff2?v=124886443305534040881694525160")
+            format("woff2"),
+        url("//wanderingbearcoffee.com/cdn/shop/t/315/assets/GT-Pressura-Regular.woff?v=107389682192047422241694525160")
+            format("woff");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "GT Pressura";
+    src:
+        url("//wanderingbearcoffee.com/cdn/shop/t/315/assets/GT-Pressura-Bold.woff2?v=123664905391189306841694525160")
+            format("woff2"),
+        url("//wanderingbearcoffee.com/cdn/shop/t/315/assets/GT-Pressura-Bold.woff?v=152085309445783714011694525160")
+            format("woff");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Kurdis";
+    src:
+        url("https://cdn.shopify.com/s/files/1/1418/5086/files/Kurdis-Condensed.otf?v=1756469089")
+            format("opentype");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Kurdis";
+    src:
+        url("https://cdn.shopify.com/s/files/1/1418/5086/files/Kurdis-CondensedSemiBold.otf?v=1756469447")
+            format("opentype");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Kurdis";
+    src:
+        url("https://cdn.shopify.com/s/files/1/1418/5086/files/Kurdis-CondensedBold.otf?v=1756469089")
+            format("opentype");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Kurdis";
+    src:
+        url("https://cdn.shopify.com/s/files/1/1418/5086/files/Kurdis-CondensedBlack.otf?v=1756469089")
+            format("opentype");
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Parslay";
+    src: url("https://cdn.shopify.com/s/files/1/1418/5086/files/Parslay.ttf?v=1756482251")format("woff2");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Gothic Condensed";
+    src:
+        url("//wanderingbearcoffee.com/cdn/shop/t/315/assets/tablet-gothic-condensed.woff2?v=132369543582702234641694525160")
+            format("woff2"),
+        url("//wanderingbearcoffee.com/cdn/shop/t/315/assets/tablet-gothic-condensed.woff?v=84834064318929526141694525160")
+            format("woff");
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+    --font-gt_pressura: "GT Pressura", sans-serif;
+    --font-kurdis: "Kurdis", sans-serif;
+    --font-parslay: "Parslay", sans-serif;
+    --font-gothic_condensed: "Gothic Condensed", sans-serif;
+}
+
+.font-gt_pressura {
+    font-family: var(--font-gt_pressura) !important;
+}
+
+.font-kurdis {
+    font-family: var(--font-kurdis) !important;
+}
+
+.font-parslay {
+    font-family: var(--font-parslay) !important;
+}
+
+.font-gothic_condensed {
+    font-family: var(--font-gothic_condensed) !important;
+}
+
+
+.display-xl {
+    /* TODO: Kurdis Condensed */
+    font-family: var(--font-kurdis);
+    font-size: 4.6875rem; /* 75px */
+    font-weight: 800;
+
+    @media screen and (max-width: 768px) {
+        font-size: 2.8125rem; /* 45px */
+    }
+}
+
+.display-lg {
+    /* TODO: Trade Gothic Condensed */
+    font-family: var(--font-gothic_condensed);
+    font-size: 3.75rem; /* 60px */
+    font-weight: 800;
+
+    @media screen and (max-width: 768px) {
+        font-size: 2.8125rem; /* 45px */
+    }
+}
+
+.display-md {
+    /* TODO: Trade Gothic Condensed */
+    font-family: var(--font-gothic_condensed);
+    font-size: 2.8125rem; /* 45px */
+    font-weight: 800;
+
+    @media screen and (max-width: 768px) {
+        font-size: 2.1875rem; /* 35px */
+    }
+}
+
+.h1 {
+    /* TODO: Kurdis Condensed */
+    font-family: var(--font-kurdis);
+    font-weight: 800;
+    font-size: 1.5625rem; /* 25px */
+
+    @media screen and (max-width: 768px) {
+        font-size: 1.75rem; /* 28px */
+    }
+}
+
+.h2 {
+    /* TODO: Kurdis Condensed */
+    font-family: var(--font-kurdis);
+    font-weight: 800;
+    font-size: 1.375rem; /* 22px */
+
+    @media screen and (max-width: 768px) {
+        font-size: 1.25rem; /* 20px */
+    }
+}
+
+.h3 {
+    /* TODO: Kurdis Condensed */
+    font-family: var(--font-kurdis);
+    font-weight: 800;
+    font-size: 1.125rem; /* 18px */
+
+    @media screen and (max-width: 768px) {
+        font-size: 1.375rem; /* 22px */
+    }
+}
+
+.h4 {
+    font-family: var(--font-parslay);
+    font-weight: 400;
+    font-size: 1.25rem; /* 20px */
+
+    @media screen and (max-width: 768px) {
+        font-size: 1rem; /* 16px */
+    }
+}
+
+.h5 {
+    /* TODO: Kurdis Semi-Condensed Bold */
+    font-family: var(--font-kurdis);
+    font-weight: 700;
+    font-size: 1.125rem; /* 18px */
+}
+
+.body {
+    /* TODO: Kurdis Semi-Condensed */
+    font-family: var(--font-kurdis);
+    font-weight: 600;
+    font-size: 0.875rem; /* 14px */
+    line-height: 130%;
+}
+
+.body.font-bold {
+    font-family: var(--font-kurdis);
+    font-weight: 700;
+    font-size: 1rem; /* 16px */
+    line-height: 1rem;
+}
+
+.accent {
+    font-family: var(--font-parslay);
+    font-weight: 400;
+    font-size: 0.875rem; /* 14px */
+}
+
+.tag {
+    font-family: var(--font-kurdis);
+    font-weight: 600;
+    font-size: 0.75rem; /* 12px */
+}
+
+.nav {
+    font-family: var(--font-kurdis);
+    font-weight: 800;
+    font-size: 1.25rem; /* 20px */
+}
+
+.small-nav {
+    /* TODO: Kurdis Semi-Condensed */
+    font-family: var(--font-kurdis);
+    font-weight: 600;
+    font-size: 0.875rem; /* 14px */
+}
