@@ -19,16 +19,26 @@
             "label": "Shop Lattes",
             "link": "shopify://collections/lattes"
           }
+        },
+        "button_TMm9rL": {
+          "type": "button",
+          "settings": {
+            "style": "secondary",
+            "label": "Shop Cold Brew",
+            "link": "shopify://collections/cold-brew-boxes"
+          }
         }
       },
       "block_order": [
-        "button_9fyEpA"
+        "button_9fyEpA",
+        "button_TMm9rL"
       ],
       "name": "AW Hero",
       "settings": {
         "color_scheme": "",
         "background_image": "shopify://shop_images/Background_image_3007bdbb-12b7-457a-a1ef-29c71eff18c0.png",
-        "title_type": "text",
+        "title_type": "image",
+        "title_image": "shopify://shop_images/COFFEE_SHOP_QUALITY_DRINKS_MADE_EASY..svg",
         "title_text": "Coffee Shop Quality Drinks Made Easy",
         "subtitle": "For the at-home pajama baristas"
       }
