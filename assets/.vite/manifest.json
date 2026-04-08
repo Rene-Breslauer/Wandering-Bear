@@ -1,6 +1,6 @@
 {
   "frontend/entrypoints/main.css": {
-    "file": "main-DJSXIEtq.css",
+    "file": "main-DWsUwW8I.css",
     "name": "main",
     "names": [
       "main.css"
@@ -9,12 +9,12 @@
     "isEntry": true
   },
   "frontend/entrypoints/main.js": {
-    "file": "main-Bh6b47rL.js",
+    "file": "main-Dj-tTlPN.js",
     "name": "main",
     "src": "frontend/entrypoints/main.js",
     "isEntry": true,
     "css": [
-      "main-Dd7V0rvl.css"
+      "main-BKH-ftvQ.css"
     ]
   }
 }

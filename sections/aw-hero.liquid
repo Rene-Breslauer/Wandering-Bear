@@ -25,6 +25,7 @@
         </div>
         <div class="relative flex flex-col gap-4 z-1">
             {% if title_image != blank %}
+                {{ title_image | image_url: width: 1920 | image_tag: class: 'w-full h-full object-contain' }}
             {% elsif title_text != blank %}
                 <h1 class="h1">{{ title_text }}</h1>
             {% endif %}
@@ -32,7 +33,7 @@
                 <span class="h3">{{ subtitle }}</span>
             {% endif %}
             {% if buttons != blank %}
-                <div class="buttons">
+                <div class="flex gap-4">
                     {% for button in buttons %}
                         {% render 'wb-button', style: button.settings.style, label: button.settings.label, link: button.settings.link %}
                     {% endfor %}

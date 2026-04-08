@@ -1,0 +1,70 @@
+.btn {
+    height: 43px;
+    width: 205px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-family: Kurdis;
+    font-size: 1.25rem; /* 20px */
+    font-style: normal;
+    font-weight: 800;
+    line-height: 100%;
+    text-transform: uppercase;
+    position: relative;
+}
+
+.btn.primary {
+    span {
+        position: relative;
+        z-index: 2;
+        color: var(--color-brand-cream);
+        transition: color 0.3s ease;
+    }
+
+    svg {
+        fill: var(--color-brand-espresso);
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        transition: fill 0.3s ease;
+    }
+
+    &:hover {
+        span {
+            color: var(--color-brand-cream);
+        }
+
+        svg {
+            fill: var(--color-brand-gold);
+        }
+    }
+}
+
+.btn.secondary {
+
+    span {
+        color: var(--color-brand-espresso);
+        transition: color 0.3s ease;
+        position: relative;
+        z-index: 1;
+    }
+
+    svg {
+        fill: var(--color-brand-gold);
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        transition: fill 0.3s ease;
+    }
+
+    &:hover {
+        span {
+            color: var(--color-brand-espresso);
+        }
+
+        svg {
+            fill: var(--color-brand-cream);
+        }
+    }
+}
