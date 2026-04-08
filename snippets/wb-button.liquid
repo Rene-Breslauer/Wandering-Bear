@@ -5,25 +5,6 @@
     @param {string} link - The link of the button
 {%- enddoc -%}
 
-{% assign button_settings = block.settings %}
-{% comment %} {% assign svg_filter_classes = 'absolute inset-0 z-0' %} {% endcomment %}
-
-{% comment %} {%- capture button_text_classes -%}
-    {% if style == 'primary' %}
-        text-cream
-    {% elsif style == 'secondary' %}
-        text-cream group-hover:text-espresso transition-colors duration-200
-    {% endif %}
-{%- endcapture -%} {% endcomment %}
-{% comment %} 
-{%- capture button_bg -%}
-    {%- if style == 'primary' -%}
-        text-espresso group-hover:text-gold transition-colors duration-300
-    {%- elsif style == 'secondary' -%}
-        text-gold group-hover:text-cream transition-colors duration-300
-    {%- endif -%}
-{%- endcapture -%} {% endcomment %}
-
 {%- capture svg_filter -%}
     {%- if style == 'primary' -%}
         <svg xmlns="http://www.w3.org/2000/svg" width="213" height="51" viewBox="0 0 213 51" fill="none">
@@ -43,8 +24,8 @@
                 </filter>
             </defs>
         </svg>
-    {%- elsif style == 'secondary' -%}
-        <svg class="{{ svg_filter_classes }}" xmlns="http://www.w3.org/2000/svg" width="213" height="51" viewBox="0 0 213 51" fill="none">
+    {%- elsif style == 'secondary' or style == 'secondary-gold' or style == 'secondary-cream' -%}
+        <svg xmlns="http://www.w3.org/2000/svg" width="213" height="51" viewBox="0 0 213 51" fill="none">
             <g filter="url(#filter0_d_3_52)">
                 <path d="M1.89748 4.47133C0.285803 6.96547 0.2212 9.90479 0.193998 12.7225C0.129395 19.4279 0.0681918 26.1305 0.00358848 32.8359C-0.0134124 34.6582 -0.0100122 36.555 0.979438 38.1892C3.36296 42.1185 6.37211 42.9756 15.2738 42.9756C74.9808 42.9756 134.691 43.1222 194.402 42.6964C196.52 42.6825 198.846 42.771 200.583 41.7839C205.292 39.11 204.779 34.224 204.636 30.599C204.371 23.8493 205 18.3025 205 11.55C205 6.82721 204.351 4.93034 202.426 3.06112C199.961 0.663758 194.827 0.766068 190.981 0.70247C165.697 0.279407 140.4 0.060962 115.106 0.0111898C89.6491 -0.0413475 64.1921 0.0913783 38.735 0.403837C31.5538 0.492321 24.376 0.59463 17.1983 0.71353C11.7784 0.802014 4.90324 -0.171309 1.89748 4.47133Z"/>
             </g>

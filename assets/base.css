@@ -540,7 +540,7 @@ p:empty {
 
 .flex {
   display: flex;
-  gap: var(--gap-md);
+  /* gap: var(--gap-md); */
 }
 
 .grid {

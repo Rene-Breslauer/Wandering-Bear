@@ -1,0 +1,137 @@
+{% liquid
+    assign section_settings = section.settings
+    assign color_scheme = section_settings.color_scheme
+    assign title_type = section_settings.title_type
+    assign title = section_settings.title
+    assign title_image = section_settings.title_image
+    assign blocks = section.blocks
+    assign background_color = color_scheme.background
+    assign text_color = color_scheme.foreground
+%}
+
+<div style="background-color: {{ background_color }}">
+    {% if title_type == 'image' %}
+        {% if title_image != blank %}
+            <div class="h-[36px] mx-auto mb-8">
+              {{ title_image | image_url: width: 365 | image_tag: class: 'w-full h-[36px] object-contain' }}
+            </div>
+        {% endif %}
+    {% elsif title_type == 'text' %}
+        {% if title != blank %}
+            <span class="h1 mb-8" style="color: {{ text_color }}">{{ title }}</span>
+        {% endif %}
+    {% endif %}
+    <div class="container mx-auto">
+        <div class="wb-grid grid-cols-3 gap-20">
+            {% for block in section.blocks %}
+                {% liquid
+                    assign image = block.settings.image
+                    assign title = block.settings.title
+                    assign subtitle = block.settings.subtitle
+                    assign accent_text = block.settings.accent_text
+                %}
+                <div class="relative">
+                    {% if image != blank %}
+                        {% render 'picture', 
+                            source: image, 
+                            class: 'w-full h-full object-cover'
+                        %}
+                    {% endif %}
+                    <div class="flex flex-col !gap-0 items-center">
+                        {% if title != blank %}
+                            <span class="h1" style="color: {{ text_color }}">{{ title }}</span>
+                        {% endif %}
+                        {% if accent_text != blank %}
+                            <span class="accent text-gold">{{ accent_text }}</span>
+                        {% endif %}
+                        {% if subtitle != blank %}
+                            <span class="body text-espresso" style="color: {{ text_color }}">{{ subtitle }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+{% schema %}
+{
+    "name": "AW Collection Tiles",
+    "settings": [
+        {
+            "type": "color_scheme",
+            "id": "color_scheme",
+            "label": "Color Scheme",
+            "default": "scheme-1"
+        },
+        {
+            "type": "select",
+            "id": "title_type",
+            "label": "Title Type",
+            "options": [
+                {
+                    "value": "text",
+                    "label": "Text"
+                },
+                {
+                    "value": "image",
+                    "label": "Image"
+                }
+            ],
+            "default": "text"
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "visible_if": "{{ section.settings.title_type == 'text' }}"
+        },
+        {
+            "type": "image_picker",
+            "id": "title_image",
+            "label": "Title Image",
+            "visible_if": "{{ section.settings.title_type == 'image' }}"
+        }
+    ],
+    "blocks": [
+        {
+            "type": "collection_tile",
+            "name": "Collection Tile",
+            "settings": [
+                {
+                    "type": "collection",
+                    "id": "collection",
+                    "label": "Collection"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "image",
+                    "label": "Image"
+                },
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title"
+                },
+                {
+                    "type": "text",
+                    "id": "subtitle",
+                    "label": "Subtitle"
+                },
+                {
+                    "type": "text",
+                    "id": "accent_text",
+                    "label": "Accent Text"
+                }
+
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "AW Collection Tiles"
+        }
+    ]
+}
+{% endschema %}

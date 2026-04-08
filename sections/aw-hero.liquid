@@ -11,41 +11,49 @@
 %}
 
 {% capture hero_content %}
-    <div class="flex justify-center items-center">
-        <div class="w-full h-full absolute inset-0">
-            {% render 'picture', 
-                loading: 'eager', 
-                preload: true, 
-                source: background_image, 
-                class: 'w-full h-full object-cover',
-                alt: background_image.alt,
-                width: 1920,
-                height: 1080
-            %}
-        </div>
-        <div class="relative flex flex-col gap-4 z-1">
-            {% if title_image != blank %}
-                {{ title_image | image_url: width: 1920 | image_tag: class: 'w-full h-full object-contain' }}
-            {% elsif title_text != blank %}
-                <h1 class="h1">{{ title_text }}</h1>
-            {% endif %}
-            {% if subtitle != blank %}
-                <span class="h3">{{ subtitle }}</span>
-            {% endif %}
-            {% if buttons != blank %}
-                <div class="flex gap-4">
-                    {% for button in buttons %}
-                        {% render 'wb-button', style: button.settings.style, label: button.settings.label, link: button.settings.link %}
-                    {% endfor %}
+        {% if background_image != blank %}
+            <div class="w-full h-full absolute inset-0">
+                {% render 'picture', 
+                    loading: 'eager', 
+                    preload: true, 
+                    source: background_image, 
+                    class: 'w-full h-full object-cover',
+                    alt: background_image.alt,
+                    width: 1920,
+                    height: 1080
+                %}
+            </div>
+        {% endif %}
+        {% if title_image != blank or title_text != blank or subtitle != blank %}
+            <div class="container relative flex justify-end w-[1000px] mx-auto h-full">
+                <div class="relative flex flex-col gap-4 z-1">
+                    {% if title_image != blank %}
+                        {{ title_image | image_url: width: 1920 | image_tag: class: 'w-full h-full object-contain' }}
+                    {% elsif title_text != blank %}
+                        <h1 class="h1">{{ title_text }}</h1>
+                    {% endif %}
+                    {% if subtitle != blank %}
+                        <span class="h3">{{ subtitle }}</span>
+                    {% endif %}
+                    {% if buttons != blank %}
+                        <div class="flex gap-4">
+                            {% for button in buttons %}
+                                {% render 'wb-button', style: button.settings.style, label: button.settings.label, link: button.settings.link %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 </div>
-            {% endif %}
-        </div>
-    </div>
+            </div>
+        {% endif %}
 {% endcapture %}
 
-<div class="flex justify-center items-center aspect-[1920/1080]">
-        {{ hero_content }}
+{% if hero_content != blank %}
+<div class="flex justify-center items-center aspect-[1290/600] relative overflow-hidden">
+    <div class="flex justify-center items-center">
+      {{ hero_content }}
+    </div>
 </div>
+{% endif %}
 
 {% schema %}
 {
@@ -117,8 +125,12 @@
                             "label": "Primary"
                         },
                         {
-                            "value": "secondary",
-                            "label": "Secondary"
+                            "value": "secondary-gold",
+                            "label": "Secondary Gold"
+                        },
+                        {
+                            "value": "secondary-cream",
+                            "label": "Secondary Cream"
                         }
                     ],
                     "default": "primary"
