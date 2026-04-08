@@ -23,7 +23,7 @@
         "button_TMm9rL": {
           "type": "button",
           "settings": {
-            "style": "secondary",
+            "style": "secondary-cream",
             "label": "Shop Cold Brew",
             "link": "shopify://collections/cold-brew-boxes"
           }
@@ -36,11 +36,58 @@
       "name": "AW Hero",
       "settings": {
         "color_scheme": "",
-        "background_image": "shopify://shop_images/Background_image_3007bdbb-12b7-457a-a1ef-29c71eff18c0.png",
+        "background_image": "shopify://shop_images/Background_image.png",
         "title_type": "image",
         "title_image": "shopify://shop_images/COFFEE_SHOP_QUALITY_DRINKS_MADE_EASY..svg",
         "title_text": "Coffee Shop Quality Drinks Made Easy",
         "subtitle": "For the at-home pajama baristas"
+      }
+    },
+    "aw_collection_tiles_q7zD69": {
+      "type": "aw-collection-tiles",
+      "blocks": {
+        "collection_tile_qhQ8LF": {
+          "type": "collection_tile",
+          "settings": {
+            "collection": "cold-brew-boxes",
+            "image": "shopify://shop_images/wb-col-1.png",
+            "title": "Cold Brew Boxes",
+            "subtitle": "Our famous cold brew in over 15 flavors",
+            "accent_text": "Most Popular"
+          }
+        },
+        "collection_tile_rCwyCX": {
+          "type": "collection_tile",
+          "settings": {
+            "collection": "cold-brew-cartons",
+            "image": "shopify://shop_images/wb-col-2.png",
+            "title": "Multi-Serve Cartons",
+            "subtitle": "Convenient carton packs in select flavors. Available for cold brew, latte, and concentrate.",
+            "accent_text": ""
+          }
+        },
+        "collection_tile_RwjxDn": {
+          "type": "collection_tile",
+          "settings": {
+            "collection": "test-single-serve-12-cartons-11oz",
+            "image": "shopify://shop_images/wb-col-3.png",
+            "title": "Single Serves",
+            "subtitle": "Perfect for mornings on the move and afternoons out",
+            "accent_text": ""
+          }
+        }
+      },
+      "block_order": [
+        "collection_tile_qhQ8LF",
+        "collection_tile_rCwyCX",
+        "collection_tile_RwjxDn"
+      ],
+      "name": "AW Collection Tiles",
+      "settings": {
+        "color_scheme": "scheme-2",
+        "title_type": "image",
+        "title": "",
+        "title_image": "shopify://shop_images/GO_BIG._OR_GO_BIGGER..svg"
       }
     },
     "hero_jVaWmY": {
@@ -298,6 +345,7 @@
           ]
         }
       },
+      "disabled": true,
       "name": "Featured collection",
       "settings": {
         "collection": "all",
@@ -322,6 +370,7 @@
   },
   "order": [
     "aw_hero_cCfgW8",
+    "aw_collection_tiles_q7zD69",
     "hero_jVaWmY",
     "product_list_fa6P9H"
   ]
