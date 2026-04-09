@@ -94,6 +94,55 @@
         "title_image": "shopify://shop_images/GO_BIG._OR_GO_BIGGER..svg"
       }
     },
+    "floating_image_DU4qGq": {
+      "type": "floating-image",
+      "blocks": {
+        "bulletpoint_MX3QRE": {
+          "type": "bulletpoint",
+          "settings": {
+            "image": "shopify://shop_images/checkmark.svg",
+            "title": "11g of complete protein."
+          }
+        },
+        "bulletpoint_bFCyBA": {
+          "type": "bulletpoint",
+          "settings": {
+            "image": "shopify://shop_images/checkmark.svg",
+            "title": "Coffee-forward, super creamy and barista-level."
+          }
+        },
+        "bulletpoint_HpVgBz": {
+          "type": "bulletpoint",
+          "settings": {
+            "image": "shopify://shop_images/checkmark.svg",
+            "title": "Only 5-6g of total sugar from natural sugarcane."
+          }
+        },
+        "bulletpoint_mEPC6C": {
+          "type": "bulletpoint",
+          "settings": {
+            "image": "shopify://shop_images/checkmark.svg",
+            "title": "100 calories per can."
+          }
+        }
+      },
+      "block_order": [
+        "bulletpoint_MX3QRE",
+        "bulletpoint_bFCyBA",
+        "bulletpoint_HpVgBz",
+        "bulletpoint_mEPC6C"
+      ],
+      "name": "Floating Image",
+      "settings": {
+        "color_scheme": "",
+        "background_image": "shopify://shop_images/Group_1327226596.png",
+        "floating_image": "shopify://shop_images/Latte_8oz_Pour_Induldge_LargePop_1.png",
+        "title_type": "image",
+        "title": "",
+        "title_image": "shopify://shop_images/lattes-got-benefits.svg",
+        "title_alt": ""
+      }
+    },
     "aw_multi_collection_carousel_PEXHa4": {
       "type": "aw-multi-collection-carousel",
       "blocks": {
@@ -135,34 +184,6 @@
     },
     "membership_rzQn9p": {
       "type": "membership",
-      "blocks": {
-        "membership_bullet_KP9QjH": {
-          "type": "membership_bullet",
-          "settings": {
-            "image": "shopify://shop_images/crown.svg",
-            "title": "Free to join"
-          }
-        },
-        "membership_bullet_YMgAH4": {
-          "type": "membership_bullet",
-          "settings": {
-            "image": "shopify://shop_images/crown.svg",
-            "title": "Earn credit on every order"
-          }
-        },
-        "membership_bullet_CBab9Q": {
-          "type": "membership_bullet",
-          "settings": {
-            "image": "shopify://shop_images/crown.svg",
-            "title": "VIP & Elite upgrades available"
-          }
-        }
-      },
-      "block_order": [
-        "membership_bullet_KP9QjH",
-        "membership_bullet_YMgAH4",
-        "membership_bullet_CBab9Q"
-      ],
       "name": "Membership",
       "settings": {
         "color_scheme": "scheme-3",
@@ -179,6 +200,7 @@
   "order": [
     "aw_hero_cCfgW8",
     "aw_collection_tiles_q7zD69",
+    "floating_image_DU4qGq",
     "aw_multi_collection_carousel_PEXHa4",
     "membership_rzQn9p"
   ]
