@@ -51,6 +51,7 @@
           "settings": {
             "collection": "cold-brew-boxes",
             "image": "shopify://shop_images/wb-col-1.png",
+            "mobile_image_alt": "",
             "title": "Cold Brew Boxes",
             "subtitle": "Our famous cold brew in over 15 flavors",
             "accent_text": "Most Popular"
@@ -61,6 +62,7 @@
           "settings": {
             "collection": "cold-brew-cartons",
             "image": "shopify://shop_images/wb-col-2.png",
+            "mobile_image_alt": "",
             "title": "Multi-Serve Cartons",
             "subtitle": "Convenient carton packs in select flavors. Available for cold brew, latte, and concentrate.",
             "accent_text": ""
@@ -71,6 +73,7 @@
           "settings": {
             "collection": "test-single-serve-12-cartons-11oz",
             "image": "shopify://shop_images/wb-col-3.png",
+            "mobile_image_alt": "",
             "title": "Single Serves",
             "subtitle": "Perfect for mornings on the move and afternoons out",
             "accent_text": ""
@@ -87,291 +90,96 @@
         "color_scheme": "scheme-2",
         "title_type": "image",
         "title": "",
+        "title_alt": "",
         "title_image": "shopify://shop_images/GO_BIG._OR_GO_BIGGER..svg"
       }
     },
-    "hero_jVaWmY": {
-      "type": "hero",
+    "aw_multi_collection_carousel_PEXHa4": {
+      "type": "aw-multi-collection-carousel",
       "blocks": {
-        "text_YLPk4p": {
-          "type": "text",
-          "name": "t:names.heading",
+        "collection_pHTVci": {
+          "type": "collection",
           "settings": {
-            "text": "<p>Browse our latest products</p>",
-            "width": "fit-content",
-            "max_width": "normal",
-            "alignment": "left",
-            "type_preset": "h2",
-            "font": "var(--font-body--family)",
-            "font_size": "1rem",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "color": "var(--color-foreground-heading)",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
+            "collection": "test-cold-brew-on-tap-96oz",
+            "title": "Cold Brew Boxes",
+            "accent_text": "Bestseller!"
+          }
         },
-        "button_H9gpTf": {
-          "type": "button",
-          "name": "t:names.button",
+        "collection_XPRYUB": {
+          "type": "collection",
           "settings": {
-            "label": "Shop all",
-            "link": "shopify://collections/all",
-            "open_in_new_tab": false,
-            "style_class": "button-secondary",
-            "width": "fit-content",
-            "custom_width": 100,
-            "width_mobile": "fit-content",
-            "custom_width_mobile": 100
-          },
-          "blocks": {}
+            "collection": "32oz-cartons",
+            "title": "32oz Cartons",
+            "accent_text": ""
+          }
+        },
+        "collection_qde4mc": {
+          "type": "collection",
+          "settings": {
+            "collection": "test-single-serve-12-cartons-11oz",
+            "title": "Single Servings",
+            "accent_text": ""
+          }
         }
       },
       "block_order": [
-        "text_YLPk4p",
-        "button_H9gpTf"
+        "collection_pHTVci",
+        "collection_XPRYUB",
+        "collection_qde4mc"
       ],
-      "disabled": true,
-      "name": "t:names.hero",
+      "name": "AW Multi Coll Carousel",
       "settings": {
-        "media_type_1": "image",
-        "media_type_2": "image",
-        "stack_media_on_mobile": false,
-        "custom_mobile_media": false,
-        "media_type_1_mobile": "image",
-        "media_type_2_mobile": "image",
-        "link": "",
-        "open_in_new_tab": false,
-        "content_direction": "column",
-        "vertical_on_mobile": true,
-        "horizontal_alignment": "space-between",
-        "vertical_alignment": "flex-end",
-        "align_baseline": true,
-        "horizontal_alignment_flex_direction_column": "center",
-        "vertical_alignment_flex_direction_column": "flex-end",
-        "gap": 24,
-        "section_width": "page-width",
-        "section_height": "medium",
-        "section_height_custom": 50,
-        "color_scheme": "scheme-6",
-        "toggle_overlay": true,
-        "overlay_color": "#12121266",
-        "overlay_style": "solid",
-        "gradient_direction": "to bottom",
-        "blurred_reflection": false,
-        "reflection_opacity": 75,
-        "padding-block-start": 100,
-        "padding-block-end": 72
+        "color_scheme": "",
+        "title_image": "shopify://shop_images/flavorsonflavors.svg"
       }
     },
-    "product_list_fa6P9H": {
-      "type": "product-list",
+    "membership_rzQn9p": {
+      "type": "membership",
       "blocks": {
-        "static-header": {
-          "type": "_product-list-content",
-          "name": "t:names.header",
-          "static": true,
+        "membership_bullet_KP9QjH": {
+          "type": "membership_bullet",
           "settings": {
-            "content_direction": "row",
-            "vertical_on_mobile": false,
-            "horizontal_alignment": "space-between",
-            "vertical_alignment": "flex-end",
-            "align_baseline": true,
-            "horizontal_alignment_flex_direction_column": "flex-start",
-            "vertical_alignment_flex_direction_column": "center",
-            "gap": 12,
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "custom_height": 100,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
-            "background_media": "none",
-            "video_position": "cover",
-            "background_image_position": "cover",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "product_list_text_YFtzcL": {
-              "type": "_product-list-text",
-              "name": "t:names.collection_title",
-              "settings": {
-                "text": "<h3>{{ closest.collection.title }}</h3>",
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "h4",
-                "font": "var(--font-body--family)",
-                "font_size": "",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "product_list_button_MWeP9V": {
-              "type": "_product-list-button",
-              "name": "t:names.product_list_button",
-              "settings": {
-                "label": "View all",
-                "open_in_new_tab": false,
-                "style_class": "link",
-                "width": "fit-content",
-                "custom_width": 100,
-                "width_mobile": "fit-content",
-                "custom_width_mobile": 100
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "product_list_text_YFtzcL",
-            "product_list_button_MWeP9V"
-          ]
+            "image": "shopify://shop_images/crown.svg",
+            "title": "Free to join"
+          }
         },
-        "static-product-card": {
-          "type": "_product-card",
-          "name": "t:names.product_card",
-          "static": true,
+        "membership_bullet_YMgAH4": {
+          "type": "membership_bullet",
           "settings": {
-            "product_card_gap": 4,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "product_card_gallery_677WP3": {
-              "type": "_product-card-gallery",
-              "name": "t:names.product_card_media",
-              "settings": {
-                "image_ratio": "adapt",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "product_title_YXxMTj": {
-              "type": "product-title",
-              "name": "t:names.product_title",
-              "settings": {
-                "width": "100%",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 4,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "price_JQzVV4": {
-              "type": "price",
-              "name": "t:names.product_price",
-              "settings": {
-                "show_sale_price_first": true,
-                "show_installments": false,
-                "show_tax_info": false,
-                "type_preset": "h6",
-                "width": "100%",
-                "alignment": "left",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "color": "var(--color-foreground)",
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "product_card_gallery_677WP3",
-            "product_title_YXxMTj",
-            "price_JQzVV4"
-          ]
+            "image": "shopify://shop_images/crown.svg",
+            "title": "Earn credit on every order"
+          }
+        },
+        "membership_bullet_CBab9Q": {
+          "type": "membership_bullet",
+          "settings": {
+            "image": "shopify://shop_images/crown.svg",
+            "title": "VIP & Elite upgrades available"
+          }
         }
       },
-      "disabled": true,
-      "name": "Featured collection",
+      "block_order": [
+        "membership_bullet_KP9QjH",
+        "membership_bullet_YMgAH4",
+        "membership_bullet_CBab9Q"
+      ],
+      "name": "Membership",
       "settings": {
-        "collection": "all",
-        "layout_type": "grid",
-        "carousel_on_mobile": false,
-        "max_products": 8,
-        "columns": 4,
-        "mobile_columns": "2",
-        "mobile_card_size": "60cqw",
-        "columns_gap": 8,
-        "rows_gap": 24,
-        "icons_style": "arrow",
-        "icons_shape": "none",
-        "section_width": "page-width",
-        "horizontal_alignment": "flex-start",
-        "gap": 28,
-        "color_scheme": "scheme-1",
-        "padding-block-start": 48,
-        "padding-block-end": 48
+        "color_scheme": "scheme-3",
+        "background_image": "shopify://shop_images/Group_1327226595.jpg",
+        "title_type": "image",
+        "title": "",
+        "title_image": "shopify://shop_images/OUR_MEMBERS_UNLOCK_BETTER_PRICES_WITH_EVERY_SIP.svg",
+        "subtitle": "<p>Start earning $5 for every $50 spent. The best part is – you can join for free.  Upgrade to VIP or Elite anytime for exclusive flavors, bigger discounts, and more perks.</p>",
+        "foreground_image": "shopify://shop_images/Group_1327226595.svg",
+        "description": "Join XX+ members earning rewards with every order."
       }
     }
   },
   "order": [
     "aw_hero_cCfgW8",
     "aw_collection_tiles_q7zD69",
-    "hero_jVaWmY",
-    "product_list_fa6P9H"
+    "aw_multi_collection_carousel_PEXHa4",
+    "membership_rzQn9p"
   ]
 }
