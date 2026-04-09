@@ -2,24 +2,29 @@
     assign color_scheme = section.settings.color_scheme
     assign background_image = section.settings.background_image
     assign background_image_mobile = section.settings.background_image_mobile
+    assign floating_image = section.settings.floating_image
+    assign floating_image_mobile = section.settings.floating_image_mobile
     assign title_type = section.settings.title_type
     assign title = section.settings.title
     assign title_image = section.settings.title_image
-    assign subtitle = section.settings.subtitle
-    assign foreground_image = section.settings.foreground_image
-    assign description = section.settings.description
     assign bulletpoints = section.blocks | where: "type", "bulletpoint"
 %}
 
-<div class="relative py-[55px]" style="background-color: {{ color_scheme.background }}">
+<div class="relative" style="background-color: {{ color_scheme.background }}">
     {% if background_image != blank %}
         {% render 'picture', source: background_image, class: 'w-full h-full object-cover absolute inset-0' %}
     {% endif %}
     {% if background_image_mobile != blank %}
         {% render 'picture', source: background_image_mobile, class: 'w-full h-full object-cover absolute inset-0' %}
     {% endif %}
-    <div class="container mx-auto flex justify-end">
-        <div class="w-1/2 relative z-[2]">
+    {% if floating_image != blank %}
+        {% render 'picture', source: floating_image, class: 'w-full h-full object-cover absolute inset-0' %}
+    {% endif %}
+    {% if floating_image_mobile != blank %}
+        {% render 'picture', source: floating_image_mobile, class: 'w-full h-full object-cover absolute inset-0' %}
+    {% endif %}
+    <div class="container mx-auto relative z-[2]">
+        <div class="w-1/2 wb-flex flex-col">
             <div class="wb-flex flex-col">
                 {% if title_type == 'text' %}
                     <h2 class="h2 text-gold">{{ title }}</h2>
@@ -28,21 +33,14 @@
                         {{ title_image | image_url: width: 365 | image_tag: class: 'w-full max-h-full object-contain', alt: title_alt }}
                     {% endif %}
                 {% endif %}
-                {% if subtitle != blank %}
-                    <span class="body">{{ subtitle }}</span>
-                {% endif %}
-                {% for bullet in bulletpoints %}
-                    <div class="wb-flex gap-2">
-                        {{ bullet.settings.image | image_url: width: 20 | image_tag: class: '!h-2 !w-auto', alt: bullet.settings.title }}
-                        <span class="body">{{ bullet.settings.title }}</span>
-                    </div>
-                {% endfor %}
-                {% if foreground_image != blank %}
-                    {{ foreground_image | image_url: width: 365 | image_tag: class: 'w-full max-h-full object-contain', alt: title_alt }}
-                {% endif %}
-                {% if description != blank %}
-                    <div class="rte">{{ description }}</div>
-                {% endif %}
+            </div>
+            <div class="wb-flex flex-col">
+            {% for bullet in bulletpoints %}
+                <div class="wb-flex gap-2">
+                    {{ bullet.settings.image | image_url: width: 20 | image_tag: class: '!h-2 !w-auto', alt: bullet.settings.title }}
+                    <span class="body">{{ bullet.settings.title }}</span>
+                </div>
+            {% endfor %}
             </div>
         </div>
     </div>
@@ -50,7 +48,7 @@
 
 {% schema %}
     {
-        "name": "Membership",
+        "name": "Floating Image",
         "settings": [
             {
                 "type": "color_scheme",
@@ -67,6 +65,16 @@
                 "type": "image_picker",
                 "id": "background_image_mobile",
                 "label": "Background Image Mobile"
+            },
+            {
+                "type": "image_picker",
+                "id": "floating_image",
+                "label": "Floating Image"
+            },
+            {
+                "type": "image_picker",
+                "id": "floating_image_mobile",
+                "label": "Floating Image Mobile"
             },
             {
                 "type": "select",
@@ -97,19 +105,10 @@
                 "visible_if": "{{ section.settings.title_type == 'image' }}"
             },
             {
-                "type": "richtext",
-                "id": "subtitle",
-                "label": "Subtitle"
-            },
-            {
-                "type": "image_picker",
-                "id": "foreground_image",
-                "label": "Foreground Image"
-            },
-            {
                 "type": "text",
-                "id": "description",
-                "label": "Description"
+                "id": "title_alt",
+                "label": "Title Alt",
+                "visible_if": "{{ section.settings.title_type == 'image' }}"
             }
         ],
         "blocks": [
@@ -132,7 +131,7 @@
         ],
         "presets": [
             {
-                "name": "Membership"
+                "name": "Floating Image"
             }
         ]
     }
