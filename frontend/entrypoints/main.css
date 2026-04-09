@@ -1,5 +1,9 @@
 @import "tailwindcss" source("../..");
 
+[x-cloak] {
+    display: none;
+}
+
 .wb-grid {
     display: grid;
 }

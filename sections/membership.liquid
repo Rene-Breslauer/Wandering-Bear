@@ -1,0 +1,139 @@
+{% liquid
+    assign color_scheme = section.settings.color_scheme
+    assign background_image = section.settings.background_image
+    assign background_image_mobile = section.settings.background_image_mobile
+    assign title_type = section.settings.title_type
+    assign title = section.settings.title
+    assign title_image = section.settings.title_image
+    assign subtitle = section.settings.subtitle
+    assign foreground_image = section.settings.foreground_image
+    assign description = section.settings.description
+    assign membership_bullets = section.blocks | where: "type", "membership_bullet"
+%}
+
+<div class="relative py-[55px]" style="background-color: {{ color_scheme.background }}">
+    {% if background_image != blank %}
+        {% render 'picture', source: background_image, class: 'w-full h-full object-cover absolute inset-0' %}
+    {% endif %}
+    {% if background_image_mobile != blank %}
+        {% render 'picture', source: background_image_mobile, class: 'w-full h-full object-cover absolute inset-0' %}
+    {% endif %}
+    <div class="container mx-auto flex justify-end">
+        <div class="w-1/2 relative z-[2]">
+            <div class="wb-flex flex-col">
+                {% if title_type == 'text' %}
+                    <h2 class="h2 text-gold">{{ title }}</h2>
+                {% elsif title_type == 'image' %}
+                    {% if title_image != blank %}
+                        {{ title_image | image_url: width: 365 | image_tag: class: 'w-full max-h-full object-contain', alt: title_alt }}
+                    {% endif %}
+                {% endif %}
+                {% if subtitle != blank %}
+                    <span class="body">{{ subtitle }}</span>
+                {% endif %}
+                {% for bullet in membership_bullets %}
+                    <div class="wb-flex gap-2">
+                        {{ bullet.settings.image | image_url: width: 20 | image_tag: class: '!h-2 !w-auto', alt: bullet.settings.title }}
+                        <span class="body">{{ bullet.settings.title }}</span>
+                    </div>
+                {% endfor %}
+                {% if foreground_image != blank %}
+                    {{ foreground_image | image_url: width: 365 | image_tag: class: 'w-full max-h-full object-contain', alt: title_alt }}
+                {% endif %}
+                {% if description != blank %}
+                    <div class="rte">{{ description }}</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% schema %}
+    {
+        "name": "Membership",
+        "settings": [
+            {
+                "type": "color_scheme",
+                "id": "color_scheme",
+                "label": "Color Scheme",
+                "default": "scheme-1"
+            },
+            {
+                "type": "image_picker",
+                "id": "background_image",
+                "label": "Background Image"
+            },
+            {
+                "type": "image_picker",
+                "id": "background_image_mobile",
+                "label": "Background Image Mobile"
+            },
+            {
+                "type": "select",
+                "id": "title_type",
+                "label": "Title Type",
+                "options": [
+                    {
+                        "value": "text",
+                        "label": "Text"
+                    },
+                    {
+                        "value": "image",
+                        "label": "Image"
+                    }
+                ],
+                "default": "text"
+            },
+            {
+                "type": "text",
+                "id": "title",
+                "label": "Title",
+                "visible_if": "{{ section.settings.title_type == 'text' }}"
+            },
+            {
+                "type": "image_picker",
+                "id": "title_image",
+                "label": "Title Image",
+                "visible_if": "{{ section.settings.title_type == 'image' }}"
+            },
+            {
+                "type": "richtext",
+                "id": "subtitle",
+                "label": "Subtitle"
+            },
+            {
+                "type": "image_picker",
+                "id": "foreground_image",
+                "label": "Foreground Image"
+            },
+            {
+                "type": "text",
+                "id": "description",
+                "label": "Description"
+            }
+        ],
+        "blocks": [
+            {
+                "type": "membership_bullet",
+                "name": "Membership Bullet",
+                "settings": [
+                    {
+                        "type": "image_picker",
+                        "id": "image",
+                        "label": "Image"
+                    },
+                    {
+                        "type": "text",
+                        "id": "title",
+                        "label": "Title"
+                    }
+                ]
+            }
+        ],
+        "presets": [
+            {
+                "name": "Membership"
+            }
+        ]
+    }
+{% endschema %}

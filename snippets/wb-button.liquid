@@ -3,6 +3,7 @@
     @param {string} style - The style of the button
     @param {string} label - The label of the button
     @param {string} link - The link of the button
+    @param {string} class - The class of the button (optional)
 {%- enddoc -%}
 
 {%- capture svg_filter -%}
@@ -45,7 +46,7 @@
     {%- endif -%}
 {%- endcapture -%}
 
-<a href="{{ link }}" class="btn {{ style }}">
+<a href="{{ link }}" class="btn {{ style }} {% if class %} {{ class }} {% endif %}">
     <span>{{ label }}</span>
     {{ svg_filter }}
 </a>

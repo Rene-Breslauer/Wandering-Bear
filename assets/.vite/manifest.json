@@ -1,6 +1,16 @@
 {
+  "../node_modules/.pnpm/alpinejs@3.15.11/node_modules/alpinejs/dist/module.esm.js": {
+    "file": "module.esm-BAtFueXK.js",
+    "name": "module.esm",
+    "src": "../node_modules/.pnpm/alpinejs@3.15.11/node_modules/alpinejs/dist/module.esm.js",
+    "isDynamicEntry": true
+  },
+  "_navigation-BFu4OMN7.js": {
+    "file": "navigation-BFu4OMN7.js",
+    "name": "navigation"
+  },
   "frontend/entrypoints/main.css": {
-    "file": "main-Bdzl0d8f.css",
+    "file": "main-DHnbmhuk.css",
     "name": "main",
     "names": [
       "main.css"
@@ -9,12 +19,28 @@
     "isEntry": true
   },
   "frontend/entrypoints/main.js": {
-    "file": "main-ayjFmhwY.js",
+    "file": "main-CJRh43hy.js",
     "name": "main",
     "src": "frontend/entrypoints/main.js",
     "isEntry": true,
+    "imports": [
+      "_navigation-BFu4OMN7.js"
+    ],
+    "dynamicImports": [
+      "../node_modules/.pnpm/alpinejs@3.15.11/node_modules/alpinejs/dist/module.esm.js",
+      "frontend/scripts/components/swiperSlider.ts"
+    ],
     "css": [
-      "main-x1sVGLo0.css"
+      "main-Cy5EQNhL.css"
+    ]
+  },
+  "frontend/scripts/components/swiperSlider.ts": {
+    "file": "swiperSlider-DqUfBaFL.js",
+    "name": "swiperSlider",
+    "src": "frontend/scripts/components/swiperSlider.ts",
+    "isDynamicEntry": true,
+    "imports": [
+      "_navigation-BFu4OMN7.js"
     ]
   }
 }

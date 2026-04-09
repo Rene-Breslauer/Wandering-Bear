@@ -1,0 +1,1 @@
+import{t as e}from"./swiper-core-C1JZ1M_I.js";var t=t=>{t.data(`swiperSlider`,()=>({swiper:null,init(){this.swiper=new e(this.$el.querySelector(`.swiper`),{navigation:{nextEl:`.swiper-button-next`,prevEl:`.swiper-button-prev`}})}}))};export{t as default};

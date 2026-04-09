@@ -4,16 +4,17 @@
     assign title_type = section_settings.title_type
     assign title = section_settings.title
     assign title_image = section_settings.title_image
+    assign title_alt = section_settings.title_alt
     assign blocks = section.blocks
     assign background_color = color_scheme.background
     assign text_color = color_scheme.foreground
 %}
 
-<div style="background-color: {{ background_color }}">
+<div class="py-8" style="background-color: {{ background_color }}">
     {% if title_type == 'image' %}
         {% if title_image != blank %}
             <div class="h-[36px] mx-auto mb-8">
-              {{ title_image | image_url: width: 365 | image_tag: class: 'w-full h-[36px] object-contain' }}
+              {{ title_image | image_url: width: 365 | image_tag: class: 'w-full max-h-full object-contain', alt: title_alt }}
             </div>
         {% endif %}
     {% elsif title_type == 'text' %}
@@ -22,30 +23,41 @@
         {% endif %}
     {% endif %}
     <div class="container mx-auto">
-        <div class="wb-grid grid-cols-3 gap-20">
+        <div class="wb-grid grid-cols-1 md:grid-cols-3 gap-0 md:gap-20">
             {% for block in section.blocks %}
                 {% liquid
                     assign image = block.settings.image
+                    assign image_mobile = block.settings.image_mobile
+                    assign mobile_image_alt = block.settings.mobile_image_alt
                     assign title = block.settings.title
                     assign subtitle = block.settings.subtitle
                     assign accent_text = block.settings.accent_text
                 %}
                 <div class="relative">
+                    <a href="{{ collection.url }}">
                     {% if image != blank %}
                         {% render 'picture', 
                             source: image, 
-                            class: 'w-full h-full object-cover'
+                            class: 'hidden md:!block w-full h-full object-cover'
                         %}
                     {% endif %}
-                    <div class="flex flex-col !gap-0 items-center">
+                    {% if image_mobile != blank %}
+                        {% render 'picture', 
+                            source: image_mobile, 
+                            class: 'block md:!hidden w-full h-full object-cover'
+                            alt: mobile_image_alt
+                        %}
+                    {% endif %}
+                    </a>
+                    <div class="hidden md:flex flex-col !gap-0 items-center">
                         {% if title != blank %}
-                            <span class="h1" style="color: {{ text_color }}">{{ title }}</span>
+                            <a href="{{ collection.url }}" class="h1 text-center" style="color: {{ text_color }}">{{ title }}</a>
                         {% endif %}
                         {% if accent_text != blank %}
-                            <span class="accent text-gold">{{ accent_text }}</span>
+                            <span class="accent text-gold text-center">{{ accent_text }}</span>
                         {% endif %}
                         {% if subtitle != blank %}
-                            <span class="body text-espresso" style="color: {{ text_color }}">{{ subtitle }}</span>
+                            <span class="body text-espresso text-center" style="color: {{ text_color }}">{{ subtitle }}</span>
                         {% endif %}
                     </div>
                 </div>
@@ -88,6 +100,12 @@
             "visible_if": "{{ section.settings.title_type == 'text' }}"
         },
         {
+            "type": "text",
+            "id": "title_alt",
+            "label": "Title Alt",
+            "visible_if": "{{ section.settings.title_type == 'image' }}"
+        },
+        {
             "type": "image_picker",
             "id": "title_image",
             "label": "Title Image",
@@ -108,6 +126,16 @@
                     "type": "image_picker",
                     "id": "image",
                     "label": "Image"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "image_mobile",
+                    "label": "Image Mobile"
+                },
+                {
+                    "type": "text",
+                    "id": "mobile_image_alt",
+                    "label": "Mobile Image Alt"
                 },
                 {
                     "type": "text",

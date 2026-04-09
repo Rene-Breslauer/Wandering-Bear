@@ -1,0 +1,101 @@
+{% liquid
+    assign collection_list = section.settings.collection_list
+    assign color_scheme = section.settings.color_scheme
+    assign title_image = section.settings.title_image
+%}
+
+{% capture slide_styles %}
+    width: calc(100% / 5.5);
+{% endcapture %}
+
+<div x-data="swiperSlider" style="background-color: {{ color_scheme.background }}">
+    <div class="container mx-auto flex justify-start relative">
+    {% if title_image != blank %}
+        <div class="h-[100px] w-[263px] mb-8 relative z-[2]">
+            {{ title_image | image_url: width: 365 | image_tag: class: 'w-full max-h-full object-contain', alt: title_alt }}
+        </div>
+    {% endif %}
+
+       {% comment %} Custom Dropdown {% endcomment %}
+        <div class="wb-flex flex-col">
+            <span class="body uppercase mb-2">Select your size</span>
+            <div class="w-[249px] relative">
+                <div @click="dropdownOpen = !dropdownOpen" class="relative rounded-[4px] cursor-pointer bg-white p-2 border border-espresso">
+                    <span class="font-kurdis">{{ section.blocks[0].settings.collection.title }}</span>
+                </div>
+                <div x-show="dropdownOpen" x-cloak class="absolute top-full left-0 w-full bg-white z-[2]">
+                    <ul>
+                    {% for block in section.blocks %}
+                        {% liquid
+                            assign collection = block.settings.collection
+                        %}
+                        <li @click="changeCollection('{{ collection.handle }}')"  class="dropdown-item">
+                            <span>{{ collection.title }}</span>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="swiper multi-collection-slider -mt-10">
+        <div class="swiper-wrapper">
+            {% for product in section.blocks[0].settings.collection.products %}
+                {% liquid
+                    assign collection = block.settings.collection
+                %}
+                {% if product.metafields.custom.carousel_image != blank %}
+                    {% render 'multi-coll-carousel-slide', product: product %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% schema %}
+    {
+        "name": "AW Multi Coll Carousel",
+        "settings": [
+            {
+                "type": "color_scheme",
+                "id": "color_scheme",
+                "label": "Color Scheme",
+                "default": "scheme-1"
+            },
+            {
+                "type": "image_picker",
+                "id": "title_image",
+                "label": "Title Image"
+            }
+
+        ],
+        "blocks": [
+            {
+                "type": "collection",
+                "name": "Collection",
+                "settings": [
+                    {
+                        "type": "collection",
+                        "id": "collection",
+                        "label": "Collection"
+                    },
+                    {
+                        "type": "text",
+                        "id": "title",
+                        "label": "Title"
+                    },
+                    {
+                        "type": "text",
+                        "id": "accent_text",
+                        "label": "Accent Text"
+                    }
+                ]
+            }
+        ],
+    "presets": [
+        {
+            "name": "AW Multi Coll Carousel"
+        }
+    ]
+}
+{% endschema %}
