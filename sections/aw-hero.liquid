@@ -3,8 +3,10 @@
     assign color_scheme = section_settings.color_scheme
     assign foreground_image = section_settings.foreground_image
     assign background_image = section_settings.background_image
+    assign background_image_mobile = section_settings.background_image_mobile
     assign title_type = section_settings.title_type
     assign title_image = section_settings.title_image
+    assign title_image_mobile = section_settings.title_image_mobile
     assign title_text = section_settings.title_text
     assign subtitle = section_settings.subtitle
     assign buttons = section.blocks | where: "type", "button"
@@ -13,7 +15,7 @@
 
 {% capture hero_content %}
         {% if background_image != blank %}
-            <div class="w-full h-full absolute inset-0">
+            <div class="w-full h-full absolute inset-0 {% if background_image_mobile != blank %} hidden md:!block {% endif %}">
                 {% render 'picture', 
                     loading: 'eager', 
                     preload: true, 
@@ -25,21 +27,35 @@
                 %}
             </div>
         {% endif %}
+        {% if background_image_mobile != blank %}
+            <div class="w-full h-full absolute inset-0 block md:!hidden">
+                {% render 'picture', 
+                    loading: 'eager', 
+                    preload: true, 
+                    source: background_image_mobile, 
+                    class: 'w-full h-full object-cover',
+                    alt: background_image_mobile.alt,
+                    width: 1920,
+                    height: 1080
+                %}
+            </div>
+        {% endif %}
         {% if title_image != blank or title_text != blank or subtitle != blank %}
-            <div class="container relative flex justify-end w-[1000px] mx-auto h-full">
-                <div class="relative flex flex-col gap-4 z-1">
+            <div class="container relative wb-flex flex-col md:!flex-row justify-end w-[1000px] mx-auto h-full">
+                <div class="relative wb-flex flex-col gap-4 z-1 max-w-full">
                     {% if title_image != blank %}
-                        {{ title_image | image_url: width: 1920 | image_tag: class: 'w-full h-full object-contain' }}
+                        {{ title_image | image_url: width: 1920 | image_tag: class: 'hidden md:!block w-full h-full object-contain' }}
+                        {{ title_image_mobile | image_url: width: 1920 | image_tag: class: 'block md:!hidden w-full h-full object-contain !max-w-[270px] mx-auto' }}
                     {% elsif title_text != blank %}
                         <h1 class="h1">{{ title_text }}</h1>
                     {% endif %}
                     {% if subtitle != blank %}
-                        <span class="h3">{{ subtitle }}</span>
+                        <span class="h3 text-center md:!text-left">{{ subtitle }}</span>
                     {% endif %}
                     {% if buttons != blank %}
-                        <div class="flex gap-4">
+                        <div class="wb-flex flex-col md:!flex-row gap-4 w-fit mx-auto md:!mx-0">
                             {% for button in buttons %}
-                                <div class="relative">
+                                <div class="relative mx-auto md:!mx-0">
                                     {% if button.settings.badge != blank %}
                                         {{ button.settings.badge | image_url: width: 100 | image_tag: class: 'absolute z-[2] -top-5 -left-10 !w-[59px] !h-auto' }}
                                     {% endif %}
@@ -54,7 +70,7 @@
 {% endcapture %}
 
 {% if hero_content != blank %}
-<div class="flex justify-center items-center aspect-[1290/600] relative overflow-hidden">
+<div class="flex justify-center items-center md:!aspect-[1290/600] relative overflow-hidden py-8">
     <div class="flex justify-center items-center">
       {{ hero_content }}
     </div>
@@ -85,6 +101,11 @@
             "label": "Background Image"
         },
         {
+            "type": "image_picker",
+            "id": "background_image_mobile",
+            "label": "Background Image Mobile"
+        },
+        {
             "type": "select",
             "id": "title_type",
             "label": "Title Type",
@@ -104,6 +125,12 @@
             "type": "image_picker",
             "id": "title_image",
             "label": "Title Image",
+            "visible_if": "{{ section.settings.title_type == 'image' }}"
+        },
+        {
+            "type": "image_picker",
+            "id": "title_image_mobile",
+            "label": "Title Image Mobile",
             "visible_if": "{{ section.settings.title_type == 'image' }}"
         },
         {

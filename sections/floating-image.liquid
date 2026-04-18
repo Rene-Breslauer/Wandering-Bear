@@ -20,13 +20,13 @@
         {% render 'picture', source: background_image_mobile, class: 'w-full h-full object-cover absolute inset-0' %}
     {% endif %}
     {% if floating_image != blank %}
-        {% render 'picture', source: floating_image, class: '!w-fit max-h-full h-full object-contain absolute right-0' %}
+        {% render 'picture', source: floating_image, class: 'bottom-0 md:!bottom-auto !w-fit max-h-full h-full object-contain absolute right-0' %}
     {% endif %}
     {% if floating_image_mobile != blank %}
         {% render 'picture', source: floating_image_mobile, class: 'w-full max-h-full h-full object-contain absolute inset-0' %}
     {% endif %}
     <div class="container max-w-[1000px] mx-auto relative z-[2] pt-20 pb-[70px]">
-        <div class="w-1/2 wb-flex flex-col max-w-[438px]">
+        <div class="md:!w-1/2 wb-flex flex-col max-w-[438px]">
             <div class="wb-flex flex-col mb-8">
                 {% if title_type == 'text' %}
                     <h2 class="h2 text-gold">{{ title }}</h2>

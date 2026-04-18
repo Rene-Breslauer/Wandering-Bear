@@ -13,13 +13,13 @@
 
 <div class="relative py-[55px] z-0" style="background-color: {{ color_scheme.background }}">
     {% if background_image != blank %}
-        {% render 'picture', source: background_image, class: 'w-full h-full object-cover absolute inset-0' %}
+        {% render 'picture', source: background_image, class: 'hidden md:!block w-full h-full object-cover absolute inset-0' %}
     {% endif %}
     {% if background_image_mobile != blank %}
-        {% render 'picture', source: background_image_mobile, class: 'w-full h-full object-cover absolute inset-0' %}
+        {% render 'picture', source: background_image_mobile, class: 'block md:!hidden w-full h-full object-cover absolute inset-0' %}
     {% endif %}
     <div class="container mx-auto flex justify-end">
-        <div class="w-1/2 relative z-[2]">
+        <div class="md:!w-1/2 relative z-[2]">
             <div class="wb-flex flex-col">
                 {% if title_type == 'text' %}
                     <h2 class="h2 text-gold mb-5">{{ title }}</h2>
