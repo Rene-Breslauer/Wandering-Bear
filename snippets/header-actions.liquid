@@ -11,7 +11,6 @@
   @example
   {% render 'header-actions', section: section %}
 {% enddoc %}
-
 <script
   type="module"
   src="{{ 'cart-icon.js' | asset_url }}"
@@ -20,7 +19,7 @@
 
 {% capture cart_icon %}
   <cart-icon
-    class="header-actions__cart-icon{% if display_style == 'text' %} header-actions__cart-icon--text{% endif %}{% unless cart == empty %} header-actions__cart-icon--has-cart{% endunless %}"
+    class="header-actions__cart-icon flex justify-center items-center {% unless cart == empty %} header-actions__cart-icon--has-cart{% endunless %}"
     data-testid="cart-icon"
   >
     <span class="{% if display_style == 'icon' %}hidden{% else %}mobile:hidden{% endif %}">
@@ -31,7 +30,7 @@
       class="svg-wrapper {% if display_style != 'icon' %}desktop:hidden{% endif %}"
       aria-hidden="true"
     >
-      {{ 'icon-cart.svg' | inline_asset_content }}
+      {% render 'icons', icon: 'cart' with class: 'h-9 w-[27px]' %}
     </span>
 
     {% render 'cart-bubble', limit: 100 %}
@@ -56,17 +55,13 @@
     />
   </svg>
 {% endcapture %}
-
 <header-actions
-  {% if display_style == 'text' %}
     class="header-actions--text"
-  {% endif %}
   {{- block.shopify_attributes -}}
 >
   {% if shop.customer_accounts_enabled %}
     {% liquid
       assign account_actions_style = ''
-      if display_style == 'text' and section
         assign actions_font = section.settings.actions_font | default: 'body'
         assign font_obj = settings.type_heading_font
         case actions_font
@@ -80,36 +75,28 @@
         assign font_family = font_obj.family | append: ', ' | append: font_obj.fallback_families
         assign font_family_safe = font_family | replace: '"', "'"
         assign account_actions_style = '--header-actions-font-family: ' | append: font_family_safe | append: '; --header-actions-font-weight: ' | append: font_obj.weight | append: ';'
-      endif
     %}
     <div
-      class="account-button header-actions__action{% if display_style == 'text' %} account-button--text{% endif %} color-{{ settings.popover_color_scheme }}"
+      class="hidden md:!flex items-center gap-5"
     >
-      <shopify-account
+      <a href="{{ routes.account_url }}"
         menu="{{ customer_account_menu }}"
-        {% if account_actions_style != blank %}
-          style="{{ account_actions_style }}"
-        {% endif %}
+        class="uppercase text-lg font-kurdis font-bold"
       >
         {% if customer %}
-          <div class="account-button__fallback"></div>
+           <span>Account</span>
         {% else %}
-          <span
-            slot="signed-out-avatar"
-            class="account-button__text header-actions__text-style {% if display_style == 'icon' %}hidden{% else %}mobile:hidden{% endif %}"
-          >
-            {{ 'content.account_title' | t }}
-          </span>
-
-          <span
-            slot="signed-out-avatar"
-            class="{% if display_style != 'icon' %}desktop:hidden{% endif %}"
-            aria-hidden="true"
-          >
-            {{ account_icon }}
-          </span>
+           <span>Login</span>
         {% endif %}
-      </shopify-account>
+      </a>
+      <span class="font-bold text-lg">|</span>
+      <a href="{{ routes.root_url }}/pages/membership" class="flex flex-row text-base font-tablet font-bold leading-0 !gap-1" style="color: {{ section.settings.color_scheme_top.settings.foreground_heading }}">
+       <div class="flex flex-col">
+        <span>EARN</span>
+        <span class="rotate-[-1.989deg]">CREDIT</span>
+      </div>
+      {% render 'icons', icon: 'info' %}
+      </a>
     </div>
   {% endif %}
 
@@ -575,15 +562,21 @@
 
   .header-actions__cart-icon .cart-bubble {
     position: absolute;
-    width: var(--cart-bubble-size, 20px);
-    top: var(--cart-bubble-top);
-    right: var(--cart-bubble-right);
+  }
+
+  .header-actions__cart-icon .cart-bubble__text-count {
+    font-size: 20px;
+    font-weight: 811;
+    line-height: 61px;
+    letter-spacing: 0.2px;
+    font-family: 'Tablet Gothic Condensed';
   }
 
   @media screen and (min-width: 750px) {
     .header-actions__cart-icon--text.header-actions__cart-icon .cart-bubble {
       position: relative;
       top: 0;
+     
     }
   }
 

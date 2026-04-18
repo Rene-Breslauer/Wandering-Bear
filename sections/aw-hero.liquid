@@ -38,7 +38,12 @@
                     {% if buttons != blank %}
                         <div class="flex gap-4">
                             {% for button in buttons %}
-                                {% render 'wb-button', style: button.settings.style, label: button.settings.label, link: button.settings.link %}
+                                <div class="relative">
+                                    {% if button.settings.badge != blank %}
+                                        {{ button.settings.badge | image_url: width: 100 | image_tag: class: 'absolute z-[2] -top-5 -left-10 !w-[59px] !h-auto' }}
+                                    {% endif %}
+                                    {% render 'wb-button', style: button.settings.style, label: button.settings.label, link: button.settings.link %}
+                                </div>
                             {% endfor %}
                         </div>
                     {% endif %}
@@ -144,6 +149,11 @@
                     "type": "url",
                     "id": "link",
                     "label": "Link"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "badge",
+                    "label": "Badge"
                 }
             ]
         }
