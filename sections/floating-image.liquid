@@ -14,10 +14,10 @@
 
 <div class="relative w-full" style="background-color: {{ color_scheme.background }}">
     {% if background_image != blank %}
-        {% render 'picture', source: background_image, class: 'w-full h-full object-cover absolute inset-0' %}
+        {% render 'picture', source: background_image, class: 'hidden md:!block w-full h-full object-cover absolute inset-0' %}
     {% endif %}
     {% if background_image_mobile != blank %}
-        {% render 'picture', source: background_image_mobile, class: 'w-full h-full object-cover absolute inset-0' %}
+        {% render 'picture', source: background_image_mobile, class: 'block md:!hidden w-full h-full object-cover absolute inset-0' %}
     {% endif %}
     {% if floating_image != blank %}
         {% render 'picture', source: floating_image, class: 'bottom-0 md:!bottom-auto !w-fit max-h-full h-full object-contain absolute right-0' %}
