@@ -22,26 +22,26 @@
         <div class="w-1/2 relative z-[2]">
             <div class="wb-flex flex-col">
                 {% if title_type == 'text' %}
-                    <h2 class="h2 text-gold">{{ title }}</h2>
+                    <h2 class="h2 text-gold mb-5">{{ title }}</h2>
                 {% elsif title_type == 'image' %}
                     {% if title_image != blank %}
-                        {{ title_image | image_url: width: 365 | image_tag: class: 'w-full max-h-full object-contain', alt: title_alt }}
+                        {{ title_image | image_url: width: 365 | image_tag: class: 'w-full max-h-full object-contain !mb-5', alt: title_alt }}
                     {% endif %}
                 {% endif %}
                 {% if subtitle != blank %}
-                    <span class="body">{{ subtitle }}</span>
+                    <span class="body block !mb-5" style="color: {{ color_scheme.settings.foreground }}">{{ subtitle }}</span>
                 {% endif %}
                 {% for bullet in bulletpoints %}
-                    <div class="wb-flex gap-2">
+                    <div class="wb-flex gap-2 block !mb-5">
                         {{ bullet.settings.image | image_url: width: 20 | image_tag: class: '!h-2 !w-auto', alt: bullet.settings.title }}
-                        <span class="body">{{ bullet.settings.title }}</span>
+                        <span class="body" style="color: {{ color_scheme.settings.foreground }}">{{ bullet.settings.title }}</span>
                     </div>
                 {% endfor %}
                 {% if foreground_image != blank %}
                     {{ foreground_image | image_url: width: 365 | image_tag: class: 'w-full max-h-full object-contain', alt: title_alt }}
                 {% endif %}
                 {% if description != blank %}
-                    <div class="rte">{{ description }}</div>
+                    <div class="rte" style="color: {{ color_scheme.settings.foreground }}">{{ description }}</div>
                 {% endif %}
             </div>
         </div>
