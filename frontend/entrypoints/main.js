@@ -10,6 +10,7 @@ import '../styles/typography.css';
 import '../styles/colors.css';
 import '../styles/components.css';
 import '../styles/multi-collection-slider.css';
+import '../styles/divider.css';
 
 export {}
 

@@ -1,0 +1,11 @@
+.aw-divider {
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-top);
+    margin-top: var(--margin-top-desktop);
+    margin-bottom: var(--margin-bottom-desktop);
+    @media (max-width: 768px) {
+        margin-top: var(--margin-top-mobile);
+        margin-bottom: var(--margin-bottom-mobile);
+    }
+}

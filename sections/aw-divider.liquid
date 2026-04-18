@@ -1,0 +1,88 @@
+{% liquid
+    assign color_top = section.settings.color_top
+    assign color_bottom = section.settings.color_bottom
+    assign margin_top_desktop = section.settings.margin_top_desktop
+    assign margin_top_mobile = section.settings.margin_top_mobile
+    assign margin_bottom_desktop = section.settings.margin_bottom_desktop
+    assign margin_bottom_mobile = section.settings.margin_bottom_mobile
+    assign svg_code = section.settings.svg_code
+    assign svg_color = section.settings.svg_color
+%}
+
+{% capture divider_styles %}
+    margin-top: {{ margin_top_desktop }};
+    margin-bottom: {{ margin_bottom_desktop }};
+    color: {{ svg_color }};
+    @media (max-width: 768px) {
+        margin-top: {{ margin_top_mobile }};
+        margin-bottom: {{ margin_bottom_mobile }};
+    }
+{% endcapture %}
+
+<div class="aw-divider relative !h-10" style="{{ divider_styles }}">
+    {% if svg_code != blank %}
+        <svg class="aw-divider absolute -top-full" preserveAspectRatio="none" viewBox="0 0 1280 21" style="color:{{ svg_color }}">
+            {{ svg_code }}
+        </svg>
+    {% endif %}
+    <div class="w-full h-full" style="background-color: {{ color_bottom }};"></div>
+</div>
+
+{% schema %}
+    {
+        "name": "AW Divider",
+        "settings": [
+            {
+                "type": "color",
+                "id": "color_top",
+                "label": "Color Top"
+            },
+            {
+                "type": "color",
+                "id": "color_bottom",
+                "label": "Color Bottom"
+            },
+            {
+                "type": "text",
+                "id": "margin_top_desktop",
+                "label": "Margin Top Desktop",
+                "default": "0px"
+            },
+            {
+                "type": "text",
+                "id": "margin_top_mobile",
+                "label": "Margin Top Mobile",
+                "default": "0px"
+            },
+            {
+                "type": "text",
+                "id": "margin_bottom_desktop",
+                "label": "Margin Bottom Desktop",
+                "default": "0px"
+            },
+            {
+                "type": "text",
+                "id": "margin_bottom_mobile",
+                "label": "Margin Bottom Mobile",
+                "default": "0px"
+            },
+            {
+                "type": "html",
+                "id": "svg_code",
+                "label": "SVG",
+                "info": "SVG code for the divider"
+            },
+            {
+                "type": "color",
+                "id": "svg_color",
+                "label": "SVG Color",
+                "default": "#F2E6DC"
+            }
+        ],
+    "presets": [
+        {
+            "name": "AW Divider",
+        }
+    ]
+}
+{% endschema %}

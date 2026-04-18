@@ -8,6 +8,7 @@
     assign title_text = section_settings.title_text
     assign subtitle = section_settings.subtitle
     assign buttons = section.blocks | where: "type", "button"
+    assign badge = section_settings.badge
 %}
 
 {% capture hero_content %}
@@ -57,6 +58,9 @@
     <div class="flex justify-center items-center">
       {{ hero_content }}
     </div>
+    {% if badge != blank %}
+        {{ badge | image_url: width: 100 | image_tag: class: 'absolute z-[2] -bottom-5 right-[20vw] !w-[85px] !h-auto' }}
+    {% endif %}
 </div>
 {% endif %}
 
@@ -112,6 +116,11 @@
             "type": "text",
             "id": "subtitle",
             "label": "Subtitle"
+        },
+        {
+            "type": "image_picker",
+            "id": "badge",
+            "label": "Badge"
         }
     ],
     "blocks": [

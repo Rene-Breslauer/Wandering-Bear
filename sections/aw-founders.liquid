@@ -1,0 +1,135 @@
+{% liquid
+    assign section_settings = section.settings
+    assign color_scheme = section_settings.color_scheme
+    assign title_type = section_settings.title_type
+    assign title = section_settings.title
+    assign title_alt = section_settings.title_alt
+    assign title_image = section_settings.title_image
+    assign content = section_settings.content
+    assign background_image = section_settings.background_image
+    assign video = section_settings.video
+    assign signature_image = section_settings.signature_image
+%}
+
+{% capture founders_content %}
+    <div class="aw-flex flex-col gap-4">
+    {% if title_type == 'image' %}
+        {% if title_image != blank %}
+            <div class="max-w-[442px] w-full mx-auto mb-5">
+                {{ title_image | image_url: width: 365 | image_tag: class: 'w-full max-h-full object-contain', alt: title_alt }}
+            </div>
+        {% endif %}
+    {% elsif title_type == 'text' %}
+        {% if title != blank %}
+            <span class="h1 mb-8" style="color: {{ text_color }}">{{ title }}</span>
+        {% endif %}
+    {% endif %}
+    {% if content != blank %}
+        <div class="rte text-center">
+            {{ content }}
+        </div>
+    {% endif %}
+    {% if signature_image != blank %}
+        <div class="max-w-[442px] w-full mx-auto mb-5">
+            {{ signature_image | image_url: width: 365 | image_tag: class: 'w-full max-h-full object-contain', alt: title_alt }}
+        </div>
+    {% endif %}
+    </div>
+{% endcapture %}
+
+{% capture video_content %}
+    {% if video != blank %}
+    <div>
+        {% render 'video', video: video %}
+    </div>
+    {% endif %}
+{% endcapture %}
+<div class="relative pb-[100px]" style="background-color: {{ color_scheme.background }}">
+    {% if background_image != blank %}
+        {% render 'picture', source: background_image, class: 'w-full h-full object-cover absolute inset-0' %}
+    {% endif %}
+    <div class="container mx-auto relative">
+        <div class="wb-flex gap-4 justify-between">
+            <div class="max-w-[400px] w-full">
+                {{ video_content }}
+            </div>
+            <div class="w-full">
+                {{ founders_content }}
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+{% schema %}
+{
+    "name": "Founders",
+    "settings": [
+        {
+            "type": "color_scheme",
+            "id": "color_scheme",
+            "label": "Color Scheme",
+            "default": "scheme-1"
+        },
+        {
+            "type": "select",
+            "id": "title_type",
+            "label": "Title Type",
+            "options": [
+                {
+                    "value": "text",
+                    "label": "Text"
+                },
+                {
+                    "value": "image",
+                    "label": "Image"
+                }
+            ],
+            "default": "text"
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "visible_if": "{{ section.settings.title_type == 'text' }}"
+        },
+        {
+            "type": "text",
+            "id": "title_alt",
+            "label": "Title Alt",
+            "visible_if": "{{ section.settings.title_type == 'image' }}"
+        },
+        {
+            "type": "image_picker",
+            "id": "title_image",
+            "label": "Title Image",
+            "visible_if": "{{ section.settings.title_type == 'image' }}"
+        },
+        {
+            "type": "richtext",
+            "id": "content",
+            "label": "Content"
+        },
+        {
+            "type": "image_picker",
+            "id": "background_image",
+            "label": "Background Image"
+        },
+        {
+            "type": "video",
+            "id": "video",
+            "label": "Video"
+        },
+        {
+            "type": "image_picker",
+            "id": "signature_image",
+            "label": "Signature Image"
+        }
+    ],
+    "presets": [
+        {
+            "name": "Founders"
+        }
+    ]
+}
+{% endschema %}
