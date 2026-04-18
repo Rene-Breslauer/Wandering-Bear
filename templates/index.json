@@ -38,8 +38,10 @@
       "settings": {
         "color_scheme": "",
         "background_image": "shopify://shop_images/Background_image.png",
+        "background_image_mobile": "shopify://shop_images/wb-hero-mobile.png",
         "title_type": "image",
         "title_image": "shopify://shop_images/COFFEE_SHOP_QUALITY_DRINKS_MADE_EASY..svg",
+        "title_image_mobile": "shopify://shop_images/Group_1327226599.png",
         "title_text": "Coffee Shop Quality Drinks Made Easy",
         "subtitle": "For the at-home pajama baristas",
         "badge": "shopify://shop_images/STAY_CAFFEINATED.svg"
@@ -67,6 +69,7 @@
           "settings": {
             "collection": "cold-brew-boxes",
             "image": "shopify://shop_images/wb-col-1.png",
+            "image_mobile": "shopify://shop_images/Group_1327226587.png",
             "mobile_image_alt": "",
             "title": "Cold Brew Boxes",
             "subtitle": "Our famous cold brew in over 15 flavors",
@@ -78,6 +81,7 @@
           "settings": {
             "collection": "cold-brew-cartons",
             "image": "shopify://shop_images/wb-col-2.png",
+            "image_mobile": "shopify://shop_images/Group_1327226587.png",
             "mobile_image_alt": "",
             "title": "Multi-Serve Cartons",
             "subtitle": "Convenient carton packs in select flavors. Available for cold brew, latte, and concentrate.",
@@ -89,6 +93,7 @@
           "settings": {
             "collection": "test-single-serve-12-cartons-11oz",
             "image": "shopify://shop_images/wb-col-3.png",
+            "image_mobile": "shopify://shop_images/Group_1327226587.png",
             "mobile_image_alt": "",
             "title": "Single Serves",
             "subtitle": "Perfect for mornings on the move and afternoons out",
@@ -152,6 +157,7 @@
       "settings": {
         "color_scheme": "",
         "background_image": "shopify://shop_images/Group_1327226596.png",
+        "background_image_mobile": "shopify://shop_images/Group_1327226600.png",
         "floating_image": "shopify://shop_images/Latte_8oz_Pour_Induldge_LargePop_1.png",
         "title_type": "image",
         "title": "",
@@ -234,6 +240,7 @@
       "settings": {
         "color_scheme": "scheme-86fda943-8b90-41a8-a9fe-d5d11e7bb384",
         "background_image": "shopify://shop_images/Group_1327226595.jpg",
+        "background_image_mobile": "shopify://shop_images/Group_1327226600_7497f50c-5126-44db-ac0a-5f6f05520144.png",
         "title_type": "image",
         "title": "",
         "title_image": "shopify://shop_images/OUR_MEMBERS_UNLOCK_BETTER_PRICES_WITH_EVERY_SIP.svg",
