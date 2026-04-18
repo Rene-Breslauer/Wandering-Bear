@@ -17,7 +17,8 @@
           "settings": {
             "style": "primary",
             "label": "Shop Lattes",
-            "link": "shopify://collections/lattes"
+            "link": "shopify://collections/lattes",
+            "badge": "shopify://shop_images/NEW_BADGE.svg"
           }
         },
         "button_TMm9rL": {
@@ -40,7 +41,22 @@
         "title_type": "image",
         "title_image": "shopify://shop_images/COFFEE_SHOP_QUALITY_DRINKS_MADE_EASY..svg",
         "title_text": "Coffee Shop Quality Drinks Made Easy",
-        "subtitle": "For the at-home pajama baristas"
+        "subtitle": "For the at-home pajama baristas",
+        "badge": "shopify://shop_images/STAY_CAFFEINATED.svg"
+      }
+    },
+    "aw_divider_jeaQGx": {
+      "type": "aw-divider",
+      "name": "AW Divider",
+      "settings": {
+        "color_top": "rgba(0,0,0,0)",
+        "color_bottom": "#f2e6dc",
+        "margin_top_desktop": "0px",
+        "margin_top_mobile": "0px",
+        "margin_bottom_desktop": "0px",
+        "margin_bottom_mobile": "0px",
+        "svg_code": "<path d=\"M0 0.952156L320 0L938 7.63188L1290 5.2564V21H0V0.952156Z\" fill=\"currentColor\"></path>",
+        "svg_color": "#f2e6dc"
       }
     },
     "aw_collection_tiles_q7zD69": {
@@ -186,9 +202,37 @@
     },
     "membership_rzQn9p": {
       "type": "membership",
+      "blocks": {
+        "bulletpoint_Ry8J7P": {
+          "type": "bulletpoint",
+          "settings": {
+            "image": "shopify://shop_images/crown.svg",
+            "title": "Free to join"
+          }
+        },
+        "bulletpoint_jUWmMq": {
+          "type": "bulletpoint",
+          "settings": {
+            "image": "shopify://shop_images/crown.svg",
+            "title": "Earn credit on every order"
+          }
+        },
+        "bulletpoint_JAih6k": {
+          "type": "bulletpoint",
+          "settings": {
+            "image": "shopify://shop_images/crown.svg",
+            "title": "VIP & Elite upgrades available"
+          }
+        }
+      },
+      "block_order": [
+        "bulletpoint_Ry8J7P",
+        "bulletpoint_jUWmMq",
+        "bulletpoint_JAih6k"
+      ],
       "name": "Membership",
       "settings": {
-        "color_scheme": "scheme-3",
+        "color_scheme": "scheme-86fda943-8b90-41a8-a9fe-d5d11e7bb384",
         "background_image": "shopify://shop_images/Group_1327226595.jpg",
         "title_type": "image",
         "title": "",
@@ -197,13 +241,30 @@
         "foreground_image": "shopify://shop_images/Group_1327226595.svg",
         "description": "Join XX+ members earning rewards with every order."
       }
+    },
+    "aw_founders_xXwwkV": {
+      "type": "aw-founders",
+      "name": "Founders",
+      "settings": {
+        "color_scheme": "",
+        "title_type": "image",
+        "title": "",
+        "title_alt": "",
+        "title_image": "shopify://shop_images/Group_1327226597.svg",
+        "content": "<h3>Like most grad schoolers, our co-founders Matt and Ben lived off of caffeine. But instead of just drinking cold brew, they obsessed over creating it.</h3><h3>Since 2014, we have been a small team tapping into new ways of doing coffee differently.</h3>",
+        "background_image": "shopify://shop_images/Homepage.png",
+        "video": "shopify://files/videos/wb-about.mp4",
+        "signature_image": "shopify://shop_images/signatures_1.png"
+      }
     }
   },
   "order": [
     "aw_hero_cCfgW8",
+    "aw_divider_jeaQGx",
     "aw_collection_tiles_q7zD69",
     "floating_image_DU4qGq",
     "aw_multi_collection_carousel_PEXHa4",
-    "membership_rzQn9p"
+    "membership_rzQn9p",
+    "aw_founders_xXwwkV"
   ]
 }
