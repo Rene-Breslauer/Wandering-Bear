@@ -140,7 +140,9 @@
         "title_type": "image",
         "title": "",
         "title_image": "shopify://shop_images/lattes-got-benefits.svg",
-        "title_alt": ""
+        "title_alt": "This latte's got benefits",
+        "button_label": "Shop Lattes",
+        "button_link": "shopify://collections/lattes"
       }
     },
     "aw_multi_collection_carousel_PEXHa4": {
@@ -178,7 +180,7 @@
       ],
       "name": "AW Multi Coll Carousel",
       "settings": {
-        "color_scheme": "",
+        "color_scheme": "scheme-1",
         "title_image": "shopify://shop_images/flavorsonflavors.svg"
       }
     },
