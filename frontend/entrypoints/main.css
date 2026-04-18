@@ -7,3 +7,7 @@
 .wb-grid {
     display: grid;
 }
+
+.wb-flex {
+    display: flex;
+}

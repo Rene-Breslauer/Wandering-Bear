@@ -8,9 +8,11 @@
     assign title = section.settings.title
     assign title_image = section.settings.title_image
     assign bulletpoints = section.blocks | where: "type", "bulletpoint"
+    assign button_label = section.settings.button_label
+    assign button_link = section.settings.button_link
 %}
 
-<div class="relative" style="background-color: {{ color_scheme.background }}">
+<div class="relative w-full" style="background-color: {{ color_scheme.background }}">
     {% if background_image != blank %}
         {% render 'picture', source: background_image, class: 'w-full h-full object-cover absolute inset-0' %}
     {% endif %}
@@ -18,14 +20,14 @@
         {% render 'picture', source: background_image_mobile, class: 'w-full h-full object-cover absolute inset-0' %}
     {% endif %}
     {% if floating_image != blank %}
-        {% render 'picture', source: floating_image, class: 'w-full h-full object-cover absolute inset-0' %}
+        {% render 'picture', source: floating_image, class: '!w-fit max-h-full h-full object-contain absolute right-0' %}
     {% endif %}
     {% if floating_image_mobile != blank %}
-        {% render 'picture', source: floating_image_mobile, class: 'w-full h-full object-cover absolute inset-0' %}
+        {% render 'picture', source: floating_image_mobile, class: 'w-full max-h-full h-full object-contain absolute inset-0' %}
     {% endif %}
-    <div class="container mx-auto relative z-[2]">
-        <div class="w-1/2 wb-flex flex-col">
-            <div class="wb-flex flex-col">
+    <div class="container max-w-[1000px] mx-auto relative z-[2] pt-20 pb-[70px]">
+        <div class="w-1/2 wb-flex flex-col max-w-[438px]">
+            <div class="wb-flex flex-col mb-8">
                 {% if title_type == 'text' %}
                     <h2 class="h2 text-gold">{{ title }}</h2>
                 {% elsif title_type == 'image' %}
@@ -34,13 +36,16 @@
                     {% endif %}
                 {% endif %}
             </div>
-            <div class="wb-flex flex-col">
+            <div class="wb-flex flex-col pl-12 gap-4">
             {% for bullet in bulletpoints %}
                 <div class="wb-flex gap-2">
                     {{ bullet.settings.image | image_url: width: 20 | image_tag: class: '!h-2 !w-auto', alt: bullet.settings.title }}
-                    <span class="body">{{ bullet.settings.title }}</span>
+                    <span class="body font-bold">{{ bullet.settings.title }}</span>
                 </div>
             {% endfor %}
+            {% if button_label != blank and button_link != blank %}
+                {% render 'wb-button', style: 'primary', label: button_label, link: button_link %}
+            {% endif %}
             </div>
         </div>
     </div>
@@ -109,6 +114,16 @@
                 "id": "title_alt",
                 "label": "Title Alt",
                 "visible_if": "{{ section.settings.title_type == 'image' }}"
+            },
+            {
+                "type": "text",
+                "id": "button_label",
+                "label": "Button Label"
+            },
+            {
+                "type": "url",
+                "id": "button_link",
+                "label": "Button Link"
             }
         ],
         "blocks": [

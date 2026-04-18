@@ -11,7 +11,7 @@
     assign bulletpoints = section.blocks | where: "type", "bulletpoint"
 %}
 
-<div class="relative py-[55px]" style="background-color: {{ color_scheme.background }}">
+<div class="relative py-[55px] z-0" style="background-color: {{ color_scheme.background }}">
     {% if background_image != blank %}
         {% render 'picture', source: background_image, class: 'w-full h-full object-cover absolute inset-0' %}
     {% endif %}
