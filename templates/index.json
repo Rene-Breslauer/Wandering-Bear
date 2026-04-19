@@ -246,7 +246,9 @@
         "title_image": "shopify://shop_images/OUR_MEMBERS_UNLOCK_BETTER_PRICES_WITH_EVERY_SIP.svg",
         "subtitle": "<p>Start earning $5 for every $50 spent. The best part is – you can join for free.  Upgrade to VIP or Elite anytime for exclusive flavors, bigger discounts, and more perks.</p>",
         "foreground_image": "shopify://shop_images/Group_1327226595.svg",
-        "description": "Join XX+ members earning rewards with every order."
+        "description": "Join XX+ members earning rewards with every order.",
+        "button_label": "Learn More",
+        "button_link": "shopify://pages/membership"
       }
     },
     "aw_founders_xXwwkV": {
