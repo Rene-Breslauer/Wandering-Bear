@@ -40,21 +40,24 @@
  
 {% capture video_content %}
     {% if video != blank %}
-    <div>
-        {% render 'custom-video', video: video, disable_controls: true %}
-    </div>
+    <div x-data="VideoPlayer()" class="rounded-[10px] overflow-hidden relative shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]">
+        <div @click="toggleSound()" class="absolute bottom-10 left-10 z-5">Volume</div>
+          <div @click="togglePlay()">
+            {% render 'video', video: video, disable_controls: true, video_autoplay: true %}
+          </div>
+        </div>
     {% endif %}
 {% endcapture %}
-<div class="relative pb-[100px]" style="background-color: {{ color_scheme.background }}">
+<div class="relative pt-[110px] pb-[90px]" style="background-color: {{ color_scheme.background }}">
     {% if background_image != blank %}
         {% render 'picture', source: background_image, class: 'w-full !h-full object-cover absolute inset-0' %}
     {% endif %}
-    <div class="max-w-[936px] container mx-auto relative">
+    <div class="max-w-[936px] w-full container mx-auto relative">
         <div class="wb-flex flex-col-reverse md:!flex-row gap-4 justify-between items-center">
             <div class="max-w-[400px] w-full">
                 {{ video_content }}
             </div>
-            <div class="w-full">
+            <div class="w-full max-w-[400px]">
                 {{ founders_content }}
             </div>
             

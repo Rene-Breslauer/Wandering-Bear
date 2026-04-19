@@ -7,12 +7,12 @@
         {% if vip %}
             <div class="flex justify-center items-center absolute top-0 right-1 left-1 w-auto mx-auto bg-gold z-[2]">
                 <div class="relative w-full">
-                <div class="flex items-center text-white text-center text-2xl font-bold pt-2 pb-4 px-4 w-full h-full relative z-[2]">
+                <div class="wb-flex gap-1 items-center text-white text-center text-2xl font-bold pt-2.5 pb-4 !px-4 w-full h-full relative z-[2]">
                     {% render 'icons', icon: 'crown' %}
                     <span class="text-xs">VIP/Elite Only</span>
                     {% render 'icons', icon: 'info' %}
                 </div>
-                <svg preserveAspectRatio="none" class="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg" width="204" height="40" viewBox="0 0 204 40" fill="none">
+                <svg preserveAspectRatio="none" class="absolute inset-0 !max-w-none !w-[calc(100%+4px)] h-full" xmlns="http://www.w3.org/2000/svg" width="204" height="40" viewBox="0 0 204 40" fill="none">
                     <g filter="url(#filter0_d_8_9)">
                         <path d="M1.8512 3.74344C0.278832 5.83156 0.215804 8.29238 0.189266 10.6514C0.126239 16.2652 0.0665286 21.8767 0.00350095 27.4906C-0.0130853 29.0161 -0.00976801 30.6042 0.955549 31.9724C3.28094 35.262 6.21669 35.9796 14.9012 35.9796C73.152 35.9796 131.406 36.1023 189.66 35.7458C191.727 35.7342 193.996 35.8083 195.691 34.9818C200.285 32.7433 199.784 28.6527 199.645 25.6177C199.386 19.9669 200 15.323 200 9.6698C200 5.71581 199.366 4.12773 197.489 2.5628C195.084 0.555705 190.075 0.641359 186.323 0.588114C161.656 0.233922 136.976 0.0510379 112.299 0.0093682C87.4626 -0.0346165 62.6264 0.0765028 37.7902 0.338096C30.7842 0.412176 23.7815 0.49783 16.7788 0.597374C11.4911 0.671454 4.78365 -0.143421 1.8512 3.74344Z" fill="#AF7404"/>
                     </g>
@@ -35,7 +35,7 @@
         {% render 'picture', source: product.metafields.custom.carousel_image, class: 'w-full h-full object-cover w-full h-full' %}
         {% comment %} {{ product.metafields.custom.carousel_image | image_url: width: 1000 | image_tag: class: 'w-full h-full object-cover' }} {% endcomment %}
         <div class="absolute bottom-[55px] mx-auto text-center aw-flex justify-center z-[2] w-full">
-            <span class="h2 text-espresso mb-2.5">{{ product.title | split: '- ' | last }}</span>
+            <span class="h2 text-espresso block !mb-5">{{ product.title | split: '- ' | last }}</span>
             <div class="h-[30px] w-[158px] group-hover:opacity-100 group-hover:translate-y-0 opacity-0 translate-y-5 transition-all duration-500 mx-auto relative wb-flex justify-center">
                 <span class="text-gold relative z-[2] font-kurdis text-[15px] font-bold">SHOP NOW</span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="213" height="51" viewBox="0 0 213 51" fill="none" class="absolute inset-0 w-full h-full" stroke="#AF7404">

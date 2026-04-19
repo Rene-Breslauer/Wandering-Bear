@@ -28,20 +28,31 @@
                         <span x-text="activeCollectionTitle" class="font-kurdis text-base font-bold whitespace-nowrap">{{ section.blocks[0].settings.title }}</span>
                         <span x-text="activeCollectionAccentText" class="font-parslay whitespace-nowrap text-gold">{{ section.blocks[0].settings.accent_text }}</span>
                     </div>
-                    <span :class="{ 'rotate-180': dropdownOpen }" class="transition-transform duration-300">
+                    <span :class="{ 'rotate-180': dropdownOpen }" class="!min-w-4 transition-transform duration-300">
                         {% render 'icons', icon: 'chevron-down' %}
                     </span>
                 </div>
-                <div x-show="dropdownOpen" @click.outside="dropdownOpen = false" x-cloak class="absolute top-full left-0 w-full bg-white z-[2]">
-                    <ul class="-mt-1 bg-white border border-espresso">
+                <div x-show="dropdownOpen"
+                 @click.outside="dropdownOpen = false"
+                 x-transition:enter="transition ease-out duration-300"
+                 x-transition:enter-start="transform -translate-y-1"
+                 x-transition:enter-end="opacity-100 transform translate-y-0"
+                 x-transition:leave="transition ease-in duration-300"
+                 x-transition:leave-start="opacity-100 transform translate-y-0"
+                 x-transition:leave-end="transform -translate-y-1"
+                 x-cloak class="absolute top-full left-0 w-full bg-white z-[2] overflow-hidden -mt-1 border-t border-espresso"
+                 :class="{ 'rounded-b-[10px]': dropdownOpen }">
+                    <ul class="custom-dropdown-list overflow-hidden !-mt-[2px] bg-white border border-espresso rounded-b-[10px]">
                     {% for block in section.blocks %}
                         {% liquid
                             assign collection = block.settings.collection
                         %}
                         <li x-cloak x-show="activeCollectionHandle !== '{{ collection.handle }}'" @click="changeCollection('{{ block.settings.title }}', '{{ block.settings.accent_text }}', '{{ collection.handle }}')"  
-                        class="dropdown-item p-3 border-b border-espresso">
+                        class="dropdown-item p-3 border-t border-espresso cursor-pointer"
+                        :class="{ 'active': activeCollectionHandle === '{{ collection.handle }}' }"
+                        >
                             <span class="font-kurdis text-base font-bold">{{ block.settings.title }}</span>
-                            <span class="font-accent">{{ block.settings.accent_text }}</span>
+                            <span class="font-parslay text-gold">{{ block.settings.accent_text }}</span>
                         </li>
                     {% endfor %}
                     </ul>

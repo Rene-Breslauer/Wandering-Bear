@@ -1,0 +1,1 @@
+var e=e=>{e.data(`VideoPlayer`,e=>({video:e,el:null,init(){this.el=this.$el,this.video=this.el.querySelector(`video`)},toggleSound(){this.video.muted=!this.video.muted}}))};export{e as default};

@@ -1,0 +1,77 @@
+{% liquid
+    assign button_text = section.settings.button_text
+    assign button_url = section.settings.button_url
+%}
+
+<div x-data="LogoWall()">
+    <div class="container pt-[103px] max-w-[1132px] flex flex-col mx-auto !gap-20">
+        <div class="flex items-center justify-center xl:!justify-between flex-wrap">
+            {% for block in section.blocks %}
+                <div class="
+                {% if block.settings.hide_on_mobile %}
+                    hidden md:!block
+                {% endif %}
+                w-[200px] h-[72px] flex items-center justify-center">
+                    {% assign class = 'object-contain !max-h-full !w-auto !h-auto  logo-' | append: block.id %}
+                    {{ block.settings.image | image_url: width: 400 | image_tag: class: class, alt: block.settings.image.alt }}
+                </div>
+                {% style %}
+                    .logo-{{ block.id }} {
+                        max-width: {{ block.settings.max_width }}px;
+                    }
+                {% endstyle %}
+            {% endfor %}
+        </div>
+
+        {% if button_text != blank and button_url != blank %}
+            {% render 'wb-button', style: 'secondary-gold', class: 'mx-auto !w-[280px]', label: button_text, link: button_url %}
+        {% endif %}
+    </div>
+</div>
+
+{% schema %}
+{
+  "name": "AW Logo Wall",
+  "settings": [
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button URL"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "logo",
+      "name": "Logo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_on_mobile",
+          "label": "Hide on mobile",
+          "default": false
+        },
+        {
+            "type": "text",
+            "id": "max_width",
+            "label": "Max Width"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "AW Logo Wall"
+    }
+  ]
+}
+{% endschema %}

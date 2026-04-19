@@ -93,7 +93,11 @@
           on:pointerleave="/deactivate"
         >
           <a
+            {% if forloop.first %}
+              on:click="/toggle"
+            {% else %}
             href="{{ link.url }}"
+            {% endif %}
             data-skip-node-update="true"
             class="menu-list__link{% if link.active %} menu-list__link--active{% endif %}"
             {%- if link.links != blank -%}

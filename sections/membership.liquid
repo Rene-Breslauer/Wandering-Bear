@@ -13,9 +13,9 @@
     assign button_link = section.settings.button_link
 %}
 
-<div class="relative py-[55px] z-0" style="background-color: {{ color_scheme.background }}">
+<div class="relative py-[55px] z-0 overflow-hidden" style="background-color: {{ color_scheme.background }}">
     {% if background_image != blank %}
-        {% render 'picture', source: background_image, class: 'hidden md:!block w-full h-full object-cover absolute inset-0' %}
+        {% render 'picture', source: background_image, class: 'hidden md:!block w-full h-full !min-h-full object-cover absolute inset-0' %}
     {% endif %}
     {% if background_image_mobile != blank %}
         {% render 'picture', source: background_image_mobile, class: 'block md:!hidden w-full h-full object-cover absolute inset-0' %}
