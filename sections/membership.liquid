@@ -9,6 +9,8 @@
     assign foreground_image = section.settings.foreground_image
     assign description = section.settings.description
     assign bulletpoints = section.blocks | where: "type", "bulletpoint"
+    assign button_label = section.settings.button_label
+    assign button_link = section.settings.button_link
 %}
 
 <div class="relative py-[55px] z-0" style="background-color: {{ color_scheme.background }}">
@@ -18,7 +20,7 @@
     {% if background_image_mobile != blank %}
         {% render 'picture', source: background_image_mobile, class: 'block md:!hidden w-full h-full object-cover absolute inset-0' %}
     {% endif %}
-    <div class="container mx-auto flex justify-end">
+    <div class="container mx-auto flex justify-end px-4">
         <div class="md:!w-1/2 relative z-[2]">
             <div class="wb-flex flex-col">
                 {% if title_type == 'text' %}
@@ -32,9 +34,9 @@
                     <span class="body block !mb-5" style="color: {{ color_scheme.settings.foreground }}">{{ subtitle }}</span>
                 {% endif %}
                 {% for bullet in bulletpoints %}
-                    <div class="wb-flex gap-2 block !mb-5">
-                        {{ bullet.settings.image | image_url: width: 20 | image_tag: class: '!h-2 !w-auto', alt: bullet.settings.title }}
-                        <span class="body" style="color: {{ color_scheme.settings.foreground }}">{{ bullet.settings.title }}</span>
+                    <div class="wb-flex gap-2 block !mb-5 items-center">
+                        {{ bullet.settings.image | image_url: width: 20 | image_tag: class: '!w-[14px]', alt: bullet.settings.title }}
+                        <span class="body font-bold" style="color: {{ color_scheme.settings.foreground }}">{{ bullet.settings.title }}</span>
                     </div>
                 {% endfor %}
                 {% if foreground_image != blank %}
@@ -42,6 +44,9 @@
                 {% endif %}
                 {% if description != blank %}
                     <div class="rte" style="color: {{ color_scheme.settings.foreground }}">{{ description }}</div>
+                {% endif %}
+                {% if button_label != blank and button_link != blank %}
+                    {% render 'wb-button', style: 'secondary-gold', class: 'mt-4 w-[280px]', label: button_label, link: button_link %}
                 {% endif %}
             </div>
         </div>
@@ -110,6 +115,16 @@
                 "type": "text",
                 "id": "description",
                 "label": "Description"
+            },
+            {
+                "type": "text",
+                "id": "button_label",
+                "label": "Button Label"
+            },
+            {
+                "type": "url",
+                "id": "button_link",
+                "label": "Button Link"
             }
         ],
         "blocks": [

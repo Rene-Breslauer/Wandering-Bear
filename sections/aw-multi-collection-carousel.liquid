@@ -2,13 +2,16 @@
     assign collection_list = section.settings.collection_list
     assign color_scheme = section.settings.color_scheme
     assign title_image = section.settings.title_image
+    assign active_collection_title = section.blocks[0].settings.title
+    assign active_collection_accent_text = section.blocks[0].settings.accent_text
+    assign active_collection_handle = section.blocks[0].settings.collection.handle
 %}
 
 {% capture slide_styles %}
     width: calc(100% / 5.5);
 {% endcapture %}
 
-<div x-data="swiperSlider" class="relative z-1 pt-5 pb-[53px]" style="background-color: {{ color_scheme.settings.background }}">
+<div x-data="swiperSlider('{{ active_collection_title }}', '{{ active_collection_accent_text }}','{{ active_collection_handle }}')" class="relative z-1 pt-5 pb-[53px]" style="background-color: {{ color_scheme.settings.background }}">
     <div class="container mx-auto flex justify-start relative">
     {% if title_image != blank %}
         <div class="h-[100px] w-[263px] mb-8 relative z-[2]">
@@ -20,17 +23,25 @@
         <div class="wb-flex flex-col">
             <span class="body uppercase mb-2">Select your size</span>
             <div class="w-[249px] relative">
-                <div @click="dropdownOpen = !dropdownOpen" class="relative rounded-[4px] cursor-pointer bg-white p-2 border border-espresso">
-                    <span class="font-kurdis">{{ section.blocks[0].settings.collection.title }}</span>
+                <div @click="toggleDropdown()" class="flex items-center justify-between relative rounded-[4px] cursor-pointer bg-white p-3 border border-espresso">
+                    <div class="flex items-center whitespace-nowrap">
+                        <span x-text="activeCollectionTitle" class="font-kurdis text-base font-bold whitespace-nowrap">{{ section.blocks[0].settings.title }}</span>
+                        <span x-text="activeCollectionAccentText" class="font-parslay whitespace-nowrap text-gold">{{ section.blocks[0].settings.accent_text }}</span>
+                    </div>
+                    <span :class="{ 'rotate-180': dropdownOpen }" class="transition-transform duration-300">
+                        {% render 'icons', icon: 'chevron-down' %}
+                    </span>
                 </div>
-                <div x-show="dropdownOpen" x-cloak class="absolute top-full left-0 w-full bg-white z-[2]">
-                    <ul>
+                <div x-show="dropdownOpen" @click.outside="dropdownOpen = false" x-cloak class="absolute top-full left-0 w-full bg-white z-[2]">
+                    <ul class="-mt-1 bg-white border border-espresso">
                     {% for block in section.blocks %}
                         {% liquid
                             assign collection = block.settings.collection
                         %}
-                        <li @click="changeCollection('{{ collection.handle }}')"  class="dropdown-item">
-                            <span>{{ collection.title }}</span>
+                        <li x-cloak x-show="activeCollectionHandle !== '{{ collection.handle }}'" @click="changeCollection('{{ block.settings.title }}', '{{ block.settings.accent_text }}', '{{ collection.handle }}')"  
+                        class="dropdown-item p-3 border-b border-espresso">
+                            <span class="font-kurdis text-base font-bold">{{ block.settings.title }}</span>
+                            <span class="font-accent">{{ block.settings.accent_text }}</span>
                         </li>
                     {% endfor %}
                     </ul>

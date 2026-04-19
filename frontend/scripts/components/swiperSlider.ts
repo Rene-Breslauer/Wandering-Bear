@@ -3,10 +3,16 @@ import Swiper from 'swiper';
 import { Navigation } from 'swiper/modules';
 
 export default (Alpine: AlpineType) => {
-    Alpine.data("swiperSlider", () => ({
+    Alpine.data("swiperSlider", (
+        activeCollectionTitle: string, 
+        activeCollectionAccentText: string, 
+        activeCollectionHandle: string) => ({
         swiper: null,
         dropdownOpen: false,
         el: null,
+        activeCollectionTitle: activeCollectionTitle,
+        activeCollectionAccentText: activeCollectionAccentText,
+        activeCollectionHandle: activeCollectionHandle,
 
         init() {
             this.el = this.$el;
@@ -22,16 +28,17 @@ export default (Alpine: AlpineType) => {
                     prevEl: '.swiper-button-prev',
                 },
             });
-
-            console.log('this.swiper', this.swiper);
         },
 
-        changeCollection(collectionHandle) {
+        toggleDropdown() {
+            this.dropdownOpen = !this.dropdownOpen;
+        },
+
+        changeCollection(title: string, accentText: string, collectionHandle: string) {
             this.dropdownOpen = false;
 
             const url = `/collections/${collectionHandle}?view=collection-carousel`;
-            
-            // Fetch using view collections/${collectionHandle}?view=collection-carousel
+
             fetch(url)
                 .then(response => response.text())
                 .then(html => {
@@ -39,6 +46,10 @@ export default (Alpine: AlpineType) => {
                     swiperWrapper.innerHTML = html;
                     this.swiperDestroy();
                     this.initSwiper();
+
+                    this.activeCollectionTitle = title;
+                    this.activeCollectionAccentText = accentText;
+                    this.activeCollectionHandle = collectionHandle;
                 })
                 .catch(error => {
                     console.error('Error fetching collection carousel:', error);

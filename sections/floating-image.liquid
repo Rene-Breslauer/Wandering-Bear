@@ -39,12 +39,12 @@
             <div class="wb-flex flex-col pl-12 gap-4">
             {% for bullet in bulletpoints %}
                 <div class="wb-flex gap-2">
-                    {{ bullet.settings.image | image_url: width: 20 | image_tag: class: '!h-2 !w-auto', alt: bullet.settings.title }}
+                    {{ bullet.settings.image | image_url: width: 20 | image_tag: class: '!h-4 !w-4', alt: bullet.settings.title }}
                     <span class="body font-bold">{{ bullet.settings.title }}</span>
                 </div>
             {% endfor %}
             {% if button_label != blank and button_link != blank %}
-                {% render 'wb-button', style: 'primary', label: button_label, link: button_link %}
+                {% render 'wb-button', style: 'primary', class: 'mt-4', label: button_label, link: button_link %}
             {% endif %}
             </div>
         </div>

@@ -1,0 +1,1 @@
+var e=e=>{e.data(`swiperSlider`,()=>({dropdownOpen:!1,activeItem:null,init(){},toggleDropdown(){this.dropdownOpen=!this.dropdownOpen}}))};export{e as default};

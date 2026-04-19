@@ -24,7 +24,6 @@ const init = async () => {
     const { default: SwiperSlider } = await import("~/scripts/components/swiperSlider")
 
     Alpine.plugin(SwiperSlider)
-
     Alpine.start()
     window.Alpine = Alpine
 }

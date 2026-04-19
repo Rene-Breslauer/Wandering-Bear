@@ -6,10 +6,18 @@
 {% for product in collection.products %}
     <div class="swiper-slide relative group" style="{{ slide_styles }}">
         <a href="{{ collection.url }}">
-            {% render 'picture', source: product.metafields.custom.carousel_image, class: 'w-full h-full object-cover w-full h-full' %}
-            {% comment %} {{ product.metafields.custom.carousel_image | image_url: width: 1000 | image_tag: class: 'w-full h-full object-cover' }} {% endcomment %}
+            {% if product.metafields.custom.carousel_image != blank %}
+                {% render 'picture', source: product.metafields.custom.carousel_image, class: 'w-full h-full object-cover w-full h-full' %}
+            {% else %}
+                <div class="wb-flex flex-col h-full w-full items-center justify-center p-4">
+                    <span class="font-bold text-xs uppercase block mb-4 text-center">Missing Image</span>
+                    <span class="text-xs text-center">Add Carousel Image metafield image for <em>{{ product.title }}</em></span>
+                </div>
+            {% endif %}
             <div class="absolute bottom-[55px] mx-auto text-center aw-flex justify-center z-[2] w-full">
-                <span class="h2 text-espresso mb-2.5">{{ product.title | split: '- ' | last }}</span>
+                {% if product.metafields.custom.carousel_image != blank %}
+                    <span class="h2 text-espresso mb-2.5">{{ product.title | split: '- ' | last }}</span>
+                {% endif %}
                 <div class="h-[30px] w-[158px] group-hover:opacity-100 group-hover:translate-y-0 opacity-0 translate-y-5 transition-all duration-500 mx-auto relative wb-flex justify-center">
                     <span class="text-gold relative z-[2] font-kurdis text-[15px] font-bold">SHOP NOW</span>
                     <svg xmlns="http://www.w3.org/2000/svg" width="213" height="51" viewBox="0 0 213 51" fill="none" class="absolute inset-0 w-full h-full" stroke="#AF7404">
