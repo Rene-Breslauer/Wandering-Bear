@@ -174,7 +174,7 @@
           "type": "collection",
           "settings": {
             "collection": "test-cold-brew-on-tap-96oz",
-            "title": "Cold Brew Boxes",
+            "title": "Cold Brew Box",
             "accent_text": "Bestseller!"
           }
         },
@@ -251,6 +251,63 @@
         "button_link": "shopify://pages/membership"
       }
     },
+    "aw_logo_wall_AXpPn6": {
+      "type": "aw-logo-wall",
+      "blocks": {
+        "logo_a34R38": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/image_46_fb2e1c38-6305-4694-8f68-110c0370ae58.png",
+            "hide_on_mobile": false,
+            "max_width": "165"
+          }
+        },
+        "logo_GW6Tnx": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/image_43_4ef95b0e-a72b-43f2-9f18-ead705ecf852.png",
+            "hide_on_mobile": false,
+            "max_width": "101"
+          }
+        },
+        "logo_jD4Mzy": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/image_44_7bf0291d-5776-4d28-a6b5-df54b51c9478.png",
+            "hide_on_mobile": false,
+            "max_width": "179"
+          }
+        },
+        "logo_nYDjHb": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/image_45_d1488d12-ec91-4d52-8ba5-e7070e9cd071.png",
+            "hide_on_mobile": true,
+            "max_width": "137"
+          }
+        },
+        "logo_3BhRQY": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/image_52_0b4562ef-5d94-4c61-95c3-0bdf88e5623e.png",
+            "hide_on_mobile": false,
+            "max_width": "198"
+          }
+        }
+      },
+      "block_order": [
+        "logo_a34R38",
+        "logo_GW6Tnx",
+        "logo_jD4Mzy",
+        "logo_nYDjHb",
+        "logo_3BhRQY"
+      ],
+      "name": "AW Logo Wall",
+      "settings": {
+        "button_text": "Check us out in-store",
+        "button_url": "shopify://pages/find-wandering-bear-cold-brew-in-stores"
+      }
+    },
     "aw_founders_xXwwkV": {
       "type": "aw-founders",
       "name": "Founders",
@@ -274,6 +331,7 @@
     "floating_image_DU4qGq",
     "aw_multi_collection_carousel_PEXHa4",
     "membership_rzQn9p",
+    "aw_logo_wall_AXpPn6",
     "aw_founders_xXwwkV"
   ]
 }
