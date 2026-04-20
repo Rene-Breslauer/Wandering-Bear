@@ -22,10 +22,18 @@ export default (Alpine: AlpineType) => {
         initSwiper() {
             this.swiper = new Swiper(this.el.querySelector('.swiper'), {
                 modules: [Navigation],
-                slidesPerView: 5.5,
+                slidesPerView: 2.5,
                 navigation: {
                     nextEl: '.swiper-button-next',
                     prevEl: '.swiper-button-prev',
+                },
+                breakpoints: {
+                    768: {
+                        slidesPerView: 3.5,
+                    },
+                    1024: {
+                        slidesPerView: 5.5,
+                    },
                 },
             });
         },

@@ -12,16 +12,16 @@
 {% endcapture %}
 
 <div x-data="swiperSlider('{{ active_collection_title }}', '{{ active_collection_accent_text }}','{{ active_collection_handle }}')" class="relative z-1 pt-5 pb-[53px]" style="background-color: {{ color_scheme.settings.background }}">
-    <div class="container mx-auto flex justify-start relative">
+    <div class="container flex-col items-center !gap-1.5 md:!gap-4 md:!items-start md:!flex-row mx-auto flex justify-center md:!justify-start relative">
     {% if title_image != blank %}
-        <div class="h-[100px] w-[263px] mb-8 relative z-[2]">
+        <div class="h-[100px] w-[263px] md:!mb-8 relative z-[2]">
             {{ title_image | image_url: width: 365 | image_tag: class: 'w-full max-h-full object-contain', alt: title_alt }}
         </div>
     {% endif %}
 
        {% comment %} Custom Dropdown {% endcomment %}
         <div class="wb-flex flex-col">
-            <span class="body uppercase mb-2">Select your size</span>
+            <span class="body uppercase mb-2 hidden md:!block">Select your size</span>
             <div class="w-[249px] relative">
                 <div @click="toggleDropdown()" class="flex items-center justify-between relative rounded-[4px] cursor-pointer bg-white p-3 border border-espresso">
                     <div class="flex items-center whitespace-nowrap">
@@ -40,9 +40,8 @@
                  x-transition:leave="transition ease-in duration-300"
                  x-transition:leave-start="opacity-100 transform translate-y-0"
                  x-transition:leave-end="transform -translate-y-1"
-                 x-cloak class="absolute top-full left-0 w-full bg-white z-[2] overflow-hidden -mt-1 border-t border-espresso"
-                 :class="{ 'rounded-b-[10px]': dropdownOpen }">
-                    <ul class="custom-dropdown-list overflow-hidden !-mt-[2px] bg-white border border-espresso rounded-b-[10px]">
+                 x-cloak class="absolute top-full rounded-b-[10px] left-0 w-full bg-white z-[2] overflow-hidden -mt-1 border-t border-espresso">
+                    <ul class="custom-dropdown-list  overflow-hidden !-mt-[2px] bg-white border border-espresso rounded-b-[10px]">
                     {% for block in section.blocks %}
                         {% liquid
                             assign collection = block.settings.collection
@@ -60,7 +59,7 @@
             </div>
         </div>
     </div>
-    <div class="swiper multi-collection-slider -mt-10">
+    <div class="swiper multi-collection-slider mt-[40px] md:!-mt-10">
         <div class="swiper-wrapper">
             {% for product in section.blocks[0].settings.collection.products %}
                 {% liquid
