@@ -22,8 +22,8 @@
        {% comment %} Custom Dropdown {% endcomment %}
         <div class="wb-flex flex-col">
             <span class="body uppercase mb-2 hidden md:!block">Select your size</span>
-            <div class="w-[249px] relative">
-                <div @click="toggleDropdown()" class="flex items-center justify-between relative rounded-[4px] cursor-pointer bg-white p-3 border border-espresso">
+            <div class="w-[317px] relative">
+                <div @click="toggleDropdown()" class="flex items-center justify-between relative rounded-[4px] cursor-pointer bg-[#F4ECE5] p-3 border border-espresso">
                     <div class="flex items-center whitespace-nowrap">
                         <span x-text="activeCollectionTitle" class="font-kurdis text-base font-bold whitespace-nowrap">{{ section.blocks[0].settings.title }}</span>
                         <span x-text="activeCollectionAccentText" class="font-parslay whitespace-nowrap text-gold">{{ section.blocks[0].settings.accent_text }}</span>
@@ -41,7 +41,7 @@
                  x-transition:leave-start="opacity-100 transform translate-y-0"
                  x-transition:leave-end="transform -translate-y-1"
                  x-cloak class="absolute top-full rounded-b-[10px] left-0 w-full bg-white z-[2] overflow-hidden -mt-1 border-t border-espresso">
-                    <ul class="custom-dropdown-list  overflow-hidden !-mt-[2px] bg-white border border-espresso rounded-b-[10px]">
+                    <ul class="custom-dropdown-list  overflow-hidden !-mt-[2px] bg-[#F4ECE5] border border-espresso rounded-b-[10px]">
                     {% for block in section.blocks %}
                         {% liquid
                             assign collection = block.settings.collection

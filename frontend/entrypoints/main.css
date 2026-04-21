@@ -1,5 +1,9 @@
 @import "tailwindcss" source("../..");
 
+@theme {
+    --breakpoint-sm: 30rem; /* 480px */
+}
+
 [x-cloak] {
     display: none;
 }

@@ -7,6 +7,7 @@
     assign title_type = section.settings.title_type
     assign title = section.settings.title
     assign title_image = section.settings.title_image
+    assign title_alt = section.settings.title_alt
     assign bulletpoints = section.blocks | where: "type", "bulletpoint"
     assign button_label = section.settings.button_label
     assign button_link = section.settings.button_link
@@ -25,22 +26,22 @@
     {% if floating_image_mobile != blank %}
         {% render 'picture', source: floating_image_mobile, class: 'w-full max-h-full h-full object-contain absolute inset-0' %}
     {% endif %}
-    <div class="container max-w-[1000px] px-4 mx-auto lg:relative z-[2] pt-20 pb-[200px] md:!pb-[70px]">
+    <div class="container max-w-[1000px] px-4 mx-auto lg:relative z-[2] pt-[13px] md:!pt-[52px] pb-[200px] md:!pb-[70px]">
         <div class="relative z-[3] md:!w-1/2 wb-flex flex-col max-w-[438px] mx-auto md:!mx-0">
             <div class="wb-flex flex-col mb-8">
                 {% if title_type == 'text' %}
                     <h2 class="h2 text-gold">{{ title }}</h2>
                 {% elsif title_type == 'image' %}
                     {% if title_image != blank %}
-                        {{ title_image | image_url: width: 365 | image_tag: class: 'w-full max-h-full object-contain', alt: title_alt }}
+                        {{ title_image | image_url: width: 365 | image_tag: class: '!max-w-[246px] md:!max-w-[438px] mx-auto md:!mx-0 w-full max-h-full object-contain', alt: title_alt }}
                     {% endif %}
                 {% endif %}
             </div>
-            <div class="wb-flex flex-col pl-12 gap-4">
+            <div class="wb-flex !leading-[16px] flex-col md:!pl-12 !gap-4 items-center md:!items-start">
             {% for bullet in bulletpoints %}
-                <div class="wb-flex gap-2">
-                    {{ bullet.settings.image | image_url: width: 20 | image_tag: class: '!h-4 !w-4', alt: bullet.settings.title }}
-                    <span class="body font-bold">{{ bullet.settings.title }}</span>
+                <div class="inline !leading-[16px] text-center md:!text-left md:!flex gap-2">
+                    {{ bullet.settings.image | image_url: width: 20 | image_tag: class: '!h-4 !w-4 !inline-block md:!flex', alt: bullet.settings.title }}
+                    <span class="body font-bold !leading-[16px] text-center md:!text-left">{{ bullet.settings.title }}</span>
                 </div>
             {% endfor %}
             {% if button_label != blank and button_link != blank %}

@@ -3,6 +3,7 @@
     assign color_scheme = section_settings.color_scheme
     assign foreground_image = section_settings.foreground_image
     assign background_image = section_settings.background_image
+    assign background_image_tablet = section_settings.background_image_tablet
     assign background_image_mobile = section_settings.background_image_mobile
     assign title_type = section_settings.title_type
     assign title_image = section_settings.title_image
@@ -27,13 +28,26 @@
                 %}
             </div>
         {% endif %}
+        {% if background_image_tablet != blank %}
+            <div class="w-full h-full absolute inset-0 sm:!block md:!hidden">
+                {% render 'picture', 
+                    loading: 'eager', 
+                    preload: true, 
+                    source: background_image_tablet, 
+                    class: 'w-full h-full object-cover',
+                    alt: background_image_tablet.alt,
+                    width: 1920,
+                    height: 1080
+                %}
+            </div>
+        {% endif %}
         {% if background_image_mobile != blank %}
-            <div class="w-full h-full absolute inset-0 block md:!hidden">
+            <div class="w-full h-full absolute inset-0 block sm:!hidden">
                 {% render 'picture', 
                     loading: 'eager', 
                     preload: true, 
                     source: background_image_mobile, 
-                    class: '!w-auto h-full object-cover !max-w-none !h-full max-h-none',
+                    class: '!w-auto h-full object-cover !max-w-none !h-full !max-h-full',
                     alt: background_image_mobile.alt,
                     width: 1920,
                     height: 1080
@@ -45,7 +59,7 @@
                 <div class="relative wb-flex flex-col justify-center gap-4 z-1 max-w-full">
                     {% if title_image != blank %}
                         {{ title_image | image_url: width: 1920 | image_tag: class: 'hidden md:!block w-full h-full object-contain' }}
-                        {{ title_image_mobile | image_url: width: 1920 | image_tag: class: 'block relative left-5 md:!left-0 md:!hidden w-full h-full object-contain !max-w-[270px] mx-auto' }}
+                        {{ title_image_mobile | image_url: width: 1920 | image_tag: class: 'block relative left-5 sm:!left-0 md:!hidden w-full h-full object-contain !max-w-[270px] mx-auto' }}
                     {% elsif title_text != blank %}
                         <h1 class="h1">{{ title_text }}</h1>
                     {% endif %}
@@ -99,6 +113,11 @@
             "type": "image_picker",
             "id": "background_image",
             "label": "Background Image"
+        },
+        {
+            "type": "image_picker",
+            "id": "background_image_tablet",
+            "label": "Background Image Tablet"
         },
         {
             "type": "image_picker",
