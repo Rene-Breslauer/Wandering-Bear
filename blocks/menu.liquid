@@ -69,7 +69,7 @@
         {% if menu %}
           <ul class="list-unstyled">
             {% for link in menu.links %}
-              <li class="menu__item {% if block_settings.link_preset == 'paragraph' %} body {% endif %} {{ block_settings.link_preset }}">
+              <li class="menu__item {% if block_settings.link_preset == 'paragraph' %} body uppercase {% endif %} {{ block_settings.link_preset }}">
                 <a href="{{ link.url }}">
                   {{ link.title }}
                 </a>

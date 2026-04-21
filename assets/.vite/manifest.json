@@ -10,7 +10,7 @@
     "name": "navigation"
   },
   "frontend/entrypoints/main.css": {
-    "file": "main-BMOb5GCh.css",
+    "file": "main-BQlxRDTx.css",
     "name": "main",
     "names": [
       "main.css"
@@ -19,7 +19,7 @@
     "isEntry": true
   },
   "frontend/entrypoints/main.js": {
-    "file": "main-CXRJwGr_.js",
+    "file": "main-0x_IA6wg.js",
     "name": "main",
     "src": "frontend/entrypoints/main.js",
     "isEntry": true,
@@ -32,7 +32,7 @@
       "frontend/scripts/components/videoPlayer.ts"
     ],
     "css": [
-      "main-DezLi8I1.css"
+      "main-CpNx99mR.css"
     ]
   },
   "frontend/scripts/components/swiperSlider.ts": {

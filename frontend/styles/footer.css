@@ -3,4 +3,28 @@
         max-width: 111px;
         margin: 0 auto;
     }
+
+    h3 {
+        font-size: 25px;
+        line-height: 100%;
+        letter-spacing: 0 !important;
+        font-family: var(--font-kurdis-condensed) !important;
+    }
+
+    .email-signup__button.custom {
+        background-color: transparent;
+        padding: 17px 0 23px 0;
+        width: 126px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+            background-color: transparent;
+
+            svg {
+                fill: var(--color-primary-button-hover-background);
+            }
+        }
+    }
 }
