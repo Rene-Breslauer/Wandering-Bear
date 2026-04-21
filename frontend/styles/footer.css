@@ -38,3 +38,24 @@
         }
     }
 }
+
+@media screen and (max-width: 768px) {
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 0 !important;
+    
+        .footer-block {
+          order: 1 !important;
+        }
+
+        .menu--accordion {
+            order: 2 !important;
+            border-top: 2px solid var(--color-espresso);
+        }
+
+        .email-signup__input-group {
+            flex-direction: row !important;
+            margin-bottom: 34px !important;
+        }
+    }
+}

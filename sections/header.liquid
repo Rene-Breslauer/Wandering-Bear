@@ -746,6 +746,15 @@
     grid-template-areas: 'left center right';
     grid-gap: var(--gap-xl);
     grid-template-columns: var(--header-template-columns);
+    padding-top: 15px !important;
+    padding-bottom: 18px !important;
+
+    @media screen and (max-width: 768px) {
+      padding-top: 18px !important;
+      padding-bottom: 18px !important;
+      padding-left: 22px !important;
+      padding-right: 24px !important;
+    }
 
     /* If menu is in center column */
     &:has(.header__column--center header-menu) {

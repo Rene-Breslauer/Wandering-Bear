@@ -55,12 +55,12 @@
     scroll-lock
   >
     <summary
-      class="header__icon header__icon--menu header__icon--summary"
+      class="header__icon header__icon--menu header__icon--summary !p-0"
       aria-label="{{ 'accessibility.menu' | t }}"
       on:click="/toggle"
     >
-      <span class="svg-wrapper header-drawer-icon header-drawer-icon--open">
-        {{- 'icon-menu.svg' | inline_asset_content -}}
+      <span class="svg-wrapper header-drawer-icon header-drawer-icon--open !w-8 !h-5">
+        {% render 'icons', icon: 'menu' with class: '!w-8 !h-5' %}
       </span>
       <span class="svg-wrapper header-drawer-icon header-drawer-icon--close">
         {{- 'icon-close.svg' | inline_asset_content -}}

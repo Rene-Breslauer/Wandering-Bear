@@ -199,8 +199,9 @@
   .header__drawer {
     --header-drawer-min-height: 60px;
     display: flex;
-    min-height: var(--header-drawer-min-height);
+    min-height: 44px !important;
     align-items: center;
+    height: 44px !important;
   }
 
   #header-component[data-menu-style='drawer'] .header__drawer {
@@ -295,6 +296,7 @@
     cursor: pointer;
     height: 100%;
     margin-block: 0;
+    margin-top: 9px !important;
 
     &::after {
       content: '';
@@ -326,6 +328,9 @@
     font-size: 18px;
     font-weight: 700;
     line-height: 100%;
+    text-transform: uppercase;
+    letter-spacing: 0 !important;
+    line-height: 100% !important;
   }
   [slot='overflow'] .menu-list__link-title {
     padding-inline: 0;

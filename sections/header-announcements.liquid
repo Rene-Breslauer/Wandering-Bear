@@ -41,6 +41,15 @@
 {% stylesheet %}
   .announcement-bar {
     border-block-end: var(--border-bottom-width) solid var(--color-border);
+    padding-top: 11px !important;
+    padding-bottom: 11px !important;
+    line-height: 120% !important;
+    letter-spacing: 0 !important;
+
+    @media screen and (max-width: 768px) {
+      padding-top: 13px !important;
+      padding-bottom: 13px !important;
+    }
   }
 
   .announcement-bar__slider {
@@ -118,6 +127,16 @@
     font-size: 14px;
     font-weight: 600;
     line-height: 120%;
+
+    a {
+      text-decoration: underline !important;
+      text-decoration-color: currentcolor !important;
+      text-underline-offset: 1px !important;
+    }
+
+    @media screen and (max-width: 768px) {
+      font-size: 12px;
+    }
   }
 
   .announcement-bar__text:first-child {

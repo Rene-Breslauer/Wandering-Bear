@@ -20,4 +20,10 @@
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="9" viewBox="0 0 16 9" fill="none">
             <path d="M0.401968 0.365274C0.144539 0.599454 9.11399e-07 0.916917 8.96139e-07 1.2479C8.80879e-07 1.57889 0.144533 1.89635 0.401968 2.13053L7.04523 8.16738C7.30294 8.40131 7.65229 8.53265 8.01653 8.53265C8.38076 8.53265 8.73011 8.40131 8.98782 8.16738L15.6311 2.13053C15.9579 1.8117 16.0784 1.36116 15.9489 0.941631C15.8193 0.522116 15.4585 0.194245 14.9968 0.0765054C14.5352 -0.0412389 14.0394 0.0682438 13.6885 0.365275L8.01653 5.51749L2.34455 0.365274C2.08685 0.131344 1.73749 -5.91061e-07 1.37326 -6.06155e-07C1.00902 -6.2125e-07 0.659672 0.131339 0.401968 0.365274Z" fill="#431A03"/>
         </svg>
+    {% when 'menu' %}
+        <svg {% if class != blank %}class="{{ class }}"{% endif %} xmlns="http://www.w3.org/2000/svg" width="32" height="23" viewBox="0 0 32 23" fill="none">
+            <line x1="1.5" y1="21.5" x2="30.5" y2="21.5" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+            <line x1="1.5" y1="11.5" x2="30.5" y2="11.5" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+            <line x1="1.5" y1="1.5" x2="30.5" y2="1.5" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+        </svg>
 {% endcase %}

@@ -33,7 +33,7 @@
                     loading: 'eager', 
                     preload: true, 
                     source: background_image_mobile, 
-                    class: 'w-full h-full object-cover',
+                    class: '!w-auto h-full object-cover !max-w-none !h-full max-h-none',
                     alt: background_image_mobile.alt,
                     width: 1920,
                     height: 1080
@@ -41,16 +41,16 @@
             </div>
         {% endif %}
         {% if title_image != blank or title_text != blank or subtitle != blank %}
-            <div class="container relative wb-flex flex-col md:!flex-row justify-end w-[1000px] mx-auto h-full pb-20 md:!pb-0">
-                <div class="relative wb-flex flex-col gap-4 z-1 max-w-full">
+            <div class="container relative wb-flex flex-col md:!flex-row justify-end w-[1000px] mx-auto h-full pb-12 md:!pb-0">
+                <div class="relative wb-flex flex-col justify-center gap-4 z-1 max-w-full">
                     {% if title_image != blank %}
                         {{ title_image | image_url: width: 1920 | image_tag: class: 'hidden md:!block w-full h-full object-contain' }}
-                        {{ title_image_mobile | image_url: width: 1920 | image_tag: class: 'block md:!hidden w-full h-full object-contain !max-w-[270px] mx-auto' }}
+                        {{ title_image_mobile | image_url: width: 1920 | image_tag: class: 'block relative left-5 md:!left-0 md:!hidden w-full h-full object-contain !max-w-[270px] mx-auto' }}
                     {% elsif title_text != blank %}
                         <h1 class="h1">{{ title_text }}</h1>
                     {% endif %}
                     {% if subtitle != blank %}
-                        <span class="h3 text-center md:!text-left">{{ subtitle }}</span>
+                        <span class="h3 text-center md:!text-left !text-lg">{{ subtitle }}</span>
                     {% endif %}
                     {% if buttons != blank %}
                         <div class="wb-flex flex-col md:!flex-row gap-4 w-fit mx-auto md:!mx-0">
