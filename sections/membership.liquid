@@ -13,7 +13,10 @@
     assign button_link = section.settings.button_link
 %}
 
-<div class="relative pt-[55px] pb-[200px] md:!pb-[55px] py-[55px] z-0 overflow-hidden" style="background-color: {{ color_scheme.background }}">
+<div class="relative pt-[55px] pb-[200px] md:!pb-[55px] py-[65px] z-0 overflow-hidden" style="background-color: {{ color_scheme.background }}">
+    <svg preserveAspectRatio="none" class="absolute top-0 left-0 w-full z-[2]" xmlns="http://www.w3.org/2000/svg" width="1280" height="18" viewBox="0 0 1280 18" fill="none">
+        <path d="M0 14.5L424 17.0497L1280 14.5V0H0V14.5Z" fill="{{ color_scheme.settings.background }}"/>
+    </svg>
     {% if background_image != blank %}
         {% render 'picture', source: background_image, class: 'hidden md:!block w-full h-full !min-h-full object-cover absolute inset-0' %}
     {% endif %}
@@ -51,6 +54,9 @@
             </div>
         </div>
     </div>
+    <svg preserveAspectRatio="none" class="absolute bottom-0 left-0 w-full z-[2]" xmlns="http://www.w3.org/2000/svg" width="1290" height="30" viewBox="0 0 1290 30" fill="none">
+      <path d="M0 0.952156L320 0L938 7.63188L1290 5.2564V30H0V0.952156Z" fill="{{ color_scheme.settings.background }}"/>
+    </svg>
 </div>
 
 {% schema %}
