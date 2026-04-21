@@ -183,11 +183,11 @@
 }
 
 .font-kurdis-semi-condensed {
-    font-family: var(--font-kurdis_semi_condensed) !important;
+    font-family: var(--font-kurdis-semi-condensed) !important;
 }
 
 .font-kurdis-condensed {
-    font-family: var(--font-kurdis_condensed) !important;
+    font-family: var(--font-kurdis-condensed) !important;
 }
 
 .font-parslay {
@@ -200,7 +200,6 @@
 
 
 .display-xl {
-    /* TODO: Kurdis Condensed */
     font-family: var(--font-kurdis-condensed);
     font-size: 4.6875rem; /* 75px */
     font-weight: 800;
@@ -212,7 +211,6 @@
 }
 
 .display-lg {
-    /* TODO: Trade Gothic Condensed */
     font-family: var(--font-gothic_condensed);
     font-size: 3.75rem; /* 60px */
     font-weight: 800;
@@ -223,7 +221,6 @@
 }
 
 .display-md {
-    /* TODO: Trade Gothic Condensed */
     font-family: var(--font-gothic_condensed);
     font-size: 2.8125rem; /* 45px */
     font-weight: 800;
@@ -234,11 +231,9 @@
 }
 
 .h1 {
-    /* TODO: Kurdis Condensed */
     font-family: var(--font-kurdis-condensed);
     font-weight: 800;
     font-size: 1.5625rem; /* 25px */
-    font-stretch: 75%;
 
     @media screen and (max-width: 768px) {
         font-size: 1.75rem; /* 28px */
@@ -246,11 +241,9 @@
 }
 
 .h2 {
-    /* TODO: Kurdis Condensed */
     font-family: var(--font-kurdis-condensed);
     font-weight: 800;
     font-size: 1.375rem; /* 22px */
-    font-stretch: 75%;
 
     @media screen and (max-width: 768px) {
         font-size: 1.25rem; /* 20px */
@@ -258,11 +251,9 @@
 }
 
 .h3 {
-    /* TODO: Kurdis Condensed */
-    font-family: var(--font-kurdis-condensed);
-    font-weight: 700;
+    font-family: var(--font-kurdis-semi-condensed);
+    font-weight: 600;
     font-size: 1.125rem; /* 18px */
-    font-stretch: 75%;
 
     @media screen and (max-width: 768px) {
         font-size: 1.375rem; /* 22px */
@@ -280,20 +271,16 @@
 }
 
 .h5 {
-    /* TODO: Kurdis Semi-Condensed Bold */
     font-family: var(--font-kurdis-semi-condensed);
     font-weight: 700;
     font-size: 1.125rem; /* 18px */
-    font-stretch: 85%;
 }
 
 .body {
-    /* TODO: Kurdis Semi-Condensed */
     font-family: var(--font-kurdis-semi-condensed);
     font-weight: 600;
     font-size: 0.875rem; /* 14px */
     line-height: 130%;
-    font-stretch: 85%;
 }
 
 .body.font-bold {
@@ -322,9 +309,7 @@
 }
 
 .small-nav {
-    /* TODO: Kurdis Semi-Condensed */
     font-family: var(--font-kurdis-semi-condensed);
     font-weight: 600;
     font-size: 0.875rem; /* 14px */
-    font-stretch: 85%;
 }
