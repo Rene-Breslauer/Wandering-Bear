@@ -38,17 +38,17 @@
       "settings": {
         "color_scheme": "",
         "background_image": "shopify://shop_images/Background_image.png",
-        "background_image_mobile": "shopify://shop_images/wb-hero-mobile.png",
+        "background_image_mobile": "shopify://shop_images/wb-mobile-hero-2.jpg",
         "title_type": "image",
         "title_image": "shopify://shop_images/COFFEE_SHOP_QUALITY_DRINKS_MADE_EASY..svg",
         "title_image_mobile": "shopify://shop_images/Group_1327226599.png",
         "title_text": "Coffee Shop Quality Drinks Made Easy",
-        "subtitle": "For the at-home pajama baristas",
-        "badge": "shopify://shop_images/STAY_CAFFEINATED.svg"
+        "subtitle": "For the at-home pajama baristas"
       }
     },
     "aw_divider_jeaQGx": {
       "type": "aw-divider",
+      "disabled": true,
       "name": "AW Divider",
       "settings": {
         "color_top": "rgba(0,0,0,0)",
