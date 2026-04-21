@@ -14,6 +14,9 @@
 %}
 
 <div class="relative w-full" style="background-color: {{ color_scheme.background }}">
+    <svg preserveAspectRatio="none" class="absolute top-0 left-0 w-full z-[2]" xmlns="http://www.w3.org/2000/svg" width="1290" height="28" viewBox="0 0 1290 28" fill="none">
+        <path d="M1290 27.249L970 28L352 21.9804L3.62444e-07 23.854L2.44783e-06 -1.16568e-06L1290 0.00011161L1290 27.249Z" fill="{{ color_scheme.settings.background }}"/>
+    </svg>
     {% if background_image != blank %}
         {% render 'picture', source: background_image, class: 'hidden md:!block w-full !h-full object-cover absolute inset-0 !max-h-none !max-w-none' %}
     {% endif %}
@@ -26,7 +29,7 @@
     {% if floating_image_mobile != blank %}
         {% render 'picture', source: floating_image_mobile, class: 'w-full max-h-full h-full object-contain absolute inset-0' %}
     {% endif %}
-    <div class="container max-w-[1000px] px-4 mx-auto lg:relative z-[2] pt-[13px] md:!pt-[52px] pb-[200px] md:!pb-[70px]">
+    <div class="container max-w-[1000px] px-4 mx-auto lg:relative z-[2] pt-10 md:!pt-[52px] pb-[200px] md:!pb-[70px]">
         <div class="relative z-[3] md:!w-1/2 wb-flex flex-col max-w-[438px] md:!max-w-[457px] mx-auto md:!mx-0">
             <div class="wb-flex flex-col mb-8">
                 {% if title_type == 'text' %}
@@ -50,6 +53,9 @@
             </div>
         </div>
     </div>
+    <svg preserveAspectRatio="none" class="absolute bottom-0 left-0 w-full" xmlns="http://www.w3.org/2000/svg" width="1280" height="18" viewBox="0 0 1280 18" fill="none">
+        <path d="M0 0L670 5.33019L1280 0V18H0V0Z" fill="{{ color_scheme.settings.background }}"/>
+    </svg>
 </div>
 
 {% schema %}
