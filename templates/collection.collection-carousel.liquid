@@ -4,7 +4,7 @@
 {% endcapture %}
 
 {% for product in collection.products %}
-    <div class="swiper-slide relative group" style="{{ slide_styles }}">
+    {% comment %} <div class="swiper-slide relative group" style="{{ slide_styles }}">
         <a href="{{ collection.url }}">
             {% if product.metafields.custom.carousel_image != blank %}
                 {% render 'picture', source: product.metafields.custom.carousel_image, class: 'w-full h-full object-cover w-full h-full' %}
@@ -40,5 +40,6 @@
                 </div>
             </div>
         </a>
-    </div>
+    </div> {% endcomment %}
+    {% render 'multi-coll-carousel-slide', product: product, slide_styles: slide_styles %}
 {% endfor %}

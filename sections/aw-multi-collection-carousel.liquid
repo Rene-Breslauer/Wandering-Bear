@@ -65,10 +65,14 @@
                 {% liquid
                     assign collection = block.settings.collection
                 %}
-                {% if product.metafields.custom.carousel_image != blank %}
-                    {% render 'multi-coll-carousel-slide', product: product %}
-                {% endif %}
+                {% render 'multi-coll-carousel-slide', product: product %}
             {% endfor %}
+        </div>
+        <div class="hidden md:!flex swiper-button-next" style="right: calc(calc(var(--slide-width) / 2) - 10px);">
+            {% render 'icons', icon: 'chevron-right' with class: 'translate-x-[10%]' %}
+        </div>
+        <div class="hidden md:!flex swiper-button-prev" style="left: calc(calc(var(--slide-width)) - 10px);">
+            {% render 'icons', icon: 'chevron-left' with class: '-translate-x-[10%]' %}
         </div>
     </div>
 </div>

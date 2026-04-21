@@ -27,6 +27,8 @@ export default (Alpine: AlpineType) => {
                     nextEl: '.swiper-button-next',
                     prevEl: '.swiper-button-prev',
                 },
+                slidesOffsetBefore: 12,
+                slidesOffsetAfter: 12,
                 breakpoints: {
                     768: {
                         slidesPerView: 3.5,
@@ -35,7 +37,18 @@ export default (Alpine: AlpineType) => {
                         slidesPerView: 5.5,
                     },
                 },
+                on: {
+                    init: () => this.updateSlideWidth(),
+                    resize: () => this.updateSlideWidth(),
+                  }
             });
+        },
+
+        updateSlideWidth() {
+            if (!this.swiper?.slides?.length) return;
+          
+            const slideWidth = this.swiper.slides[0].offsetWidth;
+            this.el.style.setProperty('--slide-width', `${slideWidth}px`);
         },
 
         toggleDropdown() {

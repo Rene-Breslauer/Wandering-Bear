@@ -10,7 +10,7 @@
     "name": "navigation"
   },
   "frontend/entrypoints/main.css": {
-    "file": "main-CBBUFOtB.css",
+    "file": "main-Bjz9gzQO.css",
     "name": "main",
     "names": [
       "main.css"
@@ -19,7 +19,7 @@
     "isEntry": true
   },
   "frontend/entrypoints/main.js": {
-    "file": "main-rlWqYgJ-.js",
+    "file": "main-CKW8Ema3.js",
     "name": "main",
     "src": "frontend/entrypoints/main.js",
     "isEntry": true,
@@ -32,11 +32,11 @@
       "frontend/scripts/components/videoPlayer.ts"
     ],
     "css": [
-      "main-Bu3sUtll.css"
+      "main-ChZ-0DhF.css"
     ]
   },
   "frontend/scripts/components/swiperSlider.ts": {
-    "file": "swiperSlider-HW_CYGVz.js",
+    "file": "swiperSlider-Cgx-_XWN.js",
     "name": "swiperSlider",
     "src": "frontend/scripts/components/swiperSlider.ts",
     "isDynamicEntry": true,
