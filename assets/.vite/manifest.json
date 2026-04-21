@@ -19,7 +19,7 @@
     "isEntry": true
   },
   "frontend/entrypoints/main.js": {
-    "file": "main-DTWJMhuH.js",
+    "file": "main-CXRJwGr_.js",
     "name": "main",
     "src": "frontend/entrypoints/main.js",
     "isEntry": true,
@@ -32,7 +32,7 @@
       "frontend/scripts/components/videoPlayer.ts"
     ],
     "css": [
-      "main-nguEnE-f.css"
+      "main-DezLi8I1.css"
     ]
   },
   "frontend/scripts/components/swiperSlider.ts": {
