@@ -1,0 +1,20 @@
+<div class="relative group inline-block">
+  {% render 'icons', icon: 'info' %}
+
+  <div class="absolute top-[calc(100%+8px)] left-1/2 -translate-x-1/2 pt-2 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+    <svg
+      class="absolute -top-1 left-1/2 -translate-x-1/2"
+      xmlns="http://www.w3.org/2000/svg"
+      width="14"
+      height="12"
+      viewBox="0 0 14 12"
+      fill="none"
+    >
+      <path d="M6.9282 0L13.8564 12H0L6.9282 0Z" fill="#F2E6DC"/>
+    </svg>
+
+    <div class="tooltip-content w-[200px] font-['Roboto', sans-serif] font-normal rounded bg-[#F2E6DC] p-3 text-left text-xs leading-snug whitespace-normal break-words text-[#431A03]">
+      {{ content }}
+    </div>
+  </div>
+</div>

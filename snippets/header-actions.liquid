@@ -90,13 +90,7 @@
         {% endif %}
       </a>
       <span class="font-bold text-lg">|</span>
-      <a href="{{ routes.root_url }}/pages/membership" class="flex flex-row text-base font-tablet font-bold leading-0 !gap-1" style="color: {{ section.settings.color_scheme_top.settings.foreground_heading }}">
-       <div class="flex flex-col">
-        <span>EARN</span>
-        <span class="rotate-[-1.989deg]">CREDIT</span>
-      </div>
-      {% render 'icons', icon: 'info' %}
-      </a>
+      {% render 'membership-widget' %}
     </div>
   {% endif %}
 

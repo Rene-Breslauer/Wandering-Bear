@@ -1,0 +1,58 @@
+{%  liquid
+    assign is_customer = false
+    if customer
+        assign is_customer = true
+    endif
+    assign credits_earned = 1000
+    if is_customer
+      assign credits_earned = customer.metafields.inveterate.credits_earned | default: 0
+    endif
+    assign credits_earned_formatted = credits_earned | money_without_trailing_zeros
+    assign membership_level = ''
+    for tag in customer.tags
+      if tag contains 'inveterate-tier#72ccf378'
+          assign membership_level = 'VIP'
+        elsif tag contains 'inveterate-tier#dc38b982'
+          assign membership_level = 'ELITE'
+        elsif tag contains 'inveterate-tier#99a431e2'
+          assign membership_level = 'ELITE'
+        elsif tag contains 'inveterate-tier#c4057f2f'
+          assign membership_level = 'PACK'
+        endif
+    endfor
+%}
+
+{% if is_customer == false or membership_level == '' %}
+<a href="{{ routes.root_url }}/pages/membership" class="flex flex-row text-base font-tablet font-bold leading-0 !gap-1" style="color: {{ section.settings.color_scheme_top.settings.foreground_heading }}">
+       <div class="flex flex-col">
+        <span>EARN</span>
+        <span class="rotate-[-1.989deg]">CREDIT</span>
+      </div>
+      {% render 'tooltip', content: settings.nonmember_tooltip %}
+</a>
+{% else %}
+<div class="relative flex flex-row text-base font-tablet font-bold leading-0 !gap-1" style="color: var(--color-espresso)">
+       <div class="flex !gap-0 flex-col">
+        <div class="flex flex-row items-center !gap-0">
+        <span>YOUR</span>
+        <div class="rotate-[1.993deg] drop-shadow-[4px_4px_4px_rgba(0,0,0,0.25)] px-4 py-3 left-1 -top-1.5 relative flex justify-center items-center w-full h-full overflow-hidden">
+            <span class="relative z-10 text-[#E4B850] text-center rotate-[1.993deg]">{{ membership_level }}</span>
+            <svg
+              preserveAspectRatio="none"
+              class="absolute inset-0 w-full h-full"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 33 21"
+              fill="none"
+            >
+              <path d="M0.78686 1.70315C0.491086 2.85363 0.433297 4.21957 0.383405 5.52917C0.264692 8.64572 0.146562 11.761 0.027849 14.8776C-0.0043235 15.7245 -0.0344707 16.6063 0.0959054 17.3713C0.410093 19.2109 0.87313 19.626 2.2839 19.6751C11.7465 20.0044 21.2074 20.4019 30.6774 20.5333C31.0134 20.5385 31.3805 20.5925 31.6719 20.1432C32.4614 18.9263 32.4591 16.6523 32.4951 14.9664C32.5623 11.8275 32.7517 9.25257 32.8609 6.11381C32.9373 3.91847 32.8651 3.03316 32.5903 2.15367C32.2384 1.02569 31.4231 1.04493 30.8147 0.994158C26.8144 0.65805 22.8087 0.41698 18.8008 0.254335C14.7671 0.0895033 10.7304 0.0107888 6.69083 0.0156203C5.55129 0.0171426 4.41207 0.0251102 3.27259 0.0407897C2.41219 0.0520264 1.33833 -0.438328 0.78686 1.70315Z" fill="#AF7404"/>
+            </svg>
+          </div>
+        </div>
+        <div class="flex flex-row !gap-0.5 items-center">
+            <span class="rotate-[-1.989deg]">CREDIT:</span>
+            <span class="!text-[22px]">{{ credits_earned_formatted }}</span>
+            {% render 'tooltip', content: settings.member_tooltip %}
+        </div>
+      </div>
+</div>
+{% endif %}

@@ -12,6 +12,7 @@ import '../styles/components.css';
 import '../styles/multi-collection-slider.css';
 import '../styles/divider.css';
 import '../styles/footer.css';
+import '../styles/header.css';
 
 export {}
 
