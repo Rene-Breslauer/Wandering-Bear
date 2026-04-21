@@ -121,9 +121,9 @@
       "scheme-2": {
         "settings": {
           "background": "#f2e6dc",
-          "foreground_heading": "#000000",
+          "foreground_heading": "#431A03",
           "foreground": "#431a03",
-          "primary": "#000000cf",
+          "primary": "#431A03",
           "primary_hover": "#ffffff",
           "border": "#dfdfdf",
           "shadow": "#000000",
@@ -164,7 +164,7 @@
           "foreground": "#f2e6dc",
           "primary": "#000000cf",
           "primary_hover": "#000000",
-          "border": "#AF7404",
+          "border": "#af7404",
           "shadow": "#000000",
           "primary_button_background": "#000000",
           "primary_button_text": "#ffffff",
@@ -199,11 +199,11 @@
       "scheme-4": {
         "settings": {
           "background": "#e1edf5",
-          "foreground_heading": "#AF7404",
-          "foreground": "#431A03",
-          "primary": "#431A03",
+          "foreground_heading": "#af7404",
+          "foreground": "#431a03",
+          "primary": "#431a03",
           "primary_hover": "#000000",
-          "border": "#1d368680",
+          "border": "#f1e3d3",
           "shadow": "#000000",
           "primary_button_background": "#000000",
           "primary_button_text": "#ffffff",
