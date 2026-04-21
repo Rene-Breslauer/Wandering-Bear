@@ -1,6 +1,6 @@
 /* TYPOGRAPHY */
 
-@font-face {
+/* @font-face {
     font-family: "GT Pressura";
     src:
         url("//wanderingbearcoffee.com/cdn/shop/t/315/assets/GT-Pressura-Regular.woff2?v=124886443305534040881694525160")
@@ -22,14 +22,14 @@
     font-weight: 600;
     font-style: normal;
     font-display: swap;
-}
+} */
 
 @font-face {
     font-family: "Kurdis";
     src:
-        url("https://cdn.shopify.com/s/files/1/1418/5086/files/Kurdis-Condensed.otf?v=1756469089")
-            format("opentype");
-    font-weight: normal;
+        url("https://cdn.shopify.com/s/files/1/1418/5086/files/Kurdis-Regular.woff2?v=1776788647")
+            format("woff2");
+    font-weight: 400;
     font-style: normal;
     font-display: swap;
 }
@@ -37,8 +37,8 @@
 @font-face {
     font-family: "Kurdis";
     src:
-        url("https://cdn.shopify.com/s/files/1/1418/5086/files/Kurdis-CondensedSemiBold.otf?v=1756469447")
-            format("opentype");
+        url("https://cdn.shopify.com/s/files/1/1418/5086/files/Kurdis-SemiBold.woff2?v=1776788647")
+            format("woff2");
     font-weight: 600;
     font-style: normal;
     font-display: swap;
@@ -47,8 +47,8 @@
 @font-face {
     font-family: "Kurdis";
     src:
-        url("https://cdn.shopify.com/s/files/1/1418/5086/files/Kurdis-CondensedBold.otf?v=1756469089")
-            format("opentype");
+        url("https://cdn.shopify.com/s/files/1/1418/5086/files/Kurdis-Bold.woff2?v=1776788647")
+            format("woff2");
     font-weight: 700;
     font-style: normal;
     font-display: swap;
@@ -57,12 +57,93 @@
 @font-face {
     font-family: "Kurdis";
     src:
-        url("https://cdn.shopify.com/s/files/1/1418/5086/files/Kurdis-CondensedBlack.otf?v=1756469089")
-            format("opentype");
-    font-weight: 900;
+        url("https://cdn.shopify.com/s/files/1/1418/5086/files/Kurdis-ExtraBold.woff2?v=1776789118")
+            format("woff2");
+    font-weight: 800;
     font-style: normal;
     font-display: swap;
 }
+
+@font-face {
+    font-family: "Kurdis SemiCondensed";
+    src:
+        url("https://cdn.shopify.com/s/files/1/1418/5086/files/Kurdis-SemiCondensed.woff2?v=1776788647")
+            format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Kurdis SemiCondensed";
+    src:
+        url("https://cdn.shopify.com/s/files/1/1418/5086/files/Kurdis-SemiCondensedSemiBold.woff2?v=1776788647")
+            format("woff2");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Kurdis SemiCondensed";
+    src:
+        url("https://cdn.shopify.com/s/files/1/1418/5086/files/Kurdis-SemiCondensedBold.woff2?v=1776788647")
+            format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Kurdis SemiCondensed";
+    src:
+        url("https://cdn.shopify.com/s/files/1/1418/5086/files/Kurdis-SemiCondensedExtraBold.woff2?v=1776789118")
+            format("woff2");
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Kurdis Condensed";
+    src:
+        url("https://cdn.shopify.com/s/files/1/1418/5086/files/Kurdis-Condensed.woff2?v=1776788647")
+            format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Kurdis Condensed";
+    src:
+        url("https://cdn.shopify.com/s/files/1/1418/5086/files/Kurdis-CondensedSemiBold.woff2?v=1776788647")
+            format("woff2");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Kurdis Condensed";
+    src:
+        url("https://cdn.shopify.com/s/files/1/1418/5086/files/Kurdis-CondensedBold.woff2?v=1776788648")
+            format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Kurdis Condensed";
+    src:
+        url("https://cdn.shopify.com/s/files/1/1418/5086/files/Kurdis-CondensedExtraBold.woff2?v=1776789118")
+            format("woff2");
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
+
 
 @font-face {
     font-family: "Parslay";
@@ -87,6 +168,8 @@
 :root {
     --font-gt_pressura: "GT Pressura", sans-serif;
     --font-kurdis: "Kurdis", sans-serif;
+    --font-kurdis-semi-condensed: "Kurdis SemiCondensed", sans-serif;
+    --font-kurdis-condensed: "Kurdis Condensed", sans-serif;
     --font-parslay: "Parslay", sans-serif;
     --font-gothic_condensed: "Gothic Condensed", sans-serif;
 }
@@ -97,6 +180,14 @@
 
 .font-kurdis {
     font-family: var(--font-kurdis) !important;
+}
+
+.font-kurdis-semi-condensed {
+    font-family: var(--font-kurdis_semi_condensed) !important;
+}
+
+.font-kurdis-condensed {
+    font-family: var(--font-kurdis_condensed) !important;
 }
 
 .font-parslay {
@@ -110,9 +201,10 @@
 
 .display-xl {
     /* TODO: Kurdis Condensed */
-    font-family: var(--font-kurdis);
+    font-family: var(--font-kurdis-condensed);
     font-size: 4.6875rem; /* 75px */
     font-weight: 800;
+    font-stretch: 75%;
 
     @media screen and (max-width: 768px) {
         font-size: 2.8125rem; /* 45px */
@@ -143,9 +235,10 @@
 
 .h1 {
     /* TODO: Kurdis Condensed */
-    font-family: var(--font-kurdis);
+    font-family: var(--font-kurdis-condensed);
     font-weight: 800;
     font-size: 1.5625rem; /* 25px */
+    font-stretch: 75%;
 
     @media screen and (max-width: 768px) {
         font-size: 1.75rem; /* 28px */
@@ -154,9 +247,10 @@
 
 .h2 {
     /* TODO: Kurdis Condensed */
-    font-family: var(--font-kurdis);
+    font-family: var(--font-kurdis-condensed);
     font-weight: 800;
     font-size: 1.375rem; /* 22px */
+    font-stretch: 75%;
 
     @media screen and (max-width: 768px) {
         font-size: 1.25rem; /* 20px */
@@ -165,9 +259,10 @@
 
 .h3 {
     /* TODO: Kurdis Condensed */
-    font-family: var(--font-kurdis);
-    font-weight: 800;
+    font-family: var(--font-kurdis-condensed);
+    font-weight: 700;
     font-size: 1.125rem; /* 18px */
+    font-stretch: 75%;
 
     @media screen and (max-width: 768px) {
         font-size: 1.375rem; /* 22px */
@@ -186,21 +281,23 @@
 
 .h5 {
     /* TODO: Kurdis Semi-Condensed Bold */
-    font-family: var(--font-kurdis);
+    font-family: var(--font-kurdis-semi-condensed);
     font-weight: 700;
     font-size: 1.125rem; /* 18px */
+    font-stretch: 85%;
 }
 
 .body {
     /* TODO: Kurdis Semi-Condensed */
-    font-family: var(--font-kurdis);
+    font-family: var(--font-kurdis-semi-condensed);
     font-weight: 600;
     font-size: 0.875rem; /* 14px */
     line-height: 130%;
+    font-stretch: 85%;
 }
 
 .body.font-bold {
-    font-family: var(--font-kurdis);
+    font-family: var(--font-kurdis-semi-condensed);
     font-weight: 700;
     font-size: 1rem; /* 16px */
     line-height: 1rem;
@@ -226,7 +323,8 @@
 
 .small-nav {
     /* TODO: Kurdis Semi-Condensed */
-    font-family: var(--font-kurdis);
+    font-family: var(--font-kurdis-semi-condensed);
     font-weight: 600;
     font-size: 0.875rem; /* 14px */
+    font-stretch: 85%;
 }

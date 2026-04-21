@@ -5,7 +5,7 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    font-family: Kurdis;
+    font-family: var(--font-kurdis-condensed);
     font-size: 1.25rem; /* 20px */
     font-style: normal;
     font-weight: 800;
