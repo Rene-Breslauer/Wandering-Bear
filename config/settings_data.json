@@ -78,7 +78,42 @@
     "variant_button_border_width": 1,
     "variant_button_radius": 14,
     "variant_button_width": "equal-width-buttons",
+    "nonmember_tooltip": "<p>Become a free member today to start earning $5 for every $50 spent. <a href=\"/pages/membership\" title=\"Membership\">Learn more.</a></p>",
+    "member_tooltip": "<p>Members receive $5 for every $50 spent. Redeem these points at checkout or under your autoship management to apply to your next order.<a href=\"/pages/membership\" title=\"Membership\">Learn more.</a></p>",
     "content_for_index": [],
+    "blocks": {
+      "5182753405494462628": {
+        "type": "shopify://apps/inveterate/blocks/app-embed/fc24aab3-e6d2-461b-961d-9ebb32143cf2",
+        "disabled": false,
+        "settings": {
+          "product": "",
+          "redirect_url": "",
+          "membership_product_redirect": true,
+          "early_access_enable": true,
+          "early_access_action": "popup",
+          "early_access_popup_heading": "Upgrade to the __tier_name__",
+          "early_access_popup_body": "You’re attempting to view exclusive content only for members in the __tier_name__.",
+          "early_access_popup_button": "Upgrade to __tier_name__",
+          "early_access_popup_button_background": "#9245d8",
+          "early_access_card_border_color": "#9245d8",
+          "early_access_popup_button_foreground": "#ffffff",
+          "early_access_modal_background": "#ffffff",
+          "early_access_modal_foreground": "#000000",
+          "early_access_additional_tags": "",
+          "exclusive_access_enable": true,
+          "exclusive_access_action": "popup",
+          "exclusive_access_popup_heading": "Upgrade to the __tier_name__",
+          "exclusive_access_popup_body": "You’re attempting to view exclusive content only for members in the __tier_name__.",
+          "exclusive_access_popup_button": "Upgrade to __tier_name__",
+          "exclusive_access_popup_button_background": "#9245d8",
+          "exclusive_access_popup_card_border_color": "#9245d8",
+          "exclusive_access_popup_button_foreground": "#ffffff",
+          "exclusive_access_modal_background": "#ffffff",
+          "exclusive_access_modal_foreground": "#000000",
+          "exclusive_access_additional_tags": ""
+        }
+      }
+    },
     "color_schemes": {
       "scheme-1": {
         "settings": {
