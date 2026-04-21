@@ -23,13 +23,13 @@
 %}
 
 {% if is_customer == false or membership_level == '' %}
-<a href="{{ routes.root_url }}/pages/membership" class="flex flex-row text-base font-tablet font-bold leading-0 !gap-1" style="color: {{ section.settings.color_scheme_top.settings.foreground_heading }}">
-       <div class="flex flex-col">
+<div class="flex flex-row text-base font-tablet font-bold leading-0 !gap-1" style="color: {{ section.settings.color_scheme_top.settings.foreground_heading }}">
+       <a href="{{ routes.root_url }}/pages/membership" class="flex flex-col text-gold">
         <span>EARN</span>
         <span class="rotate-[-1.989deg]">CREDIT</span>
-      </div>
+      </a>
       {% render 'tooltip', content: settings.nonmember_tooltip %}
-</a>
+</div>
 {% else %}
 <div class="relative flex flex-row text-base font-tablet font-bold leading-0 !gap-1" style="color: var(--color-espresso)">
        <div class="flex !gap-0 flex-col">

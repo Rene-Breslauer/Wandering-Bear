@@ -1,4 +1,4 @@
-<div class="relative group inline-block">
+<div class="relative group inline-block cursor-pointer">
   {% render 'icons', icon: 'info' %}
 
   <div class="absolute top-[calc(100%+8px)] left-1/2 -translate-x-1/2 pt-2 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
@@ -13,7 +13,8 @@
       <path d="M6.9282 0L13.8564 12H0L6.9282 0Z" fill="#F2E6DC"/>
     </svg>
 
-    <div class="tooltip-content w-[200px] font-['Roboto', sans-serif] font-normal rounded bg-[#F2E6DC] p-3 text-left text-xs leading-snug whitespace-normal break-words text-[#431A03]">
+    <div class="tooltip-content w-[200px] font-['Roboto', sans-serif] font-normal rounded bg-[#F2E6DC] p-3 text-left text-xs leading-snug text-[#431A03]
+    shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]">
       {{ content }}
     </div>
   </div>
