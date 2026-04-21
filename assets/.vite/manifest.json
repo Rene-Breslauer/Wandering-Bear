@@ -19,7 +19,7 @@
     "isEntry": true
   },
   "frontend/entrypoints/main.js": {
-    "file": "main-0x_IA6wg.js",
+    "file": "main-CoSEGftV.js",
     "name": "main",
     "src": "frontend/entrypoints/main.js",
     "isEntry": true,
@@ -32,7 +32,7 @@
       "frontend/scripts/components/videoPlayer.ts"
     ],
     "css": [
-      "main-CpNx99mR.css"
+      "main-DsXf4_-f.css"
     ]
   },
   "frontend/scripts/components/swiperSlider.ts": {

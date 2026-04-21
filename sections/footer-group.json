@@ -143,6 +143,7 @@
             "text_LWt8Pz": {
               "type": "text",
               "settings": {
+                "block_class": "",
                 "text": "<h3><strong>WANNA TRADE?</strong></h3>",
                 "width": "100%",
                 "max_width": "normal",
@@ -158,7 +159,7 @@
                 "background": false,
                 "background_color": "#00000026",
                 "corner_radius": 0,
-                "padding-block-start": 0,
+                "padding-block-start": 8,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
@@ -168,6 +169,7 @@
             "text_ejaBhF": {
               "type": "text",
               "settings": {
+                "block_class": "text-gold",
                 "text": "<h3><strong>WE'LL GIVE YOU $5 OFF</strong></h3>",
                 "width": "100%",
                 "max_width": "normal",
@@ -193,6 +195,7 @@
             "text_f9CFLH": {
               "type": "text",
               "settings": {
+                "block_class": "",
                 "text": "<p>Plus, enjoy exclusive access to our  Pack Membership— don't worry it's free!</p>",
                 "width": "100%",
                 "max_width": "normal",
@@ -215,8 +218,9 @@
               },
               "blocks": {}
             },
-            "email_signup_eBTBKU": {
-              "type": "email-signup",
+            "email_signup_custom_ymEVPF": {
+              "type": "email-signup-custom",
+              "name": "Email Signup Custom",
               "settings": {
                 "width": "fill",
                 "custom_width": 100,
@@ -228,10 +232,10 @@
                 "border_width": 1,
                 "border_radius": 100,
                 "input_type_preset": "paragraph",
-                "style_class": "button-unstyled",
-                "display_type": "arrow",
+                "style_class": "button",
+                "display_type": "text",
                 "label": "Sign up",
-                "integrated_button": true,
+                "integrated_button": false,
                 "button_type_preset": "paragraph",
                 "padding-block-start": 0,
                 "padding-block-end": 0,
@@ -246,7 +250,7 @@
             "text_LWt8Pz",
             "text_ejaBhF",
             "text_f9CFLH",
-            "email_signup_eBTBKU"
+            "email_signup_custom_ymEVPF"
           ]
         }
       },
@@ -261,8 +265,8 @@
         "section_width": "page-width",
         "gap": 20,
         "color_scheme": "scheme-4",
-        "padding-block-start": 30,
-        "padding-block-end": 30
+        "padding-block-start": 53,
+        "padding-block-end": 53
       }
     },
     "footer_utilities_jLGE8U": {

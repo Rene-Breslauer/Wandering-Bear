@@ -11,6 +11,16 @@
         font-family: var(--font-kurdis-condensed) !important;
     }
 
+    p {
+        font-size: 14px;
+        line-height: 130%;
+        letter-spacing: 0 !important;
+        font-family: var(--font-kurdis-semi-condensed) !important;
+        font-weight: 600;
+        line-height: 130%;
+        letter-spacing: 0 !important;
+    }
+
     .email-signup__button.custom {
         background-color: transparent;
         padding: 17px 0 23px 0;
