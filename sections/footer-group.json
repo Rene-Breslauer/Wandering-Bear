@@ -196,7 +196,7 @@
               "type": "text",
               "settings": {
                 "block_class": "",
-                "text": "<p>Plus, enjoy exclusive access to our  Pack Membership— don't worry it's free!</p>",
+                "text": "<p>Plus, enjoy exclusive access to our<br/>Pack Membership— don't worry it's free!</p>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "center",
