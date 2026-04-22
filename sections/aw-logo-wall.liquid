@@ -4,20 +4,26 @@
 %}
 
 <div>
-    <div class="container pt-[103px] pb-1.5 max-w-[1132px] flex flex-col mx-auto !gap-20">
-        <div class="flex items-center justify-center xl:!justify-between flex-wrap">
+    <div class="container pt-[40px] md:!pt-[75px] pb-1.5 max-w-[1132px] flex flex-col mx-auto !gap-[50px]">
+        <div class="max-w-[320px] mx-auto md:!max-w-full flex items-center justify-center xl:!justify-between flex-wrap">
             {% for block in section.blocks %}
                 <div class="
                 {% if block.settings.hide_on_mobile %}
                     hidden md:!block
                 {% endif %}
-                w-[200px] h-[72px] flex items-center justify-center">
+                w-[128px] md:!w-[200px] h-[58px] md:!h-[72px] flex items-center justify-center">
                     {% assign class = 'object-contain !max-h-full !w-auto !h-auto  logo-' | append: block.id %}
                     {{ block.settings.image | image_url: width: 400 | image_tag: class: class, alt: block.settings.image.alt }}
                 </div>
                 {% style %}
                     .logo-{{ block.id }} {
                         max-width: {{ block.settings.max_width }}px;
+                    }
+
+                    @media (max-width: 768px) {
+                        .logo-{{ block.id }} {
+                            max-width: {{ block.settings.max_width_mobile }}px;
+                        }
                     }
                 {% endstyle %}
             {% endfor %}
@@ -64,6 +70,11 @@
             "type": "text",
             "id": "max_width",
             "label": "Max Width"
+        },
+        {
+          "type": "text",
+          "id": "max_width_mobile",
+          "label": "Max Width (Mobile)"
         }
       ]
     }

@@ -13,7 +13,7 @@
     assign button_link = section.settings.button_link
 %}
 
-<div class="relative pt-[55px] pb-[200px] md:!pb-[55px] py-[65px] z-0 overflow-hidden" style="background-color: {{ color_scheme.background }}">
+<div class="relative pt-[55px] pb-[200px] md:!pb-[55px] lg:!py-[65px] z-0 overflow-hidden" style="background-color: {{ color_scheme.background }}">
     <svg preserveAspectRatio="none" class="absolute top-0 left-0 w-full z-[2]" xmlns="http://www.w3.org/2000/svg" width="1280" height="18" viewBox="0 0 1280 18" fill="none">
         <path d="M0 14.5L424 17.0497L1280 14.5V0H0V14.5Z" fill="{{ color_scheme.settings.background }}"/>
     </svg>
@@ -21,11 +21,11 @@
         {% render 'picture', source: background_image, class: 'hidden md:!block w-full h-full !min-h-full object-cover absolute inset-0' %}
     {% endif %}
     {% if background_image_mobile != blank %}
-        {% render 'picture', source: background_image_mobile, class: 'block md:!hidden w-full h-full object-cover absolute inset-0' %}
+        {% render 'picture', source: background_image_mobile, class: 'block md:!hidden w-full !h-full object-bottom md:!object-center object-cover absolute inset-0' %}
     {% endif %}
     <div class="container mx-auto flex justify-end px-4">
         <div class="md:!w-1/2 relative z-[2]">
-            <div class="wb-flex flex-col">
+            <div class="wb-flex flex-col sm:!pb-[20vw] md:!pb-0">
                 {% if title_type == 'text' %}
                     <h2 class="h2 text-gold mb-5">{{ title }}</h2>
                 {% elsif title_type == 'image' %}
