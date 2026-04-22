@@ -25,7 +25,7 @@
             <div class="w-[317px] relative">
                 <div @click="toggleDropdown()" class="flex items-center justify-between relative rounded-[4px] cursor-pointer bg-[#F4ECE5] p-3 border border-espresso">
                     <div class="flex items-center whitespace-nowrap">
-                        <span x-text="activeCollectionTitle" class="font-kurdis text-base font-bold whitespace-nowrap">{{ section.blocks[0].settings.title }}</span>
+                        <span x-text="activeCollectionTitle" class="font-kurdis-semi-condensed text-base font-bold whitespace-nowrap">{{ section.blocks[0].settings.title }}</span>
                         <span x-text="activeCollectionAccentText" class="font-parslay whitespace-nowrap text-gold">{{ section.blocks[0].settings.accent_text }}</span>
                     </div>
                     <span :class="{ 'rotate-180': dropdownOpen }" class="!min-w-4 transition-transform duration-300">
@@ -50,7 +50,7 @@
                         class="dropdown-item p-3 border-t border-espresso cursor-pointer"
                         :class="{ 'active': activeCollectionHandle === '{{ collection.handle }}' }"
                         >
-                            <span class="font-kurdis text-base font-bold">{{ block.settings.title }}</span>
+                            <span class="font-kurdis-semi-condensed text-base font-bold">{{ block.settings.title }}</span>
                             <span class="font-parslay text-gold">{{ block.settings.accent_text }}</span>
                         </li>
                     {% endfor %}
