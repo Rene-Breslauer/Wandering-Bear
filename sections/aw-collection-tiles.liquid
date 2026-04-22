@@ -8,13 +8,17 @@
     assign blocks = section.blocks
     assign background_color = color_scheme.settings.background
     assign text_color = color_scheme.settings.foreground
+    assign badge = section_settings.badge
 %}
 
 <div class="pt-5 pb-8 relative" style="background-color: {{ background_color }}">
+    {% if badge != blank %}
+        {{ badge | image_url: width: 100 | image_tag: class: 'absolute z-[2] -top-[60px] md:!-top-[80px] right-[9vw] md:!right-[15vw] !w-[66px] md:!w-[85px] !h-auto' }}
+    {% endif %}
     {% if title_type == 'image' %}
         {% if title_image != blank %}
             <div class="h-[36px] mx-auto mb-7.5">
-              {{ title_image | image_url: width: 365 | image_tag: class: 'w-full max-h-full object-contain', alt: title_alt }}
+              {{ title_image | image_url: width: 365 | image_tag: class: 'w-full !max-w-[228px] md:!max-w-full max-h-full object-contain mx-auto', alt: title_alt }}
             </div>
         {% endif %}
     {% elsif title_type == 'text' %}
@@ -22,7 +26,7 @@
             <span class="h1 mb-8" style="color: {{ text_color }}">{{ title }}</span>
         {% endif %}
     {% endif %}
-    <div class="container mx-auto">
+    <div class="container max-w-[1140px] mx-auto">
         <div class="wb-grid grid-cols-1 md:grid-cols-3 gap-0 md:gap-20">
             {% for block in section.blocks %}
                 {% liquid
@@ -32,9 +36,13 @@
                     assign title = block.settings.title
                     assign subtitle = block.settings.subtitle
                     assign accent_text = block.settings.accent_text
+                    assign badge = block.settings.badge
                 %}
                 <div class="relative">
                     <a href="{{ collection.url }}">
+                    {% if badge != blank %}
+                        {{ badge | image_url: width: 100 | image_tag: class: 'hidden md:!block absolute z-[2] -top-[50px] -left-[50px] !w-[148px] !h-auto' }}
+                    {% endif %}
                     {% if image != blank %}
                         {% render 'picture', 
                             source: image, 
@@ -113,6 +121,11 @@
             "id": "title_image",
             "label": "Title Image",
             "visible_if": "{{ section.settings.title_type == 'image' }}"
+        },
+        {
+            "type": "image_picker",
+            "id": "badge",
+            "label": "Badge"
         }
     ],
     "blocks": [
@@ -154,8 +167,12 @@
                     "type": "text",
                     "id": "accent_text",
                     "label": "Accent Text"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "badge",
+                    "label": "Badge"
                 }
-
             ]
         }
     ],

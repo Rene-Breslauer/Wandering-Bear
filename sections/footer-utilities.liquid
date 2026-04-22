@@ -18,12 +18,14 @@
   .utilities {
     width: 100%;
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     align-items: center;
     gap: var(--gap);
     text-wrap: nowrap;
     border-top: var(--border-width) solid var(--color-border);
     color: var(--color-foreground-muted);
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
 
     @media screen and (min-width: 750px) {
       display: grid;
@@ -33,10 +35,6 @@
       align-items: center;
       text-align: left;
     }
-  }
-
-  .utilities a {
-    color: var(--color-foreground-muted);
   }
 
   .utilities > * {
@@ -174,6 +172,9 @@
     },
     {
       "type": "social-links"
+    },
+    {
+      "type": "policy-menu"
     }
   ],
   "presets": [
