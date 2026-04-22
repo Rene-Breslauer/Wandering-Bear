@@ -73,8 +73,10 @@
         color-{{ block_settings.color_scheme }}
       "
     >
-      <button
-        class="button close-button menu-drawer__close-button"
+      <div class="bg-light-sky flex w-full">
+      <div class="flex justify-between items-center px-[31px] h-fit w-full relative">
+        <button
+        class="button close-button menu-drawer__close-button md:!absolute !top-1 !right-1"
         type="button"
         aria-label="{{ 'actions.close' | t }}"
         on:click="/close"
@@ -83,6 +85,24 @@
           {{- 'icon-close.svg' | inline_asset_content -}}
         </span>
       </button>
+
+      <div class="w-[90px] flex h-full items-center">
+          <a href="/" class="">
+          {{ settings.logo | image_url: width: 200 | image_tag: class: 'h-full w-full object-contain' }}
+          </a>
+        </div>
+        <ul class="hidden md:!flex h-full items-center">
+        {% for link in linklist.links %}
+          <li class="h-full">
+            <a class="font-kurdis uppercase text-sm font-bold text-bear-black flex items-center h-full pt-[39px] pb-[29px] px-2" href="{{ link.url }}">{{ link.title }}</a>
+          </li>
+        {% endfor %}
+        </ul>
+        <div class="flex md:!hidden">
+          {% render 'membership-widget' %}
+        </div>
+      </div>
+      </div>
       <nav
         class="menu-drawer__navigation"
         style="
@@ -91,7 +111,11 @@
         "
         aria-label="{{ 'accessibility.header_navigation_label' | t }}"
       >
-        <ul
+      {% assign mobile_metaobject = block.settings.mobile_menu %}
+      {% if mobile_metaobject %}
+        {% render 'mobile-menu', mobile_metaobject: mobile_metaobject %}
+      {% endif %}
+        {% comment %} <ul
           class="menu-drawer__menu has-submenu"
           role="list"
         >
@@ -570,8 +594,17 @@
               </li>
             {%- endfor -%}
           {% endif %}
-        </ul>
+        </ul> {% endcomment %}
       </nav>
+      <div class="flex md:!hidden bg-[#F1E3D3] h-[62px] w-full fixed bottom-0 left-0 right-0 border-t border-[#431A031A]">
+        <ul class="h-full w-full flex !gap-0 items-center justify-between">
+        {% for link in linklist.links %}
+          <li class="h-full w-full flex justify-center items-center {% unless forloop.last %}border-r border-[#431A031A] {% endunless %}">
+            <a class="font-kurdis justify-center uppercase text-sm font-bold text-bear-black text-center flex mx-auto items-center h-full w-full" href="{{ link.url }}">{{ link.title }}</a>
+          </li>
+        {% endfor %}
+        </ul>
+      </div>
       <div
         class="menu-drawer__utility-links menu-drawer__animated-element"
         style="--menu-drawer-animation-index: {{ linklist.links.size }};"
@@ -863,9 +896,9 @@
     box-shadow: var(--shadow-drawer);
     flex-direction: column;
 
-    @media screen and (min-width: 750px) {
+    /* @media screen and (min-width: 750px) {
       width: 25rem;
-    }
+    } */
   }
 
   /* When opening a submenu we don't want the first-level menu to be scrollable, so we reset the overflow  */

@@ -19,6 +19,16 @@ class HeaderDrawer extends Component {
 
     this.addEventListener('keyup', this.#onKeyUp);
     this.#setupAnimatedElementListeners();
+
+    window.addEventListener('menu-drawer-open', () => {
+      console.log('menu-drawer-open');
+      this.open();
+    });
+
+    window.addEventListener('menu-drawer-close', () => {
+      console.log('menu-drawer-close');
+      this.close();
+    });
   }
 
   disconnectedCallback() {
@@ -58,6 +68,7 @@ class HeaderDrawer extends Component {
    * Toggle the main menu drawer
    */
   toggle() {
+    console.log('toggle');
     return this.isOpen ? this.close() : this.open();
   }
 
@@ -67,23 +78,27 @@ class HeaderDrawer extends Component {
    * @param {Event} [event]
    */
   open(target, event) {
+    console.log('event', event);
     const details = this.#getDetailsElement(event);
     const summary = details.querySelector('summary');
-
+    console.log('summary', summary);
     if (!summary) return;
 
     summary.setAttribute('aria-expanded', 'true');
 
     this.preventInitialAccordionAnimations(details);
     requestAnimationFrame(() => {
+      console.log('details', details);
       details.classList.add('menu-open');
 
       if (target) {
+        console.log('target', target);
         this.refs.menuDrawer.classList.add('menu-drawer--has-submenu-opened');
       }
 
       // Wait for the drawer animation to complete before trapping focus
       const drawer = details.querySelector('.menu-drawer, .menu-drawer__submenu');
+      console.log('drawer', drawer);
       onAnimationEnd(drawer || details, () => trapFocus(details), { subtree: false });
     });
   }

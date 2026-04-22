@@ -217,7 +217,8 @@
         aria-expanded="false"
         aria-controls="dropdown-localization-results"
         ref="button"
-        on:click="/toggleSelector"
+        @click="toggleDrawer"
+        x-bind:aria-expanded="drawerOpen"
         style="{{ localization_font }} {{ localization_font_size }}"
       >
         {% if show_country %}
@@ -297,6 +298,7 @@
 </script>
 
 <header-component
+  x-data="header()"
   id="header-component"
   class="{{ class }}"
   data-theme-color="rgb({{ section.settings.color_scheme_top.settings.background.rgb }})"
@@ -1576,6 +1578,16 @@
       "label": "t:settings.inverse",
       "default": "primary",
       "visible_if": "{{ section.settings.enable_transparent_header_home or section.settings.enable_transparent_header_product or section.settings.enable_transparent_header_collection }}"
+    },
+    {
+      "type": "header",
+      "content": "Mobile Menu"
+    },
+    {
+      "type": "metaobject",
+      "id": "mobile_menu",
+      "label": "Mobile Menu",
+      "metaobject_type": "mobile_menu"
     },
     {
       "type": "header",

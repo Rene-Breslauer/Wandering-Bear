@@ -1,0 +1,1 @@
+var e=e=>{e.data(`header`,()=>({drawerOpen:!1,init(){},toggleDrawer(){console.log(`toggleDrawer`),this.drawerOpen=!this.drawerOpen,this.drawerOpen?window.dispatchEvent(new CustomEvent(`menu-drawer-open`)):window.dispatchEvent(new CustomEvent(`menu-drawer-close`))}}))};export{e as default};

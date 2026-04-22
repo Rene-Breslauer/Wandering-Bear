@@ -94,7 +94,8 @@
         >
           <a
             {% if forloop.first %}
-              on:click="/toggle"
+              @click="openDrawer"
+              x-bind:aria-expanded="drawerOpen"
             {% else %}
             href="{{ link.url }}"
             {% endif %}
@@ -209,8 +210,15 @@
     min-height: var(--header-drawer-min-height);
   }
 
-  @media screen and (min-width: 750px) {
+  /* @media screen and (min-width: 750px) {
     #header-component[data-menu-style='menu'] .header__drawer {
+      display: none;
+      min-height: 0;
+    }
+  } */
+
+  @media screen and (min-width: 750px) {
+    #header-component[data-menu-style='menu'] .header-drawer-icon {
       display: none;
       min-height: 0;
     }
@@ -925,6 +933,12 @@
       "id": "drawer_dividers",
       "label": "t:settings.dividers",
       "default": false
+    },
+    {
+      "type": "metaobject",
+      "id": "mobile_menu",
+      "label": "Mobile Menu",
+      "metaobject_type": "mobile_menu"
     }
   ]
 }

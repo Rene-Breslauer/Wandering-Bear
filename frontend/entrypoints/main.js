@@ -25,9 +25,11 @@ const init = async () => {
 
     const { default: SwiperSlider } = await import("~/scripts/components/swiperSlider")
     const { default: VideoPlayer } = await import("~/scripts/components/videoPlayer")
-
+    const { default: Header } = await import("~/scripts/components/header")
+    
     Alpine.plugin(SwiperSlider)
     Alpine.plugin(VideoPlayer)
+    Alpine.plugin(Header)
     
     Alpine.start()
     window.Alpine = Alpine
