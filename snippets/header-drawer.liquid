@@ -74,7 +74,7 @@
       "
     >
       <div class="bg-light-sky flex w-full">
-      <div class="flex justify-between items-center px-[31px] h-fit w-full relative">
+      <div class="flex justify-between md:!justify-start items-center px-[31px] h-fit w-full relative">
         <button
         class="button close-button menu-drawer__close-button md:!absolute !top-1 !right-1"
         type="button"
@@ -91,9 +91,9 @@
           {{ settings.logo | image_url: width: 200 | image_tag: class: 'h-full w-full object-contain' }}
           </a>
         </div>
-        <ul class="hidden md:!flex h-full items-center">
+        <ul class="drawer-menu-list hidden md:!flex h-full items-center">
         {% for link in linklist.links %}
-          <li class="h-full">
+          <li class="drawer-menu-item h-full relative">
             <a class="font-kurdis uppercase text-sm font-bold text-bear-black flex items-center h-full pt-[39px] pb-[29px] px-2" href="{{ link.url }}">{{ link.title }}</a>
           </li>
         {% endfor %}
