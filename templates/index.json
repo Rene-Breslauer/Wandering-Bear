@@ -74,7 +74,8 @@
             "mobile_image_alt": "",
             "title": "Cold Brew Boxes",
             "subtitle": "Our famous cold brew in over 15 flavors",
-            "accent_text": "Most Popular"
+            "accent_text": "Most Popular",
+            "badge": "shopify://shop_images/BADGE_592ededb-770c-4a04-9abd-61018c639afb.svg"
           }
         },
         "collection_tile_rCwyCX": {
@@ -113,7 +114,8 @@
         "title_type": "image",
         "title": "",
         "title_alt": "",
-        "title_image": "shopify://shop_images/GO_BIG._OR_GO_BIGGER..svg"
+        "title_image": "shopify://shop_images/GO_BIG._OR_GO_BIGGER..svg",
+        "badge": "shopify://shop_images/STAY_CAFFEINATED.svg"
       }
     },
     "floating_image_DU4qGq": {
@@ -326,7 +328,8 @@
         "content": "<h3>Like most grad schoolers, our co-founders Matt and Ben lived off of caffeine. But instead of just drinking cold brew, they obsessed over creating it.</h3><h3>Since 2014, we have been a small team tapping into new ways of doing coffee differently.</h3>",
         "background_image": "shopify://shop_images/Homepage.png",
         "video": "shopify://files/videos/wb-about.mp4",
-        "signature_image": "shopify://shop_images/signatures_1.png"
+        "signature_image": "shopify://shop_images/signatures_1.png",
+        "badge": "shopify://shop_images/Group_1327226585.svg"
       }
     }
   },
