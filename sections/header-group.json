@@ -58,7 +58,7 @@
           "type": "_header-menu",
           "static": true,
           "settings": {
-            "menu": "main-menu",
+            "menu": "new-main-menu-1",
             "color_scheme": "",
             "type_font_primary_size": "0.875rem",
             "menu_font_style": "inverse",
@@ -73,7 +73,7 @@
             "drawer_accordion": false,
             "drawer_accordion_expand_first": false,
             "drawer_dividers": false,
-            "mobile_menu": "mobile-menu-lvpwglic"
+            "mobile_menu": "mobile-menu"
           },
           "blocks": {}
         }
@@ -106,7 +106,7 @@
         "color_scheme_top": "scheme-4",
         "color_scheme_bottom": "",
         "color_scheme_transparent": "scheme-6",
-        "mobile_menu": "mobile-menu-lvpwglic",
+        "mobile_menu": "mobile-menu",
         "enable_transparent_header_home": false,
         "home_color_scheme": "inverse",
         "enable_transparent_header_product": false,
