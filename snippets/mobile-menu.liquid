@@ -2,19 +2,19 @@
 
 <div>
     {% for entry in nav_blocks.value %}
-        <div class="pl-8 py-[15px] flex items-center !gap-7 border-b border-[#431A031A]">
-            <div class="w-[86px] h-[88px]">
+        <div class="pl-5.5 md:!pl-8 py-2.5 md:!py-[15px] flex items-center !gap-5 md:!gap-7 border-b border-[#431A031A]">
+            <a href="{{ entry.url }}" class="w-[80px] h-[80px] md:!w-[86px] md:!h-[88px]">
             {{ entry.image | image_url: width: 200 | image_tag: class: 'h-full w-full object-cover' }}
-            </div>
+            </a>
 
             <div class="flex flex-col !gap-2">
-                <div class="flex items-center gap-2">
-                   <span class="text-lg font-extrabold">{{ entry.name }}</span>
+                <a href="{{ entry.url }}" class="flex items-center !gap-2">
+                   <span class="font-kurdis-semi-condensed text-lg font-extrabold">{{ entry.name }}</span>
                    <span class="text-sm font-medium font-parslay text-gold">{{ entry.accent_text }}</span>
-                </div>
-                <div class="flex items-center gap-[5px]">
+                </a>
+                <div class="flex items-center !gap-[5px] !cursor-default">
                 {% for badge in entry.badges.value %}
-                    <span class="font-kurdis text-xs font-bold py-1.5 px-2.5 rounded-[2px] bg-grey-tag/70 text-black uppercase border border-sky-blue">{{ badge }}</span>
+                    <span class="font-kurdis-semi-condensed text-xs font-bold py-1.5 px-2.5 rounded-[2px] bg-grey-tag/70 text-black uppercase border border-sky-blue">{{ badge }}</span>
                 {% endfor %}
                 </div>
             </div>
