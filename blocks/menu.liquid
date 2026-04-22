@@ -26,9 +26,15 @@
       assign should_disable_on_mobile = true
       assign should_open_by_default_on_mobile = true
     endif
+    if menu.title == 'Shop'
+    assign should_open_by_default_on_mobile = true
+    endif
   -%}
   {% capture menu_accordion_children %}
     <details
+    {% if menu.title == 'Shop' %}
+      open
+    {% endif %}
       class="
         menu__details
         spacing-style
@@ -39,10 +45,13 @@
         --spacing--size: {{ block_settings.menu_spacing }}px;
         {% render 'spacing-style', settings: block_settings %}
       "
+     
+
       {% if show_as_accordion == false %}
         open
       {% endif %}
       {{ block.shopify_attributes }}
+      
     >
       <summary class="menu__heading !text-[25px] {% if heading == blank and menu.title == blank %} menu__heading--empty{% endif %} {{ block_settings.heading_preset }}">
         <span class="menu__heading__default">{{ heading | default: menu.title }}</span>
@@ -67,7 +76,7 @@
         {% endif %}
       >
         {% if menu %}
-          <ul class="list-unstyled">
+          <ul class="list-unstyled !pb-4.5 md:!pb-0">
             {% for link in menu.links %}
               <li class="menu__item {% if block_settings.link_preset == 'paragraph' %} body uppercase {% endif %} {{ block_settings.link_preset }}">
                 <a href="{{ link.url }}">
@@ -82,6 +91,7 @@
   {% endcapture %}
   {% render 'accordion-custom-component',
     children: menu_accordion_children,
+    menu_title: menu.title,
     class: menu_class,
     disable_on_desktop: true,
     open_by_default_on_desktop: true,

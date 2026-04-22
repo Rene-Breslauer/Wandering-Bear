@@ -4,6 +4,7 @@
   Renders the accordion-custom custom element wrapper with co-located styles.
 
   @param {string} children - The content to render inside the component (typically a <details> element)
+  @param {string} menu_title - The title of the menu (optional)
   @param {string} [class] - Additional CSS classes
   @param {boolean} [open] - Whether the accordion is open (marker attribute)
   @param {boolean} [open_by_default_on_desktop] - Whether accordion opens by default on desktop
@@ -16,7 +17,8 @@
 
   @example
   {% capture accordion_content %}
-    <details class="details">
+    <details
+    class="details">
       <summary>Click to expand</summary>
       <div class="details-content">Content here</div>
     </details>
@@ -30,6 +32,9 @@
 <accordion-custom
   {% if class %}
     class="{{ class }}"
+  {% endif %}
+  {% if menu_title == 'Shop' %}
+    open
   {% endif %}
   {% if open %}
     open
