@@ -15,7 +15,7 @@
         "button_9fyEpA": {
           "type": "button",
           "settings": {
-            "style": "primary",
+            "style": "secondary-gold",
             "label": "Shop Lattes",
             "link": "shopify://collections/lattes",
             "badge": "shopify://shop_images/NEW_BADGE.svg"
@@ -165,6 +165,7 @@
         "title_type": "image",
         "title": "",
         "title_image": "shopify://shop_images/lattes-got-benefits.svg",
+        "title_image_mobile": "shopify://shop_images/Group_1327226608_9dce444c-5629-4918-85ff-0a441448ddb9.png",
         "title_alt": "This latte's got benefits",
         "button_label": "Shop Lattes",
         "button_link": "shopify://collections/lattes"
@@ -247,8 +248,11 @@
         "title_type": "image",
         "title": "",
         "title_image": "shopify://shop_images/OUR_MEMBERS_UNLOCK_BETTER_PRICES_WITH_EVERY_SIP.svg",
+        "title_image_mobile": "shopify://shop_images/Group_1327226609.svg",
+        "title_alt": "Our members unlock better prices with every sip",
         "subtitle": "<p>Start earning $5 for every $50 spent. The best part is – you can join for free.  Upgrade to VIP or Elite anytime for exclusive flavors, bigger discounts, and more perks.</p>",
         "foreground_image": "shopify://shop_images/Group_1327226595.svg",
+        "foreground_image_mobile": "shopify://shop_images/Group_1327226610.svg",
         "description": "Join XX+ members earning rewards with every order.",
         "button_label": "Learn More",
         "button_link": "shopify://pages/membership"
@@ -325,6 +329,7 @@
         "title": "",
         "title_alt": "",
         "title_image": "shopify://shop_images/Group_1327226597.svg",
+        "title_image_mobile": "shopify://shop_images/Group_1327226611.svg",
         "content": "<h3>Like most grad schoolers, our co-founders Matt and Ben lived off of caffeine. But instead of just drinking cold brew, they obsessed over creating it.</h3><h3>Since 2014, we have been a small team tapping into new ways of doing coffee differently.</h3>",
         "background_image": "shopify://shop_images/Homepage.png",
         "video": "shopify://files/videos/wb-about.mp4",
