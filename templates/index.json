@@ -70,7 +70,7 @@
           "settings": {
             "collection": "cold-brew-boxes",
             "image": "shopify://shop_images/wb-col-1.png",
-            "image_mobile": "shopify://shop_images/Group_1327226587.png",
+            "image_mobile": "shopify://shop_images/Mobile_Tile_1.png",
             "mobile_image_alt": "",
             "title": "Cold Brew Boxes",
             "subtitle": "Our famous cold brew in over 15 flavors",
@@ -83,7 +83,7 @@
           "settings": {
             "collection": "cold-brew-cartons",
             "image": "shopify://shop_images/wb-col-2.png",
-            "image_mobile": "shopify://shop_images/Group_1327226606_77567b6f-75a4-448b-b7de-81a5c796ad52.png",
+            "image_mobile": "shopify://shop_images/Mobile_Tile_2.png",
             "mobile_image_alt": "",
             "title": "Multi-Serve Cartons",
             "subtitle": "Convenient carton packs in select flavors. Available for cold brew, latte, and concentrate.",
@@ -95,7 +95,7 @@
           "settings": {
             "collection": "test-single-serve-12-cartons-11oz",
             "image": "shopify://shop_images/wb-col-3.png",
-            "image_mobile": "shopify://shop_images/Group_1327226604.png",
+            "image_mobile": "shopify://shop_images/Mobile_Tile_3.png",
             "mobile_image_alt": "",
             "title": "Single Serves",
             "subtitle": "Perfect for mornings on the move and afternoons out",
@@ -161,7 +161,8 @@
         "color_scheme": "",
         "background_image": "shopify://shop_images/Group_1327226596.png",
         "background_image_mobile": "shopify://shop_images/Group_1327226600.png",
-        "floating_image": "shopify://shop_images/Latte_8oz_Pour_Induldge_LargePop_1.png",
+        "floating_image": "shopify://shop_images/LatteHands_Badge.png",
+        "floating_image_mobile": "shopify://shop_images/Mobile_Hand.png",
         "title_type": "image",
         "title": "",
         "title_image": "shopify://shop_images/lattes-got-benefits.svg",
