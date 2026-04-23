@@ -43,7 +43,19 @@
 {% capture video_content %}
     {% if video != blank %}
     <div x-data="VideoPlayer()" class="rounded-[10px] overflow-hidden relative shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]">
-        <div @click="toggleSound()" class="absolute bottom-10 left-10 z-5">Volume</div>
+        <div @click="toggleSound()" class="absolute bottom-5 left-5 z-5 cursor-pointer">
+            <span class="visually-hidden">Toggle Sound</span>
+            <div class="flex items-center justify-center h-10 w-10 rounded-full bg-[rgba(249,222,88,0.7)] text-white">
+                <div class="w-6 h-6 flex items-center justify-center">
+                <span x-show="videoMuted" x-cloak class="block">
+                        {% render 'icons', icon: 'mute' class: 'w-8 h-auto mt-1.5 -ml-0.5' %}
+                    </span>
+                    <span x-show="!videoMuted" x-cloak class="block">
+                        {% render 'icons', icon: 'unmute' class: 'w-8 h-auto mt-1.5' %}
+                    </span>
+                </div>
+            </div>
+        </div>
           <div @click="togglePlay()">
             {% render 'video', video: video, disable_controls: true, video_autoplay: true %}
           </div>

@@ -65,9 +65,12 @@
     {% assign source = source %}
 {% endif %}
 
+
 {% capture img_parameters %}
     loading="{{ loading }}"
-    preload="{{ preload }}"
+    {% if preload %}
+      preload="{{ preload }}"
+    {% endif %}
     alt="{{ source.alt }}"
     class="{{ class }}"
 {% endcapture %}

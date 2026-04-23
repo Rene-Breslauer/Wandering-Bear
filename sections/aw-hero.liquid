@@ -15,13 +15,14 @@
 %}
 
 {% capture hero_content %}
-        {% render 'picture', source: background_image, tablet_source: background_image_tablet, mobile_source: background_image_mobile, class: 'w-full !h-full object-cover !max-w-none absolute inset-0', alt: background_image.alt, width: 1920, height: 1080 %}
+        {% render 'picture', source: background_image, tablet_source: background_image_tablet, mobile_source: background_image_mobile, class: 'w-full !h-full object-cover !max-w-none absolute inset-0', alt: background_image.alt, width: 1920, height: 1080, preload: 'eager', loading: 'eager' %}
         {% if title_image != blank or title_text != blank or subtitle != blank %}
             <div class="container relative wb-flex flex-col md:!flex-row justify-end w-[800px] mx-auto h-full pb-12 md:!pb-0">
                 <div class="relative wb-flex flex-col justify-center gap-4 z-1 max-w-full">
                     {% if title_image != blank %}
-                        {{ title_image | image_url: width: 1920 | image_tag: class: 'hidden md:!block w-full h-full object-contain' }}
-                        {{ title_image_mobile | image_url: width: 1920 | image_tag: class: 'block relative left-5 sm:!left-0 md:!hidden w-full h-full object-contain !max-w-[270px] mx-auto' }}
+                        {% render 'title-image', image: title_image, image_mobile: title_image_mobile, alt: title_image.alt, class: 'relative left-5 sm:!left-0 w-full h-full object-contain !max-w-[270px] md:!max-w-full mx-auto', preload: 'eager', loading: 'eager' %}
+                        {% comment %} {{ title_image | image_url: width: 1920 | image_tag: class: 'hidden md:!block w-full h-full object-contain' }}
+                        {{ title_image_mobile | image_url: width: 1920 | image_tag: class: 'block relative left-5 sm:!left-0 md:!hidden w-full h-full object-contain !max-w-[270px] mx-auto' }} {% endcomment %}
                     {% elsif title_text != blank %}
                         <h1 class="h1">{{ title_text }}</h1>
                     {% endif %}
@@ -33,7 +34,7 @@
                             {% for button in buttons %}
                                 <div class="relative mx-auto md:!mx-0">
                                     {% if button.settings.badge != blank %}
-                                        {{ button.settings.badge | image_url: width: 100 | image_tag: class: 'absolute z-[2] -top-5 -left-10 !w-[59px] !h-auto' }}
+                                        {{ button.settings.badge | image_url: width: 100 | image_tag: class: 'absolute z-[2] -top-5 -left-10 !w-[59px] !h-auto', loading: 'eager', preload: 'eager' }}
                                     {% endif %}
                                     {% render 'wb-button', style: button.settings.style, label: button.settings.label, link: button.settings.link %}
                                 </div>
@@ -51,7 +52,7 @@
       {{ hero_content }}
     </div>
     {% if badge != blank %}
-        {{ badge | image_url: width: 100 | image_tag: class: 'absolute z-[2] -bottom-5 right-[20vw] !w-[85px] !h-auto' }}
+        {{ badge | image_url: width: 100 | image_tag: class: 'absolute z-[2] -bottom-5 right-[20vw] !w-[85px] !h-auto', loading: 'eager', preload: 'eager' }}
     {% endif %}
     <svg preserveAspectRatio="none" class="absolute -bottom-0.5 left-0 w-full z-[2]" xmlns="http://www.w3.org/2000/svg" width="1290" height="30" viewBox="0 0 1290 30" fill="none">
         <path d="M0 0.952156L320 0L938 7.63188L1290 5.2564V30H0V0.952156Z" fill="{{ color_scheme.settings.background }}"/>

@@ -1,3 +1,17 @@
+{% liquid
+   if loading
+    assign loading = loading
+   else
+    assign loading = 'lazy'
+   endif
+
+   if preload
+    assign preload = preload
+   else
+    assign preload = 'auto'
+   endif
+%}
+
 <picture>
     <source srcset="{{ image | image_url: width: 1920 }}" media="(min-width: 1920px)">
     <source srcset="{{ image | image_url: width: 1440 }}" media="(min-width: 1440px)">
@@ -11,6 +25,6 @@
     {% else %}
         <source srcset="{{ image | image_url: width: 480 }}" media="(min-width: 480px)">
         <source srcset="{{ image | image_url: width: 320 }}" media="(min-width: 320px)">
-        <img src="{{ image | image_url: width: 365 }}" alt="{{ alt }}" class="{{ class }}">
+        <img src="{{ image | image_url: width: 365 }}" alt="{{ alt }}" class="{{ class }}" loading="{{ loading }}" preload="{{ preload }}">
     {% endif %}
 </picture>

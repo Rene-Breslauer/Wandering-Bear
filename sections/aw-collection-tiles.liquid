@@ -46,14 +46,10 @@
                     {% if image != blank %}
                         {% render 'picture', 
                             source: image, 
-                            class: 'hidden md:!block w-full h-full object-cover'
-                        %}
-                    {% endif %}
-                    {% if image_mobile != blank %}
-                        {% render 'picture', 
-                            source: image_mobile, 
-                            class: 'block md:!hidden w-full h-full object-cover'
-                            alt: mobile_image_alt
+                            mobile_source: image_mobile,
+                            class: 'w-full h-full object-cover',
+                            preload: 'eager',
+                            loading: 'eager'
                         %}
                     {% endif %}
                     </a>

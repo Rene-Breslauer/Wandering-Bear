@@ -6,17 +6,17 @@ export default (Alpine: AlpineType) => {
     Alpine.data("VideoPlayer", (
         video: any) => ({
         video: video,
+        videoMuted: false,
         el: null,
 
         init() {
             this.el = this.$el;
-            console.log(this.el);
             this.video = this.el.querySelector('video');
-            console.log(this.video);
         },
 
         toggleSound() {
             this.video.muted = !this.video.muted;
+            this.videoMuted = !this.videoMuted;
         },
 
         togglePlay() {
