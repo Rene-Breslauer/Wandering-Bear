@@ -18,7 +18,7 @@
           "type": "menu",
           "name": "t:names.menu",
           "settings": {
-            "menu": "main-menu",
+            "menu": "new-footer-col-1",
             "heading": "",
             "menu_spacing": 12,
             "show_as_accordion": true,
@@ -39,7 +39,7 @@
           "type": "menu",
           "name": "t:names.menu",
           "settings": {
-            "menu": "main-menu",
+            "menu": "our-company",
             "heading": "",
             "menu_spacing": 12,
             "show_as_accordion": true,
@@ -60,7 +60,7 @@
           "type": "menu",
           "name": "t:names.menu",
           "settings": {
-            "menu": "main-menu",
+            "menu": "support",
             "heading": "",
             "menu_spacing": 12,
             "show_as_accordion": true,
@@ -276,7 +276,7 @@
           "type": "policy-menu",
           "name": "Policy Menu",
           "settings": {
-            "menu": "footer-3",
+            "menu": "new-privacy-links",
             "heading": "",
             "menu_spacing": 12,
             "show_as_accordion": false,
