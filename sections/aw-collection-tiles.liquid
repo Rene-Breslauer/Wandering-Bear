@@ -13,7 +13,7 @@
 
 <div class="pt-5 pb-8 relative" style="background-color: {{ background_color }}">
     {% if badge != blank %}
-        {{ badge | image_url: width: 100 | image_tag: class: 'absolute z-[2] -top-[60px] md:!-top-[80px] right-[9vw] md:!right-[15vw] !w-[66px] md:!w-[85px] !h-auto' }}
+        {{ badge | image_url: width: 100 | image_tag: class: 'absolute z-[2] -top-[60px] md:!-top-[80px] right-[5vw] md:!right-[15vw] !w-[80px] md:!w-[85px] !h-auto' }}
     {% endif %}
     {% if title_type == 'image' %}
         {% if title_image != blank %}
@@ -27,7 +27,7 @@
         {% endif %}
     {% endif %}
     <div class="container max-w-[1140px] mx-auto">
-        <div class="wb-grid grid-cols-1 md:grid-cols-3 gap-0 md:gap-20">
+        <div class="wb-grid grid-cols-1 md:px-10 xl:!px-0 md:grid-cols-3 gap-0 md:gap-10 xl:gap-20">
             {% for block in section.blocks %}
                 {% liquid
                     assign image = block.settings.image

@@ -2,6 +2,7 @@
     Renders a picture element with the given source and sources.
     @param {object} source - The source image
     @param {object} [sources] - The sources for the picture element (optional)
+    @param {object} [mobile_source] - The mobile source image (optional)
     @param {string} [class] - The class for the picture element (optional)
     @param {string} [loading] - The loading attribute for the picture element (optional)
     @param {string} [preload] - The preload attribute for the picture element (optional)
@@ -16,8 +17,13 @@
 {% else %}
     <source srcset="{{ source | image_url: width: 1920 }}" media="(min-width: 1024px)">
     <source srcset="{{ source | image_url: width: 1024 }}" media="(min-width: 768px)">
-    <source srcset="{{ source | image_url: width: 768 }}" media="(min-width: 480px)">
-    <source srcset="{{ source | image_url: width: 480 }}" media="(min-width: 320px)">
+    {% if mobile_source %}
+        <source srcset="{{ mobile_source | image_url: width: 480 }}" media="(min-width: 480px)">
+        <source srcset="{{ mobile_source | image_url: width: 320 }}" media="(min-width: 320px)">
+    {% else %}
+        <source srcset="{{ source | image_url: width: 768 }}" media="(min-width: 480px)">
+        <source srcset="{{ source | image_url: width: 480 }}" media="(min-width: 320px)">
+    {% endif %}
 {% endif %}
 {% endcapture %}
 
@@ -43,6 +49,12 @@
     {% assign height = height %}
 {% else %}
     {% assign height = image.height %}
+{% endif %}
+
+{% if mobile_source %}
+    {% assign source = mobile_source %}
+{% else %}
+    {% assign source = source %}
 {% endif %}
 
 {% capture img_parameters %}

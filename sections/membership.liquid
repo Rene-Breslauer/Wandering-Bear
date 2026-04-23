@@ -5,8 +5,11 @@
     assign title_type = section.settings.title_type
     assign title = section.settings.title
     assign title_image = section.settings.title_image
+    assign title_image_mobile = section.settings.title_image_mobile
+    assign title_alt = section.settings.title_alt
     assign subtitle = section.settings.subtitle
     assign foreground_image = section.settings.foreground_image
+    assign foreground_image_mobile = section.settings.foreground_image_mobile
     assign description = section.settings.description
     assign bulletpoints = section.blocks | where: "type", "bulletpoint"
     assign button_label = section.settings.button_label
@@ -18,20 +21,18 @@
         <path d="M0 14.5L424 17.0497L1280 14.5V0H0V14.5Z" fill="{{ color_scheme.settings.background }}"/>
     </svg>
     {% if background_image != blank %}
-        {% render 'picture', source: background_image, class: 'hidden md:!block w-full h-full !min-h-full object-cover absolute inset-0' %}
+        {% render 'picture', source: background_image, mobile_source: background_image_mobile, class: 'hidden md:!block w-full h-full !min-h-full object-cover absolute inset-0' %}
     {% endif %}
     {% if background_image_mobile != blank %}
         {% render 'picture', source: background_image_mobile, class: 'block md:!hidden w-full !h-full object-bottom md:!object-center object-cover absolute inset-0' %}
     {% endif %}
     <div class="container mx-auto flex justify-end px-4">
         <div class="md:!w-1/2 relative z-[2]">
-            <div class="wb-flex flex-col sm:!pb-[20vw] md:!pb-0">
+            <div class="wb-flex flex-col pb-[15vw] sm:!pb-[20vw] md:!pb-0">
                 {% if title_type == 'text' %}
                     <h2 class="h2 text-gold mb-5">{{ title }}</h2>
                 {% elsif title_type == 'image' %}
-                    {% if title_image != blank %}
-                        {{ title_image | image_url: width: 365 | image_tag: class: 'w-full max-h-full object-contain !mb-5', alt: title_alt }}
-                    {% endif %}
+                    {% render 'title-image', image: title_image, image_mobile: title_image_mobile, alt: title_alt, class: 'w-full max-h-full object-contain !mb-5' %}
                 {% endif %}
                 {% if subtitle != blank %}
                     <span class="body block !mb-5" style="color: {{ color_scheme.settings.foreground }}">{{ subtitle }}</span>
@@ -43,7 +44,7 @@
                     </div>
                 {% endfor %}
                 {% if foreground_image != blank %}
-                    {{ foreground_image | image_url: width: 365 | image_tag: class: 'w-full max-h-full object-contain', alt: title_alt }}
+                    {% render 'picture', source: foreground_image, mobile_source: foreground_image_mobile, class: 'w-full max-h-full object-contain', alt: title_alt %}
                 {% endif %}
                 {% if description != blank %}
                     <div class="rte" style="color: {{ color_scheme.settings.foreground }}">{{ description }}</div>
@@ -108,6 +109,18 @@
                 "visible_if": "{{ section.settings.title_type == 'image' }}"
             },
             {
+                "type": "image_picker",
+                "id": "title_image_mobile",
+                "label": "Title Image Mobile",
+                "visible_if": "{{ section.settings.title_type == 'image' }}"
+            },
+            {
+                "type": "text",
+                "id": "title_alt",
+                "label": "Title Alt",
+                "visible_if": "{{ section.settings.title_type == 'image' }}"
+            },
+            {
                 "type": "richtext",
                 "id": "subtitle",
                 "label": "Subtitle"
@@ -116,6 +129,11 @@
                 "type": "image_picker",
                 "id": "foreground_image",
                 "label": "Foreground Image"
+            },
+            {
+                "type": "image_picker",
+                "id": "foreground_image_mobile",
+                "label": "Foreground Image Mobile"
             },
             {
                 "type": "text",
