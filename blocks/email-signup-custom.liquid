@@ -13,7 +13,7 @@
   {% endif %}
   {%- form 'customer', class: 'email-signup__form spacing-style' %}
     <div
-      class="email-signup__input-group !gap-0 {% if block_settings.integrated_button and block_settings.border_style != 'underline' %}email-signup__input-group--integrated{% endif %} {% if block_settings.border_style == 'underline' %}email-signup__input-group--underline{% endif %} {% if block_settings.border_style == 'none' %}email-signup__input-group--no-border{% endif %} {% if block_settings.display_type == 'arrow' %}email-signup__input-group--arrow{% endif %} {% if block_settings.inherit_color_scheme == false %}color-{{ block_settings.color_scheme }}{% endif %}"
+      class="email-signup__input-group !gap-0 !font-kurdis-semi-condensed !font-semibold{% if block_settings.integrated_button and block_settings.border_style != 'underline' %}email-signup__input-group--integrated{% endif %} {% if block_settings.border_style == 'underline' %}email-signup__input-group--underline{% endif %} {% if block_settings.border_style == 'none' %}email-signup__input-group--no-border{% endif %} {% if block_settings.display_type == 'arrow' %}email-signup__input-group--arrow{% endif %} {% if block_settings.inherit_color_scheme == false %}color-{{ block_settings.color_scheme }}{% endif %}"
       style="--border-width: {{ block_settings.border_width }}px; --border-radius: {{ block_settings.border_radius }}px;"
     >
       <label
@@ -25,7 +25,7 @@
       <input
         id="EmailInput-{{ block.id }}"
         class="email-signup__input email-signup__input--{{ block_settings.border_style }} {{ block_settings.input_type_preset }} {{ block_settings.border_variation }}
-        !px-5.5 !py-3.5 !rounded-[5px] !text-sm !font-kurdis-semi-condensed !font-semibold"
+        !px-5.5 !py-3.5 !rounded-tl-[5px] !rounded-bl-[5px] !rounded-tr-none !rounded-br-none !text-sm !font-kurdis-semi-condensed !font-semibold"
         type="email"
         name="contact[email]"
         autocorrect="off"

@@ -12,10 +12,10 @@
 {% endcapture %}
 
 <div x-data="swiperSlider('{{ active_collection_title }}', '{{ active_collection_accent_text }}','{{ active_collection_handle }}')" class="relative z-1 pt-5 pb-[53px]" style="background-color: {{ color_scheme.settings.background }}">
-    <div class="container flex-col items-center !gap-1.5 md:!gap-4 md:!items-start md:!flex-row mx-auto flex justify-center md:!justify-start relative">
+    <div class="container flex-col items-center !gap-1.5 md:!gap-4 md:!items-start md:!flex-row mx-auto flex justify-center md:!justify-start relative md:!ml-[128px]">
     {% if title_image != blank %}
-        <div class="h-[100px] w-[263px] md:!mb-8 relative z-[2]">
-            {{ title_image | image_url: width: 365 | image_tag: class: 'w-full max-h-full object-contain', alt: title_alt }}
+        <div class="h-[101px] md:!h-[133px] w-[263px] md:!mb-8 relative z-[2]">
+            {{ title_image | image_url: width: 365 | image_tag: class: '!w-full max-h-full object-contain', alt: title_alt }}
         </div>
     {% endif %}
 
@@ -26,7 +26,7 @@
                 <div @click="toggleDropdown()" class="flex items-center justify-between relative rounded-[4px] cursor-pointer bg-[#F4ECE5] p-3 border border-espresso">
                     <div class="flex items-center whitespace-nowrap">
                         <span x-text="activeCollectionTitle" class="font-kurdis-semi-condensed text-base font-bold whitespace-nowrap">{{ section.blocks[0].settings.title }}</span>
-                        <span x-text="activeCollectionAccentText" class="font-parslay whitespace-nowrap text-gold">{{ section.blocks[0].settings.accent_text }}</span>
+                        <span x-text="activeCollectionAccentText" class="font-parslay whitespace-nowrap text-kraft text-lg">{{ section.blocks[0].settings.accent_text }}</span>
                     </div>
                     <span :class="{ 'rotate-180': dropdownOpen }" class="!min-w-4 transition-transform duration-300">
                         {% render 'icons', icon: 'chevron-down' %}

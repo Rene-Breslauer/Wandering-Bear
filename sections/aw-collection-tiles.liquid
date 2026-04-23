@@ -11,13 +11,13 @@
     assign badge = section_settings.badge
 %}
 
-<div class="pt-5 pb-8 relative" style="background-color: {{ background_color }}">
+<div class="pt-5 pb-0 md:!pt-5 md:!pb-8 relative" style="background-color: {{ background_color }}">
     {% if badge != blank %}
         {{ badge | image_url: width: 100 | image_tag: class: 'absolute z-[2] -top-[60px] md:!-top-[80px] right-[5vw] md:!right-[15vw] !w-[80px] md:!w-[85px] !h-auto' }}
     {% endif %}
     {% if title_type == 'image' %}
         {% if title_image != blank %}
-            <div class="h-[36px] mx-auto mb-7.5">
+            <div class="h-[36px] mx-auto mb-5 md:!mb-7.5">
               {{ title_image | image_url: width: 365 | image_tag: class: 'w-full !max-w-[228px] md:!max-w-full max-h-full object-contain mx-auto', alt: title_alt }}
             </div>
         {% endif %}
@@ -38,7 +38,7 @@
                     assign accent_text = block.settings.accent_text
                     assign badge = block.settings.badge
                 %}
-                <div class="relative">
+                <div class="relative {% if forloop.index == 2 %} -mt-6 md:!mt-0 {% endif %}">
                     <a href="{{ collection.url }}">
                     {% if badge != blank %}
                         {{ badge | image_url: width: 100 | image_tag: class: 'hidden md:!block absolute z-[2] -top-[50px] -left-[50px] !w-[148px] !h-auto' }}

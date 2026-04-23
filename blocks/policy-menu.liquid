@@ -10,7 +10,7 @@
 {% if menu != blank or heading != blank %}
   {% capture menu_accordion_children %}
     <div class="font-kurdis-semi-condensed font-semibold text-sm" style="color: {{ color_scheme.settings.foreground }}">
-        <ul class="flex flex-wrap justify-center md:!justify-start w-full">
+        <ul class="flex flex-wrap lg:!flex-nowrap justify-center md:!justify-start w-full !gap-1">
             {% for link in menu.links %}
                 <li>
                     <a class="uppercase" href="{{ link.url }}">
