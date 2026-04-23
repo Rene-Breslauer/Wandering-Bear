@@ -15,45 +15,7 @@
 %}
 
 {% capture hero_content %}
-        {% if background_image != blank %}
-            <div class="w-full h-full absolute inset-0 {% if background_image_mobile != blank %} hidden md:!block {% endif %}">
-                {% render 'picture', 
-                    loading: 'eager', 
-                    preload: true, 
-                    source: background_image, 
-                    class: 'w-full !h-full object-cover !max-w-none',
-                    alt: background_image.alt,
-                    width: 1920,
-                    height: 1080
-                %}
-            </div>
-        {% endif %}
-        {% if background_image_tablet != blank %}
-            <div class="w-full h-full absolute inset-0 sm:!block md:!hidden">
-                {% render 'picture', 
-                    loading: 'eager', 
-                    preload: true, 
-                    source: background_image_tablet, 
-                    class: 'w-full !h-full object-cover !max-w-none',
-                    alt: background_image_tablet.alt,
-                    width: 1920,
-                    height: 1080
-                %}
-            </div>
-        {% endif %}
-        {% if background_image_mobile != blank %}
-            <div class="w-full h-full absolute inset-0 block sm:!hidden">
-                {% render 'picture', 
-                    loading: 'eager', 
-                    preload: true, 
-                    source: background_image_mobile, 
-                    class: '!w-auto object-cover !max-w-none !h-full !max-h-full',
-                    alt: background_image_mobile.alt,
-                    width: 1920,
-                    height: 1080
-                %}
-            </div>
-        {% endif %}
+        {% render 'picture', source: background_image, tablet_source: background_image_tablet, mobile_source: background_image_mobile, class: 'w-full !h-full object-cover !max-w-none absolute inset-0', alt: background_image.alt, width: 1920, height: 1080 %}
         {% if title_image != blank or title_text != blank or subtitle != blank %}
             <div class="container relative wb-flex flex-col md:!flex-row justify-end w-[800px] mx-auto h-full pb-12 md:!pb-0">
                 <div class="relative wb-flex flex-col justify-center gap-4 z-1 max-w-full">

@@ -2,6 +2,7 @@
     Renders a picture element with the given source and sources.
     @param {object} source - The source image
     @param {object} [sources] - The sources for the picture element (optional)
+    @param {object} [tablet_source] - The tablet source image (optional)
     @param {object} [mobile_source] - The mobile source image (optional)
     @param {string} [class] - The class for the picture element (optional)
     @param {string} [loading] - The loading attribute for the picture element (optional)
@@ -15,8 +16,15 @@
 {% if sources %}
     {{ sources }}
 {% else %}
+    <source srcset="{{ source | image_url: width: 1920 }}" media="(min-width: 1920px)">
+    <source srcset="{{ source | image_url: width: 1440 }}" media="(min-width: 1440px)">
+    <source srcset="{{ source | image_url: width: 1200 }}" media="(min-width: 1200px)">
     <source srcset="{{ source | image_url: width: 1920 }}" media="(min-width: 1024px)">
-    <source srcset="{{ source | image_url: width: 1024 }}" media="(min-width: 768px)">
+    {% if tablet_source %}
+        <source srcset="{{ tablet_source | image_url: width: 768 }}" media="(min-width: 768px)">
+    {% else %}
+        <source srcset="{{ source | image_url: width: 768 }}" media="(min-width: 768px)">
+    {% endif %}
     {% if mobile_source %}
         <source srcset="{{ mobile_source | image_url: width: 480 }}" media="(min-width: 480px)">
         <source srcset="{{ mobile_source | image_url: width: 320 }}" media="(min-width: 320px)">
