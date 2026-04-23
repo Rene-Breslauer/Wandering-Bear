@@ -2,6 +2,17 @@
     text-decoration: underline !important;
 }
 
+/* @media screen and (min-width: 749px) {
+  .header-drawer-icon svg {
+    display:  none;
+  }
+} */
+
+header-component[data-menu-style='menu'] .header-drawer-icon--open {
+  display:  none;
+}
+
+
 .drawer-menu-list .drawer-menu-item:first-of-type a::after {
     content: '';
     position: absolute;
@@ -12,6 +23,12 @@
     background-color: #955325;
     opacity: 1;
     transition: opacity 0.2s ease;
+}
+
+.section.header__row {
+  @media screen and (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 

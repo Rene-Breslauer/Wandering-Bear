@@ -16,7 +16,7 @@
       if (!trigger || !tooltip) return
 
       const triggerRect = trigger.getBoundingClientRect()
-      this.top = triggerRect.bottom + 8
+      {% comment %} this.top = triggerRect.bottom + 8 {% endcomment %}
 
       this.$nextTick(() => {
         const tooltipRect = tooltip.getBoundingClientRect()
@@ -83,7 +83,7 @@
     @resize.window="if (visible) setPosition()"
     @scroll.window="if (visible) setPosition()"
     class="fixed z-50 pt-2"
-    :style="`top:${top}px; left:${left}px;`"
+    :style="`left:${left}px;`"
     style="display: none;"
   >
     <svg

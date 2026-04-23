@@ -707,11 +707,15 @@ export function setHeaderMenuStyle() {
   if (headerComponent) {
     window.requestAnimationFrame(() => {
       const overflowList = headerComponent?.querySelector('overflow-list');
-      const hasReachedMinimum = overflowList && overflowList.hasAttribute('minimum-reached');
+      // const hasReachedMinimum = overflowList && overflowList.hasAttribute('minimum-reached');
+      const hasReachedMinimum = window.innerWidth < 750;
+      console.log('hasReachedMinimum', hasReachedMinimum);
       headerComponent.dataset.menuStyle = isTouchDevice() || hasReachedMinimum ? 'drawer' : 'menu';
+      console.log('headerComponent.dataset.menuStyle', headerComponent.dataset.menuStyle);
     });
   }
 }
+
 
 /**
  * Header group includes the header (with the menu, etc) and other sections like announcements, dividers, etc.

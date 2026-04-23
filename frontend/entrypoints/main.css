@@ -2,12 +2,14 @@
 
 @theme {
     --breakpoint-sm: 30rem; /* 480px */
+    --breakpoint-smd: 46.875rem; /* 750px */
     --color-gold: #FFD700;
     --color-sky-blue: #BFD7E9;
     --color-grey-tag: #E1E1E1;
     --color-light-sky: #D9EAF7;
     --color-bear-black: #1B1B1B;
     --color-espresso: #431A03;
+    --color-cream: #F7F7F7;
 }
 
 [x-cloak] {

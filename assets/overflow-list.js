@@ -42,7 +42,7 @@ export class OverflowList extends DeclarativeShadowElement {
       if (newValue === 'true') {
         this.#reset();
       } else {
-        this.#reflowItems();
+       // this.#reflowItems();
       }
     }
   }
@@ -110,7 +110,7 @@ export class OverflowList extends DeclarativeShadowElement {
     this.addEventListener(
       'reflow',
       /** @param {CustomEvent<{lastVisibleElement?: HTMLElement}>} event */ (event) => {
-        this.#reflowItems(0, event.detail.lastVisibleElement);
+       // this.#reflowItems(0, event.detail.lastVisibleElement);
       }
     );
 
@@ -175,7 +175,7 @@ export class OverflowList extends DeclarativeShadowElement {
       setTimeout(() => {
         // Remove the leftover <template> for dynamically injected <overflow-list> elements.
         this.querySelector(':scope > template[shadowrootmode="open"]')?.remove();
-        this.#reflowItems(entry.boundingClientRect.height);
+      //  this.#reflowItems(entry.boundingClientRect.height);
       }, 0);
     }
   };
@@ -190,7 +190,7 @@ export class OverflowList extends DeclarativeShadowElement {
 
     requestAnimationFrame(() =>
       setTimeout(() => {
-        this.#reflowItems();
+        //this.#reflowItems();
         this.#scheduled = false;
       }, 0)
     );
@@ -228,15 +228,15 @@ export class OverflowList extends DeclarativeShadowElement {
    */
   #updateMinimumReached(visibleElements) {
     if (this.minimumItems !== null) {
-      const minimumReached = visibleElements.length < this.minimumItems;
+      // const minimumReached = visibleElements.length < this.minimumItems;
 
-      if (minimumReached) {
-        this.setAttribute('minimum-reached', '');
-      } else {
-        this.removeAttribute('minimum-reached');
-      }
+      // if (minimumReached) {
+      //   this.setAttribute('minimum-reached', '');
+      // } else {
+      //   this.removeAttribute('minimum-reached');
+      // }
 
-      this.dispatchEvent(new OverflowMinimumEvent(minimumReached));
+      //this.dispatchEvent(new OverflowMinimumEvent(minimumReached));
     }
   }
 
@@ -256,92 +256,92 @@ export class OverflowList extends DeclarativeShadowElement {
    * @param {number} [listHeight] Initial height of the list
    * @param {HTMLElement | null} [lastVisibleElement] Optional element to place in last visible position
    */
-  #reflowItems = (listHeight = 0, lastVisibleElement = null) => {
-    const { defaultSlot, overflowSlot, moreSlot, list, placeholder } = this.#refs;
+  // #reflowItems = (listHeight = 0, lastVisibleElement = null) => {
+  //   const { defaultSlot, overflowSlot, moreSlot, list, placeholder } = this.#refs;
 
-    this.#unobserveChanges();
+  //   this.#unobserveChanges();
 
-    // Reset all elements to the default slot so we can check which ones overflow.
-    this.#moveItemsToDefaultSlot();
+  //   // Reset all elements to the default slot so we can check which ones overflow.
+  //   this.#moveItemsToDefaultSlot();
 
-    const elements = defaultSlot.assignedElements();
-    const lastElement = elements[elements.length - 1];
+  //   const elements = defaultSlot.assignedElements();
+  //   const lastElement = elements[elements.length - 1];
 
-    if (!lastElement) {
-      this.#observeChanges();
-      return;
-    }
+  //   if (!lastElement) {
+  //     this.#observeChanges();
+  //     return;
+  //   }
 
-    /** @type {Element[]} */
-    let visibleElements = [];
-    /** @type {Element[]} */
-    let overflowingElements = [];
-    let placeholderWidth = 0;
-    let hasOverflow = false;
+  //   /** @type {Element[]} */
+  //   let visibleElements = [];
+  //   /** @type {Element[]} */
+  //   let overflowingElements = [];
+  //   let placeholderWidth = 0;
+  //   let hasOverflow = false;
 
-    if (listHeight > 0) {
-      list.style.setProperty('height', `${listHeight}px`);
-    }
+  //   if (listHeight > 0) {
+  //     list.style.setProperty('height', `${listHeight}px`);
+  //   }
 
-    // Enable flex-wrap so overflowing items break to the next line. This makes calculations easier.
-    list.style.setProperty('flex-wrap', 'wrap');
-    placeholder.hidden = true;
+  //   // Enable flex-wrap so overflowing items break to the next line. This makes calculations easier.
+  //   list.style.setProperty('flex-wrap', 'wrap');
+  //   placeholder.hidden = true;
 
-    // Putting the "More" item (and lastVisibleElement, if provided) at the start of the list lets us see which items will fit on the same row.
-    moreSlot.style.setProperty('order', '-1');
-    moreSlot.hidden = false;
+  //   // Putting the "More" item (and lastVisibleElement, if provided) at the start of the list lets us see which items will fit on the same row.
+  //   moreSlot.style.setProperty('order', '-1');
+  //   moreSlot.hidden = false;
 
-    lastVisibleElement?.style.setProperty('order', '-1');
+  //   lastVisibleElement?.style.setProperty('order', '-1');
 
-    const moreSlotRect = moreSlot.getBoundingClientRect();
+  //   const moreSlotRect = moreSlot.getBoundingClientRect();
 
-    elements.forEach((element) => {
-      const elementRect = element.getBoundingClientRect();
+  //   elements.forEach((element) => {
+  //     const elementRect = element.getBoundingClientRect();
 
-      if (elementRect.top > moreSlotRect.top) {
-        if (!overflowingElements.length) {
-          placeholderWidth = elementRect.width;
-        }
+  //     if (elementRect.top > moreSlotRect.top) {
+  //       if (!overflowingElements.length) {
+  //         placeholderWidth = elementRect.width;
+  //       }
 
-        hasOverflow = true;
-        overflowingElements.push(element);
-      } else {
-        visibleElements.push(element);
-      }
-    });
+  //       hasOverflow = true;
+  //       overflowingElements.push(element);
+  //     } else {
+  //       visibleElements.push(element);
+  //     }
+  //   });
 
-    if (hasOverflow) {
-      moreSlot.style.removeProperty('order');
-    }
-    lastVisibleElement?.style.removeProperty('order');
+  //   if (hasOverflow) {
+  //     moreSlot.style.removeProperty('order');
+  //   }
+  //   lastVisibleElement?.style.removeProperty('order');
 
-    // Move the elements to the correct slot.
-    for (const element of elements) {
-      const targetSlot = overflowingElements.includes(element) ? overflowSlot.name : defaultSlot.name;
-      if (element.slot !== targetSlot) {
-        element.slot = targetSlot;
-      }
-    }
+  //   // Move the elements to the correct slot.
+  //   for (const element of elements) {
+  //     const targetSlot = overflowingElements.includes(element) ? overflowSlot.name : defaultSlot.name;
+  //     if (element.slot !== targetSlot) {
+  //       element.slot = targetSlot;
+  //     }
+  //   }
 
-    list.style.setProperty('counter-reset', `overflow-count ${overflowingElements.length}`);
-    this.style.setProperty('--overflow-count', `${overflowingElements.length}`);
+  //   list.style.setProperty('counter-reset', `overflow-count ${overflowingElements.length}`);
+  //   //this.style.setProperty('--overflow-count', `${overflowingElements.length}`);
 
-    // Adjust the "More" button visibility.
-    moreSlot.hidden = !hasOverflow;
+  //   // Adjust the "More" button visibility.
+  //   moreSlot.hidden = !hasOverflow;
 
-    if (hasOverflow) {
-      // Set the width and height of the placeholder so the list can grow if there is space.
-      placeholder.style.width = `${placeholderWidth}px`;
-      placeholder.hidden = false;
-    }
+  //   if (hasOverflow) {
+  //     // Set the width and height of the placeholder so the list can grow if there is space.
+  //     placeholder.style.width = `${placeholderWidth}px`;
+  //     placeholder.hidden = false;
+  //   }
 
-    // Reset the overflow property since children elements may need to display outside the list (e.g. dropdowns, popovers).
-    list.style.setProperty('overflow', 'unset');
+  //   // Reset the overflow property since children elements may need to display outside the list (e.g. dropdowns, popovers).
+  //   list.style.setProperty('overflow', 'unset');
 
-    hasOverflow && this.#updateMinimumReached(visibleElements);
+  //   hasOverflow && this.#updateMinimumReached(visibleElements);
 
-    this.#observeChanges();
-  };
+  //   this.#observeChanges();
+  // };
 
   #observeChanges() {
     this.#resizeObserver.observe(this);

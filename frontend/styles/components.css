@@ -43,9 +43,8 @@
 
 .btn.secondary,
 .btn.secondary-gold {
-
     span {
-        color: var(--color-brand-espresso);
+        color: var(--color-cream);
         transition: color 0.3s ease;
         position: relative;
         z-index: 1;
