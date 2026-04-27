@@ -244,8 +244,8 @@
       "name": "Membership",
       "settings": {
         "color_scheme": "scheme-86fda943-8b90-41a8-a9fe-d5d11e7bb384",
-        "background_image": "shopify://shop_images/Group_1327226595.jpg",
-        "background_image_mobile": "shopify://shop_images/wb-chair.jpg",
+        "background_image": "shopify://shop_images/Unlock_Background.jpg",
+        "background_image_mobile": "shopify://shop_images/Group_1327226600_552c72fa-3873-4ef2-bb39-0b50a3ec9db2.png",
         "title_type": "image",
         "title": "",
         "title_image": "shopify://shop_images/OUR_MEMBERS_UNLOCK_BETTER_PRICES_WITH_EVERY_SIP.svg",
@@ -256,7 +256,8 @@
         "foreground_image_mobile": "shopify://shop_images/Group_1327226610.svg",
         "description": "Join XX+ members earning rewards with every order.",
         "button_label": "Learn More",
-        "button_link": "shopify://pages/membership"
+        "button_link": "shopify://pages/membership",
+        "foreground_bg_image": "shopify://shop_images/WB_HOLLYWOOD_SHOT_20_e6e71f8e-6241-45ff-aea4-29f81e463f42.png"
       }
     },
     "aw_logo_wall_AXpPn6": {
