@@ -1,64 +1,6 @@
+
 <div
-  x-data="{
-    open: false,
-    hovering: false,
-    left: 0,
-    top: 0,
-    arrowLeft: 0,
-
-    get visible() {
-      return this.open || this.hovering
-    },
-
-    setPosition() {
-      const trigger = this.$refs.trigger
-      const tooltip = this.$refs.tooltip
-      if (!trigger || !tooltip) return
-
-      const triggerRect = trigger.getBoundingClientRect()
-      {% comment %} this.top = triggerRect.bottom + 8 {% endcomment %}
-
-      this.$nextTick(() => {
-        const tooltipRect = tooltip.getBoundingClientRect()
-        const tooltipWidth = tooltipRect.width
-        const viewportWidth = window.innerWidth
-        const padding = 8
-
-        let left = triggerRect.left + (triggerRect.width / 2) - (tooltipWidth / 2)
-
-        if (left < padding) left = padding
-        if (left + tooltipWidth > viewportWidth - padding) {
-          left = viewportWidth - tooltipWidth - padding
-        }
-
-        this.left = left
-
-        const triggerCenter = triggerRect.left + (triggerRect.width / 2)
-        const minArrow = 16
-        const maxArrow = tooltipWidth - 16
-
-        let arrowLeft = triggerCenter - left
-        if (arrowLeft < minArrow) arrowLeft = minArrow
-        if (arrowLeft > maxArrow) arrowLeft = maxArrow
-
-        this.arrowLeft = arrowLeft
-      })
-    },
-
-    showTooltip() {
-      this.hovering = true
-      this.setPosition()
-    },
-
-    hideTooltip() {
-      this.hovering = false
-    },
-
-    toggleTooltip() {
-      this.open = !this.open
-      if (this.open) this.setPosition()
-    }
-  }"
+  x-data="tooltip()"
   @click.outside="open = false"
   class="relative inline-block"
 >
@@ -73,33 +15,36 @@
     {% render 'icons', icon: 'info' %}
   </div>
 
-  <!-- tooltip -->
-  <div
-    x-ref="tooltip"
-    x-show="visible"
-    x-transition.opacity.duration.200ms
-    @mouseenter="hovering = true"
-    @mouseleave="hideTooltip()"
-    @resize.window="if (visible) setPosition()"
-    @scroll.window="if (visible) setPosition()"
-    class="fixed z-50 pt-2"
-    :style="`left:${left}px;`"
-    style="display: none;"
-  >
-    <svg
-      class="absolute -top-1"
-      :style="`left:${arrowLeft}px; transform: translateX(-50%);`"
-      xmlns="http://www.w3.org/2000/svg"
-      width="14"
-      height="12"
-      viewBox="0 0 14 12"
-      fill="none"
-    >
-      <path d="M6.9282 0L13.8564 12H0L6.9282 0Z" fill="#F2E6DC"/>
-    </svg>
+  <template x-teleport="body">
 
-    <div class="tooltip-content w-[200px] max-w-[calc(100vw-16px)] font-['Roboto',sans-serif] font-normal rounded bg-[#F2E6DC] p-3 text-left text-xs leading-snug text-[#431A03] shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]">
-      {{ content }}
+    <!-- tooltip -->
+    <div
+      x-ref="tooltip"
+      x-show="visible"
+      x-transition.opacity.duration.200ms
+      @mouseenter="hovering = true"
+      @mouseleave="hideTooltip()"
+      @resize.window="if (visible) setPosition()"
+      @scroll.window="if (visible) setPosition()"
+      class="fixed z-50 pt-2"
+      :style="`left:${left}px;top:${top}px;`"
+      style="display: none;"
+    >
+      <svg
+        class="absolute -top-1"
+        :style="`left:${arrowLeft}px; transform: translateX(-50%);`"
+        xmlns="http://www.w3.org/2000/svg"
+        width="14"
+        height="12"
+        viewBox="0 0 14 12"
+        fill="none"
+      >
+        <path d="M6.9282 0L13.8564 12H0L6.9282 0Z" fill="#F2E6DC"/>
+      </svg>
+
+      <div class="tooltip-content w-[200px] max-w-[calc(100vw-16px)] font-['Roboto',sans-serif] font-normal rounded bg-[#F2E6DC] p-3 text-left text-xs leading-snug text-[#431A03] shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]">
+        {{ content }}
+      </div>
     </div>
-  </div>
+  </template>
 </div>
