@@ -14,14 +14,20 @@
     assign bulletpoints = section.blocks | where: "type", "bulletpoint"
     assign button_label = section.settings.button_label
     assign button_link = section.settings.button_link
+    assign foreground_bg_image = section.settings.foreground_bg_image
 %}
 
-<div class="relative pt-[55px] pb-[248px] md:!pb-[55px] lg:!py-[65px] z-0 overflow-hidden" style="background-color: {{ color_scheme.background }}">
+<div class="flex flex-col md:!flex-row relative pt-[55px] md:!pb-[55px] lg:!py-[65px] z-0 overflow-hidden" style="background-color: {{ color_scheme.background }}">
     <svg preserveAspectRatio="none" class="absolute -top-0.5 left-0 w-full z-[2]" xmlns="http://www.w3.org/2000/svg" width="1280" height="18" viewBox="0 0 1280 18" fill="none">
         <path d="M0 14.5L424 17.0497L1280 14.5V0H0V14.5Z" fill="{{ color_scheme.settings.background }}"/>
     </svg>
+    {% if foreground_bg_image != blank %}
+        <div class="-mt-10 md:!mt-0 !h-fit order-2 w-3/4 md:!w-1/2 max-h-full object-cover md:!absolute z-[1] left-0 bottom-0">
+        {% render 'picture', source: foreground_bg_image, class: '!h-full !min-h-full', alt: foreground_bg_image.alt, width: 1920, height: 1080 %}
+        </div>
+    {% endif %}
     {% render 'picture', source: background_image, mobile_source: background_image_mobile, class: 'w-full !h-full object-cover !max-w-none absolute inset-0', alt: background_image.alt, width: 1920, height: 1080 %}
-    <div class="container mx-auto flex justify-center md:!justify-end px-4 !gap-0">
+    <div class="container mx-auto flex justify-center md:!justify-end px-4 !gap-0 order-1">
         <div class="md:!w-1/2 relative z-[2]">
             <div class="wb-flex flex-col items-center md:!items-start md:!pb-0">
                 {% if title_type == 'text' %}
@@ -146,6 +152,11 @@
                 "type": "url",
                 "id": "button_link",
                 "label": "Button Link"
+            },
+            {
+                "type": "image_picker",
+                "id": "foreground_bg_image",
+                "label": "Foreground Background Image"
             }
         ],
         "blocks": [
