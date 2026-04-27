@@ -10,7 +10,7 @@
     "name": "navigation"
   },
   "frontend/entrypoints/main.css": {
-    "file": "main-BPHUF05s.css",
+    "file": "main-CyF4_Px9.css",
     "name": "main",
     "names": [
       "main.css"
@@ -19,7 +19,7 @@
     "isEntry": true
   },
   "frontend/entrypoints/main.js": {
-    "file": "main-Br4NrWJn.js",
+    "file": "main-0XMIcb-O.js",
     "name": "main",
     "src": "frontend/entrypoints/main.js",
     "isEntry": true,
@@ -33,7 +33,7 @@
       "frontend/scripts/components/header.ts"
     ],
     "css": [
-      "main-Cub_0xQk.css"
+      "main-DtoTxmOE.css"
     ]
   },
   "frontend/scripts/components/header.ts": {

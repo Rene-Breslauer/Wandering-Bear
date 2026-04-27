@@ -21,10 +21,10 @@
         </div>
     {% endfor %}
     <div class="pl-[26px] pr-10 pt-5">
-        <div class="relative h-[114px] w-full flex !gap-0 justify-center items-center">
-            <a href="{{ mobile_metaobject.banner_link }}" class="absolute h-full w-full"></a>
-            <div>
-                {{ mobile_metaobject.banner_image | image_url: width: 600 | image_tag: class: 'h-full w-full object-cover' }}
+        <div class="relative w-full flex !gap-0 justify-center items-center overflow-hidden">
+            <a href="{{ mobile_metaobject.banner_link }}" class="absolute w-full h-full"></a>
+            <div class="h-min">
+                {{ mobile_metaobject.banner_image | image_url: width: 600 | image_tag: class: '!h-auto w-full object-cover' }}
             </div>
         </div>
     </div>
