@@ -70,7 +70,7 @@
           "settings": {
             "collection": "cold-brew-boxes",
             "image": "shopify://shop_images/wb-col-1.png",
-            "image_mobile": "shopify://shop_images/Mobile_Tile_1.png",
+            "image_mobile": "shopify://shop_images/MobileTile_1_Text.png",
             "mobile_image_alt": "",
             "title": "Cold Brew Boxes",
             "subtitle": "Our famous cold brew in over 15 flavors",
@@ -83,7 +83,7 @@
           "settings": {
             "collection": "cold-brew-cartons",
             "image": "shopify://shop_images/wb-col-2.png",
-            "image_mobile": "shopify://shop_images/Mobile_Tile_2.png",
+            "image_mobile": "shopify://shop_images/MobileTile_2_Text.png",
             "mobile_image_alt": "",
             "title": "Multi-Serve Cartons",
             "subtitle": "Convenient carton packs in select flavors. Available for cold brew, latte, and concentrate.",
@@ -95,7 +95,7 @@
           "settings": {
             "collection": "test-single-serve-12-cartons-11oz",
             "image": "shopify://shop_images/wb-col-3.png",
-            "image_mobile": "shopify://shop_images/Mobile_Tile_3.png",
+            "image_mobile": "shopify://shop_images/MobileTile_3_Text.png",
             "mobile_image_alt": "",
             "title": "Single Serves",
             "subtitle": "Perfect for mornings on the move and afternoons out",
