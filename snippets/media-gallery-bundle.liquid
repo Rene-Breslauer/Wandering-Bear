@@ -1,0 +1,13 @@
+<div data-gallery-wrapper>
+    <div class="w-[500px] h-[500px]">
+        <div class="swiper max-w-full max-h-full" x-ref="swiper">
+            <div class="swiper-wrapper max-w-full max-h-full">
+                {% for media in product.media %}
+                    <div class="swiper-slide">
+                        {{ media | image_url: width: 600 | image_tag: class: 'w-full h-full object-cover' }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
