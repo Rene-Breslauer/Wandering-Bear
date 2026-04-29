@@ -13,6 +13,7 @@ import '../styles/multi-collection-slider.css';
 import '../styles/divider.css';
 import '../styles/footer.css';
 import '../styles/header.css';
+import '../styles/media-gallery-bundle.css';
 
 
 export {}

@@ -6,12 +6,50 @@ export default (Alpine: typeof Alpine) => {
     Alpine.data("mediaGalleryBundle", () => ({
         selectedProduct: null,
         swiper: null,
+        swiperThumbs: null,
+
+        _initSwiperThumbs() {
+
+          const that = this
+
+          if (this.swiperThumbs) {
+            this.swiperThumbs.destroy(true, true);
+            this.swiperThumbs = null;
+          }
+
+          this.swiperThumbs = new Swiper(this.$refs.swiperThumbs, {
+            slidesPerView: 4,
+            spaceBetween: 10,
+            watchSlidesProgress: true,
+          });
+        },
+
+        _initSwiper() {
+          if (this.swiper) {
+            this.swiper.destroy(true, true);
+            this.swiper = null;
+          }
+
+          this._initSwiperThumbs()
+
+          const that = this
+
+          this.swiper = new Swiper(this.$refs.swiper, {
+            slidesPerView: 1,
+            thumbs: {
+              swiper: that.swiperThumbs,
+            },
+            
+          });
+        },
 
         init() {
           window.addEventListener('product-changed', (event: Event) => {
             this.selectedProduct = (event as CustomEvent).detail.product
             this.renderGallery(this.selectedProduct)
           })
+
+          this._initSwiper()
 
         },
 
@@ -33,7 +71,7 @@ export default (Alpine: typeof Alpine) => {
               const html = await res.text()
               const doc = new DOMParser().parseFromString(html, 'text/html')
           
-              const newMediaInner = doc.querySelector('[data-gallery-wrapper]')
+              const newMediaInner = doc.querySelector('[data-media-gallery-bundle]')
           
               if (!newMediaInner) {
                 console.error('newMediaInner not found')
@@ -45,7 +83,7 @@ export default (Alpine: typeof Alpine) => {
               })
 
               this.$nextTick(() => {
-                this.initSwiper();
+                this._initSwiper();
               })
               
             } catch (error) {
@@ -53,16 +91,6 @@ export default (Alpine: typeof Alpine) => {
             }
           },
 
-          initSwiper() {
-            if (this.swiper) {
-              this.swiper.destroy(true, true);
-              this.swiper = null;
-            }
-
-            this.swiper = new Swiper(this.$refs.swiper, {
-              slidesPerView: 1,
-              loop: true,
-            });
-          },
+          
     }))
 }

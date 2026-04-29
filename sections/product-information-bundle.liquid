@@ -9,7 +9,11 @@
 %}
 
 {% capture media_gallery %}
-  {% render 'media-gallery-bundle', product: product %}
+  <div x-data="mediaGalleryBundle" class="max-h-[580px] max-w-[580px] aspect-square">
+    <div class="max-w-full flex">
+      {% render 'media-gallery-bundle', product: product %}
+    </div>
+  </div>
 {% endcapture %}
 
 {% capture product_details %}
