@@ -61,6 +61,24 @@
     </div>
 </div>
 
+<div>
+    <span>Purchase Options</span>
+    <input x-model="sellingPlanId" type="hidden" name="selling_plan_id" id="selling_plan_id">
+    <fieldset>
+        <label for="autoship">Autoshop
+            {% comment %} <span x-text="selectedProduct?.selling_plan_allocations[0]?.selling_plan?.price"></span> {% endcomment %}
+        </label>
+        <input x-model="purchaseOption" type="radio" value="autoship" name="purchase_option" id="autoship" checked>
+    </fieldset>
+    <fieldset>
+        <label for="one_time">One Time
+            {% comment %} <span x-text="selectedProduct?.price"></span> {% endcomment %}
+        </label>
+        <input x-model="purchaseOption" type="radio" value="one_time" name="purchase_option" id="one_time">
+    </fieldset>
+</div>
+
+
 <button class="relative" @click.prevent="addToCart">
     <span x-show="!loading">Add to Cart</span>
     {% render 'loading-animation' %}
@@ -68,21 +86,37 @@
 
 <script x-ref="bundleProducts" type="application/json">
   {
-    {% for child_product in bundle_collection.products %}
-        "{{ child_product.id }}": {
-            "id": {{ child_product.id }},
-            "title": "{{ child_product.title }}",
-            "handle": "{{ child_product.handle }}",
+    {%- for child_product in bundle_collection.products -%}
+        "{{- child_product.id -}}": {
+            "id": {{- child_product.id -}},
+            "title": "{{- child_product.title -}}",
+            "handle": "{{- child_product.handle -}}",
             "variants": {
                 {% for child_variant in child_product.variants %}
-                    "{{ forloop.index0 }}": {
-                        "title": "{{ child_variant.title }}",
-                        "id": {{ child_variant.id }}
-                    }{% unless forloop.last %},{% endunless %}
-                {% endfor %}
+                    "{{- forloop.index0 -}}": {
+                        "title": "{{- child_variant.title -}}",
+                        "id": {{- child_variant.id -}},
+                        "price": {{- child_variant.price -}},
+                        {% comment %} "selling_plan_allocations": { {% endcomment %}
+                                {%- assign printed_allocation = false -%}
+                                {%- for allocation in child_variant.selling_plan_allocations -%}
+                                  {%- assign selling_plan_name = allocation.selling_plan.name -%}
+                                  {%- if selling_plan_name contains '1 Month' and selling_plan_name contains 'New Bundle' -%}
+                                    {%- if printed_allocation -%},{%- endif -%}
+                                    {% comment %} "{{ allocation.selling_plan.id }}": { {% endcomment %}
+                                      "selling_plan_id": {{ allocation.selling_plan.id | json }},
+                                      "selling_plan_name": {{ allocation.selling_plan.name | json }},
+                                      "selling_plan_price": {{ allocation.price | json }}
+                                    {% comment %} } {% endcomment %}
+                                    {%- assign printed_allocation = true -%}
+                                  {%- endif -%}
+                                {%- endfor -%}
+                        {% comment %} } {% endcomment %}
+                    }{%- unless forloop.last -%},{%- endunless -%}
+                {%- endfor -%}
             }
-        }{% unless forloop.last %},{% endunless %}
-    {% endfor %}
+        }{%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}
   }
 </script>
 

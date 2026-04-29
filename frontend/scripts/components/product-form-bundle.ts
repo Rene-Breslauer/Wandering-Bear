@@ -11,6 +11,8 @@ export default (Alpine: AlpineType) => {
         selectedBundleProducts: {},
         assignedBundleProducts: [],
         loading: false,
+        purchaseOption: 'autoship',
+        sellingPlanId: null,
 
         get bundleSize() {
             return Object.values(this.selectedBundleProducts).reduce((acc, product) => {
@@ -56,6 +58,9 @@ export default (Alpine: AlpineType) => {
                 return {
                   id: Number(variant.id),
                   quantity: selectedProduct.quantity,
+                  otpPrice: Number(variant.price),
+                  sellingPlanPrice: Number(variant.selling_plan_price),
+                  selling_plan: this.purchaseOption === 'autoship' ? Number(variant.selling_plan_id) : null,
                   properties: {
                     _bundle_product_id: productId,
                     _bundle_size: this.bundleSize,
@@ -63,6 +68,28 @@ export default (Alpine: AlpineType) => {
                 }
               })
 
+        },
+
+        getOneTimePrice() {
+            this._assignToBundle();
+
+            const price = this.assignedBundleProducts.reduce((acc: number, product: any) => {
+                return acc + (Number(product.otpPrice) * Number(product.quantity))
+            }, 0)
+            
+            return price;
+        },
+
+        getAutoshipPrice() {
+            this._assignToBundle();
+
+            const price = this.assignedBundleProducts.reduce((acc: number, product: any) => {
+                return acc + (Number(product.sellingPlanPrice) * Number(product.quantity))
+            }, 0)
+
+            console.log('price', price);
+
+            return price;
         },
 
         init() {
@@ -90,6 +117,8 @@ export default (Alpine: AlpineType) => {
         async addToCart() {
             this.loading = true;
             this._assignToBundle()
+
+            console.log('assignedBundleProducts', this.assignedBundleProducts);
           
             const res = await fetch('/cart/add.js', {
               method: 'POST',
