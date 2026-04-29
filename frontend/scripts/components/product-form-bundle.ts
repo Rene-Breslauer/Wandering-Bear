@@ -29,6 +29,21 @@ export default (Alpine: AlpineType) => {
             return this.selectedBundleProducts[productId]?.quantity || 0;
         },
 
+        get progressBarWidth() {
+            switch (this.bundleSize) {
+                case 0:
+                    return 'width: 0%';
+                case 1:
+                    return 'width: 0%';
+                case 2:
+                    return 'width: 50%';
+                case 3:
+                    return 'width: 100%';
+                default:
+                    return 'width: 100%';
+            }
+        },
+
         _assignToBundle() {
 
             let variantIndex = 0;
