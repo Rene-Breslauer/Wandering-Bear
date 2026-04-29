@@ -16,7 +16,10 @@
 <div class="flex flex-col gap-2.5">
     <span class="text-base font-bold font-gothic_condensed uppercase text-gold">Build Your Bundle</span>
 
-    <div class="flex flex-col w-full bg-white p-4.5 rounded-[5px] font-kurdis text-bear-black">
+    <div class="flex flex-col w-full bg-white p-4.5 rounded-[5px] font-kurdis relative button-shadow uppercase">
+      <div class="absolute -top-5 -right-2 bg-gold rotate-[1.993deg] text-[#F9F3ED]">
+        <span>Most Popular</span>
+      </div>
       <div class="flex items-center justify-between">
         {% for i in (1..3) %}
             <div class="flex flex-col items-center justify-center font-gothic_condensed uppercase font-bold w-[63px]">

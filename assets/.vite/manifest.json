@@ -18,7 +18,7 @@
     "name": "swiper-core"
   },
   "frontend/entrypoints/main.css": {
-    "file": "main-XsyC18w7.css",
+    "file": "main-BfgrNMEf.css",
     "name": "main",
     "names": [
       "main.css"
@@ -27,7 +27,7 @@
     "isEntry": true
   },
   "frontend/entrypoints/main.js": {
-    "file": "main-UFTzDT6n.js",
+    "file": "main-uBJGxGv8.js",
     "name": "main",
     "src": "frontend/entrypoints/main.js",
     "isEntry": true,
@@ -46,7 +46,7 @@
       "frontend/scripts/components/media-gallery-bundle.ts"
     ],
     "css": [
-      "main-D-PVM8pD.css"
+      "main-D0iSKf3d.css"
     ]
   },
   "frontend/scripts/components/header.ts": {

@@ -14,6 +14,7 @@ import '../styles/divider.css';
 import '../styles/footer.css';
 import '../styles/header.css';
 import '../styles/media-gallery-bundle.css';
+import '../styles/main-product.css';
 
 
 export {}
