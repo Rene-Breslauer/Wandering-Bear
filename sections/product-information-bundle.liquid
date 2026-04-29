@@ -9,8 +9,8 @@
 %}
 
 {% capture media_gallery %}
-  <div x-data="mediaGalleryBundle" class="max-h-[580px] max-w-[580px] aspect-square">
-    <div class="max-w-full flex">
+  <div x-data="mediaGalleryBundle" data-media-gallery-bundle-container class="max-w-[580px]">
+    <div  class="max-w-full flex">
       {% render 'media-gallery-bundle', product: product %}
     </div>
   </div>

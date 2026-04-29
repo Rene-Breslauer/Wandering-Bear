@@ -18,7 +18,7 @@ export default (Alpine: typeof Alpine) => {
           }
 
           this.swiperThumbs = new Swiper(this.$refs.swiperThumbs, {
-            slidesPerView: 4,
+            slidesPerView: 5,
             spaceBetween: 10,
             watchSlidesProgress: true,
           });
@@ -55,7 +55,7 @@ export default (Alpine: typeof Alpine) => {
 
         async renderGallery(product) {
           
-            const mediaWrapper = this.$el
+            const mediaWrapper = document.querySelector('[data-media-gallery-bundle-container]')
             if (!mediaWrapper) {
               console.error('mediaWrapper not found')
               return
@@ -78,9 +78,12 @@ export default (Alpine: typeof Alpine) => {
                 return
               }
 
-              Alpine.morph(mediaWrapper, newMediaInner, {
-                childrenOnly: true,
-              })
+              // Alpine.morph(mediaWrapper, newMediaInner, {
+              //   childrenOnly: true,
+              // })
+
+              mediaWrapper.replaceChildren(...Array.from(newMediaInner.childNodes))
+
 
               this.$nextTick(() => {
                 this._initSwiper();

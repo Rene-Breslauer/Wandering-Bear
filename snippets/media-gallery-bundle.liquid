@@ -3,12 +3,12 @@
 {% endcapture %}
 {% capture thumbnail_styles %}
     --desktop-margin-right: 10px;
-    --desktop-width: calc((100% / 4) - var(--desktop-margin-right));
+    --desktop-width: calc((100% / 5) - var(--desktop-margin-right));
 {% endcapture %}
 
-<div data-media-gallery-bundle class="max-w-full overflow-hidden">
+<div data-media-gallery-bundle class="max-w-[580px] w-full overflow-hidden">
     <div class="flex flex-col max-w-full gap-[17px]">
-        <div class="swiper max-w-full max-h-full" x-ref="swiper">
+        <div class="swiper max-w-[580px] max-h-[580px] w-full aspect-square" x-ref="swiper">
             <div class="swiper-wrapper max-w-full max-h-full">
                 {% for media in product.media %}
                     <div class="swiper-slide rounded-[5px] overflow-hidden" style="{{ slide_styles }}">
@@ -17,10 +17,10 @@
                 {% endfor %}
             </div>
         </div>
-        <div class="swiper-thumbs max-w-full" x-ref="swiperThumbs">
+        <div class="swiper-thumbs max-w-[580px] w-full" x-ref="swiperThumbs">
             <div class="swiper-wrapper max-w-full">
                 {% for media in product.media %}
-                    <div class="swiper-slide rounded-[5px] overflow-hidden {% if forloop.first %}swiper-slide-thumb-active{% endif %}" style="{{ thumbnail_styles }}">
+                    <div class="swiper-slide rounded-[5px] overflow-hidden cursor-pointer {% if forloop.first %}swiper-slide-thumb-active{% endif %}" style="{{ thumbnail_styles }}">
                         {{ media | image_url: width: 600 | image_tag: class: 'w-full h-full object-cover' }}
                     </div>
                 {% endfor %}
