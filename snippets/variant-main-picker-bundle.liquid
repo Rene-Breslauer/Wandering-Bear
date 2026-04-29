@@ -1,0 +1,174 @@
+{%- doc -%}
+  Renders a default variant picker, used to display the variant picker in the variants block.
+
+  @param {object} product_resource - The product object.
+  @param {object} [block] - The block object
+  @param {object} section - The section object.
+  @param {object} product - The current product object (used to determine selected variant state).
+{%- enddoc -%}
+
+{% assign block_settings = block.settings %}
+
+{% liquid
+  assign bundle_collection = section.settings.bundle_collection
+%}
+
+<div>
+    <span class="text-2xl font-bold">Build Your Bundle</span>
+
+    <div class="flex justify-between items-center w-full bg-white p-4.5 rounded-[5px]">
+        {% for i in (1..3) %}
+            <div class="flex flex-col items-center justify-center">
+                <span>{{ i }} Box</span>
+                <div class="flex items-center justify-center h-4.5 w-4.5 bg-gold rounded-full"></div>
+            </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+<div class="h-[436px] overflow-hidden relative">
+    <div class="flex flex-col gap-2 overflow-y-auto absolute top-0 left-0 w-full h-full">
+        {% for child_product in bundle_collection.products %}
+            {% liquid
+            assign title = child_product.title | split: ' - ' | last
+            assign image = child_product.featured_image
+            assign flavor_description = child_product.metafields.custom.flavor_description | default: 'Flavor Description'
+            %}
+            <div @click="selectProduct({{ child_product.id }})"
+             data-product-id="{{ child_product.id }}"
+             :class="{ 'border-2 border-gold': selectedProduct?.id === {{ child_product.id }}}"
+             class="flex bg-[#F9F3ED] items-center gap-2">
+                <div class="w-[75px] h-[77px]">
+                {{ child_product.featured_image | image_url: width: 300 | image_tag: class: 'w-full h-full object-cover' }}
+                </div>
+                <div class="flex w-full h-full p-2">
+                    <div class="flex flex-col gap-1 w-full">
+                        <span class="text-sm font-bold">{{ title }}</span>
+                        <span class="text-xs">{{ flavor_description }}</span>
+                    </div>
+                    <div class="whitespace-nowrap h-fit" @click.prevent.stop="addToBundle({{ child_product.id }})" x-show="!isInBundle({{ child_product.id }})">
+                        <span>+ Add</span>
+                    </div>
+                    <div class="flex items-center gap-1" x-cloak x-show="isInBundle({{ child_product.id }})">
+                        <button @click.prevent.stop="selectedBundleProducts[{{ child_product.id }}].quantity--">-</button>
+                        <span x-text="getBundleProductQuantity({{ child_product.id }})"></span>
+                        <button @click.prevent.stop="selectedBundleProducts[{{ child_product.id }}].quantity++">+</button>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<button class="relative" @click.prevent="addToCart">
+    <span x-show="!loading">Add to Cart</span>
+    {% render 'loading-animation' %}
+</button>
+
+<script x-ref="bundleProducts" type="application/json">
+  {
+    {% for child_product in bundle_collection.products %}
+        "{{ child_product.id }}": {
+            "id": {{ child_product.id }},
+            "title": "{{ child_product.title }}",
+            "handle": "{{ child_product.handle }}",
+            "variants": {
+                {% for child_variant in child_product.variants %}
+                    "{{ forloop.index0 }}": {
+                        "title": "{{ child_variant.title }}",
+                        "id": {{ child_variant.id }}
+                    }{% unless forloop.last %},{% endunless %}
+                {% endfor %}
+            }
+        }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  }
+</script>
+
+{% stylesheet %}
+  /* Variant picker container styles - unique to main variant picker */
+  .variant-picker {
+    width: 100%;
+  }
+
+  .variant-picker__form {
+    width: 100%;
+  }
+
+  .variant-picker[data-shopify-visual-preview] {
+    min-width: 300px;
+    padding-inline-start: max(4px, var(--padding-inline-start));
+  }
+
+  /* Dropdown variant option styles */
+  .variant-option__select-wrapper {
+    display: flex;
+    position: relative;
+    border: var(--style-border-width-inputs) solid var(--color-border);
+    border-radius: var(--style-border-radius-inputs);
+    align-items: center;
+    margin-top: var(--margin-2xs);
+    overflow: clip;
+  }
+
+  .variant-option__select-wrapper:has(.swatch) {
+    --variant-picker-swatch-width: 20px;
+    --variant-picker-swatch-height: 20px;
+  }
+
+  .variant-option__select-wrapper:hover {
+    border-color: var(--color-variant-hover-border);
+  }
+
+  .variant-option__select:focus-visible {
+    outline: var(--focus-outline-width) solid currentcolor;
+    outline-offset: var(--focus-outline-offset);
+  }
+
+  .variant-option__select {
+    padding-block: var(--padding-md);
+    padding-inline: var(--padding-lg) calc(var(--padding-lg) + var(--icon-size-2xs));
+    appearance: none;
+    border: 0;
+    width: 100%;
+    margin: 0;
+    cursor: pointer;
+  }
+
+  .variant-option__select-wrapper .icon {
+    position: absolute;
+    right: var(--padding-md);
+    top: 50%;
+    transform: translateY(-50%);
+    width: var(--icon-size-2xs);
+    height: var(--icon-size-2xs);
+    pointer-events: none;
+  }
+
+  .variant-option__select--has-swatch {
+    padding-inline-start: calc((2 * var(--padding-sm)) + var(--variant-picker-swatch-width));
+  }
+
+  .variant-option__select-wrapper .swatch {
+    position: absolute;
+    top: 50%;
+    left: var(--padding-md);
+    transform: translateY(-50%);
+  }
+
+  /* Variant picker alignment modifiers */
+  .variant-picker--center,
+  .variant-picker--center .variant-option {
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .variant-picker--right,
+  .variant-picker--right .variant-option {
+    text-align: right;
+    justify-content: right;
+  }
+{% endstylesheet %}

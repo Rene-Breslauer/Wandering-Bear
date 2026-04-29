@@ -14,6 +14,7 @@ import '../styles/divider.css';
 import '../styles/footer.css';
 import '../styles/header.css';
 
+
 export {}
 
 let loaded = false
@@ -22,16 +23,26 @@ const init = async () => {
     if (loaded) return
     loaded = true
     const { default: Alpine } = await import("alpinejs")
+    const { default: morph } = await import("@alpinejs/morph")
 
     const { default: SwiperSlider } = await import("~/scripts/components/swiperSlider")
     const { default: VideoPlayer } = await import("~/scripts/components/videoPlayer")
     const { default: Header } = await import("~/scripts/components/header")
     const { default: Tooltip } = await import("~/scripts/components/tooltip")
-    
+    const { default: ProductFormBundle } = await import("~/scripts/components/product-form-bundle")
+    const { default: MediaGalleryBundle } = await import("~/scripts/components/media-gallery-bundle")
+
+
+    Alpine.plugin(morph)
+
     Alpine.plugin(SwiperSlider)
     Alpine.plugin(VideoPlayer)
     Alpine.plugin(Header)
     Alpine.plugin(Tooltip)
+    Alpine.plugin(ProductFormBundle)
+    Alpine.plugin(MediaGalleryBundle)
+
+   
     
     Alpine.start()
     window.Alpine = Alpine

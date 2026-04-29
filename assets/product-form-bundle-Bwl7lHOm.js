@@ -1,0 +1,1 @@
+var e=e=>{e.data(`productFormBundle`,()=>({selectedProduct:null,selectedBundleProducts:[],init(){console.log(`productFormBundle init`)}}))};export{e as default};
