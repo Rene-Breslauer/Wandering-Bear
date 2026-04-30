@@ -13,36 +13,40 @@
 %}
 
 {% capture value_props %}
-    {% for block in section.blocks %}
-        <div class="aw-flex">
-            {{ block.settings.icon | image_url: width: 100 | image_tag: class: '!w-[54px] !h-[54px]', alt: block.settings.text }}
-            <span class="h2">{{ block.settings.text }}</span>
-        </div>
-    {% endfor %}
+    <div class="wb-flex flex-col gap-3">
+        {% for block in section.blocks %}
+            <div class="wb-flex gap-5">
+                {{ block.settings.icon | image_url: width: 100 | image_tag: class: '!w-[54px] !h-[54px]', alt: block.settings.text }}
+                <span class="body text-black-bear">{{ block.settings.text }}</span>
+            </div>
+        {% endfor %}
+    </div>
 {% endcapture %}
 
-<div class="wb-flex relative" style="background-color: {{ background_color }}">
-    <div class="wb-flex mx-auto relative z-[2]">
-        <div>
-            {% if title_type == 'image' %}
-                {% if title_image != blank %}
-                    <div class="max-w-[442px] w-full mx-auto md:!mb-5">
-                        {% render 'title-image', image: title_image, image_mobile: title_image_mobile, alt: title_alt, class: 'w-full max-h-full object-contain' %}
-                    </div>
+<div class="wb-flex relative py-11" style="background-color: {{ background_color }}">
+    <div class="grid !grid-cols-2 max-w-[1290px] w-full mx-auto">
+        <div class="wb-flex mx-auto relative z-[2] justify-center">
+            <div class="wb-flex flex-col justify-center items-start mx-auto">
+                {% if title_type == 'image' %}
+                    {% if title_image != blank %}
+                        <div class="max-w-[442px] w-full md:!mb-5">
+                            {% render 'title-image', image: title_image, image_mobile: title_image_mobile, alt: title_alt, class: 'w-full max-h-full object-contain' %}
+                        </div>
+                    {% endif %}
+                {% elsif title_type == 'text' %}
+                    {% if title != blank %}
+                        <span class="h1 mb-8" style="color: {{ text_color }}">{{ title }}</span>
+                    {% endif %}
                 {% endif %}
-            {% elsif title_type == 'text' %}
-                {% if title != blank %}
-                    <span class="h1 mb-8" style="color: {{ text_color }}">{{ title }}</span>
-                {% endif %}
-            {% endif %}
 
-            {{ value_props }}
-        </div>
-        <div>
-            {% if large_image != blank %}
-                {% render 'picture', source: large_image, class: 'w-full h-full', alt: large_image.alt, width: 1920, height: 1080, preload: 'lazy', loading: 'lazy' %}
-            {% endif %}
-        </div>
+                {{ value_props }}
+            </div>
+            </div>
+            <div>
+                {% if large_image != blank %}
+                    {% render 'picture', source: large_image, class: 'w-full h-full', alt: large_image.alt, width: 1920, height: 1080, preload: 'lazy', loading: 'lazy' %}
+                {% endif %}
+            </div>
     </div>
 </div>
 
