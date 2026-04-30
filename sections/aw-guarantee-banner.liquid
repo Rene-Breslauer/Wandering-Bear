@@ -2,7 +2,7 @@
     assign section_settings = section.settings
     assign color_scheme = section_settings.color_scheme
     assign background_color = color_scheme.settings.background
-    assign text_color = color_scheme.settings.text
+    assign text_color = color_scheme.settings.foreground
     assign image = section_settings.image
     assign badge = section_settings.badge
     assign subtitle = section_settings.subtitle
@@ -12,23 +12,23 @@
 
 <div class="wb-flex relative" style="background-color: {{ background_color }}">
     {% if image != blank %}
-        <div class="wb-flex w-1/2 relative">
+        <div class="wb-flex w-1/2 relative items-center">
             {% render 'picture', source: image, class: 'w-full h-full', alt: image.alt, width: 1920, height: 1080, preload: 'lazy', loading: 'lazy' %}
+            {{ badge | image_url: width: 100 | image_tag: class: 'absolute z-[2] -right-10 !w-[188px] !h-auto', loading: 'eager', preload: 'eager' }}
         </div>
-        {{ badge | image_url: width: 100 | image_tag: class: 'absolute z-[2] -top-5 -left-10 !w-[59px] !h-auto', loading: 'eager', preload: 'eager' }}
     {% endif %}
-    <div class="wb-flex w-1/2">
-        <div class="wb-flex flex-col gap-4" style="color: {{ text_color }}">
-            {% if subtitle != blank %}
-                <span class="h3">{{ subtitle }}</span>
-            {% endif %}
-        </div>
+    <div class="wb-flex justify-start items-center w-1/2" style="color: {{ text_color }}">
+        <div class="wb-flex flex-col !gap-1 w-1/2 py-[43px] px-[77px] w-full">
+        {% if subtitle != blank %}
+            <span class="h3" style="color: {{ text_color }}">{{ subtitle }}</span>
+        {% endif %}
         {% if title != blank %}
-            <span class="h2">{{ title }}</span>
+            <span class="h2" style="color: {{ text_color }}">{{ title }}</span>
         {% endif %}
         {% if description != blank %}
-            <span class="body">{{ description }}</span>
+            <span class="body" style="color: {{ text_color }}">{{ description }}</span>
         {% endif %}
+        </div>
     </div>
 </div>
 
