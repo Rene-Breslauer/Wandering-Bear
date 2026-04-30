@@ -33,7 +33,7 @@ const init = async () => {
     const { default: Tooltip } = await import("~/scripts/components/tooltip")
     const { default: ProductFormBundle } = await import("~/scripts/components/product-form-bundle")
     const { default: MediaGalleryBundle } = await import("~/scripts/components/media-gallery-bundle")
-
+    const { default: Diagram } = await import("~/scripts/components/diagram")
 
     Alpine.plugin(morph)
 
@@ -43,7 +43,7 @@ const init = async () => {
     Alpine.plugin(Tooltip)
     Alpine.plugin(ProductFormBundle)
     Alpine.plugin(MediaGalleryBundle)
-
+    Alpine.plugin(Diagram)
    
     
     Alpine.start()
