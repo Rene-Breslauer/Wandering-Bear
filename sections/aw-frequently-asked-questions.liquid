@@ -18,10 +18,10 @@
 <div class="wb-flex justify-center relative" style="background: {{ background_color }};">
     <div class="max-w-[640px] w-full mx-auto wb-flex flex-col px-4 py-9">
     <div class="wb-flex flex-col gap-4 max-w-[601px] w-full mx-auto">
-        <div class="wb-flex flex-col justify-center items-start mx-auto">
+        <div class="wb-flex flex-col justify-center items-start mx-auto w-full">
             {% if title_type == 'image' %}
                 {% if title_image != blank %}
-                    <div class="max-w-[442px] w-full md:!mb-5">
+                    <div class="max-w-[442px] w-full md:!mb-5 mx-auto">
                         {% render 'title-image', image: title_image, image_mobile: title_image_mobile, alt: title_alt, class: 'w-full max-h-full object-contain' %}
                     </div>
                 {% endif %}
@@ -32,15 +32,22 @@
             {% endif %}
             {% if faqs_metaobject != blank %}
                 {% assign metaobject = faqs_metaobject.entries %}
-                <div class="wb-flex flex-col gap-4">
-                    {% for faq in metaobject.value %}
-                        <div class="wb-flex flex-col gap-2">
-                            <span class="h3">{{ faq.question }}</span>
-                            <div class="wb-flex flex-col gap-2">
-                                {{ faq.answer | metafield_tag }}
-                            </div>
-                        </div>
-                    {% endfor %}
+                <div class="wb-flex flex-col gap-4 w-full">
+                    <div x-data="accordion">
+                        {% for faq in metaobject.value %}
+                            {% assign title = faq.question %}
+                            {% assign content = faq.answer | metafield_tag %}
+                            {% assign open = '' %}
+                            {% assign class = 'border-b border-bear-black w-full text-black-bear' %}
+                            {% assign title_class = 'text-bear-black text-[20px] font-bold font-gothic_condensed' %}
+                            {% assign content_class = 'body text-bear-black font-kurdis pb-6' %}
+                            {% if forloop.first %}
+                                {% assign open = 'open' %}
+                                {% assign class = class | append: ' border-t' %}
+                            {% endif %}
+                            {% render 'accordion', title: title, content: content, open: open, class: class, title_class: title_class, content_class: content_class %}
+                        {% endfor %}
+                    </div>
                 </div>
             {% endif %}
         </div>

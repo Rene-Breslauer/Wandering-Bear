@@ -95,3 +95,26 @@
         }
     }
 }
+
+[data-accordion-item] {
+    summary {
+        svg {
+            transition: transform 0.3s ease;
+        }
+
+        transition: margin-bottom 0.3s ease;
+        padding-bottom: 24px !important;
+    }
+
+}
+
+[data-accordion-item][open] {
+    summary {
+        svg {
+            transform: rotate(180deg);
+        }
+
+        padding-bottom: 0 !important;
+        margin-bottom: 24px;
+    }
+}

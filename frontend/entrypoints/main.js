@@ -34,6 +34,7 @@ const init = async () => {
     const { default: ProductFormBundle } = await import("~/scripts/components/product-form-bundle")
     const { default: MediaGalleryBundle } = await import("~/scripts/components/media-gallery-bundle")
     const { default: Diagram } = await import("~/scripts/components/diagram")
+    const { default: Accordion } = await import("~/scripts/components/accordion")
 
     Alpine.plugin(morph)
 
@@ -44,7 +45,7 @@ const init = async () => {
     Alpine.plugin(ProductFormBundle)
     Alpine.plugin(MediaGalleryBundle)
     Alpine.plugin(Diagram)
-   
+    Alpine.plugin(Accordion)
     
     Alpine.start()
     window.Alpine = Alpine
