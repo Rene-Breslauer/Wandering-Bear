@@ -59,7 +59,7 @@
     {% endif %}
    </div>
 
-   <div x-data="diagram()" class="wb-flex flex-col md:flex-row mx-auto relative max-w-[1077px] w-full justify-center px-6 md:px-0">
+   <div x-data="diagram()" class="wb-flex flex-col md:flex-row mx-auto relative max-w-[84vw] w-full justify-center px-6 md:px-0">
 
     <!-- SVG LINES -->
     <svg class="hidden md:block absolute inset-0 w-full h-full overflow-visible pointer-events-none z-[1]">
@@ -99,14 +99,16 @@
 
     {{ diagram_content }}
         {% if diagram_image != blank %}
-            <picture>
-                <source srcset="{{ diagram_image | image_url: width: 1920 }}" media="(min-width: 1920px)">
-                <source srcset="{{ diagram_image | image_url: width: 1440 }}" media="(min-width: 1440px)">
-                <source srcset="{{ diagram_image | image_url: width: 1200 }}" media="(min-width: 1200px)">
-                <source srcset="{{ diagram_image | image_url: width: 1024 }}" media="(min-width: 1024px)">
-                <source srcset="{{ diagram_image | image_url: width: 768 }}" media="(min-width: 768px)">
-                <img src="{{ diagram_image | image_url: width: 365 }}" alt="{{ title_alt }}" class="!flex order-1 md:order-2 w-full !max-w-[511px] max-h-full object-contain relative z-[2] mx-auto" x-ref="diagramImage">
-            </picture>
+            <div class="max-w-[511px] md:w-[40vw]! mx-auto" x-ref="diagramImage">
+                <picture>
+                    <source srcset="{{ diagram_image | image_url: width: 1920 }}" media="(min-width: 1920px)">
+                    <source srcset="{{ diagram_image | image_url: width: 1440 }}" media="(min-width: 1440px)">
+                    <source srcset="{{ diagram_image | image_url: width: 1200 }}" media="(min-width: 1200px)">
+                    <source srcset="{{ diagram_image | image_url: width: 1024 }}" media="(min-width: 1024px)">
+                    <source srcset="{{ diagram_image | image_url: width: 768 }}" media="(min-width: 768px)">
+                    <img src="{{ diagram_image | image_url: width: 365 }}" alt="{{ title_alt }}" class="!flex order-1 md:order-2 w-full max-h-full object-contain relative z-[2] mx-auto">
+                </picture>
+            </div>
         {% endif %}
     </div>
 </div>
