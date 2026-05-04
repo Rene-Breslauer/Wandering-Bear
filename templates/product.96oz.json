@@ -452,12 +452,13 @@
       "settings": {
         "color_scheme": "scheme-53a30445-4815-46e7-b861-da7f32359d08",
         "background_image": "shopify://shop_images/Group_1327226595.jpg",
+        "background_color": "linear-gradient(180deg, #391704 50.84%, #955325 100.36%)",
         "title_type": "image",
         "title": "",
         "title_alt": "",
         "title_image": "shopify://shop_images/OUR_MEMBERS_UNLOCK_MORE_WITH_EVERY_SIP....svg",
-        "button_label": "",
-        "button_link": ""
+        "button_label": "Learn More",
+        "button_link": "shopify://pages/membership"
       }
     },
     "aw_frequently_asked_questions_33izYW": {
