@@ -144,7 +144,6 @@ export default (Alpine: AlpineType) => {
         },
 
         onPurchaseOptionChange() {
-            console.log('purchaseOption change', this.purchaseOption);
             this._setProgressBarPrices();
         },
 
