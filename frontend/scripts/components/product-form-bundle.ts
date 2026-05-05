@@ -24,11 +24,9 @@ export default (Alpine: AlpineType) => {
 
         get currentSavingsAmount() {
             const bundleSize = (this.bundleSize <= 2) ? (this.bundleSize - 1) : 2;
-            console.log('bundleSize', bundleSize);
-            console.log('selectedProduct', this.selectedProduct);
+
             const savingsAmountAutoship = this.selectedProduct?.variants[0].price - this.selectedProduct?.variants[bundleSize]?.selling_plan_price;
             const savingsAmountOneTime = this.selectedProduct?.variants[0].price - this.selectedProduct?.variants[bundleSize]?.price;
-
 
             return this.purchaseOption === 'autoship' ? savingsAmountAutoship : savingsAmountOneTime;
         },
@@ -71,8 +69,6 @@ export default (Alpine: AlpineType) => {
 
             const price = this.purchaseOption === 'autoship' ? 
             this.selectedProduct?.variants[index].selling_plan_price : this.selectedProduct?.variants[index].price
-
-            console.log('selectedProduct', this.selectedProduct);
 
             const savings = this.purchaseOption === 'autoship' ? this.selectedProduct?.variants[index].selling_plan_savings : this.selectedProduct?.variants[0].price - this.selectedProduct?.variants[index].price
 
@@ -145,8 +141,6 @@ export default (Alpine: AlpineType) => {
         init() {
             this.bundleProducts = JSON.parse(this.$refs.bundleProducts.textContent);
             this.selectedProduct = this.bundleProducts[this.selectedProductId];
-            console.log('bundleProducts', this.bundleProducts);
-            console.log('selectedProduct', this.selectedProduct);
         },
 
         onPurchaseOptionChange() {
