@@ -4,6 +4,7 @@ rte-formatter.product-description {
     line-height: 130%;
     font-weight: 600;
     color: var(--color-bear-black) !important;
+    margin-bottom: 16px !important;
 
     ul {
         list-style-type: none !important;

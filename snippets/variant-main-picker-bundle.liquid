@@ -229,7 +229,7 @@
 </div>
 </div>
 
-<div>
+<div class="mb-4">
     <input x-model="sellingPlanId" type="hidden" name="selling_plan_id" id="selling_plan_id">
     <fieldset>
         <input x-model="purchaseOption" @change="onPurchaseOptionChange" type="radio" value="autoship" name="purchase_option" id="autoship" checked class="absolute top-0 left-0 w-0 h-0 opacity-0">
@@ -253,7 +253,7 @@
 
 <button
 :class="bundleSize >= 1 ? '!pointer-events-auto' : 'pointer-events-none'"
-class="group relative flex items-center justify-center shadow-button cursor-pointer h-[61px] w-[402px] uppercase pointer-events-auto" @click.prevent="addToCart">
+class="group relative flex items-center justify-center shadow-button cursor-pointer h-[61px] w-[402px] max-w-full uppercase pointer-events-auto mb-4" @click.prevent="addToCart">
     <span x-show="!loading" x-text="addToCartText" class="relative z-[2] text-white text-base font-['Kurdis_SemiCondensed'] font-bold uppercase">
       Add 1 Flavor
     </span>
@@ -266,7 +266,7 @@ class="group relative flex items-center justify-center shadow-button cursor-poin
 </button>
 
 <template x-if="currentSavingsAmount > 0">
-  <span class="text-sm font-kurdis-semi-condensed font-semibold leading-[120%] text-kraft text-center" x-text="`You're saving ` + currentSavingsAmountFormatted + `!`"></span>
+  <span class="text-sm font-kurdis-semi-condensed font-semibold leading-[120%] text-kraft text-center mb-4 flex justify-center items-center" x-text="`You're saving ` + currentSavingsAmountFormatted + `!`"></span>
 </template>
 
 <script x-ref="bundleParentProducts" type="application/json">
