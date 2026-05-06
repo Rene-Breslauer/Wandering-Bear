@@ -20,7 +20,11 @@ export default (Alpine: AlpineType) => {
             return Object.values(this.selectedBundleProducts).reduce((acc, product) => {
               return acc + Number(product.quantity || 0)
             }, 0)
-          },
+        },
+
+        get addToCartText() {
+            return this.bundleSize >= 1 ? 'Add to bag' : 'Add 1 flavor';
+        },
 
         get currentSavingsAmount() {
             const bundleSize = (this.bundleSize <= 2) ? (this.bundleSize - 1) : 2;
@@ -29,6 +33,10 @@ export default (Alpine: AlpineType) => {
             const savingsAmountOneTime = this.selectedProduct?.variants[0].price - this.selectedProduct?.variants[bundleSize]?.price;
 
             return this.purchaseOption === 'autoship' ? savingsAmountAutoship : savingsAmountOneTime;
+        },
+
+        get currentSavingsAmountFormatted() {
+            return this._formatPrice(this.currentSavingsAmount);
         },
 
         // Helpers

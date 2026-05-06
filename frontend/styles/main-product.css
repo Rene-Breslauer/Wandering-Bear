@@ -6,10 +6,23 @@ rte-formatter.product-description {
     color: var(--color-bear-black) !important;
 
     ul {
-        list-style-type: disc !important;
+        list-style-type: none !important;
+        padding-inline-start: 1rem !important;
 
         li:not(:last-child) {
             margin-bottom: 4px;
+        }
+
+        li {
+            position: relative;
+        }
+
+        li::before {
+            content: "•";
+            position: absolute;
+            left: -1em;
+            top: 0em; /* adjust this to align */
+            font-size: 1rem;
         }
     }
 

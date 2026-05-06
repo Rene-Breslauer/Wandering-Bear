@@ -1,10 +1,11 @@
-[data-media-gallery-bundle] .swiper-slide {
+[data-media-gallery-bundle] .swiper-main .swiper-slide {
     width: var(--width);
 }
 
 [data-media-gallery-bundle] .swiper-thumbs .swiper-slide {
     width: var(--desktop-width);
     margin-right: var(--desktop-margin-right);
+    aspect-ratio: var(--aspect-ratio);
 }
 
 [data-media-gallery-bundle] .swiper-thumbs .swiper-slide-thumb-active {

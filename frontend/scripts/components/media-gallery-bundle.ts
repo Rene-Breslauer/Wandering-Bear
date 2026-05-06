@@ -56,6 +56,8 @@ export default (Alpine: typeof Alpine) => {
         async renderGallery(product) {
           
             const mediaWrapper = document.querySelector('[data-media-gallery-bundle-container]')
+            mediaWrapper?.classList.add('opacity-0')
+
             if (!mediaWrapper) {
               console.error('mediaWrapper not found')
               return
@@ -78,17 +80,21 @@ export default (Alpine: typeof Alpine) => {
                 return
               }
 
-              // Alpine.morph(mediaWrapper, newMediaInner, {
-              //   childrenOnly: true,
-              // })
+              const oldMediaInner = mediaWrapper.querySelector('[data-media-gallery-bundle]');
 
-              mediaWrapper.replaceChildren(...Array.from(newMediaInner.childNodes))
-
+              if (!oldMediaInner) {
+                console.error('oldMediaInner not found');
+                return;
+              }
+              
+              oldMediaInner.replaceWith(newMediaInner);
 
               this.$nextTick(() => {
                 this._initSwiper();
               })
-              
+
+              mediaWrapper?.classList.remove('opacity-0')
+
             } catch (error) {
               console.error('error', error)
             }

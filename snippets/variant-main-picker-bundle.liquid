@@ -58,9 +58,9 @@
 <div class="flex flex-col gap-2.5">
     <span class="text-base font-bold font-gothic_condensed uppercase text-gold">Build Your Bundle</span>
 
-    <div class="flex flex-col w-full bg-white p-4.5 rounded-[5px] font-kurdis relative button-shadow uppercase">
+    <div class="flex flex-col w-full bg-white/50 p-4.5 rounded-[5px] font-kurdis relative button-shadow uppercase">
       <div class="absolute -top-5 -right-2 rotate-[1.993deg] w-[96px]">
-        {% render 'badge', text: 'Most Popular', text_class: 'text-white text-[12px] font-kurdis-semi-condensed uppercase font-bold', svg_class: 'text-gold'%}
+        {% render 'badge', text: 'Most Popular', text_class: 'text-white text-[12px] font-kurdis-semi-condensed uppercase font-bold leading-[175%]', svg_class: 'text-gold'%}
       </div>
       <div class="flex items-center justify-between">
         {% for i in (1..3) %}
@@ -68,7 +68,7 @@
             {% if forloop.last %}
               {% assign tier = i | append: '+' %}
             {% endif %}
-            <div class="flex flex-col items-center justify-center font-gothic_condensed uppercase font-bold w-[63px]">
+            <div class="flex flex-col items-center justify-center font-gothic_condensed uppercase font-bold w-[63px] text-bear-black">
                 <span>{{ tier }} Box</span>
             </div>
         {% endfor %}
@@ -77,7 +77,7 @@
         <div class="flex items-center justify-between relative">
           {% for i in (1..3) %}
               <div class="flex items-center justify-center w-[63px]">
-                <div class="flex items-center justify-center h-4.5 w-4.5 rounded-full mx-auto transition-all duration-300 relative z-[2] outline-2 outline-[#CFBDB1] bg-[#F2E6DC]"
+                <div class="flex items-center justify-center h-4.5 w-4.5 rounded-full mx-auto transition-all duration-300 relative z-[2] outline outline-[#CFBDB1] bg-[#F2E6DC]"
                 :class="bundleSize >= {{ i }} ? '!outline-gold !bg-white' : 'outline-[#CFBDB1] bg-[#F2E6DC]'"
                 >
                   <div class="flex items-center justify-center h-3.5 w-3.5 bg-[#CFBDB1] rounded-full bg-transparent"
@@ -125,7 +125,7 @@
 
 
 <div class="h-[436px] overflow-hidden relative">
-    <div class="flex flex-col gap-2 overflow-y-auto absolute top-0 left-0 w-full h-full px-1 py-2.5">
+    <div class="flex flex-col gap-2 overflow-y-auto absolute top-0 left-0 w-full h-full py-2.5 pl-1 !pr-2.5">
         {% for child_product in bundle_collection.products %}
             {% liquid
             assign title = child_product.title | split: ' - ' | last
@@ -154,11 +154,9 @@
                               <span class="text-[10px] font-kurdis uppercase font-semibold !leading-[100%] whitespace-nowrap">{{ product_badge_text }}</span>
                             </div>
                           {% elsif member_only %}
-                            <div class="flex items-center justify-center rounded-full px-2 py-1 h-fit" style="background-color: var(--color-brand-gold); color: #431A03">
-                              <span class="text-[10px] font-kurdis uppercase font-semibold text-cream !leading-[100%] whitespace-nowrap">VIP / Elite Only
-                              {% render 'tooltip', content: settings.member_tooltip %}
+                              <span class="text-[10px] font-kurdis uppercase font-semibold text-cream whitespace-nowrap py-1 px-2 rounded-full relative -top-0.5" style="background-color: var(--color-brand-gold); color: var(--color-cream)">VIP / Elite Only
+                              {% render 'tooltip', content: settings.member_tooltip, class: 'relative top-0.5', badge: true %}
                               </span>
-                            </div>
                           {% endif %}
                         </div>
                         <span class="text-[11px] font-kurdis font-semibold leading-[120%] text-bear-black">{{ flavor_description }}</span>
@@ -234,18 +232,23 @@
     </fieldset>
 </div>
 
-
-<button class="relative flex items-center justify-center shadow-button cursor-pointer h-[61px] w-[402px]" @click.prevent="addToCart">
-    <span x-show="!loading" class="relative z-[2] text-white text-base !font-kurdis uppercase font-bold">Add to Bag</span>
+<button
+:class="bundleSize >= 1 ? '!pointer-events-auto' : 'pointer-events-none'"
+class="group relative flex items-center justify-center shadow-button cursor-pointer h-[61px] w-[402px] uppercase pointer-events-auto" @click.prevent="addToCart">
+    <span x-show="!loading" x-text="addToCartText" class="relative z-[2] text-white text-base font-['Kurdis_SemiCondensed'] font-bold uppercase">
+      Add 1 Flavor
+    </span>
     {% render 'loading-animation', class: 'z-[2]' %}
-    <svg xmlns="http://www.w3.org/2000/svg" class="absolute inset-0 z-[1]" width="402" height="61" viewBox="0 0 402 61" fill="none">
-      <path d="M3.72092 6.34305C0.560452 9.88125 0.433767 14.051 0.380426 18.0481C0.25374 27.5605 0.133722 37.0689 0.00703692 46.5812C-0.0263014 49.1662 -0.0196337 51.8571 1.92065 54.1754C6.59468 59.7494 12.4956 60.9654 29.9515 60.9654C147.036 60.9654 264.126 61.1733 381.217 60.5693C385.371 60.5496 389.932 60.6752 393.339 59.2748C402.573 55.4816 401.567 48.5504 401.287 43.4078C400.767 33.8327 402 25.964 402 16.3849C402 9.68512 400.727 6.9942 396.953 4.34252C392.119 0.94161 382.05 1.08675 374.509 0.996527C324.929 0.396367 275.321 0.0864809 225.721 0.0158739C175.8 -0.0586558 125.879 0.12963 75.9583 0.572885C61.8762 0.698409 47.8008 0.843545 33.7254 1.01222C23.0971 1.13774 9.61513 -0.243019 3.72092 6.34305Z" fill="#431A03"/>
+    <svg xmlns="http://www.w3.org/2000/svg"
+    :class="bundleSize >= 1 ? 'text-espresso' : 'text-espresso/50'"
+    class="absolute inset-0 z-[1] text-espresso/50 group-hover:!text-gold transition-all duration-300" width="402" height="61" viewBox="0 0 402 61" fill="none">
+      <path d="M3.72092 6.34305C0.560452 9.88125 0.433767 14.051 0.380426 18.0481C0.25374 27.5605 0.133722 37.0689 0.00703692 46.5812C-0.0263014 49.1662 -0.0196337 51.8571 1.92065 54.1754C6.59468 59.7494 12.4956 60.9654 29.9515 60.9654C147.036 60.9654 264.126 61.1733 381.217 60.5693C385.371 60.5496 389.932 60.6752 393.339 59.2748C402.573 55.4816 401.567 48.5504 401.287 43.4078C400.767 33.8327 402 25.964 402 16.3849C402 9.68512 400.727 6.9942 396.953 4.34252C392.119 0.94161 382.05 1.08675 374.509 0.996527C324.929 0.396367 275.321 0.0864809 225.721 0.0158739C175.8 -0.0586558 125.879 0.12963 75.9583 0.572885C61.8762 0.698409 47.8008 0.843545 33.7254 1.01222C23.0971 1.13774 9.61513 -0.243019 3.72092 6.34305Z" fill="currentColor"/>
     </svg>
 </button>
 
-<div>
-  <span x-text="`You're saving ` + currentSavingsAmount"></span>
-</div>
+<template x-if="currentSavingsAmount > 0">
+  <span class="text-sm font-kurdis-semi-condensed font-semibold leading-[120%] text-kraft text-center" x-text="`You're saving ` + currentSavingsAmountFormatted"></span>
+</template>
 
 <script x-ref="bundleProducts" type="application/json">
   {
