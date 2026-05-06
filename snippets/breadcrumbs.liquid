@@ -13,16 +13,29 @@
               <a class="breadcrumbs__link" href="{{ page.url }}" aria-current="page">{{ page.title }}</a>
             </li>
           {%- when 'product' -%}
+            {% assign product_object = product.metafields.custom.product_group %}
             {%- if collection.url -%}
               <li class="breadcrumbs__item">
                 <span>></span>
                 {{ collection.title | link_to: collection.url }}
               </li>
+            {%- else if product_object.value.collection != blank -%}
+              <li class="breadcrumbs__item">
+                <span>></span>
+                {{ product_object.value.collection.value.text | link_to: product_object.value.collection.value.url }}
+              </li>
             {%- endif -%}
-            <li class="breadcrumbs__item">
+            {% if product_object.value.title != blank %}
+              <li class="breadcrumbs__item">
               <span>></span>
-              <a class="breadcrumbs__link" href="{{ product.url }}" aria-current="page">{{ product.title }}</a>
+              <a class="breadcrumbs__link" href="{{ product.url }}" aria-current="page">{{ product_object.value.title.value.text }}</a>
             </li>
+            {% else %}
+              <li class="breadcrumbs__item">
+                <span>></span>
+                <a class="breadcrumbs__link" href="{{ product.url }}" aria-current="page">{{ product.title }}</a>
+              </li>
+            {% endif %}
           {%- when 'collection' and collection.handle -%}
             {%- if current_tags -%}
               <li class="breadcrumbs__item">
