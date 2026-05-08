@@ -68,12 +68,13 @@ input[name="purchase_option"]:checked + label {
 
 .flavor-container {
     overflow-y: scroll;
-    scrollbar-width: 8px;
-    scrollbar-color: rgba(67, 26, 3, 0.2) rgba(67, 26, 3, 1);
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-espresso) rgba(67, 26, 3, 0.2);
 }
 
 .flavor-container::-webkit-scrollbar {
     width: 8px;
+    -webkit-appearance: none;
 }
 
 .flavor-container::-webkit-scrollbar-track {
@@ -84,4 +85,8 @@ input[name="purchase_option"]:checked + label {
 .flavor-container::-webkit-scrollbar-thumb {
     background: var(--color-espresso);
     border-radius: 999px;
+
+    /* makes it render more solid on macOS */
+    border: 2px solid transparent;
+    background-clip: padding-box;
 }
