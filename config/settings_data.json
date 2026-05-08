@@ -112,6 +112,13 @@
           "exclusive_access_modal_foreground": "#000000",
           "exclusive_access_additional_tags": ""
         }
+      },
+      "733389323033596483": {
+        "type": "shopify://apps/okendo/blocks/theme-settings/bb689e69-ea70-4661-8fb7-ad24a2e23c29",
+        "disabled": false,
+        "settings": {
+          "show_preview_data": true
+        }
       }
     },
     "color_schemes": {
@@ -514,10 +521,10 @@
           "primary_hover": "#000000",
           "border": "#0000000f",
           "shadow": "#000000",
-          "primary_button_background": "#AF7404",
+          "primary_button_background": "#af7404",
           "primary_button_text": "#ffffff",
           "primary_button_border": "#000000",
-          "primary_button_hover_background": "#431A03",
+          "primary_button_hover_background": "#431a03",
           "primary_button_hover_text": "#ffffff",
           "primary_button_hover_border": "#000000",
           "secondary_button_background": "rgba(0,0,0,0)",
