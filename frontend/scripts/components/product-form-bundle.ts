@@ -10,11 +10,28 @@ export default (Alpine: AlpineType) => {
         selectedProduct: null,
         bundleProducts: {},
         selectedBundleProducts: {},
-        assignedBundleProducts: [],
         loading: false,
         purchaseOption: 'autoship',
         sellingPlanId: null,
         bundleParentProducts: {},
+        
+        get totalPrice() {
+          let totalOriginalPrice = 0;
+          let totalAutoshipPrice = 0;
+          let totalOneTimePrice = 0;
+
+          Object.values(this.assignedBundleProducts).forEach((product) => {
+            totalOriginalPrice += product.otpPrice * product.quantity;
+            totalAutoshipPrice += product.sellingPlanPrice * product.quantity;
+            totalOneTimePrice += product.otpPrice * product.quantity;
+          })
+
+          return {
+            original: this._formatPrice(totalOriginalPrice),
+            autoship: this._formatPrice(totalAutoshipPrice),
+            oneTime: this._formatPrice(totalOneTimePrice),
+          }
+        },
 
         get bundleSize() {
             this._updateQueryString();
@@ -32,17 +49,6 @@ export default (Alpine: AlpineType) => {
             const originalPrice = this.selectedProduct?.variants[0].price;
             const newSellingPlanPrice = this.selectedProduct?.variants[bundleSize]?.selling_plan_price;
             const newOtpPrice = this.selectedProduct?.variants[bundleSize]?.price;
-
-            console.log('bundle size', bundleSize);
-            console.log('this.bundleSize', this.bundleSize);
-
-            console.log('original price', originalPrice);
-            console.log('new selling plan price', newSellingPlanPrice);
-            console.log('new otp price', newOtpPrice);
-
-            console.log('savings amount autoship', this.bundleSize * (originalPrice - newSellingPlanPrice));
-            console.log('savings amount one time', this.bundleSize * (originalPrice - newOtpPrice));
-
             const savingsAmountAutoship = this.bundleSize * (originalPrice - newSellingPlanPrice);
             const savingsAmountOneTime = this.bundleSize * (originalPrice - newOtpPrice);
 
@@ -53,30 +59,50 @@ export default (Alpine: AlpineType) => {
             return this._formatPrice(this.currentSavingsAmount);
         },
 
-        get guid() {
-            let d = new Date().getTime()
-            let d2 =
-                (performance && performance.now && performance.now() * 1000) ||
-                0
-            return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
-                /[xy]/g,
-                (c) => {
-                    let r = Math.random() * 16
-                    if (d > 0) {
-                        r = (d + r) % 16 | 0
-                        d = Math.floor(d / 16)
-                    } else {
-                        r = (d2 + r) % 16 | 0
-                        d2 = Math.floor(d2 / 16)
-                    }
-                    return (c == "x" ? r : (r & 0x7) | 0x8).toString(16)
-                }
-            )
-        },
-
         get parentProduct() {
           const index = (this.bundleSize <= 2) ? (this.bundleSize - 1) : 2;
           return this.bundleParentProducts[index]
+        },
+
+        get assignedBundleProducts() {
+            let variantIndex = 0;
+
+            switch (this.bundleSize) {
+                case 1:
+                    variantIndex = 0;
+                    break;
+                case 2:
+                    variantIndex = 1;
+                    break;
+                case 3:
+                    variantIndex = 2;
+                    break;
+                default:
+                    variantIndex = 2;
+                    break;
+            }
+
+            const assignedBundleProducts = Object.keys(this.selectedBundleProducts).map((productId) => {
+                const product = this.bundleProducts[productId]
+                const selectedProduct = this.selectedBundleProducts[productId]
+            
+                const variants = Object.values(product.variants)
+                const variant = variants[variantIndex]
+            
+                return {
+                  id: Number(variant.id),
+                  quantity: selectedProduct.quantity,
+                  otpPrice: Number(variant.price),
+                  sellingPlanPrice: Number(variant.selling_plan_price),
+                  selling_plan: this.purchaseOption === 'autoship' ? Number(variant.selling_plan_id) : null,
+                  properties: {
+                    _bundle_product_id: productId,
+                    _bundle_size: this.bundleSize,
+                  },
+                }
+              })
+
+            return assignedBundleProducts;
         },
 
         // Helpers
@@ -125,45 +151,6 @@ export default (Alpine: AlpineType) => {
           })
         },
 
-        _assignToBundle() {
-            let variantIndex = 0;
-
-            switch (this.bundleSize) {
-                case 1:
-                    variantIndex = 0;
-                    break;
-                case 2:
-                    variantIndex = 1;
-                    break;
-                case 3:
-                    variantIndex = 2;
-                    break;
-                default:
-                    variantIndex = 2;
-                    break;
-            }
-
-            this.assignedBundleProducts = Object.keys(this.selectedBundleProducts).map((productId) => {
-                const product = this.bundleProducts[productId]
-                const selectedProduct = this.selectedBundleProducts[productId]
-            
-                const variants = Object.values(product.variants)
-                const variant = variants[variantIndex]
-            
-                return {
-                  id: Number(variant.id),
-                  quantity: selectedProduct.quantity,
-                  otpPrice: Number(variant.price),
-                  sellingPlanPrice: Number(variant.selling_plan_price),
-                  selling_plan: this.purchaseOption === 'autoship' ? Number(variant.selling_plan_id) : null,
-                  properties: {
-                    _bundle_product_id: productId,
-                    _bundle_size: this.bundleSize,
-                  },
-                }
-              })
-        },
-
         _addQueryParam(key, value) {
           const url = new URL(window.location)
           url.searchParams.set(key, value)
@@ -208,7 +195,6 @@ export default (Alpine: AlpineType) => {
         },
 
         getOneTimePrice() {
-            this._assignToBundle();
 
             const price = this.assignedBundleProducts.reduce((acc: number, product: any) => {
                 return acc + (Number(product.otpPrice) * Number(product.quantity))
@@ -218,13 +204,33 @@ export default (Alpine: AlpineType) => {
         },
 
         getAutoshipPrice() {
-            this._assignToBundle();
 
             const price = this.assignedBundleProducts.reduce((acc: number, product: any) => {
                 return acc + (Number(product.sellingPlanPrice) * Number(product.quantity))
             }, 0)
 
             return price;
+        },
+
+        _createGuid() {
+            let d = new Date().getTime()
+            let d2 =
+                (performance && performance.now && performance.now() * 1000) ||
+                0
+            return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
+                /[xy]/g,
+                (c) => {
+                    let r = Math.random() * 16
+                    if (d > 0) {
+                        r = (d + r) % 16 | 0
+                        d = Math.floor(d / 16)
+                    } else {
+                        r = (d2 + r) % 16 | 0
+                        d2 = Math.floor(d2 / 16)
+                    }
+                    return (c == "x" ? r : (r & 0x7) | 0x8).toString(16)
+                }
+            )
         },
 
 
@@ -267,6 +273,7 @@ export default (Alpine: AlpineType) => {
                 quantity: 1,
               },
             }
+
         },
         
         selectProduct(productId) {
@@ -276,9 +283,8 @@ export default (Alpine: AlpineType) => {
 
         async addToCart() {
             this.loading = true;
-            this._assignToBundle()
 
-            let guid = this.guid;
+            let guid = this._createGuid();
 
             let bundleCart = {
               items: [],
