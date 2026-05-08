@@ -18,7 +18,7 @@
     "name": "swiper-core"
   },
   "frontend/entrypoints/main.css": {
-    "file": "main-gzgo2WYY.css",
+    "file": "main-C40oJcMC.css",
     "name": "main",
     "names": [
       "main.css"
@@ -27,7 +27,7 @@
     "isEntry": true
   },
   "frontend/entrypoints/main.js": {
-    "file": "main-BLJ3BGFH.js",
+    "file": "main-Brb9WPgg.js",
     "name": "main",
     "src": "frontend/entrypoints/main.js",
     "isEntry": true,
@@ -49,7 +49,7 @@
       "frontend/scripts/components/footer.ts"
     ],
     "css": [
-      "main-ByUnJHQC.css"
+      "main-BTB6dX0G.css"
     ]
   },
   "frontend/scripts/components/accordion.ts": {
@@ -87,7 +87,7 @@
     ]
   },
   "frontend/scripts/components/product-form-bundle.ts": {
-    "file": "product-form-bundle-BRekcNNY.js",
+    "file": "product-form-bundle-C76AgSkY.js",
     "name": "product-form-bundle",
     "src": "frontend/scripts/components/product-form-bundle.ts",
     "isDynamicEntry": true

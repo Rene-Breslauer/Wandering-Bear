@@ -21,7 +21,8 @@ export default (Alpine: AlpineType) => {
           let totalOneTimePrice = 0;
 
           Object.values(this.assignedBundleProducts).forEach((product) => {
-            totalOriginalPrice += product.otpPrice * product.quantity;
+            console.log('product', product);
+            totalOriginalPrice += product.originalPrice * product.quantity;
             totalAutoshipPrice += product.sellingPlanPrice * product.quantity;
             totalOneTimePrice += product.otpPrice * product.quantity;
           })
@@ -34,7 +35,7 @@ export default (Alpine: AlpineType) => {
         },
 
         get bundleSize() {
-            this._updateQueryString();
+            //this._updateQueryString();
             return Object.values(this.selectedBundleProducts).reduce((acc, product) => {
               return acc + Number(product.quantity || 0)
             }, 0)
@@ -93,6 +94,7 @@ export default (Alpine: AlpineType) => {
                   id: Number(variant.id),
                   quantity: selectedProduct.quantity,
                   otpPrice: Number(variant.price),
+                  originalPrice: Number(product.variants[0].price),
                   sellingPlanPrice: Number(variant.selling_plan_price),
                   selling_plan: this.purchaseOption === 'autoship' ? Number(variant.selling_plan_id) : null,
                   properties: {
