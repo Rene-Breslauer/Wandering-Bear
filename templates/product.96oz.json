@@ -431,7 +431,7 @@
           "type": "group",
           "name": "t:names.group",
           "settings": {
-            "class": "text-2xl",
+            "class": "",
             "content_direction": "column",
             "vertical_on_mobile": true,
             "horizontal_alignment": "flex-start",
@@ -472,7 +472,7 @@
               "type": "subscription-value-prop",
               "name": "t:names.heading",
               "settings": {
-                "block_class": "",
+                "block_class": "!text-2xl",
                 "text": "<h2>WE WANT TO IMPRESS YOU</h2>",
                 "width": "fit-content",
                 "max_width": "normal",
