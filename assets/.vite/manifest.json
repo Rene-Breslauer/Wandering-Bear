@@ -27,7 +27,7 @@
     "isEntry": true
   },
   "frontend/entrypoints/main.js": {
-    "file": "main-CUR01UpY.js",
+    "file": "main-CJqI-J9e.js",
     "name": "main",
     "src": "frontend/entrypoints/main.js",
     "isEntry": true,
@@ -49,7 +49,7 @@
       "frontend/scripts/components/footer.ts"
     ],
     "css": [
-      "main-QrxwKERz.css"
+      "main-0nOeyeYB.css"
     ]
   },
   "frontend/scripts/components/accordion.ts": {

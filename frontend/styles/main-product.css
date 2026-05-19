@@ -90,3 +90,13 @@ input[name="purchase_option"]:checked + label {
     border: 2px solid transparent;
     background-clip: padding-box;
 }
+
+.review-heading h2 {
+    font-size: 60px !important;
+}
+
+@media (max-width: 768px) {
+    .review-heading h2 {
+        font-size: 40px !important;
+    }
+}
