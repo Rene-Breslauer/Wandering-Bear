@@ -133,6 +133,7 @@
         "desktop_media_position": "left",
         "equal_columns": false,
         "limit_details_width": false,
+        "subscription_value_props": "",
         "gap": 20,
         "enable_sticky_add_to_cart": true,
         "color_scheme": "",
@@ -426,6 +427,79 @@
     "17780948450c5a87e1": {
       "type": "_blocks",
       "blocks": {
+        "group_Y3rAwi": {
+          "type": "group",
+          "name": "t:names.group",
+          "settings": {
+            "class": "",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "subscription_value_prop_FCM3iE": {
+              "type": "subscription-value-prop",
+              "name": "t:names.heading",
+              "settings": {
+                "block_class": "",
+                "text": "<h2>WE WANT TO IMPRESS YOU</h2>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "h2",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "subscription_value_prop_FCM3iE"
+          ]
+        },
         "okendo_reviews_widget_GnH68q": {
           "type": "shopify://apps/okendo/blocks/reviews-widget/bb689e69-ea70-4661-8fb7-ad24a2e23c29",
           "settings": {
@@ -435,6 +509,7 @@
         }
       },
       "block_order": [
+        "group_Y3rAwi",
         "okendo_reviews_widget_GnH68q"
       ],
       "settings": {
