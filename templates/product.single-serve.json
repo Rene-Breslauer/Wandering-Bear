@@ -284,49 +284,62 @@
         "padding-block-end": 48
       }
     },
-    "aw_diagram_6mi8V4": {
-      "type": "aw-diagram",
+    "aw_diagram_toggle_QYGmFM": {
+      "type": "aw-diagram-toggle",
       "blocks": {
-        "diagram_item_qP99bg": {
-          "type": "diagram_item",
+        "view_NH6mb9": {
+          "type": "view",
           "settings": {
-            "icon": "shopify://shop_images/Group_1327226584.svg",
-            "title": "Cold Brew Process",
-            "description": "Our cold-brewing and precision-filtering process ensures our cold brew is always smooth, not bitter or acidic"
+            "toggle_title": "COLD BREW",
+            "color_scheme": "scheme-1",
+            "background_image": "shopify://shop_images/sky.png",
+            "title_type": "image",
+            "title": "",
+            "title_alt": "",
+            "diagram_image": "shopify://shop_images/Group_1327226582.png",
+            "icon_1": "shopify://shop_images/Group_1327226585_13824b5d-f61e-4c62-84ce-4d324dab29ad.svg",
+            "title_1": "BEAN QUALITY",
+            "description_1": "Our cold brew is made with a lot of organic, speciality-grade 100% arabica beans for a smooth yet bold coffee shop inspired cup of cold brew",
+            "icon_2": "shopify://shop_images/Group_1327226584.svg",
+            "title_2": "MORE COFFEE",
+            "description_2": "There’s simply more coffee in our coffee. More beans means you get more flavor and more caffeine.",
+            "icon_3": "shopify://shop_images/Group_1327226583.svg",
+            "title_3": "COLD BREW PROCESS",
+            "description_3": "Our cold-brewing and precision-filtering process ensures our cold brew is always smooth, not bitter or acidic"
           }
         },
-        "diagram_item_UqUHic": {
-          "type": "diagram_item",
+        "view_Rg9MXG": {
+          "type": "view",
           "settings": {
-            "icon": "shopify://shop_images/Group_1327226585_13824b5d-f61e-4c62-84ce-4d324dab29ad.svg",
-            "title": "BEAN QUALITY",
-            "description": "Our cold brew is made with a lot of organic, speciality-grade 100% arabica beans for a smooth yet bold coffee shop inspired cup of cold brew"
-          }
-        },
-        "diagram_item_UMNaHE": {
-          "type": "diagram_item",
-          "settings": {
-            "icon": "shopify://shop_images/Group_1327226583.svg",
-            "title": "More Coffee",
-            "description": "There’s simply more coffee in our coffee. More beans means you get more flavor and more caffeine."
+            "toggle_title": "LATTE",
+            "color_scheme": "scheme-1",
+            "background_image": "shopify://shop_images/sky.png",
+            "title_type": "image",
+            "title": "",
+            "title_alt": "",
+            "diagram_image": "shopify://shop_images/Group_1327226582_fd7ab366-5442-4f98-887d-1f87145b9c0c.png",
+            "icon_1": "shopify://shop_images/Group_1327226585_13824b5d-f61e-4c62-84ce-4d324dab29ad.svg",
+            "title_1": "SUPER PREMIUM COFFEE",
+            "description_1": "Made with our signature cold brew from organic, specialty-grade beans",
+            "icon_2": "shopify://shop_images/Group_1327226584.svg",
+            "title_2": "SUBTLY SWEET,NO COMPROMISE",
+            "description_2": "Only 100 calories and just 5 grams of real sugar",
+            "icon_3": "shopify://shop_images/Group_1327226583.svg",
+            "title_3": "CREAMY & PROTEIN RICH",
+            "description_3": "Ultra-filtered skim milk protein for creaminess with nutrition cred"
           }
         }
       },
       "block_order": [
-        "diagram_item_qP99bg",
-        "diagram_item_UqUHic",
-        "diagram_item_UMNaHE"
+        "view_NH6mb9",
+        "view_Rg9MXG"
       ],
-      "name": "AW Diagram Section",
+      "name": "AW Diagram Toggle",
       "settings": {
-        "color_scheme": "",
-        "background_image": "shopify://shop_images/sky.png",
         "title_type": "image",
         "title": "",
         "title_alt": "",
-        "title_image": "shopify://shop_images/cold-brew-title.svg",
-        "title_image_mobile": "shopify://shop_images/on-tap-innovation-mobile_6d18829d-a82d-44be-9713-394659d47d33.svg",
-        "diagram_image": "shopify://shop_images/cupofcoldbrew_1_184edfd5-6ed8-4e1e-a095-a57e7070ff36.png"
+        "title_image": "shopify://shop_images/Group_1327226583_1b0350b7-4cb6-4e80-96d8-5ee41ee70d40.svg"
       }
     },
     "aw_image_text_icons_6YkxCz": {
@@ -615,7 +628,7 @@
   "order": [
     "main",
     "product_recommendations_qggXJq",
-    "aw_diagram_6mi8V4",
+    "aw_diagram_toggle_QYGmFM",
     "aw_image_text_icons_6YkxCz",
     "aw_guarantee_banner_GxEGrE",
     "1777580187e490aceb",
