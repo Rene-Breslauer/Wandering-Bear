@@ -6,8 +6,8 @@
       "_swiper-core-C1JZ1M_I.js"
     ]
   },
-  "_swiper-DdVPzQTz.js": {
-    "file": "swiper-DdVPzQTz.js",
+  "_swiper-DuhhZ_0V.js": {
+    "file": "swiper-DuhhZ_0V.js",
     "name": "swiper",
     "imports": [
       "_swiper-core-C1JZ1M_I.js"
@@ -18,7 +18,7 @@
     "name": "swiper-core"
   },
   "frontend/entrypoints/main.css": {
-    "file": "main-DxT5EdWO.css",
+    "file": "main-CpRZtY6N.css",
     "name": "main",
     "names": [
       "main.css"
@@ -27,7 +27,7 @@
     "isEntry": true
   },
   "frontend/entrypoints/main.js": {
-    "file": "main-O5qAfMYJ.js",
+    "file": "main-CEGCPjH3.js",
     "name": "main",
     "src": "frontend/entrypoints/main.js",
     "isEntry": true,
@@ -47,7 +47,8 @@
       "frontend/scripts/components/diagram.ts",
       "frontend/scripts/components/accordion.ts",
       "frontend/scripts/components/footer.ts",
-      "frontend/scripts/components/modal.ts"
+      "frontend/scripts/components/modal.ts",
+      "frontend/scripts/components/diagramToggle.ts"
     ],
     "css": [
       "main-DwcSdx3f.css"
@@ -65,71 +66,77 @@
     "src": "frontend/scripts/components/diagram.ts",
     "isDynamicEntry": true
   },
+  "frontend/scripts/components/diagramToggle.ts": {
+    "file": "diagramToggle-9e7wa3x4.js",
+    "name": "diagramToggle",
+    "src": "frontend/scripts/components/diagramToggle.ts",
+    "isDynamicEntry": true
+  },
   "frontend/scripts/components/footer.ts": {
-    "file": "footer-Dmq4eaGm.js",
+    "file": "footer-DDoOoxjs.js",
     "name": "footer",
     "src": "frontend/scripts/components/footer.ts",
     "isDynamicEntry": true
   },
   "frontend/scripts/components/header.ts": {
-    "file": "header-Bq5XifI1.js",
+    "file": "header-C40LiaR2.js",
     "name": "header",
     "src": "frontend/scripts/components/header.ts",
     "isDynamicEntry": true
   },
   "frontend/scripts/components/media-gallery-bundle.ts": {
-    "file": "media-gallery-bundle-qH_YAQve.js",
+    "file": "media-gallery-bundle-El-WvV9v.js",
     "name": "media-gallery-bundle",
     "src": "frontend/scripts/components/media-gallery-bundle.ts",
     "isDynamicEntry": true,
     "imports": [
       "_swiper-core-C1JZ1M_I.js",
-      "_swiper-DdVPzQTz.js"
+      "_swiper-DuhhZ_0V.js"
     ]
   },
   "frontend/scripts/components/modal.ts": {
-    "file": "modal-L9OIXWP-.js",
+    "file": "modal-Bp2_TWKL.js",
     "name": "modal",
     "src": "frontend/scripts/components/modal.ts",
     "isDynamicEntry": true
   },
   "frontend/scripts/components/product-form-bundle.ts": {
-    "file": "product-form-bundle-BN5hYLAx.js",
+    "file": "product-form-bundle-Ss897vLj.js",
     "name": "product-form-bundle",
     "src": "frontend/scripts/components/product-form-bundle.ts",
     "isDynamicEntry": true
   },
   "frontend/scripts/components/swiperSlider.ts": {
-    "file": "swiperSlider-CXuOBfqb.js",
+    "file": "swiperSlider-vApaNlyb.js",
     "name": "swiperSlider",
     "src": "frontend/scripts/components/swiperSlider.ts",
     "isDynamicEntry": true,
     "imports": [
       "_navigation-BIH-8bFS.js",
       "_swiper-core-C1JZ1M_I.js",
-      "_swiper-DdVPzQTz.js"
+      "_swiper-DuhhZ_0V.js"
     ]
   },
   "frontend/scripts/components/tooltip.ts": {
-    "file": "tooltip-AiazwKKS.js",
+    "file": "tooltip-DaQzZvM8.js",
     "name": "tooltip",
     "src": "frontend/scripts/components/tooltip.ts",
     "isDynamicEntry": true
   },
   "frontend/scripts/components/videoPlayer.ts": {
-    "file": "videoPlayer-ZT3TlCaV.js",
+    "file": "videoPlayer-Cbz8LOP2.js",
     "name": "videoPlayer",
     "src": "frontend/scripts/components/videoPlayer.ts",
     "isDynamicEntry": true
   },
   "node_modules/@alpinejs/morph/dist/module.esm.js": {
-    "file": "module.esm-CHxow0Is.js",
+    "file": "module.esm-Dspzmkt5.js",
     "name": "module.esm",
     "src": "node_modules/@alpinejs/morph/dist/module.esm.js",
     "isDynamicEntry": true
   },
   "node_modules/alpinejs/dist/module.esm.js": {
-    "file": "module.esm-IF5KsCsQ.js",
+    "file": "module.esm-CsTj07mC.js",
     "name": "module.esm",
     "src": "node_modules/alpinejs/dist/module.esm.js",
     "isDynamicEntry": true

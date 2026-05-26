@@ -38,6 +38,7 @@ const init = async () => {
     const { default: Accordion } = await import("~/scripts/components/accordion")
     const { default: Footer } = await import("~/scripts/components/footer")
     const { default: Modal } = await import("~/scripts/components/modal")
+    const { default: DiagramToggle } = await import("~/scripts/components/diagramToggle")
 
     Alpine.plugin(morph)
 
@@ -51,6 +52,7 @@ const init = async () => {
     Alpine.plugin(Accordion)
     Alpine.plugin(Footer)
     Alpine.plugin(Modal)
+    Alpine.plugin(DiagramToggle)
     
     Alpine.start()
     window.Alpine = Alpine
