@@ -1,1 +1,0 @@
-var e=e=>{e.data(`header`,()=>({drawerOpen:!1,init(){},toggleDrawer(){this.drawerOpen=!this.drawerOpen,document.getElementById(`Details-menu-drawer-container`).toggleAttribute(`menu-open`)}}))};export{e as default};

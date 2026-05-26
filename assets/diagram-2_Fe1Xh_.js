@@ -1,1 +1,0 @@
-var e=e=>{e.data(`diagram`,()=>({init(){}}))};export{e as default};
