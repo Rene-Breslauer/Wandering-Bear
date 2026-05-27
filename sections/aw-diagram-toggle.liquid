@@ -19,7 +19,7 @@
     >
         {% if title_type == 'image' %}
             {% if title_image != blank %}
-                <div class="max-w-[442px] w-full mx-auto md:!mb-5">
+                <div class="max-w-[442px] w-full mx-auto lg:!mb-5">
                     {% render 'title-image', image: title_image, image_mobile: title_image_mobile, alt: title_alt, class: 'w-full max-h-full object-contain' %}
                 </div>
             {% endif %}
@@ -83,17 +83,17 @@
             
                     {% case forloop.index %}
                         {% when 1 %}
-                            {% assign class = 'mt-[53px] mb-6 md:!mb-0 md:!mt-0 order-2 md:!w-[215px] md:absolute md:left-[82%] md:top-[12%]' %}
-                            {% assign icon_class = '!w-[54px] !h-[54px] md:!ml-0 md:!mr-auto' %}
+                            {% assign class = 'mt-[53px] mb-6 lg:!mb-0 lg:!mt-0 order-2 lg:!w-[215px] lg:absolute lg:left-[82%] lg:top-[12%]' %}
+                            {% assign icon_class = '!w-[54px] !h-[54px] lg:!ml-0 lg:!mr-auto' %}
                         {% when 2 %}
-                            {% assign class = 'order-3 mb-6 md:!mb-0 md:!w-[215px] md:absolute md:right-[82%] md:top-[23%]' %}
-                            {% assign icon_class = '!w-[54px] !h-[54px] md:!ml-auto md:!mr-0'  %}
+                            {% assign class = 'order-3 mb-6 lg:!mb-0 lg:!w-[215px] lg:absolute lg:right-[82%] lg:top-[23%]' %}
+                            {% assign icon_class = '!w-[54px] !h-[54px] lg:!ml-auto lg:!mr-0'  %}
                         {% when 3 %}
-                            {% assign class = 'mb-[53px] md:!mb-0 order-4 md:!w-[287px] md:absolute md:left-[82%] md:top-[58%]' %}
-                            {% assign icon_class = '!w-[54px] !h-[54px] md:!ml-0 md:!mr-auto' %}
+                            {% assign class = 'mb-[53px] lg:!mb-0 order-4 lg:!w-[287px] lg:absolute lg:left-[82%] lg:top-[58%]' %}
+                            {% assign icon_class = '!w-[54px] !h-[54px] lg:!ml-0 lg:!mr-auto' %}
                     {% endcase %}
                     {% if icon != blank %}
-                        <div class="wb-flex flex-row {% unless forloop.last %} md:!flex-col {% endunless %} gap-4 {{ class }}"
+                        <div class="wb-flex flex-row {% unless forloop.last %} lg:!flex-col {% endunless %} gap-4 {{ class }}"
                         data-callout
                         data-index="{{ forloop.index0 }}">
                             {{ icon | image_url: width: 100 | image_tag: class: icon_class, alt: title }}
@@ -116,7 +116,7 @@
             <div class="wb-flex flex-col mx-auto relative z-[2]">
                 {% if title_type == 'image' %}
                     {% if title_image != blank %}
-                        <div class="max-w-[442px] w-full mx-auto md:!mb-5">
+                        <div class="max-w-[442px] w-full mx-auto lg:!mb-5">
                             {% render 'title-image', image: title_image, image_mobile: title_image_mobile, alt: title_alt, class: 'w-full max-h-full object-contain' %}
                         </div>
                     {% endif %}
@@ -127,10 +127,10 @@
                 {% endif %}
             </div>
 
-            <div data-line-wrapper class="wb-flex flex-col md:flex-row mx-auto relative max-w-[84vw] w-full justify-center px-0">
+            <div data-line-wrapper class="wb-flex flex-col lg:flex-row mx-auto relative max-w-[84vw] w-full justify-center px-0">
 
                 <!-- SVG LINES -->
-                <svg class="hidden md:!block absolute inset-0 w-full h-full overflow-visible pointer-events-none z-[1]">
+                <svg class="hidden lg:!block absolute inset-0 w-full h-full overflow-visible pointer-events-none z-[1]">
                     <line
                     x-show="lines[0]"
                     :x1="lines[0]?.x1 || 0"
@@ -174,7 +174,7 @@
                                 <source srcset="{{ diagram_image | image_url: width: 1200 }}" media="(min-width: 1200px)">
                                 <source srcset="{{ diagram_image | image_url: width: 1024 }}" media="(min-width: 1024px)">
                                 <source srcset="{{ diagram_image | image_url: width: 768 }}" media="(min-width: 768px)">
-                                <img data-diagram-image src="{{ diagram_image | image_url: width: 365 }}" alt="{{ title_alt }}" class="!h-[355px] md:!h-[573px] !flex order-1 md:order-2 w-full max-h-full object-contain relative z-[2] mx-auto">
+                                <img data-diagram-image src="{{ diagram_image | image_url: width: 365 }}" alt="{{ title_alt }}" class="!h-[355px] lg:!h-[573px] !flex order-1 lg:order-2 w-full max-h-full object-contain relative z-[2] mx-auto">
                             </picture>
                         </div>
                     {% endif %}
