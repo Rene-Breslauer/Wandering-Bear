@@ -95,6 +95,8 @@ export default class VariantPicker extends Component {
 
     const variantId = selectedOption.dataset.variantId || null;
 
+    window.dispatchEvent(new CustomEvent('variant-changed', { detail: { variantId: variantId } }));
+
     if (isOnProductPage) {
       if (variantId) {
         url.searchParams.set('variant', variantId);
@@ -113,6 +115,7 @@ export default class VariantPicker extends Component {
         history.replaceState({}, '', url.toString());
       });
     }
+
   }
 
   /**
@@ -491,6 +494,7 @@ export default class VariantPicker extends Component {
     const selectedOptions = Array.from(this.querySelectorAll('select option[selected], fieldset input:checked'));
 
     return selectedOptions.map((option) => {
+
       const { optionValueId } = option.dataset;
 
       if (!optionValueId) throw new Error('No option value ID found');

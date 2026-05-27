@@ -9,11 +9,12 @@
 %}
 
 {% capture media_gallery %}
-  {%- content_for 'block',
+  {% comment %} {%- content_for 'block',
     type: '_product-media-gallery',
     id: 'media-gallery',
     closest.product: closest.product
-  -%}
+  -%} {% endcomment %}
+  {% render 'media-gallery-bundle', bundle_product: product %}
 {% endcapture %}
 
 {% capture product_details %}
@@ -171,6 +172,7 @@
   </sticky-add-to-cart>
 {% endif %}
 
+<div x-data="productForm({{ product.id }},{{ product.selected_or_first_available_variant.id }},{{ selling_plan_id }})">
 {% render 'product-information-content',
   product_media_size: closest.product.media.size,
   section_id: section.id,
@@ -179,7 +181,7 @@
   product_details: product_details,
   additional_blocks: additional_blocks
 %}
-
+</div>
 {% stylesheet %}
   .sticky-add-to-cart__bar {
     position: fixed;

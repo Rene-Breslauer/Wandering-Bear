@@ -74,6 +74,8 @@
     when 'content-full-width'
       assign content_width = 'full-width'
   endcase
+
+  assign selling_plan_id = product.selected_or_first_available_variant.selling_plan_allocations.first.selling_plan.id
 %}
 
 <div class="section-background color-{{ settings.color_scheme }}"></div>

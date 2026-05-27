@@ -39,6 +39,7 @@ const init = async () => {
     const { default: Footer } = await import("~/scripts/components/footer")
     const { default: Modal } = await import("~/scripts/components/modal")
     const { default: DiagramToggle } = await import("~/scripts/components/diagramToggle")
+    const { default: ProductForm } = await import("~/scripts/components/product-form")
 
     Alpine.plugin(morph)
 
@@ -53,6 +54,7 @@ const init = async () => {
     Alpine.plugin(Footer)
     Alpine.plugin(Modal)
     Alpine.plugin(DiagramToggle)
+    Alpine.plugin(ProductForm)
     
     Alpine.start()
     window.Alpine = Alpine

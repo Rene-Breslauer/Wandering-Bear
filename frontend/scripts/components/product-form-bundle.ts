@@ -263,6 +263,7 @@ export default (Alpine: AlpineType) => {
 
         init() {
             this.bundleProducts = JSON.parse(this.$refs.productObject.textContent);
+            console.log('bundle products', this.bundleProducts);
             this.bundleParentProducts = JSON.parse(this.$refs.bundleParentProducts.textContent);
             this.selectedProduct = this.bundleProducts[this.selectedProductId];
 

@@ -594,6 +594,7 @@ class SwatchesVariantPickerComponent extends VariantPicker {
 
       // Use parent's fetch method
       this.fetchUpdatedSection(requestUrl);
+      
       return;
     }
 
