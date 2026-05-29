@@ -10,6 +10,7 @@ export default (Alpine: AlpineType) => {
         selectedVariantId: any,
         sellingPlanId: any
     ) => ({
+        productObject: null,
         productId: productId,
         product: null,
         selectedVariantId: selectedVariantId,
@@ -63,19 +64,29 @@ export default (Alpine: AlpineType) => {
         },
 
         getAutoshipPrice() {
-
             const price = this.selectedVariant.selling_plan_price;
-
             return price;
         },
 
         init() {
             this.productObject = JSON.parse(this.$refs.productObject.textContent);
+
+            Object.values(this.productObject).forEach((variant: any) => {
+                variant.currentPrice = variant.price;
+                variant.currentPriceFormatted = this._formatPrice(variant.price);
+                variant.currentSavingsPercentage = 0;
+                variant.currentSavingsPercentageFormatted = '';
+            });
+
             this.selectedVariant = this.productObject[this.selectedVariantId];
+            this.updatePrices();
 
             window.addEventListener('variant-changed', (event) => {
-                this.selectedVariantId = Number(event.detail.variantId);
+                this.selectedVariantId = String(event.detail.variantId);
                 this.selectedVariant = this.productObject[this.selectedVariantId];
+                console.log('selected variant', this.selectedVariant);
+                this.updatePrices();
+
             });
 
         },
@@ -83,6 +94,22 @@ export default (Alpine: AlpineType) => {
         onPurchaseOptionChange(option: string) {
             this.purchaseOption = option;
             this.sellingPlanId = this.purchaseOption === 'autoship' ? this.selectedVariant.selling_plan_id : null;
+            this.updatePrices();
+            
+        },
+
+        updatePrices() {
+            Object.values(this.productObject).forEach((variant: any) => {
+                variant.currentPrice = this.purchaseOption === 'autoship' ? variant.selling_plan_price : variant.price;
+                console.log('selling plan price', variant.selling_plan_price);
+                console.log('price', variant.price);
+
+                variant.currentPriceFormatted = this._formatPrice(variant.currentPrice);
+                console.log('current price formatted', variant.currentPriceFormatted);
+                variant.currentSavings = variant.currentPrice/variant.compare_at_price;
+                variant.currentSavingsPercentage = Math.round(100 - variant.currentSavings * 100);
+                variant.currentSavingsPercentageFormatted = 'Save ' + Math.round(variant.currentSavingsPercentage) + '% off';
+            });
         },
 
         async addToCart() {

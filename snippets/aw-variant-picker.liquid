@@ -7,6 +7,37 @@
   @param {object} product - The current product object (used to determine selected variant state).
 {%- enddoc -%}
 
+{% liquid 
+    assign one_month_allocation = blank
+    assign product_object = product_resource.metafields.custom.product_group.value
+    assign quantified = false
+    if product_object.quantified and variant.metafields.custom.quantified_units != blank
+        assign quantified = true
+    endif
+
+    for allocation in variant.selling_plan_allocations
+        if allocation.selling_plan.name contains '1 Month'
+            assign one_month_allocation = allocation
+            assign selling_plan_price = allocation.price
+            if quantified
+                assign selling_plan_price = selling_plan_price | times: variant.metafields.custom.quantified_units
+            endif
+            break
+        endif
+    endfor
+
+    if variant.compare_at_price > variant.price
+        assign compare_at_price = variant.compare_at_price
+    else
+        assign compare_at_price = variant.price
+    endif
+
+    assign price = variant.price 
+    if quantified
+        assign price = price | times: variant.metafields.custom.quantified_units
+    endif
+%}
+
 {% assign block_settings = block.settings %}
 
 {% unless product_resource.has_only_default_variant %}
@@ -14,6 +45,7 @@
      
      assign selling_plan_id = product_resource.selected_or_first_available_variant.selling_plan_id
   %}
+
 
   <variant-picker
     class="variant-picker spacing-style variant-picker--{{ block_settings.alignment }}"
@@ -117,9 +149,9 @@
                     endfor
                   %}
                     <span class="text-base text-bear-black font-bold font-gothic_condensed uppercase">{{- option_name | escape -}}</span>
-                    <span class="text-xs text-bear-black font-kurdis-semi-condensed">{{- option_price | money -}}</span>
+                    <span x-text="productObject[{{ product_option_value.variant.id }}].currentPriceFormatted" class="text-xs text-bear-black font-kurdis-semi-condensed">{{- option_price | money -}}</span>
                     {% if option_savings > 0 %}
-                      <span data-savings class="font-kurdis-semi-condensed font-semibold text-kraft text-[10px]">{{- option_savings_text | escape -}}</span>
+                      <span x-text="productObject[{{ product_option_value.variant.id }}].currentSavingsPercentageFormatted" class="font-kurdis-semi-condensed font-semibold text-kraft text-[10px]">{{- option_savings_text | escape -}}</span>
                     {% endif %}
                   </div>
               </label>
@@ -150,24 +182,54 @@
 <script x-ref="productObject" type="application/json">
 {
       {% for variant in product_resource.variants %}
-        {% assign one_month_allocation = blank %}
+        
+        {% liquid 
+            assign one_month_allocation = blank
+            assign product_object = product_resource.metafields.custom.product_group.value
+            assign quantified = false
+            assign quantified_units = variant.metafields.custom.quantified_units
+            if product_object.quantified and quantified_units != blank
+                assign quantified = true
+            endif
 
-        {% for allocation in variant.selling_plan_allocations %}
-          {% if allocation.selling_plan.name contains '1 Month' %}
-            {% assign one_month_allocation = allocation %}
-            {% break %}
-          {% endif %}
-        {% endfor %}
+            for allocation in variant.selling_plan_allocations
+                if allocation.selling_plan.name contains '1 Month'
+                    assign one_month_allocation = allocation
+                    assign selling_plan_price = allocation.price
+                    if quantified
+                        assign selling_plan_price = selling_plan_price
+                    endif
+                    break
+                endif
+            endfor
+
+            if variant.compare_at_price > variant.price
+                assign compare_at_price = variant.compare_at_price
+            else
+                assign compare_at_price = variant.price
+            endif
+
+            assign price = variant.price 
+            #if quantified
+            #    assign price = price | times: variant.metafields.custom.quantified_units
+            #endif
+        %}
 
         "{{ variant.id }}": {
+          "available": {{ variant.available | json }},
           "title": {{ variant.title | json }},
           "id": {{ variant.id | json }},
-          "price": {{ variant.price | json }}
+          "quantified": {{ quantified | json }},
+          {% if quantified %}
+            "quantified_units": {{ variant.metafields.custom.quantified_units | json }},
+          {% endif %}
+          "price": {{ price | json }},
+          "compare_at_price": {{ compare_at_price | divided_by: quantified_units | json }}
           {% if one_month_allocation != blank %}
             ,
             "selling_plan_id": {{ one_month_allocation.selling_plan.id | json }},
             "selling_plan_name": {{ one_month_allocation.selling_plan.name | json }},
-            "selling_plan_price": {{ one_month_allocation.price | json }},
+            "selling_plan_price": {{ selling_plan_price | json }},
             "selling_plan_savings": {{ variant.price | minus: one_month_allocation.price | json }}
           {% endif %}
         }{% unless forloop.last %},{% endunless %}

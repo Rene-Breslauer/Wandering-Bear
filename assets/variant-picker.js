@@ -89,7 +89,7 @@ export default class VariantPicker extends Component {
       ? 'featured-product-information'
       : undefined;
 
-    this.fetchUpdatedSection(this.buildRequestUrl(selectedOption), morphElementSelector);
+    // this.fetchUpdatedSection(this.buildRequestUrl(selectedOption), morphElementSelector);
 
     const url = new URL(window.location.href);
 

@@ -2368,6 +2368,16 @@
     ]
   },
   {
+    "name": "Product",
+    "settings": [
+      {
+        "type": "richtext",
+        "id": "subscription_value_props",
+        "label": "Subscription Value Props"
+      }
+    ]
+  },
+  {
     "name": "Membership",
     "settings": [
       {

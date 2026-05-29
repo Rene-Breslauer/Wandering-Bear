@@ -6,6 +6,7 @@
 
 {% liquid
   assign bundle_collection = section.settings.bundle_collection
+  assign hide_thumbnails_mobile = section.settings.hide_thumbnails_mobile
 %}
 
 {% capture media_gallery %}
@@ -14,7 +15,7 @@
     id: 'media-gallery',
     closest.product: closest.product
   -%} {% endcomment %}
-  {% render 'media-gallery-bundle', bundle_product: product %}
+  {% render 'media-gallery-bundle', bundle_product: product, hide_thumbnails_mobile: hide_thumbnails_mobile %}
 {% endcapture %}
 
 {% capture product_details %}
@@ -444,10 +445,14 @@
       "default": 16
     },
     {
+      "type": "header",
+      "content": "Product Gallery"
+    },
+    {
       "type": "checkbox",
-      "id": "enable_sticky_add_to_cart",
-      "label": "t:settings.enable_sticky_add_to_cart",
-      "default": true
+      "id": "hide_thumbnails_mobile",
+      "label": "Hide thumbnails on mobile",
+      "default": false
     },
     {
       "type": "color_scheme",
