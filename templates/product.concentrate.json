@@ -109,7 +109,7 @@
                   "name": "Product description",
                   "settings": {
                     "block_class": "product-description",
-                    "text": "{{ closest.product.description }}",
+                    "text": "{{ closest.product.metafields.custom.product_group.value.description | metafield_tag }}",
                     "width": "100%",
                     "max_width": "normal",
                     "alignment": "left",
@@ -179,7 +179,7 @@
         "equal_columns": false,
         "limit_details_width": false,
         "gap": 48,
-        "hide_thumbnails_mobile": true,
+        "hide_thumbnails_desktop": false,
         "color_scheme": "",
         "padding-block-start": 44,
         "padding-block-end": 0
