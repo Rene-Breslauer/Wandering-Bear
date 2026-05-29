@@ -1,0 +1,300 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "product-information",
+      "blocks": {
+        "product-details": {
+          "type": "_product-details",
+          "static": true,
+          "settings": {
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "details_position": "flex-start",
+            "gap": 0,
+            "sticky_details_desktop": true,
+            "inherit_color_scheme": true,
+            "color_scheme": "scheme-1",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 24,
+            "padding-block-end": 24,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "group_icgrde": {
+              "type": "group",
+              "name": "Header",
+              "settings": {
+                "class": "",
+                "content_direction": "column",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "flex-start",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "flex-start",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 12,
+                "width": "fill",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": true,
+                "color_scheme": "",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "link": "",
+                "open_in_new_tab": false,
+                "placeholder": "",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "review_PcMjXF": {
+                  "type": "review",
+                  "name": "t:names.product_review_stars",
+                  "settings": {
+                    "stars_style": "shaded",
+                    "show_number": true,
+                    "text_color": "#000000",
+                    "star_color": "#bd8053",
+                    "rating_color": "primary",
+                    "type_preset": "paragraph",
+                    "width": "100%",
+                    "alignment": "left"
+                  },
+                  "blocks": {}
+                },
+                "product_title_bundle_aVmja3": {
+                  "type": "product-title-bundle",
+                  "name": "Product Title Bundle",
+                  "settings": {
+                    "product_title": "Cold Brew Box",
+                    "product_title_small": "1 Gallon"
+                  },
+                  "blocks": {}
+                },
+                "text_kPdtth": {
+                  "type": "text",
+                  "name": "Product description",
+                  "settings": {
+                    "block_class": "product-description",
+                    "text": "{{ closest.product.description }}",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "rte",
+                    "font": "var(--font-primary--family)",
+                    "font_size": "",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "review_PcMjXF",
+                "product_title_bundle_aVmja3",
+                "text_kPdtth"
+              ]
+            },
+            "variant_picker_R3rGDr": {
+              "type": "variant-picker",
+              "settings": {
+                "variant_style": "buttons",
+                "show_swatches": false,
+                "alignment": "left",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "cross_sell_9c3zr7": {
+              "type": "cross-sell",
+              "name": "Cross Sell Call-out",
+              "settings": {
+                "color_scheme": "scheme-40eec688-b970-4f1a-96a1-8b50c977616b",
+                "image": "shopify://shop_images/3f3d11dcd1b175853b80f970707145ec401faff7.png",
+                "title": "Looking for cold brew on-the-go?",
+                "subtitle": "Try our new cold brew lattes, available in 3 flavors!",
+                "button_label": "Shop Now",
+                "button_link": "shopify://products/cold-brew-latte-8oz"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "group_icgrde",
+            "variant_picker_R3rGDr",
+            "cross_sell_9c3zr7"
+          ]
+        }
+      },
+      "settings": {
+        "bundle_collection": "",
+        "content_width": "content-center-aligned",
+        "desktop_media_position": "left",
+        "equal_columns": false,
+        "limit_details_width": false,
+        "gap": 48,
+        "hide_thumbnails_mobile": true,
+        "color_scheme": "",
+        "padding-block-start": 44,
+        "padding-block-end": 0
+      }
+    },
+    "aw_diagram_7M6UNA": {
+      "type": "aw-diagram",
+      "blocks": {
+        "diagram_item_BdiWiA": {
+          "type": "diagram_item",
+          "settings": {
+            "icon": "shopify://shop_images/Group_1327226584.svg",
+            "title": "Cold Brew Process",
+            "description": "Our cold-brewing and precision-filtering process ensures our cold brew is always smooth, not bitter or acidic"
+          }
+        },
+        "diagram_item_DPgjFA": {
+          "type": "diagram_item",
+          "settings": {
+            "icon": "shopify://shop_images/Group_1327226585_13824b5d-f61e-4c62-84ce-4d324dab29ad.svg",
+            "title": "BEAN QUALITY",
+            "description": "Our cold brew is made with a lot of organic, speciality-grade 100% arabica beans for a smooth yet bold coffee shop inspired cup of cold brew"
+          }
+        },
+        "diagram_item_EdexbY": {
+          "type": "diagram_item",
+          "settings": {
+            "icon": "shopify://shop_images/Group_1327226583.svg",
+            "title": "More Coffee",
+            "description": "There’s simply more coffee in our coffee. More beans means you get more flavor and more caffeine."
+          }
+        }
+      },
+      "block_order": [
+        "diagram_item_BdiWiA",
+        "diagram_item_DPgjFA",
+        "diagram_item_EdexbY"
+      ],
+      "name": "AW Diagram Section",
+      "settings": {
+        "color_scheme": "",
+        "background_image": "shopify://shop_images/sky.png",
+        "title_type": "image",
+        "title": "",
+        "title_alt": "",
+        "title_image": "shopify://shop_images/cold-brew-title.svg",
+        "title_image_mobile": "shopify://shop_images/on-tap-innovation-mobile_6d18829d-a82d-44be-9713-394659d47d33.svg",
+        "diagram_image": "shopify://shop_images/cupofcoldbrew_1_184edfd5-6ed8-4e1e-a095-a57e7070ff36.png"
+      }
+    },
+    "aw_image_text_icons_a77yKj": {
+      "type": "aw-image-text-icons",
+      "blocks": {
+        "icon_item_qGUczX": {
+          "type": "icon_item",
+          "settings": {
+            "icon": "shopify://shop_images/Group_1327226586_4387d08b-9ccc-456b-bb51-886c3448c5b4.svg",
+            "text": "We were the first to put cold brew in a box"
+          }
+        },
+        "icon_item_CUjXFp": {
+          "type": "icon_item",
+          "settings": {
+            "icon": "shopify://shop_images/Group_1327226587.svg",
+            "text": "These big boxes are designed to keep light and air away so your coffee is never stale and always tastes fresh"
+          }
+        },
+        "icon_item_RwVHTE": {
+          "type": "icon_item",
+          "settings": {
+            "icon": "shopify://shop_images/Group_1327226588.svg",
+            "text": "Product is shelf stable before opening and lasts 30 days once opened"
+          }
+        }
+      },
+      "block_order": [
+        "icon_item_qGUczX",
+        "icon_item_CUjXFp",
+        "icon_item_RwVHTE"
+      ],
+      "name": "AW Image + Text Icons",
+      "settings": {
+        "color_scheme": "",
+        "title_type": "image",
+        "title": "",
+        "title_alt": "",
+        "title_image": "shopify://shop_images/Group_1327226589.svg",
+        "large_image": "shopify://shop_images/gif_29fb036f-071c-4666-913e-2d3e1640733b.png"
+      }
+    },
+    "aw_guarantee_banner_HAr7Rz": {
+      "type": "aw-guarantee-banner",
+      "name": "AW Guarantee Banner",
+      "settings": {
+        "color_scheme": "scheme-53a30445-4815-46e7-b861-da7f32359d08",
+        "image": "shopify://shop_images/coffee.png",
+        "badge": "shopify://shop_images/FRESH.svg",
+        "subtitle": "LIKE YOU MADE IT YOURSELF, BUT BETTER",
+        "title": "OUR FRESH TASTE GUARANTEE",
+        "description": "It's that simple because we are obsessive over our quality standards from bean to box. We stand behind our products, so if for any reason you are not satisfied with a product you purchased from us or one of our authorized sellers, you may request a refund or replacement product within 60 days of the date of purchase."
+      }
+    },
+    "okendo_reviews_widget_PUYwdN": {
+      "type": "okendo-reviews-widget",
+      "name": "Okendo Reviews Widget",
+      "settings": {
+        "product": ""
+      }
+    }
+  },
+  "order": [
+    "main",
+    "aw_diagram_7M6UNA",
+    "aw_image_text_icons_a77yKj",
+    "aw_guarantee_banner_HAr7Rz",
+    "okendo_reviews_widget_PUYwdN"
+  ]
+}

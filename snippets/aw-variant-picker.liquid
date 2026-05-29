@@ -224,7 +224,11 @@
             "quantified_units": {{ variant.metafields.custom.quantified_units | json }},
           {% endif %}
           "price": {{ price | json }},
-          "compare_at_price": {{ compare_at_price | divided_by: quantified_units | json }}
+          {% if compare_at_price and quantified_units != blank and quantified_units > 0 %}
+            "compare_at_price": {{ compare_at_price | divided_by: quantified_units | json }}
+          {% elsif compare_at_price %}
+            "compare_at_price": {{ compare_at_price | json }}
+          {% endif %}
           {% if one_month_allocation != blank %}
             ,
             "selling_plan_id": {{ one_month_allocation.selling_plan.id | json }},
