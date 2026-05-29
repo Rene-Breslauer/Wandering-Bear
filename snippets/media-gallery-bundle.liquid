@@ -32,10 +32,10 @@
                 {% endfor %}
             </div>
         </div>
-        <div class="swiper-thumbs !max-w-[580px] w-full {% if hide_thumbnails_mobile %}hidden lg:block{% endif %}" x-ref="swiperThumbs">
+        <div class="swiper-thumbs !max-w-[580px] w-full {% if hide_thumbnails_desktop %} block lg:!hidden {% endif %}" x-ref="swiperThumbs">
             <div class="swiper-wrapper !max-w-[580px]">
                 {% for media in product_media %}
-                    <div class="swiper-slide rounded-[5px] overflow-hidden cursor-pointer {% if forloop.first %}swiper-slide-thumb-active{% endif %}" style="{{ thumbnail_styles }}">
+                    <div class="swiper-slide rounded-[5px] overflow-hidden cursor-pointer !aspect-square {% if forloop.first %}swiper-slide-thumb-active{% endif %}" style="{{ thumbnail_styles }}">
                         {{ media | image_url: width: 600 | image_tag: class: 'w-full h-full object-cover' }}
                     </div>
                 {% endfor %}

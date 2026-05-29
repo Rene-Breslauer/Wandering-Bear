@@ -150,9 +150,9 @@
                   %}
                     <span class="text-base text-bear-black font-bold font-gothic_condensed uppercase">{{- option_name | escape -}}</span>
                     <span x-text="productObject[{{ product_option_value.variant.id }}].currentPriceFormatted" class="text-xs text-bear-black font-kurdis-semi-condensed">{{- option_price | money -}}</span>
-                    {% if option_savings > 0 %}
-                      <span x-text="productObject[{{ product_option_value.variant.id }}].currentSavingsPercentageFormatted" class="font-kurdis-semi-condensed font-semibold text-kraft text-[10px]">{{- option_savings_text | escape -}}</span>
-                    {% endif %}
+                    <span x-text="productObject[{{ product_option_value.variant.id }}].currentSavingsPercentageFormatted"
+                    :class="productObject[{{ product_option_value.variant.id }}].currentSavingsPercentage > 0 ? '!block' : '!hidden'"
+                    class="font-kurdis-semi-condensed font-semibold text-kraft text-[10px] {% if option_savings > 0 %}block{% else %}hidden{% endif %}">{{- option_savings_text | escape -}}</span>
                   </div>
               </label>
             {%- endfor -%}

@@ -297,10 +297,16 @@
   }
 </script>
 
+{% if template.name == 'product' %}
+  {% assign background_color = '#F2E6DC' %}
+{% else %}
+  {% assign background_color = 'rgba(' | append: section.settings.color_scheme_top.settings.background.rgb | append: ')' %}
+{% endif %}
+
 <header-component
   x-data="header()"
   id="header-component"
-  class="{{ class }}"
+  class="{{ class }} {% if template.name == 'product' %}product-page-header{% endif %}"
   data-theme-color="rgb({{ section.settings.color_scheme_top.settings.background.rgb }})"
   {% if transparent %}
     transparent="{{ transparent }}"
@@ -317,7 +323,7 @@
     data-transparent-color-scheme="{{ transparent_color_scheme_value }}"
   {% endif %}
   style="
-    --color-scheme-top-row: rgba({{ section.settings.color_scheme_top.settings.background.rgba }});
+    --color-scheme-top-row: {{ background_color }};
     --color-scheme-bottom-row: rgba({{ section.settings.color_scheme_bottom.settings.background.rgba }});
     {% if section.settings.actions_display_style == 'text' %}
       --header-actions-font-size: {{ section.settings.actions_font_size | default: '1rem' }};

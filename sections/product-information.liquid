@@ -6,7 +6,7 @@
 
 {% liquid
   assign bundle_collection = section.settings.bundle_collection
-  assign hide_thumbnails_mobile = section.settings.hide_thumbnails_mobile
+  assign hide_thumbnails_desktop = section.settings.hide_thumbnails_desktop
 %}
 
 {% capture media_gallery %}
@@ -15,7 +15,7 @@
     id: 'media-gallery',
     closest.product: closest.product
   -%} {% endcomment %}
-  {% render 'media-gallery-bundle', bundle_product: product, hide_thumbnails_mobile: hide_thumbnails_mobile %}
+  {% render 'media-gallery-bundle', bundle_product: product, hide_thumbnails_desktop: hide_thumbnails_desktop %}
 {% endcapture %}
 
 {% capture product_details %}
@@ -450,8 +450,8 @@
     },
     {
       "type": "checkbox",
-      "id": "hide_thumbnails_mobile",
-      "label": "Hide thumbnails on mobile",
+      "id": "hide_thumbnails_desktop",
+      "label": "Hide thumbnails on Desktop",
       "default": false
     },
     {
