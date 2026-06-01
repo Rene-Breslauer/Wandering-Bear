@@ -49,15 +49,6 @@ export default (Alpine: AlpineType) => {
       const bottle = this.$refs.bottle as HTMLElement | undefined
       if (!bottle) return
 
-      // this.applyArc(
-      //   Array.from(root.querySelectorAll<HTMLElement>('[data-col="left"] [data-prop]')),
-      //   -1,
-      // )
-      // this.applyArc(
-      //   Array.from(root.querySelectorAll<HTMLElement>('[data-col="right"] [data-prop]')),
-      //   1,
-      // )
-
       const s = root.getBoundingClientRect()
       const b = bottle.getBoundingClientRect()
       const bcx = b.left + b.width / 2 - s.left
@@ -85,11 +76,20 @@ export default (Alpine: AlpineType) => {
         const ey = sy + (bcy - sy) * t
         const dx = ex - sx
 
-        // Flat coming off the icon, then hook toward the bottle.
-        const c1x = sx + dx * 0.6
-        const c1y = sy
-        const c2x = ex - dx * 0.05
-        const c2y = ey
+        // Midpoint of the chord, bowed toward bottle centre
+        const mx = (sx + ex) / 2
+        const my = (sy + ey) / 2
+        const bow = (bcy - my) * 0.15   // tune this for arc depth
+
+        // Quadratic control point
+        const qx = mx
+        const qy = my + bow
+
+        // Elevate to cubic (exact equivalent)
+        const c1x = sx + (qx - sx) * 2 / 3
+        const c1y = sy + (qy - sy) * 2 / 3
+        const c2x = ex + (qx - ex) * 2 / 3
+        const c2y = ey + (qy - ey) * 2 / 3
 
         d += `M${sx},${sy} C${c1x},${c1y} ${c2x},${c2y} ${ex},${ey} `
       })

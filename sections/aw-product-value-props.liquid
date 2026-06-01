@@ -112,7 +112,7 @@
 
     {% if product_image != blank %}
       <div class="wb-flex justify-center lg:!mb-8 px-6">
-        <img src="{{ product_image | image_url: width: 560 }}" alt="{{ product_image.alt }}" loading="lazy" class="w-full max-w-[280px] h-auto object-contain mx-auto">
+        <img src="{{ product_image | image_url: width: 560 }}" alt="{{ product_image.alt }}" loading="lazy" class="w-full !max-w-[280px] h-auto object-contain mx-auto">
       </div>
     {% endif %}
 
