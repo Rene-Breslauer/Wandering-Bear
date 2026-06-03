@@ -15,6 +15,8 @@ export default (Alpine: AlpineType) => {
         sellingPlanId: null,
         bundleParentProducts: {},
         modal: null,
+        bundleQty: null,
+        flavorType: null,
         
         get totalPrice() {
           let totalOriginalPrice = 0;
