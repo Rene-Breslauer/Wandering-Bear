@@ -90,9 +90,9 @@
               },
               "blocks": {}
             },
-            "variant_picker_bundle_xzyEcY": {
-              "type": "variant-picker-bundle",
-              "name": "Variant Picker Bundle",
+            "variant_picker_bundle_32_rVA7hm": {
+              "type": "variant-picker-bundle-32",
+              "name": "Variant Picker 32oz",
               "settings": {
                 "variant_style": "buttons",
                 "show_swatches": true,
@@ -122,13 +122,14 @@
             "review_LerwXW",
             "product_title_bundle_ipqizL",
             "text_aEtTtq",
-            "variant_picker_bundle_xzyEcY",
+            "variant_picker_bundle_32_rVA7hm",
             "cross_sell_KfwHDf"
           ]
         }
       },
       "settings": {
-        "bundle_collection": "test-cold-brew-on-tap-96oz",
+        "bundle_collection": "test-groupedpdp-cold-brew-coffee-32oz-cartons",
+        "bundle_add_to_cart_text": "Add",
         "content_width": "content-center-aligned",
         "desktop_media_position": "left",
         "equal_columns": false,
