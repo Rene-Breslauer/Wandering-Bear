@@ -8,10 +8,12 @@ export default (Alpine: AlpineType) => {
     Alpine.data("productFormBundle", ( 
       selectedProductId: any,
       bundleQty: any,
-      flavorType: any
+      flavorType: any,
+      bundleType: any
     ) => ({
         selectedProductId: selectedProductId,
         selectedProduct: null,
+        bundleType: bundleType,
         bundleQty: bundleQty,
         flavorType: flavorType,
         bundleProducts: {},
@@ -80,27 +82,20 @@ export default (Alpine: AlpineType) => {
         },
 
         get parentProduct() {
-          const index = (this.bundleSize <= 2) ? (this.bundleSize - 1) : 2;
-          return this.bundleParentProducts[index]
+          if (this.bundleType === '32oz') {
+            return this.bundleParentProducts[this._mapTo32ozBundle()];
+          } else {
+            return this.bundleParentProducts[this._mapToBundle()];
+          }
+          // const index = (this.bundleSize <= 2) ? (this.bundleSize - 1) : 2;
+          // return this.bundleParentProducts[index]
         },
-
+        
         get assignedBundleProducts() {
-            let variantIndex = 0;
 
-            switch (this.bundleSize) {
-                case 1:
-                    variantIndex = 0;
-                    break;
-                case 2:
-                    variantIndex = 1;
-                    break;
-                case 3:
-                    variantIndex = 2;
-                    break;
-                default:
-                    variantIndex = 2;
-                    break;
-            }
+          const variantIndex = this.bundleType === '32oz'
+            ? this._mapTo32ozBundle()
+            : this._mapToBundle();
 
             const assignedBundleProducts = Object.keys(this.selectedBundleProducts).map((productId) => {
                 const product = this.bundleProducts[productId]
@@ -112,7 +107,8 @@ export default (Alpine: AlpineType) => {
                 return {
                   id: Number(variant.id),
                   quantity: selectedProduct.quantity,
-                  image: product.image,
+                  flavorName: product.flavor_name ? product.flavor_name : '',
+                  image: product.image ? product.image : '',
                   title: product.title,
                   otpPrice: Number(variant.price),
                   originalPrice: Number(product.variants[0].price),
@@ -248,6 +244,25 @@ export default (Alpine: AlpineType) => {
                 "",
                 baseUrl + "?" + queryString
             )
+        },
+
+        _mapToBundle() {
+          switch (this.bundleSize) {
+            case 1:
+              return 0;
+            case 2:
+              return 1;
+            case 3:
+            default:
+              return 2;
+          }
+        },
+        
+        _mapTo32ozBundle() {
+          if (this.bundleSize > 1 && this.bundleSize <= 3) {
+            return 0;
+          }
+          return 1;
         },
 
         getOneTimePrice() {

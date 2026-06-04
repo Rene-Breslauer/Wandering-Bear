@@ -44,7 +44,6 @@
 
    assign tier_one_unit_price_otp = first_product.variants[0].price
    assign tier_two_unit_price_otp = first_product.variants[1].price
-   assign tier_three_unit_price_otp = first_product.variants[2].price
 
    for selling_plan in first_product.selling_plan_groups
     for selling_plan_allocation in selling_plan.selling_plan_allocations
@@ -62,22 +61,24 @@
       assign plan = allocation.selling_plan
       assign plan_name = plan.name | downcase
   
-      if plan_name contains '1 month' and plan_name contains variant_title
-     
-        unless plan_name contains 'bundle'
+      if plan_name contains '1 month' and plan_name contains 'bundle'
+
           assign adjustment = plan.price_adjustments[0]
           assign discount_amount = adjustment.value
+          assign value_type = adjustment.value_type
+          if value_type == 'percentage'
+            assign difference = variant.price | times: discount_amount | divided_by: 100.0
+            assign autoship_price = variant.price | minus: difference
+          else
           assign autoship_price = variant.price | minus: discount_amount
+          endif
   
           case variant_title
-            when '1'
-              assign tier_one_unit_price_autoship = autoship_price
-            when '2'
-              assign tier_two_unit_price_autoship = autoship_price
             when '3'
-              assign tier_three_unit_price_autoship = autoship_price
+              assign tier_one_unit_price_autoship = autoship_price
+            when '6'
+              assign tier_two_unit_price_autoship = autoship_price
           endcase
-        endunless
       endif
     endfor
   endfor
@@ -93,22 +94,36 @@
   }
 {% endstyle %}
 
+
 <div class="flex flex-col gap-2.5 mb-6">
     <div class="flex flex-col">
     <span class="font-bold font-gothic_condensed text-bear-black block uppercase">Choose Quantity</span>
-        <div class="wb-grid grid-cols-2 w-full h-[74px] border border-[#CFBDB1] rounded-[5px] overflow-hidden">
+        <div class="wb-grid grid-cols-2 w-full h-[74px] border border-[#CFBDB1] rounded-[5px]">
             {% for i in (1..bundle_products_count) %}
-            {% assign qty = i | times: 3 %}
-            <fieldset class="flex flex-col h-full w-full justify-center items-center">
+              {%- case i -%}
+                {%- when 1 -%}
+                  {%- assign autoship_price = tier_one_unit_price_autoship -%}
+                {%- when 2 -%}
+                  {%- assign autoship_price = tier_two_unit_price_autoship -%}
+              {%- endcase -%}
+              {% assign qty = i | times: 3 %}
+              {% if discount_type == 'Percentage' %}
+                {% assign difference = compare_at_price | minus: autoship_price %}
+                {% assign savings = difference | times: 100.0 | divided_by: compare_at_price | round | append: '%' %}
+              {% else %}
+                {% assign savings = compare_at_price | minus: autoship_price_qty | money %}
+              {% endif %}
+
+              <fieldset class="flex flex-col h-full w-full justify-center items-center">
                 <input
                  @change="changeBundleQuantity({{ qty }})"
                  class="absolute top-0 left-0 w-0 h-0 opacity-0 hidden peer"
                  x-model="bundleQty"
                  type="radio" name="bundle-qty" id="bundle-qty-{{ i }}" value="{{ qty }}" {% if forloop.first %}checked{% endif %}>
-                <label class="peer-checked:bg-[#F9F3ED] h-full w-full wb-flex flex-col justify-center items-center" for="bundle-qty-{{ i }}">
+                <label class="{% if forloop.first %}rounded-tl-[5px] rounded-bl-[5px]{% else %}rounded-tr-[5px] rounded-br-[5px]{% endif %} peer-checked:bg-[#F9F3ED] peer-checked:border peer-checked:border-espresso h-full w-full wb-flex flex-col justify-center items-center" for="bundle-qty-{{ i }}">
                   <span class="font-gothic_condensed text-bear-black text-base font-bold uppercase">{{ qty }} Cartons</span>
-                  <span class="font-kurdis-semi-condensed text-[12px] text-bear-black font-semibold">From $XX/carton</span>
-                  <span class="font-kurdis-semi-condensed text-[10px] text-kraft font-semibold">Save 10%</span>
+                  <span class="font-kurdis-semi-condensed text-[12px] text-bear-black font-semibold">From {{ autoship_price | money }}/carton</span>
+                  <span class="font-kurdis-semi-condensed text-[10px] text-kraft font-semibold">Save {{ savings }}</span>
                 </label>
             </fieldset>
             {% endfor %}
@@ -123,7 +138,7 @@
                  x-model="flavorType"
                  class="absolute top-0 left-0 w-0 h-0 opacity-0 hidden peer"
                  type="radio" name="bundle-flavor" id="bundle-flavor-mix" value="mix">
-                <label class="peer-checked:bg-[#F9F3ED] h-full w-full wb-flex flex-col justify-center items-center" for="bundle-flavor-mix">
+                <label class="rounded-tl-[5px] rounded-bl-[5px] peer-checked:bg-[#F9F3ED] peer-checked:border peer-checked:border-espresso h-full w-full wb-flex flex-col justify-center items-center" for="bundle-flavor-mix">
                   <span class="font-gothic_condensed text-bear-black text-base font-bold uppercase">Mix & Match</span>
                   <span class="font-kurdis-semi-condensed text-[12px] text-bear-black font-semibold">Pick up to <span x-text="bundleQty">3</span> flavors</span>
                 </label>
@@ -134,7 +149,7 @@
                  x-model="flavorType"
                  class="absolute top-0 left-0 w-0 h-0 opacity-0 hidden peer"
                  type="radio" name="bundle-flavor" id="bundle-flavor-single" value="single" checked>
-                <label class="peer-checked:bg-[#F9F3ED] h-full w-full wb-flex flex-col justify-center items-center" for="bundle-flavor-single">
+                <label class="rounded-tr-[5px] rounded-br-[5px] peer-checked:bg-[#F9F3ED] peer-checked:border peer-checked:border-espresso h-full w-full wb-flex flex-col justify-center items-center" for="bundle-flavor-single">
                   <span class="font-gothic_condensed text-bear-black text-base font-bold uppercase">Single Flavor</span>
                   <span class="font-kurdis-semi-condensed text-[10px] text-kraft font-semibold">Save an additional 5%</span>
 
@@ -142,20 +157,23 @@
             </fieldset>
         </div>
     </div>
-    <div x-show="flavorType == 'mix'" x-cloak class="wb-flex justify-center gap-2.5 h-[87px]">
+    <div x-show="flavorType == 'mix'" x-cloak class="wb-flex justify-center gap-2.5 h-[87px] mt-1.5">
       <template x-for="(product, index) in bundleSlots" :key="index">
-        <div class="flex flex-col gap-2.5 py-5 px-4 border border-[#CFBDB1] rounded-[5px] aspect-[62/87]">
-          
+        <div class="flex flex-col gap-2.5 py-5 px-4 border border-[#CFBDB1] rounded-[5px] aspect-[62/87]"
+        :class="{ 'bg-[#F9F3ED] !px-2 !py-1.5': product }"
+        >
           <template x-if="product">
-            <div>
-              <span x-text="product.title"></span>
+            <div class="h-full wb-flex flex-col justify-center items-center gap-1">
+              <img :class="index % 2 === 0 ? 'rotate-[9.03deg]' : '-rotate-[9.03deg]'"
+              :src="product.image" alt="Product Image" class="!w-6 !h-12 object-cover mx-auto">
+              <span class="font-kurdis-semi-condensed whitespace-nowrap text-[10px] text-bear-black font-semibold text-center mx-auto w-fit block" x-text="product.flavorName"></span>
             </div>
           </template>
     
           <template x-if="!product">
-            <div>
+            <div :class="index % 2 === 0 ? 'rotate-[9.03deg]' : '-rotate-[9.03deg]'">
               {% if bundle_placeholder_image != blank %}
-                {{ bundle_placeholder_image | image_url: width: 100 | image_tag }}
+                {{ bundle_placeholder_image | image_url: width: 100 | image_tag: class: '!w-6 !h-12 object-cover mx-auto' }}
               {% endif %}
             </div>
           </template>
@@ -200,6 +218,12 @@
             "id": {{- child_product.id -}},
             "title": "{{- child_product.title -}}",
             "handle": "{{- child_product.handle -}}",
+            {% if child_product.metafields.custom.bundle_image != blank %}
+              "image": "{{- child_product.metafields.custom.bundle_image | image_url: width: 200 -}}",
+            {% endif %}
+            {% if child_product.metafields.custom.flavor_name != blank %}
+              "flavor_name": "{{- child_product.metafields.custom.flavor_name -}}",
+            {% endif %}
             "variants": {
                 {% for child_variant in child_product.variants %}
                     "{{- forloop.index0 -}}": {
@@ -238,6 +262,9 @@
                                   {% continue %}
                                 {% endif %}
                               {% endfor %}
+                            {% endif %}
+                            {% if forloop.first %}
+                              {% continue %}
                             {% endif %}
                             {%- if printed_allocation -%},{%- endif -%}
                               "selling_plan_id": {{ allocation.selling_plan.id | json }},
