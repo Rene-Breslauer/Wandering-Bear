@@ -128,8 +128,9 @@
         }
       },
       "settings": {
-        "bundle_collection": "test-groupedpdp-cold-brew-coffee-32oz-cartons",
+        "bundle_collection": "32oz-bundle",
         "bundle_add_to_cart_text": "Add",
+        "bundle_placeholder_image": "shopify://shop_images/image_88.png",
         "content_width": "content-center-aligned",
         "desktop_media_position": "left",
         "equal_columns": false,
