@@ -110,8 +110,12 @@
 
 
             <div class="wb-flex flex-col gap-4 relative" style="background-color: {{ background_color }}">
+                {% assign image_class = 'w-full !h-full object-cover object-top !max-w-none absolute inset-0' %}
+                {% if section.settings.image_overlap %}
+                    {% assign image_class = image_class | append: ' lg:!-mt-[77px]' %}
+                {% endif %}
                 {% if background_image != blank %}
-                    {% render 'picture', source: background_image, class: 'w-full !h-full object-cover object-top !max-w-none absolute inset-0 lg:!-mt-[77px]', alt: background_image.alt, width: 1920, height: 1080, preload: 'eager', loading: 'eager' %}
+                    {% render 'picture', source: background_image, class: 'w-full !h-full object-cover object-top !max-w-none absolute inset-0 {% if section.settings.image_overlap %} lg:!-mt-[77px] {% endif %}', alt: background_image.alt, width: 1920, height: 1080, preload: 'eager', loading: 'eager' %}
                 {% endif %}
             <div class="wb-flex flex-col mx-auto relative z-[2]">
                 {% if title_type == 'image' %}
@@ -174,7 +178,7 @@
                                 <source srcset="{{ diagram_image | image_url: width: 1200 }}" media="(min-width: 1200px)">
                                 <source srcset="{{ diagram_image | image_url: width: 1024 }}" media="(min-width: 1024px)">
                                 <source srcset="{{ diagram_image | image_url: width: 768 }}" media="(min-width: 768px)">
-                                <img data-diagram-image src="{{ diagram_image | image_url: width: 365 }}" alt="{{ title_alt }}" class="!h-[355px] lg:!h-[573px] !flex order-1 lg:order-2 w-full max-h-full object-contain relative z-[2] mx-auto">
+                                <img data-diagram-image src="{{ diagram_image | image_url: width: 365 }}" alt="{{ title_alt }}" class="!h-full !w-full lg:!h-[355px] lg:!h-[573px] !flex order-1 lg:order-2 w-full max-h-full object-contain relative z-[2] mx-auto">
                             </picture>
                         </div>
                     {% endif %}
@@ -238,6 +242,13 @@
                 "id": "title_image_mobile",
                 "label": "Title Image Mobile",
                 "visible_if": "{{ section.settings.title_type == 'image' }}"
+            },
+            {
+                "type": "checkbox",
+                "id": "image_overlap",
+                "label": "Image Overlap",
+                "default": false,
+                "info": "If enabled, the background image will overlap with the content below"
             }
         ],
         "blocks": [

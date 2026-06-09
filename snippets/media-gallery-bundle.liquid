@@ -36,7 +36,7 @@
             <div class="swiper-wrapper !max-w-[580px]">
                 {% for media in product_media %}
                     <div class="swiper-slide rounded-[5px] overflow-hidden cursor-pointer !aspect-square {% if forloop.first %}swiper-slide-thumb-active{% endif %}" style="{{ thumbnail_styles }}">
-                        {{ media | image_url: width: 600 | image_tag: class: 'w-full h-full object-cover' }}
+                        {{ media | image_url: width: 600 | image_tag: class: 'w-full !h-full object-cover' }}
                     </div>
                 {% endfor %}
             </div>
