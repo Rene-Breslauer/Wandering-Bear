@@ -53,7 +53,7 @@
                         %}
                     {% endif %}
                     </a>
-                    <div class="hidden md:!flex flex-col mt-1 {% unless accent_text != blank %} !gap-2.5 {% endunless %} items-center">
+                    <div class="hidden md:!flex flex-col mt-2 {% unless accent_text != blank %} {% endunless %} items-center">
                         {% if title != blank %}
                             <a href="{{ collection.url }}" class="h1 text-center" style="color: {{ text_color }}">{{ title }}</a>
                         {% endif %}
