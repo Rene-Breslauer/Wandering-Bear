@@ -29,6 +29,8 @@ export default (Alpine: AlpineType) => {
                 },
                 slidesOffsetBefore: 12,
                 slidesOffsetAfter: 12,
+                watchOverflow: true,
+                loop: false,
                 breakpoints: {
                     768: {
                         slidesPerView: 3.5,
@@ -72,11 +74,32 @@ export default (Alpine: AlpineType) => {
                     this.activeCollectionTitle = title;
                     this.activeCollectionAccentText = accentText;
                     this.activeCollectionHandle = collectionHandle;
+
+                    this.$nextTick(() => {
+                        this.swiper.update();
+                        this.checkNavButtons();
+                    });
+
                 })
                 .catch(error => {
                     console.error('Error fetching collection carousel:', error);
             });
 
+        },
+
+        checkNavButtons() {
+            const buttons = this.el.querySelectorAll('.swiper-button-next, .swiper-button-prev');
+            buttons.forEach(button => {
+                if (this.swiper.slides.length < this.swiper.params.slidesPerView) {
+                    button?.classList.add('!opacity-0');
+                    button?.classList.add('!pointer-events-none');
+                    console.log('hiding nav buttons', button);
+                } else {
+                    button?.classList.remove('!opacity-0');
+                    button?.classList.remove('!pointer-events-none');
+                    console.log('showing nav buttons', button);
+                }
+            });
         },
 
         swiperDestroy() {

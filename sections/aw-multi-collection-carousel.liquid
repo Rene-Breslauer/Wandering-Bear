@@ -11,10 +11,10 @@
     width: calc(100% / 5.8);
 {% endcapture %}
 
-<div x-data="swiperSlider('{{ active_collection_title }}', '{{ active_collection_accent_text }}','{{ active_collection_handle }}')" class="relative z-1 pt-2 pb-[66px] max-w-[100vw] overflow-x-hidden" style="background-color: {{ color_scheme.settings.background }}">
-    <div class="container flex-col items-center !gap-1.5 md:!gap-7 md:!items-start md:!flex-row mx-auto flex justify-center md:!justify-start relative md:!ml-20 max-w-[100vw]">
+<div x-data="swiperSlider('{{ active_collection_title }}', '{{ active_collection_accent_text }}','{{ active_collection_handle }}')" class="relative z-1 pt-2 pb-[60px] max-w-[100vw] overflow-x-hidden" style="background-color: {{ color_scheme.settings.background }}">
+    <div class="container flex-col items-center !gap-1.5 md:!gap-5 md:!items-start md:!flex-row mx-auto flex justify-center md:!justify-start relative md:!ml-20 max-w-[100vw]">
     {% if title_image != blank %}
-        <div class="h-[101px] md:!h-[133px] w-[263px] md:!mb-6 relative z-[2]">
+        <div class="h-[101px] md:!h-[133px] w-[270px] md:!mb-6 relative z-[2]">
             {{ title_image | image_url: width: 365 | image_tag: class: '!w-full max-h-full object-contain', alt: title_alt }}
         </div>
     {% endif %}
@@ -59,7 +59,7 @@
             </div>
         </div>
     </div>
-    <div class="swiper multi-collection-slider mt-[40px] md:!-mt-10 max-w-[100vw]">
+    <div class="swiper multi-collection-slider mt-[40px] md:!-mt-9 max-w-[100vw]">
         <div class="swiper-wrapper">
             {% for product in section.blocks[0].settings.collection.products %}
                 {% liquid

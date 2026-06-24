@@ -44,7 +44,7 @@
         {% endif %}
         <div class="absolute bottom-5 mx-auto text-center aw-flex justify-center items-center z-[2] w-full px-4">
             {% if product.metafields.custom.carousel_image != blank %}
-                <span class="h2 text-espresso block !mb-2">{{ product.title | split: '- ' | last }}</span>
+                <span class="h2 !text-xl text-espresso block !mb-2">{{ product.title | split: '- ' | last }}</span>
             {% endif %}
             <div class="hidden md:!flex h-[36px] w-[158px] group-hover:opacity-100 group-hover:translate-y-0 opacity-0 translate-y-5 transition-all duration-500 mx-auto relative wb-flex items-center justify-center">
                 <span class="text-gold -mt-1 h-fit relative z-[2] font-kurdis-condensed text-[15px] font-bold">SHOP NOW</span>
