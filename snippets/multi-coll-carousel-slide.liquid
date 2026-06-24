@@ -2,7 +2,7 @@
     assign vip = product.metafields.custom.vip
 %}
 
-<div class="swiper-slide relative group !min-w-[135px]" style="{{ slide_styles }}">
+<div class="swiper-slide relative group sm:!min-w-[135px]" style="{{ slide_styles }}">
     {% if vip %}
         <div class="flex justify-center items-center absolute top-0 right-1 left-1 w-auto mx-auto z-[2]">
             <div class="relative w-full">
@@ -42,9 +42,9 @@
                 <span class="text-xs text-center">Add Carousel Image metafield image for <em>{{ product.title }}</em></span>
             </div>
         {% endif %}
-        <div class="absolute bottom-5 mx-auto text-center aw-flex justify-center items-center z-[2] w-full px-4">
+        <div class="absolute bottom-2 md:!bottom-5 mx-auto text-center aw-flex justify-center items-center z-[2] w-full px-4">
             {% if product.metafields.custom.carousel_image != blank %}
-                <span class="h2 !text-xl text-espresso block !mb-2">{{ product.title | split: '- ' | last }}</span>
+                <span class="h2 !text-xl text-espresso block !mb-2 !leading-[1.2]">{{ product.title | split: '- ' | last }}</span>
             {% endif %}
             <div class="hidden md:!flex h-[36px] w-[158px] group-hover:opacity-100 group-hover:translate-y-0 opacity-0 translate-y-5 transition-all duration-500 mx-auto relative wb-flex items-center justify-center">
                 <span class="text-gold -mt-1 h-fit relative z-[2] font-kurdis-condensed text-[15px] font-bold">SHOP NOW</span>
