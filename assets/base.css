@@ -479,11 +479,6 @@ p:empty {
 
 /* Utility */
 
-.hidden {
-  /* stylelint-disable-next-line declaration-no-important */
-  display: none !important;
-}
-
 @media screen and (max-width: 749px) {
   .hidden--mobile,
   .mobile\:hidden {
@@ -539,11 +534,6 @@ p:empty {
   display: contents;
 }
 
-.flex {
-  display: flex;
-  /* gap: var(--gap-md); */
-}
-
 .grid {
   --centered-column-number: 12;
   --full-width-column-number: 14;
@@ -574,10 +564,6 @@ p:empty {
   }
 }
 
-.flex {
-  display: flex;
-  gap: var(--gap-md);
-}
 
 .flip-x {
   scale: -1 1;
@@ -593,42 +579,8 @@ p:empty {
   list-style: none;
 }
 
-.text-left {
-  --text-align: left;
-
-  text-align: left;
-}
-
-.text-center {
-  --text-align: center;
-
-  text-align: center;
-}
-
-.text-right {
-  --text-align: right;
-
-  text-align: right;
-}
-
-.text-inherit {
-  color: inherit;
-}
-
 .user-select-text {
   user-select: text;
-}
-
-.justify-left {
-  justify-content: left;
-}
-
-.justify-center {
-  justify-content: center;
-}
-
-.justify-right {
-  justify-content: right;
 }
 
 .title--aligned-center {
