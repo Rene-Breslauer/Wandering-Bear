@@ -24,7 +24,7 @@
             <span class="body uppercase mb-1 hidden md:!block">Select your size</span>
             <div class="w-[282px] relative">
                 <div @click="toggleDropdown()" class="flex items-center justify-between relative rounded-[4px] cursor-pointer bg-[#F4ECE5] py-2 px-3 border border-espresso">
-                    <div class="flex items-center whitespace-nowrap">
+                    <div class="flex items-center whitespace-nowrap gap-4">
                         <span x-text="activeCollectionTitle" class="font-kurdis-semi-condensed text-base font-bold whitespace-nowrap">{{ section.blocks[0].settings.title }}</span>
                         <span x-text="activeCollectionAccentText" class="font-parslay whitespace-nowrap text-kraft text-lg">{{ section.blocks[0].settings.accent_text }}</span>
                     </div>
@@ -68,10 +68,10 @@
                 {% render 'multi-coll-carousel-slide', product: product %}
             {% endfor %}
         </div>
-        <div class="hidden md:!flex swiper-button-next group transition-all duration-300" style="right: calc(calc(var(--slide-width) * 0.87) - 18px);">
+        <div class="!hidden md:!flex swiper-button-next group transition-all duration-300" style="right: calc(calc(var(--slide-width) * 0.87) - 18px);">
             {% render 'icons', icon: 'chevron-right' with class: 'translate-x-[10%] group-hover:!text-gold transition-all duration-300' %}
         </div>
-        <div class="hidden md:!flex swiper-button-prev group transition-all duration-300" style="left: calc(calc(var(--slide-width)) - 0px);">
+        <div class="!hidden md:!flex swiper-button-prev group transition-all duration-300" style="left: calc(calc(var(--slide-width)) - 0px);">
             {% render 'icons', icon: 'chevron-left' with class: '-translate-x-[10%] group-hover:!text-gold transition-all duration-300' %}
         </div>
     </div>

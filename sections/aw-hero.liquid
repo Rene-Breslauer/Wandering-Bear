@@ -17,8 +17,8 @@
 {% capture hero_content %}
         {% render 'picture', source: background_image, tablet_source: background_image_tablet, mobile_source: background_image_mobile, class: 'w-full !h-full object-cover object-left sm:!object-[center_bottom] md:!object-center !max-w-none absolute inset-0 2xl:!object-[0%_30%]', alt: background_image.alt, width: 1920, height: 1080, preload: 'eager', loading: 'eager' %}
         {% if title_image != blank or title_text != blank or subtitle != blank %}
-            <div class="container relative wb-flex justify-center sm:justify-end max-w-[500px] md:max-w-none md:w-[870px] mx-0 md:mx-auto h-full pb-12">
-                <div class="relative wb-flex flex-col items-end justify-center sm:justify-end sm:items-start md:items-start gap-4 z-1 w-fit max-w-full">
+            <div class="container relative wb-flex justify-center sm:justify-end max-w-[500px] md:max-w-none md:w-[870px] mx-0 md:mx-auto h-full pb-10">
+                <div class="relative wb-flex flex-col items-center justify-center sm:justify-end sm:items-start md:items-start gap-4 z-1 w-fit max-w-full">
                     {% if title_image != blank %}
                         {% render 'title-image', image: title_image, image_mobile: title_image_mobile, alt: title_image.alt, class: 'relative sm:left-0 w-full h-full object-contain !max-w-[270px] md:!max-w-full mx-auto', preload: 'eager', loading: 'eager' %}
                         {% comment %} {{ title_image | image_url: width: 1920 | image_tag: class: 'hidden md:!block w-full h-full object-contain' }}

@@ -38,7 +38,7 @@ export default (Alpine: AlpineType) => {
                     },
                     1024: {
                         slidesPerView: 5.8,
-                        spaceBetween: 18
+                        spaceBetween: 20
                     },
                 },
                 on: {

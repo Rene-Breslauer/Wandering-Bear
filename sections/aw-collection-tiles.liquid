@@ -42,7 +42,7 @@
                 <div class="relative group {% if forloop.index == 2 %} -mt-6 md:!mt-0 {% endif %}">
                     <a href="{{ collection.url }}" class="shadow-button collection-tile transition-all group-hover:!filter-none duration-300">
                     {% if badge != blank %}
-                        {{ badge | image_url: width: 100 | image_tag: class: 'hidden md:!block absolute z-[2] -top-[50px] -left-[50px] !w-[148px] !h-auto' }}
+                        {{ badge | image_url: width: 100 | image_tag: class: 'hidden md:block absolute z-[2] -top-[50px] -left-[50px] !w-[148px] !h-auto' }}
                     {% endif %}
                     {% if image != blank %}
                         {% render 'picture', 
@@ -63,7 +63,7 @@
                             <span class="accent text-gold text-center !text-lg">{{ accent_text }}</span>
                         {% endif %}
                         {% if subtitle != blank %}
-                            <span class="body text-espresso text-center text-balance" style="color: {{ text_color }}">{{ subtitle }}</span>
+                            <span class="body text-espresso text-center text-balance" style="color: {{ text_color }}">{{ subtitle | replace: '\b', '<br>' }}</span>
                         {% endif %}
                     </div>
                 </div>
@@ -159,7 +159,8 @@
                 {
                     "type": "text",
                     "id": "subtitle",
-                    "label": "Subtitle"
+                    "label": "Subtitle",
+                    "info": "Use '\\b' for line breaks"
                 },
                 {
                     "type": "text",
