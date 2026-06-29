@@ -28,18 +28,13 @@
                         <span x-text="activeCollectionTitle" class="font-kurdis-semi-condensed text-base font-bold whitespace-nowrap">{{ section.blocks[0].settings.title }}</span>
                         <span x-text="activeCollectionAccentText" class="font-parslay whitespace-nowrap text-kraft text-lg">{{ section.blocks[0].settings.accent_text }}</span>
                     </div>
-                    <span :class="{ 'rotate-180': dropdownOpen }" class="!min-w-4 transition-transform duration-300">
+                    <span :class="{ 'rotate-180': dropdownOpen }" class="!min-w-4 transition-all duration-300">
                         {% render 'icons', icon: 'chevron-down' %}
                     </span>
                 </div>
                 <div x-show="dropdownOpen"
                  @click.outside="dropdownOpen = false"
-                 x-transition:enter="transition ease-out duration-300"
-                 x-transition:enter-start="transform -translate-y-1"
-                 x-transition:enter-end="opacity-100 transform translate-y-0"
-                 x-transition:leave="transition ease-in duration-300"
-                 x-transition:leave-start="opacity-100 transform translate-y-0"
-                 x-transition:leave-end="transform -translate-y-1"
+                
                  x-cloak class="absolute top-full rounded-b-[10px] left-0 w-full bg-white z-[2] overflow-hidden -mt-1 border-t border-espresso">
                     <ul class="custom-dropdown-list  overflow-hidden !-mt-[2px] bg-[#F4ECE5] border border-espresso rounded-b-[10px]">
                     {% for block in section.blocks %}

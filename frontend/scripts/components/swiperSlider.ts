@@ -60,6 +60,7 @@ export default (Alpine: AlpineType) => {
         },
 
         changeCollection(title: string, accentText: string, collectionHandle: string) {
+
             this.dropdownOpen = false;
 
             const url = `/collections/${collectionHandle}?view=collection-carousel`;
