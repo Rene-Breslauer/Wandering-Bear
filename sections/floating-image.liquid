@@ -12,19 +12,24 @@
     assign bulletpoints = section.blocks | where: "type", "bulletpoint"
     assign button_label = section.settings.button_label
     assign button_link = section.settings.button_link
+    assign badge = section.settings.badge
 %}
 
 <div class="relative w-full" style="background-color: {{ color_scheme.background }}">
     <svg preserveAspectRatio="none" class="absolute -top-5 left-0 w-full z-[2]" xmlns="http://www.w3.org/2000/svg" width="1290" height="28" viewBox="0 0 1290 28" fill="none">
         <path d="M1290 27.249L970 28L352 21.9804L3.62444e-07 23.854L2.44783e-06 -1.16568e-06L1290 0.00011161L1290 27.249Z" fill="{{ color_scheme.settings.background }}"/>
     </svg>
+   
     {% render 'picture', source: background_image, mobile_source: background_image_mobile, class: 'w-full !h-full object-cover !max-w-none absolute inset-0', alt: background_image.alt, width: 1920, height: 1080 %}
     {% if floating_image != blank %}
         {% render 'picture', source: floating_image, mobile_source: floating_image_mobile, class: '-bottom-6 xl:!bottom-auto !w-full sm:!w-fit sm:!max-w-[70vw] max-h-full h-full object-contain absolute right-0 z-[2] md:!w-[50vw] xl:!w-fit', alt: floating_image.alt, width: 1920, height: 1080 %}
     {% endif %}
     <div class="container max-w-[1000px] px-4 mx-auto lg:relative z-[2] pt-10 md:!pt-[60px] pb-[250px] md:!pb-20">
         <div class="relative z-[3] md:!w-1/2 wb-flex flex-col max-w-[263px] md:!max-w-[457px] mx-auto md:!mx-0">
-            <div class="wb-flex flex-col mb-6 md:!mb-8">
+            <div class="wb-flex flex-col mb-6 md:!mb-8 relative">
+                {% if badge != blank %}
+                    {{ badge | image_url: width: 100 | image_tag: class: 'absolute z-[2] -top-[30px] -left-[30px] !w-[60px] !h-auto', loading: 'eager', preload: 'eager' }}
+                {% endif %}
                 {% if title_type == 'text' %}
                     <h2 class="h2 text-gold">{{ title }}</h2>
                 {% elsif title_type == 'image' %}
@@ -78,6 +83,11 @@
                 "type": "image_picker",
                 "id": "floating_image_mobile",
                 "label": "Floating Image Mobile"
+            },
+            {
+                "type": "image_picker",
+                "id": "badge",
+                "label": "Badge"
             },
             {
                 "type": "select",
