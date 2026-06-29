@@ -38,7 +38,29 @@
                 {% if title_type == 'text' and title != blank %}
                     <h2 class="h2 text-gold mb-5 title-text leading-[1.2] text-center md:!text-left" style="color: {{ color_scheme.settings.heading }}; {{ title_styles }}">{{ title | replace: '\b', '<br>' }}</h2>
                 {% elsif title_type == 'image' and title_image != blank %}
-                    {% render 'title-image', image: title_image, image_mobile: title_image_mobile, alt: title_alt, class: 'max-w-[333px] md:!max-w-full w-full max-h-full object-contain !mb-5 mx-auto md:!mx-0' %}
+                    <picture>
+                        {% assign image = title_image %}
+                        {% assign image_mobile = title_image_mobile %}
+                        {% assign alt = title_alt %}
+                        {% assign class = 'max-w-[333px] md:!max-w-full w-full max-h-full object-contain !mb-5 mx-auto md:!mx-0' %}
+                        {% assign loading = 'eager' %}
+                        {% assign preload = 'eager' %}
+                        <source srcset="{{ image | image_url: width: 1920 }}" media="(min-width: 1920px)">
+                        <source srcset="{{ image | image_url: width: 1440 }}" media="(min-width: 1440px)">
+                        <source srcset="{{ image | image_url: width: 1200 }}" media="(min-width: 1200px)">
+                        <source srcset="{{ image | image_url: width: 1024 }}" media="(min-width: 1024px)">
+                        {% if image_mobile != blank %}
+                            <source srcset="{{ image_mobile | image_url: width: 768 }}" media="(min-width: 768px)">
+                            <source srcset="{{ image_mobile | image_url: width: 480 }}" media="(min-width: 480px)">
+                            <source srcset="{{ image_mobile | image_url: width: 320 }}" media="(min-width: 320px)">
+                            <img src="{{ image_mobile | image_url: width: 365 }}" alt="{{ alt }}" class="{{ class }}">
+                        {% else %}
+                            <source srcset="{{ image | image_url: width: 768 }}" media="(min-width: 768px)">
+                            <source srcset="{{ image | image_url: width: 480 }}" media="(min-width: 480px)">
+                            <source srcset="{{ image | image_url: width: 320 }}" media="(min-width: 320px)">
+                            <img src="{{ image | image_url: width: 365 }}" alt="{{ alt }}" class="{{ class }}" loading="{{ loading }}" preload="{{ preload }}">
+                        {% endif %}
+                    </picture>                
                 {% endif %}
                 {% if subtitle != blank %}
                     <span class="body block !mb-5 max-w-[316px] md:!max-w-full" style="color: {{ color_scheme.settings.foreground }}">{{ subtitle }}</span>
