@@ -15,6 +15,11 @@
     assign badge = section.settings.badge
 %}
 
+{% capture title_styles %}
+    --font-size: {{ section.settings.font_size }}px;
+    --font-size-mobile: {{ section.settings.font_size_mobile }}px;
+{% endcapture %}
+
 <div class="relative w-full" style="background-color: {{ color_scheme.background }}">
     <svg preserveAspectRatio="none" class="absolute -top-5 left-0 w-full z-[2]" xmlns="http://www.w3.org/2000/svg" width="1290" height="28" viewBox="0 0 1290 28" fill="none">
         <path d="M1290 27.249L970 28L352 21.9804L3.62444e-07 23.854L2.44783e-06 -1.16568e-06L1290 0.00011161L1290 27.249Z" fill="{{ color_scheme.settings.background }}"/>
@@ -31,7 +36,7 @@
                     {{ badge | image_url: width: 100 | image_tag: class: 'absolute z-[2] -top-[30px] -left-[30px] !w-[60px] !h-auto', loading: 'eager', preload: 'eager' }}
                 {% endif %}
                 {% if title_type == 'text' %}
-                    <h2 class="h2 text-gold">{{ title }}</h2>
+                    <h2 class="h2 title-text !leading-[1.1]" style="color: {{ color_scheme.settings.foreground }}; {{ title_styles }}">{{ title | replace: '\b', '<br>' }}</h2>
                 {% elsif title_type == 'image' %}
                     {% render 'title-image', image: title_image, image_mobile: title_image_mobile, alt: title_alt, class: '!max-w-[246px] md:!max-w-[438px] mx-auto md:!mx-0 w-full max-h-full object-contain' %}
                 {% endif %}
@@ -53,6 +58,18 @@
         <path d="M0 0L670 5.33019L1280 0V18H0V0Z" fill="{{ color_scheme.settings.background }}"/>
     </svg>
 </div>
+
+{% style %}
+    .title-text {
+        font-size: var(--font-size);
+    }
+
+    @media (max-width: 1024px) {
+        .title-text {
+            font-size: var(--font-size-mobile);
+        }
+    }
+{% endstyle %}
 
 {% schema %}
     {
@@ -109,6 +126,29 @@
                 "type": "text",
                 "id": "title",
                 "label": "Title",
+                "visible_if": "{{ section.settings.title_type == 'text' }}",
+                "info": "Add '\\b' for line breaks"
+            },
+            {
+                "type": "range",
+                "id": "font_size",
+                "label": "Font Size",
+                "min": 16,
+                "max": 100,
+                "step": 1,
+                "unit": "px",
+                "default": 24,
+                "visible_if": "{{ section.settings.title_type == 'text' }}"
+            },
+            {
+                "type": "range",
+                "id": "font_size_mobile",
+                "label": "Font Size Mobile",
+                "min": 16,
+                "max": 100,
+                "step": 1,
+                "unit": "px",
+                "default": 24,
                 "visible_if": "{{ section.settings.title_type == 'text' }}"
             },
             {
