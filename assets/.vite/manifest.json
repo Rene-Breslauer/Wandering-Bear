@@ -1,28 +1,17 @@
 {
-  "_wb-events.DndOPqDK.js": {
-    "file": "wb-events.DndOPqDK.js",
+  "_wb-events.CKdcfN1K.js": {
+    "file": "wb-events.CKdcfN1K.js",
     "name": "events"
   },
-  "_wb-navigation.DbgO__Cq.js": {
-    "file": "wb-navigation.DbgO__Cq.js",
-    "name": "navigation",
-    "imports": [
-      "_wb-swiper-core.D7W3CLDJ.js"
-    ]
-  },
-  "_wb-swiper-core.D7W3CLDJ.js": {
-    "file": "wb-swiper-core.D7W3CLDJ.js",
-    "name": "swiper-core"
-  },
-  "_wb-swiper.D1f_fYTf.js": {
-    "file": "wb-swiper.D1f_fYTf.js",
+  "_wb-swiper.CA-Pqyxn.js": {
+    "file": "wb-swiper.CA-Pqyxn.js",
     "name": "swiper",
     "imports": [
-      "_wb-swiper-core.D7W3CLDJ.js"
+      "frontend/entrypoints/main.js"
     ]
   },
   "frontend/entrypoints/main.css": {
-    "file": "wb-main.CScCd4C3.css",
+    "file": "wb-main.Bv1W09Np.css",
     "name": "main",
     "names": [
       "main.css"
@@ -31,17 +20,13 @@
     "isEntry": true
   },
   "frontend/entrypoints/main.js": {
-    "file": "wb-main.BsCSLH8N.js",
+    "file": "wb-main.NfGXDTq5.js",
     "name": "main",
     "src": "frontend/entrypoints/main.js",
     "isEntry": true,
-    "imports": [
-      "_wb-navigation.DbgO__Cq.js",
-      "_wb-swiper-core.D7W3CLDJ.js"
-    ],
     "dynamicImports": [
-      "node_modules/alpinejs/dist/module.esm.js",
-      "node_modules/@alpinejs/morph/dist/module.esm.js",
+      "node_modules/.pnpm/alpinejs@3.15.12/node_modules/alpinejs/dist/module.esm.js",
+      "node_modules/.pnpm/@alpinejs+morph@3.15.12/node_modules/@alpinejs/morph/dist/module.esm.js",
       "frontend/scripts/components/swiperSlider.ts",
       "frontend/scripts/components/videoPlayer.ts",
       "frontend/scripts/components/header.ts",
@@ -59,124 +44,123 @@
       "frontend/scripts/components/productValueProps.ts"
     ],
     "css": [
-      "wb-main.DwcSdx3f.css"
+      "wb-main.CKq4IGjd.css"
     ]
   },
   "frontend/scripts/components/accordion.ts": {
-    "file": "wb-accordion.CTlFiqxS.js",
+    "file": "wb-accordion.D4uw8eV-.js",
     "name": "accordion",
     "src": "frontend/scripts/components/accordion.ts",
     "isDynamicEntry": true
   },
   "frontend/scripts/components/diagram.ts": {
-    "file": "wb-diagram.Cb-KIUvR.js",
+    "file": "wb-diagram.IAkhmtaL.js",
     "name": "diagram",
     "src": "frontend/scripts/components/diagram.ts",
     "isDynamicEntry": true
   },
   "frontend/scripts/components/diagramToggle.ts": {
-    "file": "wb-diagramToggle.DbIQhYB2.js",
+    "file": "wb-diagramToggle.CNwb4PHw.js",
     "name": "diagramToggle",
     "src": "frontend/scripts/components/diagramToggle.ts",
     "isDynamicEntry": true
   },
   "frontend/scripts/components/footer.ts": {
-    "file": "wb-footer.BTm8M7VZ.js",
+    "file": "wb-footer.Dm0gtcPI.js",
     "name": "footer",
     "src": "frontend/scripts/components/footer.ts",
     "isDynamicEntry": true
   },
   "frontend/scripts/components/header.ts": {
-    "file": "wb-header.BzZjRIGx.js",
+    "file": "wb-header.DGc-ipp6.js",
     "name": "header",
     "src": "frontend/scripts/components/header.ts",
     "isDynamicEntry": true
   },
   "frontend/scripts/components/how-to-mix.ts": {
-    "file": "wb-how-to-mix.DPXZ1uJG.js",
+    "file": "wb-how-to-mix.C9FylpPW.js",
     "name": "how-to-mix",
     "src": "frontend/scripts/components/how-to-mix.ts",
     "isDynamicEntry": true
   },
   "frontend/scripts/components/media-gallery-bundle.ts": {
-    "file": "wb-media-gallery-bundle.B2NNiLj4.js",
+    "file": "wb-media-gallery-bundle.C3UlXI8j.js",
     "name": "media-gallery-bundle",
     "src": "frontend/scripts/components/media-gallery-bundle.ts",
     "isDynamicEntry": true,
     "imports": [
-      "_wb-swiper-core.D7W3CLDJ.js",
-      "_wb-swiper.D1f_fYTf.js"
+      "frontend/entrypoints/main.js",
+      "_wb-swiper.CA-Pqyxn.js"
     ]
   },
   "frontend/scripts/components/modal.ts": {
-    "file": "wb-modal.5bRyXaTn.js",
+    "file": "wb-modal.DXIqHvo7.js",
     "name": "modal",
     "src": "frontend/scripts/components/modal.ts",
     "isDynamicEntry": true
   },
   "frontend/scripts/components/product-form-bundle.ts": {
-    "file": "wb-product-form-bundle.CvCCpeXo.js",
+    "file": "wb-product-form-bundle.B3Iy675R.js",
     "name": "product-form-bundle",
     "src": "frontend/scripts/components/product-form-bundle.ts",
     "isDynamicEntry": true,
     "imports": [
-      "_wb-events.DndOPqDK.js"
+      "_wb-events.CKdcfN1K.js"
     ]
   },
   "frontend/scripts/components/product-form.ts": {
-    "file": "wb-product-form.B-SIo3JE.js",
+    "file": "wb-product-form.8AiNofET.js",
     "name": "product-form",
     "src": "frontend/scripts/components/product-form.ts",
     "isDynamicEntry": true,
     "imports": [
-      "_wb-events.DndOPqDK.js"
+      "_wb-events.CKdcfN1K.js"
     ]
   },
   "frontend/scripts/components/productValueProps.ts": {
-    "file": "wb-productValueProps.BeX5dAr1.js",
+    "file": "wb-productValueProps.a0hcGaDg.js",
     "name": "productValueProps",
     "src": "frontend/scripts/components/productValueProps.ts",
     "isDynamicEntry": true
   },
   "frontend/scripts/components/swiperSlider.ts": {
-    "file": "wb-swiperSlider.DD7s0t_G.js",
+    "file": "wb-swiperSlider.1q4LaZgA.js",
     "name": "swiperSlider",
     "src": "frontend/scripts/components/swiperSlider.ts",
     "isDynamicEntry": true,
     "imports": [
-      "_wb-navigation.DbgO__Cq.js",
-      "_wb-swiper-core.D7W3CLDJ.js",
-      "_wb-swiper.D1f_fYTf.js"
+      "frontend/entrypoints/main.js",
+      "_wb-swiper.CA-Pqyxn.js"
     ]
   },
   "frontend/scripts/components/tooltip.ts": {
-    "file": "wb-tooltip.CDUlTVW8.js",
+    "file": "wb-tooltip.BIo9DVBR.js",
     "name": "tooltip",
     "src": "frontend/scripts/components/tooltip.ts",
     "isDynamicEntry": true
   },
   "frontend/scripts/components/videoPlayer.ts": {
-    "file": "wb-videoPlayer.C8w_EXl6.js",
+    "file": "wb-videoPlayer.BJUUpTwp.js",
     "name": "videoPlayer",
     "src": "frontend/scripts/components/videoPlayer.ts",
     "isDynamicEntry": true
   },
   "frontend/scripts/components/ways-to-enjoy.ts": {
-    "file": "wb-ways-to-enjoy.DmtlnxTX.js",
+    "file": "wb-ways-to-enjoy.Cmbafzdl.js",
     "name": "ways-to-enjoy",
     "src": "frontend/scripts/components/ways-to-enjoy.ts",
     "isDynamicEntry": true
   },
-  "node_modules/@alpinejs/morph/dist/module.esm.js": {
-    "file": "wb-module.esm.Bdb6_9MT.js",
+  "node_modules/.pnpm/@alpinejs+morph@3.15.12/node_modules/@alpinejs/morph/dist/module.esm.js": {
+    "file": "wb-module.esm.-9GTL5jr.js",
     "name": "module.esm",
-    "src": "node_modules/@alpinejs/morph/dist/module.esm.js",
+    "src": "node_modules/.pnpm/@alpinejs+morph@3.15.12/node_modules/@alpinejs/morph/dist/module.esm.js",
     "isDynamicEntry": true
   },
-  "node_modules/alpinejs/dist/module.esm.js": {
-    "file": "wb-module.esm.BJVK1sUV.js",
+  "node_modules/.pnpm/alpinejs@3.15.12/node_modules/alpinejs/dist/module.esm.js": {
+    "file": "wb-module.esm.CG1dmWgH.js",
     "name": "module.esm",
-    "src": "node_modules/alpinejs/dist/module.esm.js",
+    "src": "node_modules/.pnpm/alpinejs@3.15.12/node_modules/alpinejs/dist/module.esm.js",
     "isDynamicEntry": true
   }
 }
