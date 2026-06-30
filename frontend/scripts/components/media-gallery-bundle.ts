@@ -19,8 +19,14 @@ export default (Alpine: typeof Alpine) => {
 
           this.swiperThumbs = new Swiper(this.$refs.swiperThumbs, {
             slidesPerView: 5,
-            spaceBetween: 10,
+            spaceBetween: 6,
             watchSlidesProgress: true,
+            breakpoints: {
+              1024: {
+                slidesPerView: 5,
+                spaceBetween: 10,
+              },
+            },
           });
         },
 
@@ -35,7 +41,7 @@ export default (Alpine: typeof Alpine) => {
           const that = this
 
           this.swiper = new Swiper(this.$refs.swiper, {
-            slidesPerView: 1.25,
+            slidesPerView: 1.12,
             centeredSlides: true,
             loop: true,
             spaceBetween: 10,

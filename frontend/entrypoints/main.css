@@ -8,6 +8,7 @@
     --breakpoint-xl: 96rem; /* 1536px */
     --breakpoint-2xl: 112rem; /* 1792px */
     --color-gold: #FFD700/100%;
+    --color-dark-gold: #AF7404/100%;
     --color-sky-blue: #BFD7E9/100%;
     --color-grey-tag: #E1E1E1/100%;
     --color-light-sky: #D9EAF7/100%;
@@ -18,6 +19,7 @@
     --color-cream: #F7F7F7/100%;
     --color-kraft: #805C33/100%;
     --color-foam: #FEF8F3/100%;
+    --color-dark-foam: #F9F3ED/100%;
     --color-white: #FFFFFF/100%;
 }
 

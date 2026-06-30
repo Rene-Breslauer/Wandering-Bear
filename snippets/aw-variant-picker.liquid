@@ -36,16 +36,17 @@
     if quantified
         assign price = price | times: variant.metafields.custom.quantified_units
     endif
+
+    assign choose_quantity_text = 'products.product.choose_quantity' | t
+    assign box_text = 'products.product.box' | t
 %}
 
 {% assign block_settings = block.settings %}
 
 {% unless product_resource.has_only_default_variant %}
   {% liquid
-     
-     assign selling_plan_id = product_resource.selected_or_first_available_variant.selling_plan_id
+    assign selling_plan_id = product_resource.selected_or_first_available_variant.selling_plan_id
   %}
-
 
   <variant-picker
     class="variant-picker spacing-style variant-picker--{{ block_settings.alignment }}"
@@ -91,7 +92,7 @@
             {{ option_id_attribute }}
           >
             <legend class="text-base font-bold font-gothic_condensed uppercase text-bear-black">
-              {{ product_option.name | escape -}}
+              {{ product_option.name | escape |  replace: 'Pack Size', choose_quantity_text -}}
               {%- if variant_style == 'swatch' -%}
                 <span class="variant-option__swatch-value">{{ product_option.selected_value }}</span>
               {%- endif %}
@@ -103,7 +104,7 @@
               {% endif %}
               <label
                 data-variant-id="{{ product_option_value.variant.id }}"
-                class="bg-transparent border-none p-0 m-0 flex !items-start justify-center relative w-full h-full py-3 {% if variant_style == 'swatch' %} variant-option__button-label--has-swatch{% endif %}"
+                class="bg-transparent p-0 m-0 flex !items-start justify-center relative w-full h-full py-1.75 hover:[&_.variant-option-name]:text-dark-gold hover:bg-foam! transition-colors duration-300 md:pb-2.5 md:pt-1.5 {% if variant_style == 'swatch' %} variant-option__button-label--has-swatch{% endif %}"
               >
                 <input
                   type="radio"
@@ -133,26 +134,26 @@
                   {% endif %}
                 >
                   <div
-                    class="wb-flex flex-col items-center justify-start"
+                    class="wb-flex flex-col gap-0.5 items-center justify-start"
                     data-key="variant-option-text"
                   >
                   {% liquid 
                     assign option_name = product_option_value
                     for variant in product_resource.variants
                     if variant.id == product_option_value.variant.id
-                      assign option_name = variant.metafields.airf.boxes
+                      assign option_name = variant.metafields.airf.boxes | default: variant.title
                       assign option_price = variant.price
                       assign discount = product_resource.variants[0].compare_at_price | minus: variant.price
                       assign option_savings = discount | times: 100.0 | divided_by: product_resource.variants[0].compare_at_price | round: 0
-                      assign option_savings_text = 'Save' | append: ' ' | append: option_savings | append: '% off'
+                      assign option_savings_text = 'Save' | append: ' ' | append: option_savings | append: '%'
                     endif
                     endfor
                   %}
-                    <span class="text-base text-bear-black font-bold font-gothic_condensed uppercase">{{- option_name | escape -}}</span>
-                    <span x-text="productObject[{{ product_option_value.variant.id }}].currentPriceFormatted" class="text-xs text-bear-black font-kurdis-semi-condensed">{{- option_price | money -}}</span>
+                    <span class="variant-option-name transition-colors duration-300 text-base text-bear-black font-bold font-gothic_condensed uppercase">{{- option_name | escape -}}</span>
+                    <span x-text="productObject[{{ product_option_value.variant.id }}].currentPriceFormatted + '/{{ box_text }}'" class="text-xs text-bear-black font-kurdis-semi-condensed">{{- option_price | money -}}/{{ box_text }}</span>
                     <span x-text="productObject[{{ product_option_value.variant.id }}].currentSavingsPercentageFormatted"
                     :class="productObject[{{ product_option_value.variant.id }}].currentSavingsPercentage > 0 ? '!block' : '!hidden'"
-                    class="font-kurdis-semi-condensed font-semibold text-kraft text-[10px] {% if option_savings > 0 %}block{% else %}hidden{% endif %}">{{- option_savings_text | escape -}}</span>
+                    class="font-kurdis-semi-condensed font-bold text-kraft text-xs/none md:text-[10px] {% if option_savings > 0 %}block{% else %}hidden{% endif %}">{{- option_savings_text | escape -}}</span>
                   </div>
               </label>
             {%- endfor -%}
@@ -244,18 +245,21 @@
 {% endunless %}
 
 {% stylesheet %}
-
-  .variant-option label:has(input:checked) {
-    background-color: #F2F2F2;
-    border: 1px solid var(--color-espresso);
+  .variant-option label {
+    border: 1px solid transparent;
   }
 
-  .variant-option label:has(input:checked):first-of-type {
+  .variant-option label:has(input:checked) {
+    background-color: #F9F3ED;
+    border-color: var(--color-espresso);
+  }
+
+  .variant-option label:first-of-type {
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
   }
 
-  .variant-option label:has(input:checked):last-of-type {
+  .variant-option label:last-of-type {
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
   }

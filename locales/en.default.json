@@ -353,6 +353,7 @@
   "products": {
     "product": {
       "add_to_cart": "Add to cart",
+      "add_to_bag": "Add to bag",
       "adding_to_cart": "Adding...",
       "added_to_cart": "Added to cart",
       "add_to_cart_error": "Error adding to cart",
@@ -365,7 +366,9 @@
       "quantity_maximum": "Maximum of {{ maximum }}",
       "in_cart": "in cart",
       "default_title": "Default Title",
-      "sticky_add_to_cart": "Quick add to cart bar"
+      "sticky_add_to_cart": "Quick add to cart bar",
+      "choose_quantity": "Choose quantity",
+      "box": "box"
     }
   }
 }
