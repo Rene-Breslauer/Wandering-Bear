@@ -23,6 +23,7 @@
             "height": "fit",
             "details_position": "flex-start",
             "gap": 0,
+            "gap_mobile": 12,
             "sticky_details_desktop": true,
             "inherit_color_scheme": true,
             "color_scheme": "scheme-1",
@@ -36,7 +37,11 @@
             "padding-block-start": 24,
             "padding-block-end": 24,
             "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "padding-inline-end": 0,
+            "padding-block-start-mobile": 0,
+            "padding-block-end-mobile": 0,
+            "padding-inline-start-mobile": 0,
+            "padding-inline-end-mobile": 0
           },
           "blocks": {
             "review_LerwXW": {
@@ -86,7 +91,11 @@
                 "padding-block-start": 0,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
-                "padding-inline-end": 0
+                "padding-inline-end": 0,
+                "padding-block-start-mobile": 0,
+                "padding-block-end-mobile": 0,
+                "padding-inline-start-mobile": 0,
+                "padding-inline-end-mobile": 0
               },
               "blocks": {}
             },
@@ -129,6 +138,7 @@
       },
       "settings": {
         "bundle_collection": "test-cold-brew-on-tap-96oz",
+        "bundle_add_to_cart_text": "Add",
         "content_width": "content-center-aligned",
         "desktop_media_position": "left",
         "equal_columns": false,
@@ -167,7 +177,11 @@
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "padding-inline-end": 0,
+            "padding-block-start-mobile": 0,
+            "padding-block-end-mobile": 0,
+            "padding-inline-start-mobile": 0,
+            "padding-inline-end-mobile": 0
           },
           "blocks": {}
         },
@@ -440,6 +454,7 @@
             "horizontal_alignment_flex_direction_column": "center",
             "vertical_alignment_flex_direction_column": "center",
             "gap": 12,
+            "gap_mobile": 12,
             "width": "fill",
             "custom_width": 100,
             "width_mobile": "fill",
@@ -465,7 +480,11 @@
             "padding-block-start": 0,
             "padding-block-end": 40,
             "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "padding-inline-end": 0,
+            "padding-block-start-mobile": 0,
+            "padding-block-end-mobile": 0,
+            "padding-inline-start-mobile": 0,
+            "padding-inline-end-mobile": 0
           },
           "blocks": {
             "subscription_value_prop_FCM3iE": {
@@ -610,6 +629,119 @@
         "button_label": "",
         "button_link": ""
       }
+    },
+    "products_slider_eeqjMT": {
+      "type": "products-slider",
+      "blocks": {
+        "heading_9RQfry": {
+          "type": "_heading",
+          "settings": {
+            "type_preset": "custom",
+            "font": "var(--font-heading--family)",
+            "font_size": "3rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "uppercase",
+            "wrap": "pretty",
+            "color": "var(--color-foreground-heading)",
+            "text": "<h2>More to explore</h2>",
+            "read_only": false,
+            "alignment": "center",
+            "show_alignment": true,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "cart_product_slider_VDnkkq": {
+          "type": "cart_product_slider",
+          "settings": {
+            "product": "32oz-cold-brew-carton-bundle-unit-straight-black",
+            "title": "Original Black",
+            "title_small": "32oz",
+            "show_badge": true,
+            "badge_text": "",
+            "image": "shopify://shop_images/Original-Black-11oz.png",
+            "card_background_color": ""
+          },
+          "blocks": {}
+        },
+        "cart_product_slider_nATbyK": {
+          "type": "cart_product_slider",
+          "settings": {
+            "product": "cold-brew-latte-8oz",
+            "title": "Mocha Latte",
+            "title_small": "8oz",
+            "show_badge": true,
+            "badge_text": "",
+            "image": "shopify://shop_images/Mocha-Latte-8oz.png",
+            "card_background_color": ""
+          },
+          "blocks": {}
+        },
+        "cart_product_slider_EU3AT8": {
+          "type": "cart_product_slider",
+          "settings": {
+            "product": "32oz-3-to-1-coffee-concentrate-bundle-unit-straight-black",
+            "title": "3:1 Concentrate",
+            "title_small": "32oz",
+            "show_badge": true,
+            "badge_text": "",
+            "image": "shopify://shop_images/3-1-Concentrate-32oz.png",
+            "card_background_color": ""
+          },
+          "blocks": {}
+        },
+        "cart_product_slider_yPtdRp": {
+          "type": "cart_product_slider",
+          "settings": {
+            "product": "extra-strong-organic-cold-brew-coffee-11oz-straight-black",
+            "title": "Original Black",
+            "title_small": "11oz",
+            "show_badge": true,
+            "badge_text": "",
+            "image": "shopify://shop_images/Original-Black-32oz.png",
+            "card_background_color": ""
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "heading_9RQfry",
+        "cart_product_slider_VDnkkq",
+        "cart_product_slider_nATbyK",
+        "cart_product_slider_EU3AT8",
+        "cart_product_slider_yPtdRp"
+      ],
+      "name": "AW Products Slider",
+      "settings": {
+        "color_scheme": "",
+        "background": "",
+        "section_width": "page-width",
+        "layout_type": "slider",
+        "slides_per_view_mobile": "1.5",
+        "slides_per_view_tablet": "2.5",
+        "slides_per_view_desktop": "4",
+        "space_between_mobile": 12,
+        "space_between_desktop": 16,
+        "slide_offset_mobile": 16,
+        "slide_offset_desktop": 0,
+        "show_navigation": true,
+        "columns_mobile": "2",
+        "columns_desktop": 4,
+        "grid_gap_mobile": 12,
+        "grid_gap_desktop": 16,
+        "padding-block-start": 36,
+        "padding-block-end": 36,
+        "padding-inline-start": 0,
+        "padding-inline-end": 0,
+        "padding-block-start-mobile": 36,
+        "padding-block-end-mobile": 36,
+        "padding-inline-start-mobile": 0,
+        "padding-inline-end-mobile": 0
+      }
     }
   },
   "order": [
@@ -621,6 +753,7 @@
     "1777580187e490aceb",
     "17780948450c5a87e1",
     "aw_member_comparison_EAjQ8J",
-    "aw_frequently_asked_questions_33izYW"
+    "aw_frequently_asked_questions_33izYW",
+    "products_slider_eeqjMT"
   ]
 }

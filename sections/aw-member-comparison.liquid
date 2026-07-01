@@ -56,13 +56,16 @@
       }
 
        ul li:before {
+            background-image: url('{{ bullet_icon | image_url: width: 14 }}');
+            background-repeat: no-repeat;
+            background-size: 14px 9px;
             content: "";
             display: block;
-            width: 14px;
+            position: relative;
+            top: -2px;
+            min-width: 14px;
             height: 9px;
-            background-image: url('{{ bullet_icon | image_url: width: 14 }}');
-            background-size: 14px 9px;
-            background-repeat: no-repeat;
+            width: 14px;
        }
     }
 {% endstyle %}
@@ -104,7 +107,7 @@
                                 {% if tier_item.settings.button_label != blank %}
                                     {% render 'wb-button', style: 'secondary-gold', label: tier_item.settings.button_label, link: tier_item.settings.button_link, class: 'order-4 md:!order-3 col-start-1 mx-auto md:!mx-7 mt-3 !text-[15px]' %}
                                 {% endif %}
-                                <div class="rte membership-description order-3 md:!order-4 md:!col-start-2 md:row-start-1 md:row-end-3 body items-center md:!items-start w-fit mx-auto md:!mx-0 md:!w-full">{{ tier_item.settings.description }}</div>
+                                <div class="rte membership-description order-3 md:!order-4 md:!col-start-2 [&_ul]:pl-0! md:row-start-1 md:row-end-3 body items-center md:!items-start w-fit mx-auto md:!mx-0 md:!w-full">{{ tier_item.settings.description }}</div>
                         </div>
                     {% endfor %}
                     {% if button_label != blank and button_link != blank %}

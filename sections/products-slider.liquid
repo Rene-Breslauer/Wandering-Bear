@@ -1,0 +1,423 @@
+{% liquid
+  assign section_settings = section.settings
+  assign color_scheme = section_settings.color_scheme
+  assign background = section_settings.background
+  assign layout_type = section_settings.layout_type
+  assign show_navigation = section_settings.show_navigation
+  assign section_width = section_settings.section_width
+
+  assign product_block_count = 0
+  assign has_content_blocks = false
+
+  for block in section.blocks
+    if block.id contains 'cart_product_slider'
+      assign product_block_count = product_block_count | plus: 1
+    else
+      assign has_content_blocks = true
+    endif
+  endfor
+
+  assign inner_width_class = 'w-full px-4'
+  if section_width == 'page-width'
+    assign inner_width_class = 'container mx-auto max-w-[1140px] px-4'
+  endif
+%}
+
+<div class="section-background color-{{ color_scheme }}"></div>
+<div
+  class="section section--{{ section_width }} color-{{ color_scheme }} products-slider products-slider--{{ layout_type }} spacing-style"
+  style="
+    {% render 'spacing-style', settings: section.settings %}
+    {% if background != blank %}background: {{ background }};{% elsif color_scheme.settings.background != blank %}background-color: {{ color_scheme.settings.background }};{% endif %}
+  "
+  {{ section.shopify_attributes }}
+>
+  {% if has_content_blocks %}
+    <div class="products-slider__content {{ inner_width_class }} flex flex-col items-center text-center gap-2 mb-6 md:mb-8 w-full">
+      {% for block in section.blocks %}
+        {% unless block.id contains 'cart_product_slider' %}
+          {% render block %}
+        {% endunless %}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% if product_block_count > 0 %}
+    {% if layout_type == 'grid' %}
+      <div class="products-slider__inner {{ inner_width_class }}">
+        <div
+          class="products-slider__grid"
+          style="
+            --products-slider-cols-mobile: {{ section_settings.columns_mobile }};
+            --products-slider-cols-desktop: {{ section_settings.columns_desktop }};
+            --products-slider-gap-mobile: {{ section_settings.grid_gap_mobile }}px;
+            --products-slider-gap-desktop: {{ section_settings.grid_gap_desktop }}px;
+          "
+        >
+          {% for block in section.blocks %}
+            {% if block.id contains 'cart_product_slider' %}
+              {% render block %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    {% else %}
+      <div
+        class="products-slider__track relative w-full max-w-[100vw] overflow-x-hidden"
+        data-products-slider
+        data-layout="{{ layout_type }}"
+        data-slides-mobile="{{ section_settings.slides_per_view_mobile }}"
+        data-slides-tablet="{{ section_settings.slides_per_view_tablet }}"
+        data-slides-desktop="{{ section_settings.slides_per_view_desktop }}"
+        data-space-mobile="{{ section_settings.space_between_mobile }}"
+        data-space-desktop="{{ section_settings.space_between_desktop }}"
+        data-offset-mobile="{{ section_settings.slide_offset_mobile }}"
+        data-offset-desktop="{{ section_settings.slide_offset_desktop }}"
+        data-show-navigation="{{ show_navigation }}"
+      >
+        <div class="swiper products-slider__swiper">
+          <div class="swiper-wrapper">
+            {% for block in section.blocks %}
+              {% if block.id contains 'cart_product_slider' %}
+                <div class="swiper-slide h-auto">
+                  {% render block %}
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+
+        {% if show_navigation %}
+          <div class="products-slider__button-prev hidden md:flex swiper-button-prev group transition-all duration-300 absolute z-[2] -translate-y-1/2">
+            {% render 'icons', icon: 'chevron-left' with class: '-translate-x-[10%] group-hover:!text-gold transition-all duration-300' %}
+          </div>
+          <div class="products-slider__button-next hidden md:flex swiper-button-next group transition-all duration-300 absolute z-[2] -translate-y-1/2">
+            {% render 'icons', icon: 'chevron-right' with class: 'translate-x-[10%] group-hover:!text-gold transition-all duration-300' %}
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "AW Products Slider",
+  "tag": "section",
+  "class": "products-slider-section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "color_background",
+      "id": "background",
+      "label": "Background"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "Container"
+        },
+        {
+          "value": "full-width",
+          "label": "Full width"
+        }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "select",
+      "id": "layout_type",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "slider",
+          "label": "Slider"
+        },
+        {
+          "value": "grid",
+          "label": "Grid"
+        }
+      ],
+      "default": "slider"
+    },
+    {
+      "type": "header",
+      "content": "Slider settings"
+    },
+    {
+      "type": "select",
+      "id": "slides_per_view_mobile",
+      "label": "Slides per view (mobile)",
+      "options": [
+        { "value": "1.15", "label": "1.15" },
+        { "value": "1.5", "label": "1.5" },
+        { "value": "2", "label": "2" },
+        { "value": "2.5", "label": "2.5" }
+      ],
+      "default": "1.5",
+      "visible_if": "{{ section.settings.layout_type == 'slider' }}"
+    },
+    {
+      "type": "select",
+      "id": "slides_per_view_tablet",
+      "label": "Slides per view (tablet)",
+      "options": [
+        { "value": "2", "label": "2" },
+        { "value": "2.5", "label": "2.5" },
+        { "value": "3", "label": "3" },
+        { "value": "3.5", "label": "3.5" }
+      ],
+      "default": "2.5",
+      "visible_if": "{{ section.settings.layout_type == 'slider' }}"
+    },
+    {
+      "type": "select",
+      "id": "slides_per_view_desktop",
+      "label": "Slides per view (desktop)",
+      "options": [
+        { "value": "3", "label": "3" },
+        { "value": "3.5", "label": "3.5" },
+        { "value": "4", "label": "4" },
+        { "value": "4.5", "label": "4.5" },
+        { "value": "5", "label": "5" }
+      ],
+      "default": "4",
+      "visible_if": "{{ section.settings.layout_type == 'slider' }}"
+    },
+    {
+      "type": "range",
+      "id": "space_between_mobile",
+      "label": "Space between slides (mobile)",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 12,
+      "visible_if": "{{ section.settings.layout_type == 'slider' }}"
+    },
+    {
+      "type": "range",
+      "id": "space_between_desktop",
+      "label": "Space between slides (desktop)",
+      "min": 0,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 16,
+      "visible_if": "{{ section.settings.layout_type == 'slider' }}"
+    },
+    {
+      "type": "range",
+      "id": "slide_offset_mobile",
+      "label": "Side offset (mobile)",
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "default": 16,
+      "visible_if": "{{ section.settings.layout_type == 'slider' }}"
+    },
+    {
+      "type": "range",
+      "id": "slide_offset_desktop",
+      "label": "Side offset (desktop)",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.layout_type == 'slider' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_navigation",
+      "label": "Show navigation arrows",
+      "default": true,
+      "visible_if": "{{ section.settings.layout_type == 'slider' }}"
+    },
+    {
+      "type": "header",
+      "content": "Grid settings",
+      "visible_if": "{{ section.settings.layout_type == 'grid' }}"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columns (mobile)",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
+      ],
+      "default": "2",
+      "visible_if": "{{ section.settings.layout_type == 'grid' }}"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columns (desktop)",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4,
+      "visible_if": "{{ section.settings.layout_type == 'grid' }}"
+    },
+    {
+      "type": "range",
+      "id": "grid_gap_mobile",
+      "label": "Gap (mobile)",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 12,
+      "visible_if": "{{ section.settings.layout_type == 'grid' }}"
+    },
+    {
+      "type": "range",
+      "id": "grid_gap_desktop",
+      "label": "Gap (desktop)",
+      "min": 0,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 16,
+      "visible_if": "{{ section.settings.layout_type == 'grid' }}"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "Left",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "Right",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Padding (mobile)"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start-mobile",
+      "label": "Top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end-mobile",
+      "label": "Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start-mobile",
+      "label": "Left",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end-mobile",
+      "label": "Right",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "_heading"
+    },
+    {
+      "type": "text"
+    },
+    {
+      "type": "cart_product_slider"
+    }
+  ],
+  "presets": [
+    {
+      "name": "AW Products Slider",
+      "blocks": [
+        {
+          "type": "_heading",
+          "settings": {
+            "text": "<h2>More to explore</h2>",
+            "type_preset": "h2",
+            "alignment": "center"
+          }
+        },
+        {
+          "type": "cart_product_slider"
+        },
+        {
+          "type": "cart_product_slider"
+        },
+        {
+          "type": "cart_product_slider"
+        },
+        {
+          "type": "cart_product_slider"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

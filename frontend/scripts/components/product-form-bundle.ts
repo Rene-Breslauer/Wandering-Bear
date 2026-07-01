@@ -78,7 +78,7 @@ export default (Alpine: AlpineType) => {
         },
 
         get currentSavingsAmountFormatted() {
-            return this._formatPrice(this.currentSavingsAmount);
+            return this._formatPrice(this.currentSavingsAmount, { withoutCents: true });
         },
 
         get parentProduct() {
@@ -130,11 +130,12 @@ export default (Alpine: AlpineType) => {
 
         // Helpers
         isInBundle(productId) {
-            return this.selectedBundleProducts[productId] !== undefined && this.selectedBundleProducts[productId].quantity > 0
+            const id = String(productId)
+            return this.selectedBundleProducts[id] !== undefined && this.selectedBundleProducts[id].quantity > 0
         },
 
         getBundleProductQuantity(productId) {
-            return this.selectedBundleProducts[productId]?.quantity || 0;
+            return this.selectedBundleProducts[String(productId)]?.quantity || 0;
         },
 
         get progressBarWidth() {
@@ -152,9 +153,14 @@ export default (Alpine: AlpineType) => {
             }
         },
 
-        _formatPrice(price) {
+        _formatPrice(price, { withoutCents = false } = {}) {
           const price_normalized = price / 100;
-          return price_normalized.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+          return price_normalized.toLocaleString('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: withoutCents ? 0 : undefined,
+            maximumFractionDigits: withoutCents ? 0 : undefined,
+          });
         },
 
         _setProgressBarPrices() {
@@ -192,7 +198,7 @@ export default (Alpine: AlpineType) => {
             }
 
             const savings = this.purchaseOption === 'autoship' ? autoshipSavings : otpSavings;
-            const savingsFormatted = discountType === 'Percentage' ? Math.round(savings) + '% off' : this._formatPrice(savings) + ' off';
+            const savingsFormatted = discountType === 'Percentage' ? Math.round(savings) + '% off' : this._formatPrice(savings, { withoutCents: true }) + ' off';
 
             savingsEl.textContent = savings > 0 ? savingsFormatted : ' '
             priceEl.textContent = this._formatPrice(price)
