@@ -57,3 +57,7 @@
 .swiper.multi-collection-slider .swiper-button-disabled {
     pointer-events: auto !important;
  }
+
+.founders-video .deferred-media__poster-icon.icon-play {
+    z-index: 3
+}
