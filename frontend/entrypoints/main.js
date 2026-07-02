@@ -15,6 +15,7 @@ import '../styles/footer.css';
 import '../styles/header.css';
 import '../styles/media-gallery-bundle.css';
 import '../styles/main-product.css';
+import '../styles/products-slider.css';
 
 
 
@@ -43,6 +44,7 @@ const init = async () => {
     const { default: HowToMix } = await import("~/scripts/components/how-to-mix")
     const { default: WaysToEnjoy } = await import("~/scripts/components/ways-to-enjoy")
     const { default: ProductValueProps } = await import("~/scripts/components/productValueProps")
+    const { default: registerProductsSlider } = await import("~/scripts/components/productsSlider")
 
     Alpine.plugin(morph)
 
@@ -63,6 +65,7 @@ const init = async () => {
     Alpine.plugin(ProductValueProps)
 
     Alpine.start()
+    registerProductsSlider()
     window.Alpine = Alpine
 }
 
