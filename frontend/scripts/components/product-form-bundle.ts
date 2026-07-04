@@ -97,6 +97,7 @@ export default (Alpine: AlpineType) => {
             ? this._mapTo32ozBundle()
             : this._mapToBundle();
 
+
             const assignedBundleProducts = Object.keys(this.selectedBundleProducts).map((productId) => {
                 const product = this.bundleProducts[productId]
                 const selectedProduct = this.selectedBundleProducts[productId]
@@ -108,6 +109,7 @@ export default (Alpine: AlpineType) => {
                   id: Number(variant.id),
                   quantity: selectedProduct.quantity,
                   flavorName: product.flavor_name ? product.flavor_name : '',
+                  collectionHandle: product.collection_handle ? product.collection_handle : '',
                   image: product.image ? product.image : '',
                   title: product.title,
                   otpPrice: Number(variant.price),
@@ -117,6 +119,8 @@ export default (Alpine: AlpineType) => {
                   properties: {
                     _bundle_product_id: productId,
                     _bundle_size: this.bundleSize,
+                    _flavor_name: product.flavor_name ? product.flavor_name : '',
+                    _bundle_type: this.bundleType,
                   },
                 }
               })
@@ -422,13 +426,19 @@ export default (Alpine: AlpineType) => {
               items: [],
             }
 
+            let collectionHandle = ''
+
             this.assignedBundleProducts.forEach((item) => {
+              collectionHandle = item.collectionHandle;
                 let bundleItem = {
                   id: item.id,
                   quantity: item.quantity,
                   selling_plan: this.purchaseOption === 'autoship' ? item.selling_plan : null,
                   properties: {
                     _bundle_id: guid,
+                    _bundle_type: item.bundle_type,
+                    _flavor: item.flavorName,
+                    _collection_handle: collectionHandle,
                   },
                 }
                 bundleCart.items.push(bundleItem);
@@ -441,6 +451,8 @@ export default (Alpine: AlpineType) => {
               properties: {
                 _bundle_id: guid,
                 _bundle_parent: true,
+                _bundle_type: this.bundleType,
+                _collection_handle: collectionHandle,
               },
             }
 

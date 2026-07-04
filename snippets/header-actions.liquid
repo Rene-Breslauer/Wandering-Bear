@@ -223,6 +223,7 @@
             </div>
           </div>
           <div x-show="showModifyBundle" 
+          x-cloak
           x-transition:enter="transition ease-out duration-300"
           x-transition:enter-start="transform translate-x-full"
           x-transition:enter-end="transform translate-x-0"
@@ -367,7 +368,8 @@
   }
 
   .cart-drawer__content {
-    height: calc(100% - var(--header-height));
+    height: calc(100vh - var(--header-height));
+    max-height: calc(100vh - var(--header-height));
     display: flex;
     flex-direction: column;
     padding: 0;

@@ -1,166 +1,238 @@
 import { CartUpdateEvent } from '../../../assets/events';
 
 export default (Alpine: AlpineType) => {
-    Alpine.store('cart', {
-        state: 'isCartDrawer',
-        cart: null,
+  Alpine.store('cart', {
+    state: 'isCartDrawer',
+    cart: null,
+  });
 
+  Alpine.data('cart', () => ({
+    showModifyBundle: false,
+    bundleItems: [],
+    tempBundle: [],
+    bundleChanged: false,
+    activeBundle: null,
+    activeBundleCount: 0,
+
+    get state() {
+      return Alpine.store('cart').state;
+    },
+
+    set state(value) {
+      Alpine.store('cart').state = value;
+    },
+
+    get cart() {
+      return Alpine.store('cart').cart;
+    },
+
+    set cart(value) {
+      Alpine.store('cart').cart = value;
+    },
+
+    async init() {
+      console.log('init', this.showModifyBundle);
+      await this.refreshCart();
+    },
+
+    async modifyBundle(collectionHandle, bundleId) {
+      console.trace('modifyBundle fired', { collectionHandle, bundleId });
+    
+      await this.hydrateModifyBundle(collectionHandle, bundleId);
+    
+      this.activeBundle = bundleId;
+      this.activeBundleCount = this.bundleItems.length;
+    },
+
+    async refreshCart() {
+      this.cart = await fetch('/cart.js', {
+        headers: { Accept: 'application/json' },
+      }).then(res => res.json());
+    },
+
+    async _getFlavorCollection(collectionHandle) {
+      const res = await fetch(
+        `/collections/${collectionHandle}/products.json?limit=250`
+      );
+
+      if (!res.ok) {
+        console.error('Failed to fetch collection');
+        return [];
+      }
+
+      const data = await res.json();
+      return data.products || [];
+    },
+
+    async removeBundle(bundleId) {
+      const updates = {};
+
+      this.cart.items
+        .filter(item => String(item.properties?._bundle_id) === String(bundleId))
+        .forEach(item => {
+          updates[item.key] = 0;
+        });
+
+      const res = await fetch('/cart/update.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({ updates }),
       });
-      
-      Alpine.data('cart', () => ({
-        showModifyBundle: false,
-        bundleItems: [],
-        newBundleItems: [],
-        bundleChanged: false,
 
-        get state() {
-          return Alpine.store('cart').state;
-        },
-      
-        set state(value) {
-          Alpine.store('cart').state = value;
-        },
-      
-        get cart() {
-          return Alpine.store('cart').cart;
-        },
-      
-        set cart(value) {
-          Alpine.store('cart').cart = value;
-        },
+      if (!res.ok) return;
 
-      
-        async init() {
-          await this.refreshCart();
-        },
-      
-        async refreshCart() {
-          this.cart = await fetch('/cart.js', {
-            headers: { Accept: 'application/json' },
-          }).then(r => r.json());
+      this.cart = await res.json();
 
-          console.log('state', Alpine.store('cart').state);
+      document.dispatchEvent(
+        new CartUpdateEvent(this.cart, 'cart', {
+          itemCount: this.cart.item_count,
+          source: 'cart',
+        })
+      );
+    },
 
-        },
-      
-        async removeBundle(bundleId) {
-          const updates = {};
-      
-          this.cart.items
-            .filter(item => item.properties?._bundle_id === bundleId)
-            .forEach(item => {
-              updates[item.key] = 0;
-            });
-      
-          const res = await fetch('/cart/update.js', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Accept: 'application/json',
+    changeState(state) {
+      this.state = state;
+    },
+
+    async modifyBundle(collectionHandle, bundleId) {
+      await this.hydrateModifyBundle(collectionHandle, bundleId);
+
+      this.activeBundle = bundleId;
+      this.activeBundleCount = this.bundleItems.length;
+    },
+
+    async hydrateModifyBundle(collectionHandle, bundleId) {
+      const flavorCollection = await this._getFlavorCollection(collectionHandle);
+
+      this.bundleItems = this.cart.items
+        .filter(item => String(item.properties?._bundle_id) === String(bundleId))
+        .filter(item => String(item.properties?._bundle_parent) !== 'true')
+        .map(item => ({ ...item }));
+
+      console.log('bundleItems', this.bundleItems);
+
+      this.tempBundle = flavorCollection.map(product => {
+        const cartItem = this.bundleItems.find(item =>
+          Number(item.product_id) === Number(product.id)
+        );
+
+        return {
+          id: product.id,
+          variantId: product.variants?.[0]?.id,
+          key: cartItem?.key ?? null,
+          title: product.title,
+          price: product.variants?.[0]?.price ?? product.price,
+          image: product.images?.[0]?.src ?? '',
+          quantity: cartItem?.quantity ?? 0,
+          bundleId,
+        };
+      });
+
+      this.bundleChanged = false;
+      this.showModifyBundle = true;
+    },
+
+    bundleDecrement(id) {
+      const item = this.tempBundle.find(item => Number(item.id) === Number(id));
+      if (!item) return;
+
+      item.quantity = Math.max(0, item.quantity - 1);
+
+      this.tempBundle = [...this.tempBundle];
+      this.bundleChangesDetected();
+    },
+
+    bundleIncrement(id) {
+      const item = this.tempBundle.find(item => Number(item.id) === Number(id));
+      if (!item) return;
+
+      item.quantity += 1;
+
+      this.tempBundle = [...this.tempBundle];
+      this.bundleChangesDetected();
+    },
+
+    bundleChangesDetected() {
+      this.bundleChanged = this.tempBundle.some(tempItem => {
+        const originalItem = this.bundleItems.find(item =>
+          Number(item.product_id) === Number(tempItem.id)
+        );
+
+        return (originalItem?.quantity ?? 0) !== tempItem.quantity;
+      });
+    },
+
+    async updateBundle() {
+      this.bundleChangesDetected();
+      if (!this.bundleChanged) return;
+
+      const updates = {};
+      const additions = [];
+
+      this.tempBundle.forEach(item => {
+        if (item.key) {
+          updates[item.key] = item.quantity;
+          return;
+        }
+
+        if (item.quantity > 0 && item.variantId) {
+          additions.push({
+            id: item.variantId,
+            quantity: item.quantity,
+            properties: {
+              _bundle_id: item.bundleId,
             },
-            body: JSON.stringify({ updates }),
           });
-      
-          if (!res.ok) return;
-      
-          this.cart = await res.json();
-      
-          document.dispatchEvent(
-            new CartUpdateEvent(this.cart, 'cart', {
-              itemCount: this.cart.item_count,
-              source: 'cart',
-            })
-          );
-        },
-      
-        async changeState(state) {
-          this.state = state;
-          Alpine.store('cart').state = state;
-          console.log('state', Alpine.store('cart').state);
-        //   await this.refreshCart();
-        },
-      
-        modifyBundle(bundleId) {
-            this.hydrateModifyBundle(bundleId);
-        },
+        }
+      });
 
-        hydrateModifyBundle(bundleId) {
-            this.bundleItems = this.cart.items
-              .filter(item => String(item.properties?._bundle_id) === String(bundleId))
-              .filter(item => String(item.properties?._bundle_parent) !== 'true')
-              .map(item => ({ ...item }));
-          
-            this.newBundleItems = this.bundleItems.map(item => ({ ...item }));
-          
-            this.bundleChanged = false;
-            this.showModifyBundle = true;
+      if (Object.keys(updates).length) {
+        const updateRes = await fetch('/cart/update.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
           },
-          
-          bundleDecrement(key) {
-            const item = this.newBundleItems.find(item => item.key === key);
-            if (!item || item.quantity <= 0) return;
-          
-            item.quantity--;
-          
-            this.newBundleItems = [...this.newBundleItems];
-            this.bundleChangesDetected();
+          body: JSON.stringify({ updates }),
+        });
+
+        if (!updateRes.ok) {
+          console.error(await updateRes.text());
+          return;
+        }
+      }
+
+      if (additions.length) {
+        const addRes = await fetch('/cart/add.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
           },
-          
-          bundleIncrement(key) {
-            const item = this.newBundleItems.find(item => item.key === key);
-            if (!item) return;
-          
-            item.quantity++;
-          
-            this.newBundleItems = [...this.newBundleItems];
-            this.bundleChangesDetected();
-          },
-          
-          bundleChangesDetected() {
-            this.bundleChanged = this.newBundleItems.some(newItem => {
-              const originalItem = this.bundleItems.find(item => item.key === newItem.key);
-              return originalItem?.quantity !== newItem.quantity;
-            });
-          },
-          
-          async updateBundle() {
-            this.bundleChangesDetected();
-          
-            if (!this.bundleChanged) return;
-          
-            const updates = {};
-          
-            this.newBundleItems.forEach(item => {
-              updates[item.key] = item.quantity;
-            });
-          
-            console.log('updates', updates);
-          
-            const res = await fetch('/cart/update.js', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-              },
-              body: JSON.stringify({ updates }),
-            });
-          
-            if (!res.ok) {
-              console.error(await res.text());
-              return;
-            }
-          
-            this.cart = await res.json();
-          
-            document.dispatchEvent(
-              new CartUpdateEvent(this.cart, 'cart', {
-                itemCount: this.cart.item_count,
-                source: 'cart',
-              })
-            );
-          
-            this.showModifyBundle = false;
-            this.bundleChanged = false;
-          }
-      }));
+          body: JSON.stringify({ items: additions }),
+        });
+
+        if (!addRes.ok) {
+          console.error(await addRes.text());
+          return;
+        }
+      }
+
+      await this.refreshCart();
+
+      document.dispatchEvent(
+        new CartUpdateEvent(this.cart, 'cart', {
+          itemCount: this.cart.item_count,
+          source: 'cart',
+        })
+      );
+
+      this.showModifyBundle = false;
+      this.bundleChanged = false;
+    },
+  }));
 };

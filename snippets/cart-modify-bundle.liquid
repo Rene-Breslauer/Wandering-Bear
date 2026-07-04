@@ -8,42 +8,66 @@
     <h2>Modify Bundle</h2>
     </div>
     <div class="p-3">
+
+        {% comment %} 96oz Bundle Start {% endcomment %}
+
+          <div class="absolute -top-5 -right-2 rotate-[1.993deg] w-[96px]">
+            {% render 'badge', text: 'Most Popular', text_class: 'text-white text-[12px] font-kurdis-semi-condensed uppercase font-bold leading-[175%]', svg_class: 'text-gold'%}
+          </div>
+          <div class="bg-[#FFFFFF80] flex items-center justify-between mb-2.5">
+              <template x-for="i in activeBundleCount" :key="i">
+                <div class="col-width flex flex-col items-center justify-center font-gothic_condensed uppercase font-bold" style="{{ col_width_styles }} text-bear-black">
+                  <span x-text="i + 'Box'"></span>
+                </div>
+              </template>
+          </div>
+
+          {% comment %} 96oz Bundle End {% endcomment %}
+
         <form @submit.prevent="updateBundle()" class="flex flex-col gap-3">
-            <template x-for="bundleItem in newBundleItems" :key="bundleItem.key">
-              <div :data-key="bundleItem.key" class="flex bg-[#FFFFFF80] rounded-[5px] p-3">
+            <template x-for="item in tempBundle" :key="item.id">
+              <div :data-key="item.id" class="flex bg-[#FFFFFF80] rounded-[5px] p-3">
                 <div class="w-[68px]">
-                  <img :src="bundleItem.image" :alt="bundleItem.title" class="!w-full !h-full object-cover">
+                  <img :src="item.image" :alt="item.title" class="!w-full !h-full object-cover">
                 </div>
           
                 <div>
-                  <h3 x-text="bundleItem.title"></h3>
-                  <p x-text="bundleItem.price"></p>
+                  <h3 x-text="item.title"></h3>
+                  <p x-text="item.price"></p>
                 </div>
           
                 <div class="flex items-center gap-2 w-[100px]">
-                  <button type="button" @click="bundleDecrement(bundleItem.key)">
+                  <button class="p-2 cursor-pointer" type="button" @click="bundleDecrement(item.id)">
                     -
                   </button>
           
                   <input
                     type="number"
-                    x-model.number="bundleItem.quantity"
-                    min="1"
-                    class="w-full"
+                    readonly
+                    x-model.number="item.quantity"
+                    class="w-6 text-center"
                     name="quantity"
                     @input="bundleChangesDetected()"
                   >
           
-                  <button type="button" @click="bundleIncrement(bundleItem.key)">
+                  <button class="p-2 cursor-pointer" type="button" @click="bundleIncrement(item.id)">
                     +
                   </button>
                 </div>
               </div>
             </template>
           
-            <button type="submit" :disabled="!bundleChanged">
-              Update bundle
-            </button>
+            <div class="fixed bottom-0 left-0 right-0 bg-white p-4 flex justify-center items-center">
+              <button type="submit" class="bg-espresso text-white px-4 py-2 rounded-md cursor-pointer"
+              :class="{ 'opacity-50 cursor-not-allowed': !bundleChanged }"
+              :disabled="!bundleChanged">
+                Update bundle
+              </button>
+            </div>
           </form>
     </div>
 </div>
+
+<script type="text/javascript" id="bundleSpecs">
+ 
+</script>
