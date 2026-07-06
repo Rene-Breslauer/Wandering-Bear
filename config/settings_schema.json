@@ -89,6 +89,12 @@
       },
       {
         "type": "color",
+        "id": "dark_gold",
+        "label": "Dark Gold",
+        "default": "#AF7404"
+      },
+      {
+        "type": "color",
         "id": "bear_black",
         "label": "Bear Black",
         "default": "#1B1B1B"
@@ -128,6 +134,12 @@
         "id": "foam",
         "label": "Foam",
         "default": "#FEF8F3"
+      },
+      {
+        "type": "color",
+        "id": "dark_foam",
+        "label": "Dark Foam",
+        "default": "#F9F3ED"
       },
       {
         "type": "color",

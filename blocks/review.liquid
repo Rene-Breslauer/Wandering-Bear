@@ -43,9 +43,9 @@
 
     assign svg_filled_stars = rating | floor | plus: decimal_rounded
   %}
-<a href="#reviews">
+<a href="#product-reviews" class="hover:[&_.rating-count]:no-underline!">
   <div
-    class="rating-wrapper !mb-5 lg:!mb-2 rating-color--{{ block_settings.rating_color }} justify-{{ block_settings.alignment }} size-style"
+    class="rating-wrapper !mb-1 lg:!mb-2 rating-color--{{ block_settings.rating_color }} justify-{{ block_settings.alignment }} size-style"
     style="{% render 'size-style', settings: block_settings %}"
     {{ block.shopify_attributes }}
   >
@@ -122,7 +122,7 @@
     gap: var(--gap-xs);
     min-width: fit-content;
     font-family: var(--font-kurdis-semi-condensed) !important;
-    font-size: 12px !important;
+    font-size: 14px !important;
     font-weight: 600 !important;
   }
 
@@ -141,7 +141,7 @@
   .rating-wrapper,
   .rating {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
   }
 
   .rating-wrapper.justify-right {
@@ -173,6 +173,12 @@
 
   .filled-star {
     fill: var(--star-fill-color);
+  }
+
+  @media (min-width: 1024px) {
+    .rating-wrapper {
+      font-size: 12px !important;
+    }
   }
 {% endstyle %}
 

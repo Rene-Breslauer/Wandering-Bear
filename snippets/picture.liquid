@@ -12,6 +12,21 @@
     @param {string} [alt] - The alt text for the image (optional)
 {%- enddoc -%}
 
+{% liquid
+    assign desktop_source = source
+    assign resolved_mobile = mobile_source
+    if resolved_mobile == blank
+        assign resolved_mobile = desktop_source
+    endif
+    assign resolved_tablet = tablet_source
+    if resolved_tablet == blank
+        assign resolved_tablet = mobile_source
+    endif
+    if resolved_tablet == blank
+        assign resolved_tablet = desktop_source
+    endif
+%}
+
 {% capture picture_sources %}
 {% if sources %}
     {{ sources }}
@@ -44,7 +59,7 @@
 {% if alt %}
     {% assign alt = alt %}
 {% else %}
-    {% assign alt = source.alt %}
+    {% assign alt = desktop_source.alt %}
 {% endif %}
 
 {% if width %}
@@ -59,23 +74,16 @@
     {% assign height = image.height %}
 {% endif %}
 
-{% if mobile_source %}
-    {% assign source = mobile_source %}
-{% else %}
-    {% assign source = source %}
-{% endif %}
-
-
 {% capture img_parameters %}
     loading="{{ loading }}"
     {% if preload %}
       preload="{{ preload }}"
     {% endif %}
-    alt="{{ source.alt }}"
+    alt="{{ alt }}"
     class="{{ class }}"
 {% endcapture %}
 
 <picture>
     {{ picture_sources }}
-    <img src="{{ source | image_url: width: 1920 }}" height="1080" width="1920" {{ img_parameters }}>
+    <img src="{{ resolved_mobile | image_url: width: 1920 }}" height="1080" width="1920" {{ img_parameters }}>
 </picture>
