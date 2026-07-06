@@ -14,6 +14,12 @@
   assign block_settings = block.settings
 %}
 
+{% style %}
+  [data-frequency-dropdown].open {
+    display: block;
+  }
+{% endstyle %}
+
 <script
   src="{{ 'component-cart-items.js' | asset_url }}"
   type="module"
@@ -153,8 +159,14 @@
               <div class="bg-[#F9F3ED] font-kurdis-semi-condensed rounded-[5px] overflow-hidden">
                 {% if parent_item != blank %}
                   {% assign collection_handle = parent_item.properties._collection_handle %}
+                  {% assign product_object = parent_item.product.metafields.custom.product_group.value %}
+                  {% assign product_title = product_object.headline | append: ' · ' | append: product_object.size %}
                   <div class="flex font-gothic_condensed text-bear-black font-bold uppercase text-lg justify-between items-center relative p-4">
-                    {{ parent_item.product.title }}
+                    {% if product_title != blank %}
+                      {{ product_title }}
+                    {% else %}
+                      {{ parent_item.product.title }}
+                    {% endif %}
                     <button type="button" class="cursor-pointer" 
                     data-key="{{ parent_item.key }}" 
                     data-bundle-id="{{ bundle_id }}" @click="removeBundle('{{ bundle_id }}')">
@@ -164,9 +176,14 @@
                   </div>
                 {% endif %}
 
+                {% assign total_bundle_price = 0 %}
                 {% for item in cart.items %}
+
                   {% if item.properties._bundle_id == bundle_id %}
                     {% unless item.properties._bundle_parent == 'true' %}
+                    {% assign compare_at_price = item.product.variants.first.compare_at_price | money %}
+                    {% assign total_bundle_price = total_bundle_price | plus: item.price | times: item.quantity %}
+
                       <div data-key="{{ item.key }}" 
                       data-bundle-id="{{ bundle_id }}" 
                       class="relative flex p-4">
@@ -174,11 +191,16 @@
                           {{ item.image | image_url: width: 100 | image_tag }}
                         </div>
                         <div class="flex flex-col">
-                          <div class="font-bold text-sm">
+                          <div class="font-bold">
                             {{ item.properties._flavor }}
                           </div>
-                          <div>
-                            {{ item.price | money }} x {{ item.quantity }}
+                          <div class="flex items-center gap-1 font-bold">
+                            <div>
+                              <s>{{ compare_at_price }}</s>
+                            </div>
+                            <div>
+                              <span class="text-kraft">{{ item.price | money }} x {{ item.quantity }}</span>
+                            </div>
                           </div>
                         </div>
                         <div class="absolute bottom-0 left-0 w-full h-[1px] right-0 bg-[#431A031A]"></div>
@@ -193,26 +215,36 @@
                     if parent_item.properties._bundle_id == bundle_id
                         if parent_item.selling_plan_allocation != null
                           assign has_selling_plan = true
-                          assign selector_value = parent_item.selling_plan_allocation.selling_plan.name
+                          assign selector_value = parent_item.selling_plan_allocation.selling_plan.name | split: ' - ' | first
                         else
                           assign selector_value = 'One Time Purchase'
                         endif
                     endif
                 %}
-                
-                 <div data-selector-container x-data="{ open: false }" class="relative bg-[#F9F3ED] py-3.5 px-4">
-                  <button @click="open = !open" type="button" class="w-full border border-[#E0D2C6] rounded-[5px] cursor-pointer flex items-center justify-between relative p-4">
-                    <span data-frequency>{{ selector_value }}</span>
+                 <div data-selector-container class="relative bg-[#F9F3ED] py-3.5 px-4">
+                  <button @click="toggleDropdown($event)" type="button" class="w-full border border-[#E0D2C6] rounded-[5px] cursor-pointer flex items-center justify-between relative p-4 text-left">
+                    <span data-frequency>
+                      {% if has_selling_plan %}
+                        {% render 'icons', icon: 'recurring', class: 'text-sm inline-flex' %} 
+                       {% endif %}
+                        {{ selector_value }}
+                    </span>
                     {% render 'icons', icon: 'chevron-down', class: 'text-sm' %}
                   </button>
-                  <div x-show="open" x-cloak class="absolute top-full h-full z-2 left-0 w-full right-0 bg-[#F9F3ED]">
+                  <div
+                  data-frequency-dropdown
+                  class="absolute top-0 h-full z-2 left-0 w-full right-0 bg-[#F9F3ED] hidden">
                     {% for selling_plan_group in parent_item.product.selling_plan_groups %}
                       {% for selling_plan in selling_plan_group.selling_plans %}
                         {% if selling_plan.name contains '1 Month' or selling_plan.name contains '1 month' %}
                           <div class="flex items-center justify-between relative p-4">
                             <div class="flex items-center gap-1">
-                              <input data-selling-plan-name="{{ selling_plan.name }}" @change="changeBundleFrequency($event, '{{ selling_plan.id }},{{ bundle_id }}')" type="radio" name="selling-plan-allocation" value="{{ selling_plan.id }}">
-                              <span class="text-xs font-bold text-espresso">{{ selling_plan.name }}</span>
+                              <input id="selling-plan-{{ selling_plan.id }}" data-selling-plan-name="{{ selling_plan.name }}" @change="changeBundleFrequency($event,'{{ selling_plan.id }}','{{ bundle_id }}')" type="radio" name="selling-plan-allocation" value="{{ selling_plan.id }}"
+                              class="absolute top-0 left-0 h-0 w-0 opacity-0">
+                              <label for="selling-plan-{{ selling_plan.id }}" class="text-espresso">
+                                {% render 'icons', icon: 'recurring', class: 'text-sm inline-flex' %} 
+                                {{ selling_plan.name }}
+                              </label>
                             </div>
                           </div>
                       {% endif %}
@@ -220,8 +252,9 @@
                     {% endfor %}
                     <div class="flex items-center justify-between relative p-4">
                         <div class="flex items-center gap-1">
-                          <input data-selling-plan-name="One Time Purchase" @change="changeFrequency($event, 'one-time-purchase')" type="radio" name="selling-plan-allocation" value="one-time-purchase">
-                          <span>One Time Purchase</span>
+                          <input id="one-time-purchase" data-selling-plan-name="One Time Purchase" @change="changeBundleFrequency($event, 'one-time-purchase', '{{ bundle_id }}')" type="radio" name="selling-plan-allocation" value="one-time-purchase"
+                          class="absolute top-0 left-0 h-0 w-0 opacity-0">
+                          <label for="one-time-purchase" class="text-espresso">One Time Purchase</label>
                         </div>
                     </div>
                   </div>
@@ -232,7 +265,8 @@
                     {% render 'icons', icon: 'edit', class: 'text-sm inline-flex' %} 
                     <button type="button" class="underline text-sm cursor-pointer">Add/Modify Flavors</button>
                   </div>
-                  <span class="text-sm">{{ parent_item.price | money }}</span>
+                  {% comment %} Total bundle price {% endcomment %}
+                  <span class="text-sm">{{ total_bundle_price | money }}</span>
                 </div>
                 <div class="absolute bottom-0 left-0 w-full h-[1px] right-0 bg-[#431A031A]"></div>
                 </div>
