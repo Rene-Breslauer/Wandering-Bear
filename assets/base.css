@@ -2556,6 +2556,12 @@ form.payment-terms {
   }
 }
 
+@media screen and (min-width: 750px) and (max-width: 1023px) {
+  .layout-panel-flex {
+    gap: var(--gap-tablet, var(--gap));
+  }
+}
+
 .layout-panel-flex--row {
   flex-flow: row var(--flex-wrap);
   justify-content: var(--horizontal-alignment);
