@@ -15,6 +15,11 @@
   "tag": null,
   "settings": [
     {
+      "type": "text",
+      "id": "block_class",
+      "label": "Class"
+    },
+    {
       "type": "select",
       "id": "type_preset",
       "label": "t:settings.preset",
@@ -92,6 +97,42 @@
         {
           "value": "",
           "label": "Same as preset"
+        },
+        {
+          "value": "var(--font-gt_pressura)",
+          "label": "GT Pressura"
+        },
+        {
+          "value": "var(--font-kurdis)",
+          "label": "Kurdis"
+        },
+        {
+          "value": "var(--font-kurdis-semi-condensed)",
+          "label": "Kurdis SemiCondensed"
+        },
+        {
+          "value": "var(--font-kurdis-condensed)",
+          "label": "Kurdis Condensed"
+        },
+        {
+          "value": "var(--font-parslay)",
+          "label": "Parslay"
+        },
+        {
+          "value": "var(--font-gothic_condensed)",
+          "label": "Tablet Gothic Condensed"
+        }
+      ],
+      "default": ""
+    },
+    {
+      "type": "select",
+      "id": "font_family_mobile",
+      "label": "Font family (Mobile)",
+      "options": [
+        {
+          "value": "",
+          "label": "Same as desktop"
         },
         {
           "value": "var(--font-gt_pressura)",
@@ -689,6 +730,16 @@
       "step": 1,
       "unit": "px",
       "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.heading",
+      "category": "t:categories.basic",
+      "settings": {
+        "text": "t:html_defaults.new_arrivals_h2",
+        "type_preset": "h2"
+      }
     }
   ]
 }

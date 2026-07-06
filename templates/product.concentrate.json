@@ -336,6 +336,24 @@
     },
     "okendo_reviews_widget_PUYwdN": {
       "type": "okendo-reviews-widget",
+      "blocks": {
+        "heading_PUYwdN": {
+          "type": "_heading",
+          "settings": {
+            "text": "<h2>Reviews</h2>",
+            "type_preset": "h2",
+            "alignment": "center",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "heading_PUYwdN"
+      ],
       "name": "Okendo Reviews Widget",
       "settings": {
         "product": ""
