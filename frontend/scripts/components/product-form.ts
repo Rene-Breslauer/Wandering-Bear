@@ -21,7 +21,7 @@ export default (Alpine: AlpineType) => {
         modal: null,
 
         get addToCartText() {
-            return this.selectedVariant.available ? 'Add to Cart' : 'Sold Out';
+            return this.selectedVariant.available ? 'Add to bag' : 'Sold Out';
         },
 
         get totalPrice() {
@@ -38,7 +38,7 @@ export default (Alpine: AlpineType) => {
         get currentSavingsAmount() {
             const variant = this.selectedVariant;
 
-            if (variant?.selling_plan_price == null) {
+            if (this.purchaseOption !== 'autoship' || variant?.selling_plan_price == null) {
                 return 0;
             }
 

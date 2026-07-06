@@ -22,7 +22,7 @@
     ]
   },
   "frontend/entrypoints/main.css": {
-    "file": "wb-main.yF_K7FPf.css",
+    "file": "wb-main.DSbBPsdU.css",
     "name": "main",
     "names": [
       "main.css"
@@ -31,7 +31,7 @@
     "isEntry": true
   },
   "frontend/entrypoints/main.js": {
-    "file": "wb-main.C7fxUSAp.js",
+    "file": "wb-main.BDN7f7aF.js",
     "name": "main",
     "src": "frontend/entrypoints/main.js",
     "isEntry": true,
@@ -61,7 +61,7 @@
       "frontend/scripts/components/productsSlider.ts"
     ],
     "css": [
-      "wb-main.CVZJBndv.css"
+      "wb-main.BYHGJwND.css"
     ]
   },
   "frontend/scripts/components/accordion.ts": {
@@ -126,7 +126,7 @@
     "isDynamicEntry": true
   },
   "frontend/scripts/components/product-form-bundle.ts": {
-    "file": "wb-product-form-bundle.9IASQTEi.js",
+    "file": "wb-product-form-bundle.cNPkiZZv.js",
     "name": "product-form-bundle",
     "src": "frontend/scripts/components/product-form-bundle.ts",
     "isDynamicEntry": true,
@@ -135,7 +135,7 @@
     ]
   },
   "frontend/scripts/components/product-form.ts": {
-    "file": "wb-product-form.BD8ZSbyv.js",
+    "file": "wb-product-form.ABrMe0x4.js",
     "name": "product-form",
     "src": "frontend/scripts/components/product-form.ts",
     "isDynamicEntry": true,
