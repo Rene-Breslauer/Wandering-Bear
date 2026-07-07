@@ -77,11 +77,11 @@
     </div>
 
     {%- comment -%} ---------- Row 1: Autoship (optional) + Credits ---------- {%- endcomment -%}
-    <div class="grid grid-cols-1 {% if has_autoship %}md:!grid-cols-2{% endif %} !gap-4 mb-4">
+    <div class="flex flex-col {% if has_autoship %}md:!flex-row{% endif %} !gap-4 mb-4">
 
       {%- if has_autoship -%}
         {%- comment -%} Next autoship order (MOCK — Stay AI) {%- endcomment -%}
-        <div class="rounded-[8px] p-5 md:!p-6" style="{{ card_bg }}">
+        <div class="flex-1 rounded-[8px] p-5 md:!p-6" style="{{ card_bg }}">
           <div class="flex items-center justify-between mb-3">
             <span class="body font-bold text-espresso">{{ 'customer.dashboard.next_autoship' | t }}</span>
             <span class="tag text-espresso px-2 py-1 rounded" style="background-color: var(--color-brand-foam);">{{ 'customer.dashboard.active_autoships' | t: count: autoship_count }}</span>
@@ -103,7 +103,7 @@
       {%- endif -%}
 
       {%- comment -%} Credits (balance native; expiry/history MOCK) {%- endcomment -%}
-      <div class="rounded-[8px] p-5 md:!p-6 flex flex-col justify-between" style="{{ card_bg }}">
+      <div class="flex-1 rounded-[8px] p-5 md:!p-6 flex flex-col justify-between" style="{{ card_bg }}">
         <div class="flex items-start justify-between">
           <div class="flex items-baseline !gap-2">
             <span class="font-gothic_condensed font-extrabold text-espresso text-base leading-[1.1] uppercase max-w-[70px]">{{ 'customer.dashboard.your_credit' | t }}</span>
@@ -118,10 +118,10 @@
 
     {%- comment -%} ---------- Row 2: Membership tier (+ Progress unless Elite) ---------- {%- endcomment -%}
     <div class="rounded-[8px] p-5 md:!p-6 mb-4" style="{{ card_bg }}">
-      <div class="grid grid-cols-1 {% unless is_elite %}md:!grid-cols-2 md:!divide-x md:!divide-espresso/15{% endunless %} !gap-6">
+      <div class="flex flex-col {% unless is_elite %}md:!flex-row{% endunless %} !gap-6">
 
         {%- comment -%} Tier column {%- endcomment -%}
-        <div class="{% unless is_elite %}md:!pr-6{% endunless %}">
+        <div class="md:!flex-1 {% unless is_elite %}md:!pr-6{% endunless %}">
           <div class="flex items-start justify-between mb-1">
             <span class="body text-espresso">{{ 'customer.dashboard.membership_tier' | t }}</span>
             <div class="flex flex-col items-end !gap-1">
@@ -134,16 +134,16 @@
           </div>
           <div class="font-kurdis-condensed font-extrabold text-gold text-[26px] leading-none mb-3">{{ display_tier }}</div>
           <div class="body font-bold text-espresso mb-2">{{ 'customer.dashboard.whats_included' | t }}</div>
-          <ul class="grid grid-cols-1 {% if is_elite %}smd:!grid-cols-2{% endif %} !gap-x-6 !gap-y-2">
+          <ul class="flex flex-col {% if is_elite %}smd:!flex-row smd:!flex-wrap{% endif %} !gap-x-6 !gap-y-2">
             {%- for benefit in benefits -%}
-              <li class="flex items-center !gap-2 body text-espresso">{{ crown }}<span>{{ benefit }}</span></li>
+              <li class="flex items-center !gap-2 body text-espresso {% if is_elite %}smd:!w-[calc(50%-12px)]{% endif %}">{{ crown }}<span>{{ benefit }}</span></li>
             {%- endfor -%}
           </ul>
         </div>
 
         {%- comment -%} Progress column (hidden for Elite) {%- endcomment -%}
         {%- unless is_elite -%}
-          <div class="md:!pl-6">
+          <div class="md:!flex-1 md:!pl-6 md:!border-l md:!border-espresso/15">
             <div class="flex items-start justify-between mb-2">
               <span class="body text-espresso">{{ 'customer.dashboard.progress_next_tier' | t }}</span>
               <a href="#" class="tag text-espresso hover:underline">{{ 'customer.dashboard.change_tier' | t }}</a>
@@ -173,8 +173,8 @@
         </div>
       </div>
 
-      {%- paginate customer.orders by 10 -%}
-        {%- if customer.orders.size > 0 -%}
+      {%- if customer.orders.size > 0 -%}
+        {%- paginate customer.orders by 10 -%}
           <div class="overflow-x-auto">
             <table class="w-full border border-espresso/20 border-collapse">
               <thead>
@@ -209,10 +209,10 @@
           {%- if paginate.pages > 1 -%}
             <div class="mt-4 body text-espresso">{{ paginate | default_pagination }}</div>
           {%- endif -%}
-        {%- else -%}
-          <p class="body text-espresso">{{ 'customer.dashboard.no_orders' | t }}</p>
-        {%- endif -%}
-      {%- endpaginate -%}
+        {%- endpaginate -%}
+      {%- else -%}
+        <p class="body text-espresso">{{ 'customer.dashboard.no_orders' | t }}</p>
+      {%- endif -%}
     </div>
 
     {%- comment -%} ---------- Contact CTA ---------- {%- endcomment -%}
