@@ -18,7 +18,7 @@
 -%}
 
 <section class="w-full" style="background-color: var(--color-brand-beige);">
-  <div class="container mx-auto px-4 py-14 md:!py-20">
+  <div class="account-container py-14 md:!py-20">
 
     {%- comment -%} ---------- LOGIN ---------- {%- endcomment -%}
     <div id="customer-login">
@@ -26,7 +26,7 @@
         {{ 'customer.login.title' | t }}
       </h1>
 
-      <div class="mx-auto w-full max-w-[352px]">
+      <div class="account-form">
         {%- form 'customer_login', novalidate: 'novalidate', class: 'flex flex-col !gap-4' -%}
           {%- if form.errors -%}
             <div class="body text-sunrise_orange" role="alert">
@@ -68,7 +68,7 @@
         {{ 'customer.recover.title' | t }}
       </h1>
 
-      <div class="mx-auto w-full max-w-[352px]">
+      <div class="account-form">
         {%- form 'recover_customer_password', class: 'flex flex-col !gap-4' -%}
           {%- if form.posted_successfully? -%}
             <p class="body text-espresso text-center">{{ 'customer.recover.success' | t }}</p>

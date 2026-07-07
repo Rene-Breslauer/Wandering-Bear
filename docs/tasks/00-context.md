@@ -40,6 +40,12 @@ One Cloudflare Worker behind one Shopify App Proxy (`/apps/wb/*`). Keys server-s
 - **A11y** (semantic, aria, focus, ≥44px targets) + **Theme Check** clean.
 - **Forms:** native `{% form %}`; `customer_address` needs a param (`customer.new_address`/`address`); order statuses via `order.financial_status_label`/`fulfillment_status_label`; activate/reset only via email token.
 
+## Layout containers (single source of truth)
+All account pages share two containers, defined ONCE in `frontend/styles/components.css` — never hardcode `max-w-[Npx]` per page:
+- **`.account-container`** — content column, **max-width 774px**, centered, `padding-inline: 1rem`. Used by dashboard, order page, credit history, addresses. Pattern: `<section class="w-full" style="background: var(--color-brand-beige)"> <div class="account-container py-…"> … </div> </section>`.
+- **`.account-form`** — input/form column, **max-width 352px**, centered. Used by login / register / reset / activate. The page heading sits full-width-centered above it (so long headings like "RESET PASSWORD" don't wrap); the form/inputs go inside `.account-form`.
+- To change a width, edit the class in components.css (one place).
+
 ## Figma reference & Design QA (run after every task)
 Frames are pulled to `docs/figma/<file>/`:
 - **`ancillary/`** — file `XKBQXkFlhpPQHn5xx97qjC` (WB x AW Ancillary Pages): **Login, New Account, Reset Password** (+ error/confirmation + `_Mobile`).
