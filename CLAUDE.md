@@ -8,6 +8,9 @@ Everything we write is in **English** — code, comments, commit messages, branc
 - Development & preview — **only** via `shopify theme dev` (local server, does not touch the published theme) or a manual push to a separate **unpublished** dev theme (not via Claude).
 - Work in a git branch/worktree. Do not merge into `main` without explicit approval.
 
+## ✍️ COMMIT RULE: NO AI ATTRIBUTION
+- Commits must **not** contain any Claude/AI annotation — no `Co-Authored-By: Claude…` trailer, no "🤖 Generated with Claude", no AI mention in the message or PR body. Enforced via `attribution.commit/pr = ""` + `includeCoAuthoredBy: false` in `.claude/settings.local.json`.
+
 ## Stack
 - Shopify Online Store 2.0 (JSON templates, sections/blocks).
 - Build: **Vite 8** + `vite-plugin-shopify`. Assets build into `assets/`, entrypoints in `frontend/entrypoints/`.
