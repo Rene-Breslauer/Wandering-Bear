@@ -94,14 +94,16 @@
             <span class="body font-bold text-espresso">{{ autoship_bundle }}</span>
             <span class="font-kurdis-semi-condensed font-bold text-[10px] leading-none whitespace-nowrap" style="color: #1B1B1B;">{{ 'customer.dashboard.next_shipment' | t: date: autoship_next_date }}</span>
           </div>
-          <ul class="flex flex-col !gap-1.5 mb-2">
+          <ul class="flex flex-col !gap-1.5 mb-4">
             {%- for item in autoship_items -%}
-              <li class="font-kurdis-semi-condensed font-bold text-[10px] leading-none" style="color: #955325;">{{ item }}</li>
+              <li class="flex items-center justify-between !gap-2 font-kurdis-semi-condensed font-bold text-[10px] leading-none" style="color: #955325;">
+                <span>{{ item }}</span>
+                {%- if forloop.last and autoship_more > 0 -%}
+                  <a href="#" class="underline shrink-0 whitespace-nowrap" style="color: #955325;">{{ 'customer.dashboard.more_count' | t: count: autoship_more }}</a>
+                {%- endif -%}
+              </li>
             {%- endfor -%}
           </ul>
-          {%- if autoship_more > 0 -%}
-            <a href="#" class="inline-block font-kurdis-semi-condensed font-bold text-[10px] leading-none underline mb-4" style="color: #955325;">{{ 'customer.dashboard.more_count' | t: count: autoship_more }}</a>
-          {%- endif -%}
           {%- render 'customer-form-button', type: 'button', label: t_manage, style: 'secondary-gold', class: '!w-full !h-[43px]' -%}
         </div>
       {%- endif -%}
