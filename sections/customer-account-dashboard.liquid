@@ -23,6 +23,12 @@
   assign credits_earned = customer.metafields.inveterate.credits_earned | default: 0
   assign credits_formatted = credits_earned | money_without_trailing_zeros
 
+  # Credits block is hidden for FREE members (credits are a VIP/Elite benefit).
+  assign show_credit = true
+  if display_tier == 'FREE'
+    assign show_credit = false
+  endif
+
   # ---- MOCKS (TODO worker: /apps/wb/subscriptions, /apps/wb/membership, /apps/wb/credits) ----
   assign has_autoship = true
   assign autoship_count = 2
@@ -80,8 +86,9 @@
       <a href="{{ routes.account_logout_url }}" class="body font-bold text-espresso hover-underline">{{ 'customer.account.log_out' | t }}</a>
     </div>
 
-    {%- comment -%} ---------- Row 1: Autoship (optional) + Credits ---------- {%- endcomment -%}
-    <div class="flex flex-col {% if has_autoship %}md:!flex-row{% endif %} !gap-4 mb-4">
+    {%- comment -%} ---------- Row 1: Autoship (optional) + Credits (hidden for FREE) ---------- {%- endcomment -%}
+    {%- if has_autoship or show_credit -%}
+    <div class="flex flex-col {% if has_autoship and show_credit %}md:!flex-row{% endif %} !gap-4 mb-4">
 
       {%- if has_autoship -%}
         {%- comment -%} Next autoship order (MOCK — Stay AI) {%- endcomment -%}
@@ -108,7 +115,8 @@
         </div>
       {%- endif -%}
 
-      {%- comment -%} Credits (balance native; expiry/history MOCK) {%- endcomment -%}
+      {%- comment -%} Credits (balance native; expiry/history MOCK; hidden for FREE) {%- endcomment -%}
+      {%- if show_credit -%}
       <div class="flex-1 rounded-[8px] p-5 md:!p-6 flex flex-col justify-between" style="{{ card_bg }}">
         <div class="relative mb-4">
           <a href="#" class="absolute right-0 top-0 font-kurdis-semi-condensed font-bold text-[10px] leading-none hover-underline text-espresso">{{ 'customer.dashboard.view_credit_history' | t }}</a>
@@ -120,7 +128,9 @@
         </div>
         {%- render 'customer-form-button', type: 'button', label: t_redeem, style: 'secondary-gold', class: '!w-full !h-[40px]' -%}
       </div>
+      {%- endif -%}
     </div>
+    {%- endif -%}
 
     {%- comment -%} ---------- Row 2: Membership tier (+ Progress unless Elite) ---------- {%- endcomment -%}
     <div class="rounded-[8px] p-5 md:!p-6 mb-4" style="{{ card_bg }}">
