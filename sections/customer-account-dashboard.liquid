@@ -73,7 +73,7 @@
           <span class="inline-block bg-gold text-cream tag px-2 py-0.5 rounded rotate-[-3deg] uppercase">{{ membership_tier }}</span>
         {%- endif -%}
       </h1>
-      <a href="{{ routes.account_logout_url }}" class="body font-bold text-espresso hover:underline">{{ 'customer.account.log_out' | t }}</a>
+      <a href="{{ routes.account_logout_url }}" class="body font-bold text-espresso hover-underline">{{ 'customer.account.log_out' | t }}</a>
     </div>
 
     {%- comment -%} ---------- Row 1: Autoship (optional) + Credits ---------- {%- endcomment -%}
@@ -96,7 +96,7 @@
             {%- endfor -%}
           </ul>
           {%- if autoship_more > 0 -%}
-            <a href="#" class="tag text-espresso hover:underline block mb-4">{{ 'customer.dashboard.more_count' | t: count: autoship_more }}</a>
+            <a href="#" class="tag text-espresso hover-underline block mb-4">{{ 'customer.dashboard.more_count' | t: count: autoship_more }}</a>
           {%- endif -%}
           {%- render 'customer-form-button', type: 'button', label: t_manage, style: 'secondary-gold', class: '!w-full !h-[48px]' -%}
         </div>
@@ -109,7 +109,7 @@
             <span class="font-gothic_condensed font-extrabold text-espresso text-base leading-[1.1] uppercase max-w-[70px]">{{ 'customer.dashboard.your_credit' | t }}</span>
             <span class="font-gothic_condensed font-extrabold text-gold text-[40px] leading-none">{{ credits_formatted }}</span>
           </div>
-          <a href="#" class="tag text-espresso hover:underline">{{ 'customer.dashboard.view_credit_history' | t }}</a>
+          <a href="#" class="tag text-espresso hover-underline">{{ 'customer.dashboard.view_credit_history' | t }}</a>
         </div>
         <div class="tag text-espresso mt-1 mb-4">{{ 'customer.dashboard.expires' | t: date: credits_expiry }}</div>
         {%- render 'customer-form-button', type: 'button', label: t_redeem, style: 'secondary-gold', class: '!w-full !h-[48px]' -%}
@@ -126,10 +126,10 @@
             <span class="body text-espresso">{{ 'customer.dashboard.membership_tier' | t }}</span>
             <div class="flex flex-col items-end !gap-1">
               {%- if is_elite -%}
-                <a href="#" class="tag text-espresso hover:underline">{{ 'customer.dashboard.change_tier' | t }}</a>
-                <a href="#" class="tag text-espresso hover:underline">{{ 'customer.dashboard.update_payment' | t }}</a>
+                <a href="#" class="tag text-espresso hover-underline">{{ 'customer.dashboard.change_tier' | t }}</a>
+                <a href="#" class="tag text-espresso hover-underline">{{ 'customer.dashboard.update_payment' | t }}</a>
               {%- endif -%}
-              <a href="{{ membership_url }}" class="tag text-espresso hover:underline">{{ 'customer.dashboard.membership_faq' | t }}</a>
+              <a href="{{ membership_url }}" class="tag text-espresso hover-underline">{{ 'customer.dashboard.membership_faq' | t }}</a>
             </div>
           </div>
           <div class="font-kurdis-condensed font-extrabold text-gold text-[26px] leading-none mb-3">{{ display_tier }}</div>
@@ -146,7 +146,7 @@
           <div class="md:!flex-1 md:!pl-6 md:!border-l md:!border-espresso/15">
             <div class="flex items-start justify-between mb-2">
               <span class="body text-espresso">{{ 'customer.dashboard.progress_next_tier' | t }}</span>
-              <a href="#" class="tag text-espresso hover:underline">{{ 'customer.dashboard.change_tier' | t }}</a>
+              <a href="#" class="tag text-espresso hover-underline">{{ 'customer.dashboard.change_tier' | t }}</a>
             </div>
             <div class="font-kurdis-condensed font-extrabold text-gold text-[26px] leading-none mb-3">{{ next_tier_label }}</div>
             <div class="w-full h-[10px] rounded-full overflow-hidden mb-2" style="background-color: var(--color-brand-beige);">
@@ -191,11 +191,11 @@
                 {%- for order in customer.orders -%}
                   {%- assign fulfillment = order.fulfillments.first -%}
                   <tr class="body text-espresso">
-                    <td class="p-3 border-b border-espresso/10"><a href="{{ order.customer_url }}" class="font-bold hover:underline">{{ order.name }}</a></td>
+                    <td class="p-3 border-b border-espresso/10"><a href="{{ order.customer_url }}" class="font-bold hover-underline">{{ order.name }}</a></td>
                     <td class="p-3 border-b border-espresso/10 whitespace-nowrap">{{ order.created_at | date: '%B %-d, %Y' }}</td>
                     <td class="p-3 border-b border-espresso/10">
                       {%- if fulfillment.tracking_number -%}
-                        {%- if fulfillment.tracking_url -%}<a href="{{ fulfillment.tracking_url }}" class="hover:underline" target="_blank" rel="noopener">{{ fulfillment.tracking_number }}</a>{%- else -%}{{ fulfillment.tracking_number }}{%- endif -%}
+                        {%- if fulfillment.tracking_url -%}<a href="{{ fulfillment.tracking_url }}" class="hover-underline" target="_blank" rel="noopener">{{ fulfillment.tracking_number }}</a>{%- else -%}{{ fulfillment.tracking_number }}{%- endif -%}
                       {%- else -%}&mdash;{%- endif -%}
                     </td>
                     <td class="p-3 border-b border-espresso/10 hidden md:!table-cell">{{ order.financial_status_label }}</td>

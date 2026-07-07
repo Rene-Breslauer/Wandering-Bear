@@ -121,6 +121,14 @@
     }
 }
 
+/* Account pages: underline links on hover (Tailwind hover:underline is not compiled in this build) */
+.hover-underline {
+    text-decoration: none;
+}
+.hover-underline:hover {
+    text-decoration: underline;
+}
+
 [data-accordion-item] {
     summary {
         svg {
