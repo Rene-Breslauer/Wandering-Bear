@@ -28,7 +28,7 @@
                 {% if foreground_image != blank or foreground_image_mobile != blank %}
                     {% render 'picture', source: foreground_image, mobile_source: foreground_image_mobile, class: 'absolute min-h-full -left-5 sm:left-0 bottom-0 smd:static w-fit h-full object-cover z-1 !max-w-[375px] object-top', alt: foreground_image.alt, width: 1920, height: 1080, preload: 'eager', loading: 'eager' %}
                 {% endif %}
-                <div class="relative wb-flex flex-col items-center justify-center sm:items-start md:items-start gap-4 z-1 w-fit max-w-full">
+                <div class="relative wb-flex flex-col items-center justify-center md:justify-start md:pt-[97px] sm:items-start md:items-start gap-4 z-1 w-fit max-w-full">
                     {% if title_image != blank and title_type == 'image' %}
                         {% render 'title-image', image: title_image, image_mobile: title_image_mobile, alt: title_image.alt, class: 'relative sm:left-0 w-full h-full object-contain !max-w-[270px] md:!max-w-full mx-auto', preload: 'eager', loading: 'eager' %}
                     {% elsif title_text != blank and title_type == 'text'%}
