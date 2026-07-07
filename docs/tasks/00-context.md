@@ -40,6 +40,20 @@ One Cloudflare Worker behind one Shopify App Proxy (`/apps/wb/*`). Keys server-s
 - **A11y** (semantic, aria, focus, ≥44px targets) + **Theme Check** clean.
 - **Forms:** native `{% form %}`; `customer_address` needs a param (`customer.new_address`/`address`); order statuses via `order.financial_status_label`/`fulfillment_status_label`; activate/reset only via email token.
 
+## 🏅 GOLD STANDARD — every account portal page must follow this
+1. **Template = thin wrapper.** `templates/customers/<name>.liquid` → `{% section 'customer-<name>' %}`. All logic/markup lives in the section (or a shared snippet).
+2. **Structure is always the same shell:** `<section class="w-full" style="background-color: var(--color-brand-beige)"> <div class="account-container py-…"> … </div> </section>`. Forms put their inputs inside `.account-form` (352px); the page heading sits full-width-centered above the form.
+3. **Widths come only from the shared classes** — `.account-container` (774px) / `.account-form` (352px) in `components.css`. Never hardcode `max-w-[Npx]` per page.
+4. **Data — native first.** Use Liquid for `customer`, `customer.orders`, tier tags, `customer.metafields.inveterate.credits_earned`. Dynamic data (Stay AI subscriptions, Inveterate progress/history) comes from the worker via App Proxy `/apps/wb/*` — API keys never reach the browser.
+5. **Text via locales** (`customer.*`) — no hardcoded strings. Money via money filters. Order status via `order.*_status_label` (not raw enums).
+6. **Components:** inputs → `customer-input` (352×51, radius 5px); submit → `customer-form-button`; link-buttons → `wb-button`. Buttons are gold `#AF7404`, shadow `4/4/4 25%`, height **43px** (auth) / **40px** (dashboard).
+7. **Links underline on hover only** → class `hover-underline` (never Tailwind `hover:underline`).
+8. **Known Tailwind-compile gaps in this build — use the safe path:** `t` filter is NOT evaluated inside `{% render %}` args (assign to a var first); `grid-cols-1` missing (use `flex flex-col md:!flex-row`); `hover:underline`, `rotate-[…]`, negative offsets missing (use a custom CSS class or inline `style`).
+9. **Mobile-first responsive:** breakpoints `smd:` 750 / `md:` 1024. Tables → cards on mobile. No FOUC (`x-cloak`).
+10. **Figma parity:** pull exact tokens from `docs/figma/**/file.json`; compare desktop + mobile + every state (Free/VIP/Elite + empty/error/loading).
+11. **A11y** (labels, `aria-*`, focus, ≥44px targets, `alt`) + **`shopify theme check` clean**.
+12. **Guardrails:** never push to live (`shopify theme dev` only) · no AI attribution in commits · English only · source of truth = `CLAUDE.md` + `docs/`.
+
 ## Layout containers (single source of truth)
 All account pages share two containers, defined ONCE in `frontend/styles/components.css` — never hardcode `max-w-[Npx]` per page:
 - **`.account-container`** — content column, **max-width 774px**, centered, `padding-inline: 1rem`. Used by dashboard, order page, credit history, addresses. Pattern: `<section class="w-full" style="background: var(--color-brand-beige)"> <div class="account-container py-…"> … </div> </section>`.
