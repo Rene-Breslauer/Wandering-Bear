@@ -11,6 +11,13 @@ Everything we write is in **English** — code, comments, commit messages, branc
 ## ✍️ COMMIT RULE: NO AI ATTRIBUTION
 - Commits must **not** contain any Claude/AI annotation — no `Co-Authored-By: Claude…` trailer, no "🤖 Generated with Claude", no AI mention in the message or PR body. Enforced via `attribution.commit/pr = ""` + `includeCoAuthoredBy: false` in `.claude/settings.local.json`.
 
+## 🎨 CSS RULE: BEM COMPONENTS, NOT UTILITY SOUP
+- **No arbitrary-utility soup in markup:** don't ship `w-[76px] md:!w-[118px]`, `text-[45px]`, `h-[52px]`, `!important` overrides (`!w-full`, `md:!p-6`), or inline `style="color:#…"` clusters. That's the anti-pattern.
+- **Use named BEM component classes** (`.block`, `.block__element`, `.block--modifier`) in a component stylesheet (`frontend/styles/*.css`, imported in `frontend/entrypoints/main.js`) — the same way the theme already does `.btn`, and account styles live in `frontend/styles/account.css`. This is standard Shopify/Dawn practice.
+- Style with **theme design tokens** (`var(--color-espresso)`, `var(--color-dark-gold)`, `var(--color-foam)`, `var(--font-kurdis-condensed)`, …) — never raw hex when a token exists.
+- **OK to keep as utilities:** simple layout (`flex`, `grid`, `gap`, `mb-*`) and the theme's type/color primitives (`.body`, `.tag`, `.h3`, `text-espresso`). Anything sized to a Figma token, repeated, or needing `!`/inline hacks → a named class.
+- **Dynamic values are the only inline exception:** a Liquid `asset_url` background, a `{{ progress_percent }}%` width, etc. must be inline because a static stylesheet can't hold Liquid.
+
 ## Stack
 - Shopify Online Store 2.0 (JSON templates, sections/blocks).
 - Build: **Vite 8** + `vite-plugin-shopify`. Assets build into `assets/`, entrypoints in `frontend/entrypoints/`.

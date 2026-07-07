@@ -63,35 +63,34 @@
 .contact-cta {
     position: relative;
 }
+/* Badge overflows the card by 20% of its own size (up + left), tilted. */
 .contact-cta__badge {
     position: absolute;
     z-index: 20;
-    top: -18px;
-    left: -10px;
-    width: 76px;
-    height: auto;
-    transform: rotate(-12deg);
-}
-.contact-cta__card {
-    position: relative;
-    overflow: hidden;
-    padding: 2.25rem 1.5rem;
-    text-align: center;
-    background-color: var(--color-brand-light_cream);
-    border-radius: 8px;
-}
-.contact-cta__clouds {
-    position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 76px;
     height: auto;
-    pointer-events: none;
-    user-select: none;
+    transform: translate(-20%, -20%) rotate(-12deg);
 }
-.contact-cta__body {
+/* Sky/cloud image is the card background; the card height tracks the image
+   (aspect 782:161) from tablet up. The image's transparent top reveals the
+   cream card colour above the clouds. The dynamic asset URL is set inline in
+   Liquid (asset_url can't live in a static stylesheet). */
+.contact-cta__card {
     position: relative;
-    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 1.75rem 1.5rem;
+    text-align: center;
+    background-color: var(--color-brand-light_cream);
+    background-repeat: no-repeat;
+    background-position: top center;
+    background-size: cover;
+    border-radius: 8px;
 }
 .contact-cta__title {
     margin-bottom: 0.5rem;
@@ -111,8 +110,13 @@
     margin-inline: auto;
 }
 
+@media (min-width: 750px) {
+    .contact-cta__card {
+        aspect-ratio: 782 / 161;
+        padding: 1rem 1.5rem;
+    }
+}
 @media (min-width: 1024px) {
     .contact-cta__badge { width: 118px; }
-    .contact-cta__card { padding: 2.75rem 1.5rem; }
     .contact-cta__title { font-size: 28px; }
 }

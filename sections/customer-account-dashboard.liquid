@@ -288,13 +288,10 @@
     {%- comment -%} ---------- Contact CTA (styles: frontend/styles/account.css → .contact-cta) ---------- {%- endcomment -%}
     <div class="contact-cta">
       <img src="{{ 'account-contact-badge.png' | asset_url }}" alt="Wandering Bear Cold Brew" width="120" height="120" class="contact-cta__badge">
-      <div class="contact-cta__card">
-        <img src="{{ 'account-contact-clouds.png' | asset_url }}" alt="" aria-hidden="true" class="contact-cta__clouds">
-        <div class="contact-cta__body">
-          <h2 class="contact-cta__title">{{ 'customer.dashboard.contact_title' | t }}</h2>
-          <p class="contact-cta__text body">{{ 'customer.dashboard.contact_subtext' | t }}</p>
-          {%- render 'wb-button', style: 'secondary-gold', label: t_contact, link: '/pages/contact', class: 'contact-cta__button', height: 40 -%}
-        </div>
+      <div class="contact-cta__card" style="background-image: url({{ 'account-contact-clouds.png' | asset_url }});">
+        <h2 class="contact-cta__title">{{ 'customer.dashboard.contact_title' | t }}</h2>
+        <p class="contact-cta__text body">{{ 'customer.dashboard.contact_subtext' | t }}</p>
+        {%- render 'wb-button', style: 'secondary-gold', label: t_contact, link: '/pages/contact', class: 'contact-cta__button', height: 40 -%}
       </div>
     </div>
 
