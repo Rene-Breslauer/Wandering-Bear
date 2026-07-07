@@ -70,26 +70,27 @@
         {%- form 'recover_customer_password', class: 'flex flex-col !gap-4' -%}
           {%- if form.posted_successfully? -%}
             <p class="body text-espresso text-center">{{ 'customer.recover.success' | t }}</p>
+            <div class="text-center mb-2">
+              <a href="#" class="tag text-espresso hover-underline" data-recover-close>{{ 'customer.recover.back_to_login' | t }}</a>
+            </div>
             <script>
               document.getElementById('recover-password').style.display = 'block';
               document.getElementById('customer-login').style.display = 'none';
             </script>
-          {%- else -%}
-            <p class="body text-espresso text-center mb-2">{{ 'customer.recover.subtext' | t }}</p>
-            {%- if form.errors -%}
-              <div class="body text-sunrise_orange" role="alert">{{ form.errors | default_errors }}</div>
-            {%- endif -%}
-            {%- render 'customer-input',
-              name: 'email', type: 'email', label: t_recover_email,
-              id: 'RecoverEmail', autocomplete: 'email', required: true -%}
-            {%- render 'customer-form-button',
-              label: t_recover_submit, style: 'secondary-gold',
-              class: '!w-full !h-[52px] !text-[20px] mt-1' -%}
           {%- endif -%}
+          {%- if form.errors -%}
+            <div class="body text-sunrise_orange" role="alert">{{ form.errors | default_errors }}</div>
+          {%- endif -%}
+          {%- render 'customer-input',
+            name: 'email', type: 'email', label: t_recover_email,
+            id: 'RecoverEmail', autocomplete: 'email', required: true -%}
+          {%- render 'customer-form-button',
+            label: t_recover_submit, style: 'secondary-gold',
+            class: '!w-full !h-[52px] !text-[20px] mt-1' -%}
         {%- endform -%}
 
         <div class="text-center mt-4">
-          <a href="#" class="tag text-espresso hover-underline" data-recover-close>{{ 'customer.recover.back_to_login' | t }}</a>
+          <a href="#" class="tag text-espresso hover-underline" data-recover-close>{{ 'customer.recover.cancel' | t }}</a>
         </div>
       </div>
     </div>

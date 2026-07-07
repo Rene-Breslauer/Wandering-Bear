@@ -21,11 +21,11 @@
     },
     "recover": {
       "title": "Reset Password",
-      "subtext": "Enter your email and we'll send you a link to reset your password.",
       "email": "Email",
-      "submit": "Reset Password",
-      "success": "We've sent you an email with a link to update your password.",
-      "back_to_login": "Back to login"
+      "submit": "Submit",
+      "success": "We've sent you an email to update your password.",
+      "back_to_login": "Back to Login",
+      "cancel": "Cancel"
     },
     "reset": {
       "title": "Reset Password",
@@ -41,7 +41,8 @@
       "password": "Password",
       "submit": "Create Account",
       "have_account": "Already have an account?",
-      "sign_in": "Login"
+      "sign_in": "Sign In",
+      "privacy": "Privacy Policy"
     },
     "activate": {
       "title": "Activate Account",

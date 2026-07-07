@@ -45,6 +45,9 @@
         <span class="tag text-espresso">{{ 'customer.register.have_account' | t }}</span>
         <a href="{{ routes.account_login_url }}" class="tag text-espresso hover-underline">{{ 'customer.register.sign_in' | t }}</a>
       </div>
+      <div class="text-center mt-3">
+        <a href="{{ shop.privacy_policy.url | default: '/policies/privacy-policy' }}" class="tag text-espresso hover-underline">{{ 'customer.register.privacy' | t }}</a>
+      </div>
     </div>
   </div>
 </section>
