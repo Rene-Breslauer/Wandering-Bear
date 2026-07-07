@@ -8,3 +8,13 @@
 ehthumbs.db
 Thumbs.db
 node_modules
+
+# Claude local settings (personal, per-worktree)
+.claude/settings.local.json
+
+# Figma pull (secrets + heavy exports; keep frames.md / frames.tsv tracked)
+.figma-token
+docs/figma/**/file.json
+docs/figma/**/exports/
+docs/figma/file.json
+docs/figma/exports/
