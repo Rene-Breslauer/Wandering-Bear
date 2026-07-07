@@ -8,6 +8,13 @@
   if manage_autoship_url == blank
     assign manage_autoship_url = '#'
   endif
+  # NOTE: the `t` filter is not evaluated inside render arguments, so translate first.
+  assign t_email = 'customer.login.email' | t
+  assign t_password = 'customer.login.password' | t
+  assign t_submit = 'customer.login.submit' | t
+  assign t_manage = 'customer.login.manage_autoship' | t
+  assign t_recover_email = 'customer.recover.email' | t
+  assign t_recover_submit = 'customer.recover.submit' | t
 -%}
 
 <section class="w-full" style="background-color: var(--color-brand-beige);">
@@ -28,15 +35,15 @@
           {%- endif -%}
 
           {%- render 'customer-input',
-            name: 'customer[email]', type: 'email', label: 'customer.login.email' | t,
+            name: 'customer[email]', type: 'email', label: t_email,
             id: 'CustomerEmail', autocomplete: 'email', required: true -%}
 
           {%- render 'customer-input',
-            name: 'customer[password]', type: 'password', label: 'customer.login.password' | t,
+            name: 'customer[password]', type: 'password', label: t_password,
             id: 'CustomerPassword', autocomplete: 'current-password', required: true -%}
 
           {%- render 'customer-form-button',
-            label: 'customer.login.submit' | t, style: 'secondary-gold',
+            label: t_submit, style: 'secondary-gold',
             class: '!w-full !h-[52px] !text-[20px] mt-1' -%}
         {%- endform -%}
 
@@ -48,7 +55,7 @@
         <div class="nav text-espresso text-center my-6">{{ 'customer.login.or' | t }}</div>
 
         {%- render 'wb-button',
-          style: 'primary', label: 'customer.login.manage_autoship' | t,
+          style: 'primary', label: t_manage,
           link: manage_autoship_url, class: '!w-full !h-[52px] !text-[20px]' -%}
       </div>
 
@@ -71,10 +78,10 @@
               <div class="body text-sunrise_orange" role="alert">{{ form.errors | default_errors }}</div>
             {%- endif -%}
             {%- render 'customer-input',
-              name: 'email', type: 'email', label: 'customer.recover.email' | t,
+              name: 'email', type: 'email', label: t_recover_email,
               id: 'RecoverEmail', autocomplete: 'email', required: true -%}
             {%- render 'customer-form-button',
-              label: 'customer.recover.submit' | t, style: 'secondary-gold',
+              label: t_recover_submit, style: 'secondary-gold',
               class: '!w-full !h-[52px] !text-[20px] mt-1' -%}
           {%- endif -%}
         {%- endform -%}

@@ -1,4 +1,10 @@
 {%- comment -%} SCAFFOLD — styled in Task 06. Reached via the invite email token. {%- endcomment -%}
+{%- liquid
+  # `t` is not evaluated inside render arguments — translate first.
+  assign t_password = 'customer.activate.password' | t
+  assign t_confirm = 'customer.activate.password_confirm' | t
+  assign t_submit = 'customer.activate.submit' | t
+-%}
 <section class="w-full" style="background-color: var(--color-brand-beige);">
   <div class="container mx-auto px-4 py-14 md:!py-20">
     <div class="mx-auto w-full max-w-[535px]">
@@ -9,13 +15,11 @@
         {%- if form.errors -%}
           <div class="body text-sunrise_orange" role="alert">{{ form.errors | default_errors }}</div>
         {%- endif -%}
-        {%- render 'customer-input', name: 'customer[password]', type: 'password', label: 'customer.activate.password' | t, id: 'ActivatePassword', autocomplete: 'new-password', required: true -%}
-        {%- render 'customer-input', name: 'customer[password_confirmation]', type: 'password', label: 'customer.activate.password_confirm' | t, id: 'ActivatePasswordConfirm', autocomplete: 'new-password', required: true -%}
-        {%- render 'customer-form-button', label: 'customer.activate.submit' | t, style: 'secondary-gold', class: '!w-full !h-[52px] !text-[20px] mt-1' -%}
+        {%- render 'customer-input', name: 'customer[password]', type: 'password', label: t_password, id: 'ActivatePassword', autocomplete: 'new-password', required: true -%}
+        {%- render 'customer-input', name: 'customer[password_confirmation]', type: 'password', label: t_confirm, id: 'ActivatePasswordConfirm', autocomplete: 'new-password', required: true -%}
+        {%- render 'customer-form-button', label: t_submit, style: 'secondary-gold', class: '!w-full !h-[52px] !text-[20px] mt-1' -%}
+        <button type="submit" name="decline" value="true" class="tag text-espresso underline bg-transparent border-0 cursor-pointer text-center mt-2">{{ 'customer.activate.decline' | t }}</button>
       {%- endform -%}
-      <div class="text-center mt-4">
-        <button type="submit" name="decline" form="" class="tag text-espresso underline bg-transparent border-0 cursor-pointer">{{ 'customer.activate.decline' | t }}</button>
-      </div>
     </div>
   </div>
 </section>
