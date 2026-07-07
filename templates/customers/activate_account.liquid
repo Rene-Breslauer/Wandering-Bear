@@ -18,7 +18,7 @@
         {%- render 'customer-input', name: 'customer[password]', type: 'password', label: t_password, id: 'ActivatePassword', autocomplete: 'new-password', required: true -%}
         {%- render 'customer-input', name: 'customer[password_confirmation]', type: 'password', label: t_confirm, id: 'ActivatePasswordConfirm', autocomplete: 'new-password', required: true -%}
         {%- render 'customer-form-button', label: t_submit, style: 'secondary-gold', class: '!w-full !h-[52px] !text-[20px] mt-1' -%}
-        <button type="submit" name="decline" value="true" class="tag text-espresso underline bg-transparent border-0 cursor-pointer text-center mt-2">{{ 'customer.activate.decline' | t }}</button>
+        <button type="submit" name="decline" value="true" class="tag text-espresso hover:underline bg-transparent border-0 cursor-pointer text-center mt-2">{{ 'customer.activate.decline' | t }}</button>
       {%- endform -%}
     </div>
   </div>
