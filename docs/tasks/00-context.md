@@ -52,7 +52,8 @@ One Cloudflare Worker behind one Shopify App Proxy (`/apps/wb/*`). Keys server-s
 9. **Mobile-first responsive:** breakpoints `smd:` 750 / `md:` 1024. Tables → cards on mobile. No FOUC (`x-cloak`).
 10. **Figma parity:** pull exact tokens from `docs/figma/**/file.json`; compare desktop + mobile + every state (Free/VIP/Elite + empty/error/loading).
 11. **A11y** (labels, `aria-*`, focus, ≥44px targets, `alt`) + **`shopify theme check` clean**.
-12. **Guardrails:** never push to live (`shopify theme dev` only) · no AI attribution in commits · English only · source of truth = `CLAUDE.md` + `docs/`.
+12. **Class naming (Shopify/Dawn BEM).** Don't ship arbitrary-utility soup (`w-[76px] md:!w-[118px]`, `text-[45px]`, `!important` overrides, inline `style=`) in account markup. Anything sized to a Figma token, repeated, or needing `!`/inline hacks → a **named component class** in `frontend/styles/account.css` using `.block__element` naming and theme custom properties (`var(--color-…)`, `var(--font-…)`). Simple layout (`flex`, `grid`, `gap`, `mb-*`) may stay as utilities. Reference implementation: `.contact-cta` / `.contact-cta__card` / `.contact-cta__badge`. Account styles live in `account.css` (imported in `main.js`), not scattered inline.
+13. **Guardrails:** never push to live (`shopify theme dev` only) · no AI attribution in commits · English only · source of truth = `CLAUDE.md` + `docs/`.
 
 ## Layout containers (single source of truth)
 All account pages share two containers, defined ONCE in `frontend/styles/components.css` — never hardcode `max-w-[Npx]` per page:
