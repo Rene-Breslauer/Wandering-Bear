@@ -19,11 +19,20 @@
   if membership_tier == 'ELITE'
     assign is_elite = true
   endif
+  assign is_free = false
+  if display_tier == 'FREE'
+    assign is_free = true
+  endif
 
   assign credits_earned = customer.metafields.inveterate.credits_earned | default: 0
   assign credits_formatted = credits_earned | money_without_trailing_zeros
+  # Preview-only: no customer → show a sample credit so the FREE block matches the design.
+  if customer == blank
+    assign credits_formatted = '$15'
+  endif
 
-  # Credits block is hidden for FREE members (credits are a VIP/Elite benefit).
+  # Row 1 split: FREE shows the wide "YOUR CREDIT" block (no autoship); VIP/Elite show the
+  # compact credit card next to autoship. show_credit drives ONLY the compact card.
   assign show_credit = true
   if display_tier == 'FREE'
     assign show_credit = false
@@ -86,8 +95,22 @@
       <a href="{{ routes.account_logout_url }}" class="body font-bold text-espresso hover-underline">{{ 'customer.account.log_out' | t }}</a>
     </div>
 
-    {%- comment -%} ---------- Row 1: Autoship (optional) + Credits (hidden for FREE) ---------- {%- endcomment -%}
-    {%- if has_autoship or show_credit -%}
+    {%- comment -%} ---------- Row 1: FREE → wide YOUR CREDIT (no autoship); VIP/Elite → autoship + compact credit ---------- {%- endcomment -%}
+    {%- if is_free -%}
+    <div class="rounded-[8px] px-6 py-7 md:!px-10 md:!py-8 mb-4 flex flex-col !gap-6 md:!flex-row md:!items-center md:!justify-between" style="{{ card_bg }}">
+      <div class="flex-1">
+        <div class="flex items-end !gap-3">
+          <span class="font-gothic_condensed font-extrabold uppercase text-espresso text-[20px] leading-[0.95] max-w-[68px]">{{ 'customer.dashboard.your_credit' | t }}</span>
+          <span class="font-kurdis-condensed font-extrabold text-[45px] leading-[0.78]" style="color: #AF7404;">{{ credits_formatted }}</span>
+        </div>
+        <div class="font-kurdis-semi-condensed font-bold text-[12px] leading-none mt-3" style="color: #AF7404;">{{ 'customer.dashboard.expires' | t: date: credits_expiry }}</div>
+      </div>
+      <div class="flex flex-col !gap-3 w-full md:!w-auto md:!items-end">
+        <a href="#" class="self-end font-kurdis-semi-condensed font-bold text-[12px] leading-none underline text-espresso">{{ 'customer.dashboard.view_credit_history' | t }}</a>
+        <button type="button" class="inline-flex items-center justify-center w-full md:!w-[320px] h-[52px] px-8 rounded-[8px] font-kurdis-condensed font-extrabold uppercase text-[15px]" style="background-color: #AF7404; color: var(--color-brand-cream); box-shadow: 4px 4px 4px rgba(0,0,0,0.25); letter-spacing: 0.04em;">{{ 'customer.dashboard.redeem_credits' | t }}</button>
+      </div>
+    </div>
+    {%- elsif has_autoship or show_credit -%}
     <div class="flex flex-col {% if has_autoship and show_credit %}md:!flex-row{% endif %} !gap-4 mb-4">
 
       {%- if has_autoship -%}
@@ -159,7 +182,7 @@
 
         {%- comment -%} Progress column (hidden for Elite) {%- endcomment -%}
         {%- unless is_elite -%}
-          <div class="md:!flex-1 md:!pl-6 md:!border-l md:!border-espresso/15">
+          <div class="flex flex-col md:!flex-1 md:!pl-6 md:!border-l md:!border-espresso/15">
             <div class="flex items-start justify-between mb-2">
               <span class="font-kurdis-semi-condensed font-bold text-[12px] leading-none text-espresso">{{ 'customer.dashboard.progress_next_tier' | t }}</span>
               <a href="#" class="font-kurdis-semi-condensed font-bold text-[10px] leading-none hover-underline text-espresso">{{ 'customer.dashboard.change_tier' | t }}</a>
@@ -170,7 +193,7 @@
             </div>
             <p class="font-kurdis-semi-condensed font-bold text-[10px] leading-none mb-4" style="color: #431A03;">{{ progress_text }}</p>
 
-            <div class="border-t border-espresso/15 pt-4 text-center">
+            <div class="membership-upsell">
               <p class="body font-bold text-espresso mb-1">{{ 'customer.dashboard.upgrade_today' | t }} <span class="font-parslay text-gold">{{ 'customer.dashboard.why_wait' | t }}</span></p>
               <p class="font-kurdis-semi-condensed font-semibold text-[12px] leading-[1.2] text-center mb-3" style="color: #1B1B1B;">{{ 'customer.dashboard.elite_upsell_desc' | t }}</p>
               {%- render 'wb-button', style: 'secondary-gold', label: t_upgrade, link: membership_url, class: '!w-full !h-[40px] !text-[15px]' -%}
