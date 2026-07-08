@@ -71,5 +71,32 @@
     }
 }
 
+/* ---- Worker hydration states (account.ts) -------------------------------- */
+/* account.ts sets data-wb-loading (initial) → removed on success; data-wb-error on
+   failure. The error note is hidden until the root carries data-wb-error. */
+[data-wb-error-note] {
+    display: none;
+}
+[data-wb-account][data-wb-error] [data-wb-error-note] {
+    display: block;
+}
+/* Subtle "loading" pulse on the worker-driven progress bar until data arrives
+   (works regardless of the inline width the SSR sets). */
+[data-wb-account][data-wb-loading] [data-wb-progress-bar] {
+    animation: wb-pulse 1s ease-in-out infinite;
+}
+@keyframes wb-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+/* MANAGE control (Stay AI portal) — account.ts wires the click / disables it. */
+[data-wb-autoship-manage] {
+    cursor: pointer;
+}
+[data-wb-autoship-manage][data-wb-disabled] {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
 /* Contact CTA is styled with Tailwind utilities directly in the section markup
    (Tailwind-first) — no component class needed here. */

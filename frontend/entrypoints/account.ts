@@ -1,22 +1,24 @@
 /**
  * Account dashboard hydration.
  *
- * Fetches the account summary from the Wandering Bear worker (Inveterate membership
- * + Stay AI subscriptions) and fills the server-rendered dashboard with real data.
+ * Fills the server-rendered dashboard with live data from the Wandering Bear worker
+ * (Inveterate membership + Stay AI subscriptions). NEVER talks to Inveterate / Stay AI
+ * directly and never holds API keys — it only calls the worker.
  *
- * Why its own entrypoint (not a global Alpine component): the global Alpine bundle
- * inits lazily on first interaction, but account data must appear on load. This
- * module runs eagerly and is injected only on account templates via `vite-tag`.
+ * Own entrypoint (not the global Alpine bundle): Alpine inits lazily on first
+ * interaction, but account data must appear on load. This runs eagerly and is injected
+ * only on account templates via `vite-tag`.
  *
- * Architecture: tier + card layout are server-rendered (native Inveterate tags), so
- * there is no flash / layout shift. The worker is the source of truth for the data
- * *inside* those cards — credit balance/expiry, tier progress, and the (net-new)
- * Stay AI autoship card. If the worker is unreachable, the SSR fallback values stay.
+ * Source of truth: tier name + credit balance stay SSR-native (Inveterate tags /
+ * metafield) to avoid flicker. The worker hydrates only progress / autoship / expiry.
+ * If the worker is unreachable the SSR fallback values remain and the root gets
+ * data-wb-error.
  *
- * Contract: docs/01-api-contracts — GET /apps/wb/summary → { ok, data: Summary }.
+ * Endpoint (data-worker-url on the root):
+ *   set   → {url}/dev/<path>?customerId=<id>   (local/dev worker, DEV_MODE=1, CORS)
+ *   empty → /apps/wb/<path>                    (Shopify App Proxy, signed customer id)
+ * Contract: docs/01-api-contracts — envelope { ok, data } | { ok:false, error }.
  */
-
-type Money = { amount: number; formatted: string; currency: string };
 
 type Membership = {
   tier: string;
@@ -33,13 +35,13 @@ type Membership = {
 
 type Subscription = {
   id: string;
-  status: string;
+  status: 'ACTIVE' | 'PAUSED' | 'CANCELLED' | string;
   next_order_date: string | null;
   bundle_title: string;
   frequency: { interval: string; interval_count: number; label: string };
   line_items: { title: string; quantity: number; variant_id: string; image_url: string | null }[];
   items_total: number;
-  price: Money;
+  price: { amount: number; formatted: string; currency: string };
   manage_url: string;
   can_edit: boolean;
   can_cancel: boolean;
@@ -53,94 +55,138 @@ type Summary = {
   errors?: { section: string; code: string }[];
 };
 
+type Envelope<T> = { ok: true; data: T } | { ok: false; error?: { code?: string; message?: string } };
+
+const root = document.querySelector<HTMLElement>('[data-wb-account]');
+const workerUrl = (root?.dataset.workerUrl ?? '').trim().replace(/\/$/, '');
+const customerId = root?.dataset.customerId ?? '';
+
+/** Build a worker URL: dev surface ({url}/dev/<path>?customerId=) or App Proxy (/apps/wb/<path>). */
+function wbUrl(path: string, params: Record<string, string> = {}): string {
+  const u = workerUrl
+    ? new URL(`${workerUrl}/dev/${path}`)
+    : new URL(`/apps/wb/${path}`, window.location.origin);
+  if (workerUrl) u.searchParams.set('customerId', customerId);
+  for (const [k, v] of Object.entries(params)) u.searchParams.set(k, v);
+  return u.toString();
+}
+
+async function wbFetch<T>(path: string, params?: Record<string, string>): Promise<T> {
+  const res = await fetch(wbUrl(path, params), {
+    headers: { Accept: 'application/json' },
+    credentials: workerUrl ? 'omit' : 'same-origin',
+  });
+  const json = (await res.json()) as Envelope<T>;
+  if (!json.ok) throw new Error(json.error?.code || 'wb_error');
+  return json.data;
+}
+
 /** Format an ISO date (YYYY-MM-DD) as MM/DD/YYYY (Figma credit-expiry format). */
 function formatExpiry(iso: string | null): string | null {
   if (!iso) return null;
   const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso);
-  if (!m) return null;
-  return `${m[2]}/${m[3]}/${m[1]}`;
+  return m ? `${m[2]}/${m[3]}/${m[1]}` : null;
 }
 
-/** Set textContent on every node matching the hook, skipping empty values. */
-function setText(root: ParentNode, hook: string, value: string | null | undefined): void {
+/** Set textContent on every matching hook, skipping empty values. */
+function setText(scope: ParentNode, hook: string, value: string | null | undefined): void {
   if (value == null || value === '') return;
-  root.querySelectorAll<HTMLElement>(`[data-wb-${hook}]`).forEach((el) => {
+  scope.querySelectorAll<HTMLElement>(`[data-wb-${hook}]`).forEach((el) => {
     el.textContent = value;
   });
 }
 
-function hydrateMembership(root: HTMLElement, m: Membership): void {
-  // Credit balance + expiry (both the wide FREE block and the compact VIP/ELITE card
-  // carry these hooks; the expiry hook wraps only the date so the label stays static).
-  setText(root, 'credit', m.credits.balance_formatted);
+function renderMembership(m: Membership | null): void {
+  if (!root || !m) return;
+
+  // Credit expiry (the label is static SSR; the hook wraps only the date).
   setText(root, 'credit-expiry', formatExpiry(m.credits.expires_at));
 
+  // Progress column. progress === null ⇒ top tier (ELITE) — SSR already hides the column.
   if (m.progress) {
     const bar = root.querySelector<HTMLElement>('[data-wb-progress-bar]');
     if (bar) bar.style.width = `${Math.max(0, Math.min(100, m.progress.percent))}%`;
     setText(root, 'progress-tier', m.progress.next_tier ?? undefined);
     setText(root, 'progress-text', m.progress.message);
   }
+  // NOTE: tier name + credit balance are intentionally left SSR-native (no flicker).
 }
 
-function hydrateAutoship(root: HTMLElement, subs: Subscriptions): void {
+/** Fill a localized "{n} …" template ("{n} Active Autoships", "+ {n} more"). */
+function fillTemplate(el: HTMLElement | null, templateAttr: string, n: number): string {
+  const tpl = el?.getAttribute(templateAttr) ?? '';
+  return tpl.replace('{n}', String(n));
+}
+
+function renderSubscriptions(subs: Subscriptions | null): void {
+  if (!root || !subs) return;
+
   const card = root.querySelector<HTMLElement>('[data-wb-autoship]');
-  if (!card) return; // FREE layout renders no autoship card — nothing to fill.
+  if (!card) return; // FREE layout renders no autoship card.
 
   const first = subs.subscriptions[0];
+  const hasAutoship = subs.active_count > 0 && first != null;
+  card.setAttribute('data-wb-autoship-state', hasAutoship ? 'active' : 'none');
   if (!first) return;
 
-  const isCancelled = first.status !== 'ACTIVE';
-  card.setAttribute('data-wb-autoship-state', isCancelled ? 'cancelled' : 'active');
   setText(card, 'autoship-bundle', first.bundle_title);
   setText(card, 'autoship-date', first.next_order_date ?? undefined);
 
-  // TODO(VIP/ELITE account): rebuild the line-item list + "+N more" from
-  // first.line_items / items_total, and the active-count badge, once we have a
-  // non-FREE test customer to verify against (needs a localized "+N more" label).
-}
+  // Active-count badge — localized "{n} Active Autoships".
+  const countEl = card.querySelector<HTMLElement>('[data-wb-autoship-count]');
+  if (countEl) countEl.textContent = fillTemplate(countEl, 'data-wb-count-template', subs.active_count);
 
-function resolveEndpoint(root: HTMLElement): { url: string; credentials: RequestCredentials } {
-  const base = (root.getAttribute('data-wb-worker') ?? '').trim().replace(/\/$/, '');
-  if (base) {
-    // Direct to the worker's /dev surface (no Shopify App Proxy). customerId is passed
-    // explicitly; the worker must run with DEV_MODE=1. Cross-origin, so no credentials.
-    const customerId = root.getAttribute('data-customer-id') ?? '';
-    return {
-      url: `${base}/dev/summary?customerId=${encodeURIComponent(customerId)}`,
-      credentials: 'omit',
-    };
+  // Line-item list (show up to 2, "+N more" links to the portal).
+  const list = card.querySelector<HTMLElement>('[data-wb-autoship-items]');
+  if (list && first.line_items.length) {
+    const shown = first.line_items.slice(0, 2);
+    const more = first.items_total - shown.length;
+    const moreLabel = fillTemplate(list, 'data-wb-more-template', more);
+    list.textContent = '';
+    shown.forEach((li, i) => {
+      const row = document.createElement('li');
+      row.className =
+        'flex items-center justify-between !gap-2 font-kurdis-semi-condensed font-bold text-[10px] leading-none text-[#955325]';
+      const title = document.createElement('span');
+      title.textContent = li.title;
+      row.appendChild(title);
+      if (i === shown.length - 1 && more > 0) {
+        const link = document.createElement('a');
+        link.href = subs.portal_url || first.manage_url || '#';
+        link.className = 'hover-underline shrink-0 whitespace-nowrap text-[#955325]';
+        link.textContent = moreLabel;
+        row.appendChild(link);
+      }
+      list.appendChild(row);
+    });
   }
-  // No worker base set → signed same-origin path: Shopify App Proxy appends the
-  // logged_in_customer_id + signature server-side.
-  return { url: '/apps/wb/summary', credentials: 'same-origin' };
+
+  // MANAGE control → Stay AI portal. Hide/disable if no portal_url yet.
+  const manage = card.querySelector<HTMLElement>('[data-wb-autoship-manage]');
+  if (manage) {
+    const href = subs.portal_url || first.manage_url;
+    if (href) manage.addEventListener('click', () => { window.location.href = href; });
+    else manage.setAttribute('data-wb-disabled', '');
+  }
 }
 
-async function init(): Promise<void> {
-  const root = document.querySelector<HTMLElement>('[data-wb-account]');
+async function hydrate(): Promise<void> {
   if (!root) return;
-
-  const { url, credentials } = resolveEndpoint(root);
-
   try {
-    const res = await fetch(url, { credentials, headers: { Accept: 'application/json' } });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const body = (await res.json()) as { ok: boolean; data?: Summary };
-    if (!body.ok || !body.data) throw new Error('bad envelope');
-
-    if (body.data.membership) hydrateMembership(root, body.data.membership);
-    if (body.data.subscriptions) hydrateAutoship(root, body.data.subscriptions);
-    root.setAttribute('data-wb-hydrated', 'true');
+    const data = await wbFetch<Summary>('summary');
+    renderMembership(data.membership);
+    renderSubscriptions(data.subscriptions);
+    root.removeAttribute('data-wb-loading');
   } catch (err) {
-    // Non-fatal: SSR fallback values remain. Log for local debugging.
-    root.setAttribute('data-wb-hydrated', 'error');
+    root.setAttribute('data-wb-error', '');
+    root.removeAttribute('data-wb-loading');
     // eslint-disable-next-line no-console
     console.warn('[wb-account] summary fetch failed:', err);
   }
 }
 
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', init, { once: true });
+  document.addEventListener('DOMContentLoaded', hydrate, { once: true });
 } else {
-  void init();
+  void hydrate();
 }

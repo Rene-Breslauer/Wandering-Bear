@@ -2413,6 +2413,13 @@
         "type": "product",
         "id": "elite_product",
         "label": "Elite product"
+      },
+      {
+        "type": "text",
+        "id": "account_worker_url",
+        "label": "Account worker URL",
+        "info": "Cloudflare worker origin for account data, e.g. https://wb-account-worker.dmitryp.workers.dev (or http://localhost:8788 locally). When set, the theme calls {url}/dev/<path>?customerId=. Leave EMPTY to use the signed App Proxy /apps/wb (once that app is configured).",
+        "default": "https://wb-account-worker.dmitryp.workers.dev"
       }
     ]
   }
