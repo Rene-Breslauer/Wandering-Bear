@@ -30,7 +30,9 @@ type Membership = {
     amount_to_next_formatted: string;
     message: string;
   } | null;
-  benefits: string[];
+  // Live Inveterate tier benefits. Not hydrated yet (SSR copy per Figma); typed for
+  // when the "What's Included" list is wired to the worker (docs 03 §5).
+  benefits: { name: string; description: string; icon: string | null; type: string }[];
 };
 
 type Subscription = {

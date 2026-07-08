@@ -2417,9 +2417,9 @@
       {
         "type": "text",
         "id": "account_worker_url",
-        "label": "Account worker URL",
-        "info": "Cloudflare worker origin for account data, e.g. https://wb-account-worker.dmitryp.workers.dev (or http://localhost:8788 locally). When set, the theme calls {url}/dev/<path>?customerId=. Leave EMPTY to use the signed App Proxy /apps/wb (once that app is configured).",
-        "default": "https://wb-account-worker.dmitryp.workers.dev"
+        "label": "Account worker URL (local dev only)",
+        "info": "Local worker base for account data, e.g. http://localhost:8788. When set, the theme calls {url}/dev/<path>?customerId= directly. LEAVE EMPTY in production — the theme then uses the signed App Proxy /apps/wb. Note: the deployed worker's /dev is disabled, so production needs the App Proxy app configured.",
+        "default": ""
       }
     ]
   }
