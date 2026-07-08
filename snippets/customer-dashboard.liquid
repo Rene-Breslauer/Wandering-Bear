@@ -80,8 +80,14 @@
 {%- comment -%} Worker load-failure note — hidden by default, shown when account.ts sets data-wb-error on the root {%- endcomment -%}
 <p data-wb-error-note class="font-kurdis-semi-condensed font-semibold text-[12px] leading-[1.3] text-[#BD2121] mb-4" role="status">{{ 'customer.dashboard.load_error' | t }}</p>
 
-{%- comment -%} ---------- Row 1: no autoship → wide credit; active/cancelled → autoship card + compact credit ---------- {%- endcomment -%}
-{%- if autoship == 'none' -%}
+{%- comment -%} ---------- Row 1: BOTH variants rendered; account.ts (renderSubscriptions) shows one
+  by the worker's active_count — autoship is independent of tier. SSR shows the tier-guess as the
+  initial paint / no-JS + error fallback. ---------- {%- endcomment -%}
+{%- assign guess_none = false -%}
+{%- if autoship == 'none' -%}{%- assign guess_none = true -%}{%- endif -%}
+
+{%- comment -%} Variant B — no autoship: wide credit block {%- endcomment -%}
+<div data-wb-row-nocard{% unless guess_none %} data-wb-hide{% endunless %}>
   <div class="relative {{ card }} px-6 py-7 md:!px-10 mb-4 flex flex-col !gap-5 md:!flex-row md:!items-center md:!justify-between">
     <a href="#" class="absolute top-5 right-6 md:!right-10 font-kurdis-semi-condensed font-bold text-[10px] leading-none hover-underline text-espresso">{{ 'customer.dashboard.view_credit_history' | t }}</a>
     <div class="flex-1 pt-5 md:!pt-0">
@@ -93,7 +99,10 @@
     </div>
     {%- render 'customer-form-button', type: 'button', label: t_redeem, style: 'secondary-gold', class: 'shrink-0 shadow-button !w-full smd:!w-[335px] !h-[40px] !text-[15px]' -%}
   </div>
-{%- else -%}
+</div>
+
+{%- comment -%} Variant A — has autoship: autoship card + compact credit {%- endcomment -%}
+<div data-wb-row-autoship{% if guess_none %} data-wb-hide{% endif %}>
   <div class="flex flex-col md:!flex-row !gap-4 mb-4">
 
     {%- comment -%} Autoship card — active or cancelled. Filled by account.ts from Stay AI (worker). {%- endcomment -%}
@@ -147,7 +156,7 @@
       {%- render 'customer-form-button', type: 'button', label: t_redeem, style: 'secondary-gold', class: 'shadow-button !w-full !h-[40px] !text-[15px]' -%}
     </div>
   </div>
-{%- endif -%}
+</div>
 
 {%- comment -%} ---------- Row 2: Membership tier (+ Progress unless Elite) ---------- {%- endcomment -%}
 <div class="{{ card }} p-5 md:!p-6 mb-4">
