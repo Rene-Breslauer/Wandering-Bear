@@ -25,7 +25,14 @@
 -%}
 
 <section class="w-full" style="background-color: var(--color-brand-beige);">
-  <div class="account-container py-8 md:!py-12">
+  {%- comment -%}
+    data-wb-account marks the hydration root; account.ts fetches the worker summary
+    and fills the SSR cards with real membership/autoship data. data-customer-id is
+    only used by the local dev endpoint (/dev/summary?customerId=) — production goes
+    through the App Proxy, which injects the signed logged_in_customer_id server-side.
+  {%- endcomment -%}
+  <div class="account-container py-8 md:!py-12" data-wb-account data-customer-id="{{ customer.id }}">
     {%- render 'customer-dashboard', tier: real_tier, autoship_state: real_autoship, credits_formatted: credits_formatted -%}
   </div>
+  {%- render 'vite-tag' with 'account.ts' -%}
 </section>
