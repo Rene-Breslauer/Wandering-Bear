@@ -13,6 +13,7 @@
       "title": "Login",
       "email": "Email",
       "password": "Password",
+      "error": "There were errors with your submission: incorrect email or password.",
       "submit": "Login",
       "create_account": "Create Account",
       "forgot_password": "Forgot Password",
