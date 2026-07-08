@@ -97,16 +97,17 @@
 
     {%- comment -%} ---------- Row 1: FREE → wide YOUR CREDIT (no autoship); VIP/Elite → autoship + compact credit ---------- {%- endcomment -%}
     {%- if is_free -%}
-    <div class="relative rounded-[8px] px-6 py-7 md:!px-10 mb-4 flex flex-col !gap-5 md:!flex-row md:!items-center md:!justify-between" style="background-color: #FEF8F3;">
+    <div class="relative rounded-[8px] px-6 py-7 md:!px-10 mb-4 flex flex-col !gap-5 md:!flex-row md:!items-center md:!justify-between bg-foam">
       <a href="#" class="absolute top-5 right-6 md:!right-10 font-kurdis-semi-condensed font-bold text-[11px] leading-none underline text-espresso">{{ 'customer.dashboard.view_credit_history' | t }}</a>
       <div class="flex-1 pt-5 md:!pt-0">
         <div class="flex items-end !gap-3">
           <span class="font-gothic_condensed font-extrabold uppercase text-espresso text-[20px] leading-[0.95] max-w-[68px]">{{ 'customer.dashboard.your_credit' | t }}</span>
-          <span class="font-kurdis-condensed font-extrabold text-[45px] leading-[0.78]" style="color: #AF7404;">{{ credits_formatted }}</span>
+          <span class="font-kurdis-condensed font-extrabold text-[45px] leading-[0.78] text-dark-gold">{{ credits_formatted }}</span>
         </div>
-        <div class="font-kurdis-semi-condensed font-bold text-[11px] leading-none mt-3" style="color: #AF7404;">{{ 'customer.dashboard.expires' | t: date: credits_expiry }}</div>
+        <div class="font-kurdis-semi-condensed font-bold text-[11px] leading-none mt-3 text-dark-gold">{{ 'customer.dashboard.expires' | t: date: credits_expiry }}</div>
       </div>
-      <button type="button" class="shrink-0 w-full md:!w-[320px] h-[52px] px-8 inline-flex items-center justify-center rounded-[8px] font-kurdis-condensed font-extrabold uppercase text-[15px]" style="background-color: #AF7404; color: var(--color-brand-cream); box-shadow: 4px 4px 4px rgba(0,0,0,0.25); letter-spacing: 0.04em;">{{ 'customer.dashboard.redeem_credits' | t }}</button>
+      {%- comment -%} Figma: brand blob button (VECTOR) 335×40, #AF7404, drop-shadow 4/4/4 25% {%- endcomment -%}
+      {%- render 'customer-form-button', type: 'button', label: t_redeem, style: 'secondary-gold', class: 'shrink-0 shadow-button !w-full smd:!w-[335px] !h-[40px] !text-[15px]' -%}
     </div>
     {%- elsif has_autoship or show_credit -%}
     <div class="flex flex-col {% if has_autoship and show_credit %}md:!flex-row{% endif %} !gap-4 mb-4">
