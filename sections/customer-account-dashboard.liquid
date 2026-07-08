@@ -1,11 +1,10 @@
 {%- doc -%}
   Customer account dashboard (classic accounts). Thin driver: resolves the
-  customer's tier + autoship state, then renders snippets/customer-dashboard.
-  On the preview page (no customer) it renders ALL states for QA.
-  Figma: AccountDashboard_VIP 1:24, _Elite 1:320, _Free_NoAutoship 1:601, _Free_CancelledAutoship 1:867.
+  customer's tier + autoship state, then renders snippets/customer-dashboard,
+  which shifts blocks per state (VIP / Elite / Free no-autoship / Free cancelled).
 
-  Data: tier + credits = native (Inveterate tags + metafield). Autoship (Stay AI),
-  progress-to-next-tier and credit expiry/history are MOCKED — wire to the worker (Tasks 04/05/07).
+  Data: tier + credits = native (Inveterate tags + metafield). Autoship state is
+  a placeholder until the Stay AI worker ships — replace `real_autoship` below.
 {%- enddoc -%}
 {%- liquid
   capture membership_tier
@@ -27,17 +26,6 @@
 
 <section class="w-full" style="background-color: var(--color-brand-beige);">
   <div class="account-container py-8 md:!py-12">
-    {%- if customer == blank -%}
-      {%- comment -%} PREVIEW: render every state for QA (no customer session). {%- endcomment -%}
-      {%- assign preview_states = 'VIP|active,ELITE|active,FREE|none,FREE|cancelled' | split: ',' -%}
-      {%- for state in preview_states -%}
-        {%- assign sp = state | split: '|' -%}
-        <div class="mb-4 inline-block bg-espresso text-cream tag px-3 py-1 rounded uppercase">Preview · {{ sp[0] }} · autoship: {{ sp[1] }}</div>
-        {%- render 'customer-dashboard', tier: sp[0], autoship_state: sp[1], credits_formatted: '$15', first_name: 'Kelsey', preview: true -%}
-        {%- unless forloop.last -%}<hr class="my-10 border-espresso/20">{%- endunless -%}
-      {%- endfor -%}
-    {%- else -%}
-      {%- render 'customer-dashboard', tier: real_tier, autoship_state: real_autoship, credits_formatted: credits_formatted -%}
-    {%- endif -%}
+    {%- render 'customer-dashboard', tier: real_tier, autoship_state: real_autoship, credits_formatted: credits_formatted -%}
   </div>
 </section>

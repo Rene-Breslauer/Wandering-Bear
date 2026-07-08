@@ -12,9 +12,10 @@ node_modules
 # Claude local settings (personal, per-worktree)
 .claude/settings.local.json
 
-# Figma pull (secrets + heavy exports; keep frames.md / frames.tsv tracked)
+# Figma pull secret
 .figma-token
-docs/figma/**/file.json
-docs/figma/**/exports/
-docs/figma/file.json
-docs/figma/exports/
+
+# Kept LOCAL ONLY — planning docs, Claude config, task scripts. Never merged to main.
+/CLAUDE.md
+/docs/
+/scripts/figma-pull.sh
