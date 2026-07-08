@@ -76,6 +76,22 @@ Frames are pulled to `docs/figma/<file>/`:
 5. Responsive re-check at **375 / 750 / 1024**; a11y; `shopify theme check`.
 6. **Parity sign-off:** matches desktop + mobile, all state frames covered, tokens match, no FOUC.
 
+## Client doc alignment & backend constraints (2026-07)
+Client confirmed the dashboard shows: **next upcoming autoship** (or cancelled), **credits count**, **membership state**, **order history w/ tracking**. Three tiers — **Free / VIP / Elite** — each shifts the membership info. Frames: `Free_NoAutoship`, `Free_CancelledAutoship`, `VIP`, `Elite`. ✅ all four implemented in `snippets/customer-dashboard.liquid` (state model `tier × autoship_state`).
+
+**Confirmed rules:**
+- Free & VIP get the **"Upgrade to Elite"** CTA → routes through the **Inveterate update flow** (not just a link to /pages/membership — wire the actual Inveterate flow in Task 02/07).
+- **Cancelled autoship state shows ONLY if the customer has no other active autoship** — this is a worker/data derivation rule: `active` if any ACTIVE sub → else `cancelled` if a cancelled sub exists → else `none`.
+- **No autoship → credits shown at larger width** (the wide YOUR CREDIT block). ✅
+- Other pages (later tasks): **Order page** (from history), **Stay.ai portal** (restyled bg, their widget otherwise as-is), **Credit history** (balance + redemption + redemption history).
+
+**Open (AW to advise):** empty order history — hide the section or show a blank state? Currently a styled empty state is rendered.
+
+**Backend constraints to flag to client (answer to their "restrictions" ask):**
+- **Autoship (Stay AI API, via worker + App Proxy).** Design needs per-subscription: bundle/product name ("96oz Bundle—3+Boxes"), next shipment date, line-item flavors (+N more), active count, status. Confirm the API returns line-item product names, a next-charge date, and a bundle label (or we compose it). **PAUSED** subs exist in the API but the design only defines active/cancelled → need a display rule for PAUSED. Cancelled-only-if-no-active requires querying BOTH ACTIVE and CANCELLED.
+- **Credits (Inveterate).** The native metafield gives the **balance only**. The design's credit **expiry date**, **history**, and **redemption** are NOT in the metafield → require the **Inveterate Public API** (worker). Confirm Inveterate exposes expiry + history and a redemption endpoint (vs checkout-only).
+- **Security/perf.** All third-party keys stay server-side (worker); API latency → consider caching. Frontend mocks the contract until the worker ships.
+
 ## Task index
 | # | Task | File | Part | Depends on |
 |---|---|---|---|---|
