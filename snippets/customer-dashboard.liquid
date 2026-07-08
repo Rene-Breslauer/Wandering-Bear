@@ -77,6 +77,9 @@
   <a href="{{ routes.account_logout_url }}" class="body font-bold text-espresso hover-underline">{{ 'customer.account.log_out' | t }}</a>
 </div>
 
+{%- comment -%} Worker load-failure note — hidden by default, shown when account.ts sets data-wb-error on the root {%- endcomment -%}
+<p data-wb-error-note class="font-kurdis-semi-condensed font-semibold text-[12px] leading-[1.3] text-[#BD2121] mb-4" role="status">{{ 'customer.dashboard.load_error' | t }}</p>
+
 {%- comment -%} ---------- Row 1: no autoship → wide credit; active/cancelled → autoship card + compact credit ---------- {%- endcomment -%}
 {%- if autoship == 'none' -%}
   <div class="relative {{ card }} px-6 py-7 md:!px-10 mb-4 flex flex-col !gap-5 md:!flex-row md:!items-center md:!justify-between">
@@ -84,7 +87,7 @@
     <div class="flex-1 pt-5 md:!pt-0">
       <div class="flex items-end !gap-3">
         <span class="inline-block origin-bottom-left rotate-[-4deg] font-gothic_condensed font-extrabold uppercase text-espresso text-[20px] leading-[0.95] max-w-[68px]">{{ 'customer.dashboard.your_credit' | t }}</span>
-        <span class="font-kurdis-condensed font-extrabold text-[45px] leading-[0.78] text-dark-gold" data-wb-credit>{{ credits_formatted }}</span>
+        <span class="font-kurdis-condensed font-extrabold text-[45px] leading-[0.78] text-dark-gold">{{ credits_formatted }}</span>
       </div>
       <div class="font-kurdis-semi-condensed font-bold text-[10px] leading-none mt-3 text-dark-gold">{{ 'customer.dashboard.expires_label' | t }} <span data-wb-credit-expiry>{{ credits_expiry }}</span></div>
     </div>
@@ -102,7 +105,7 @@
         {%- if is_cancelled -%}
           <span class="inline-flex items-center whitespace-nowrap shrink-0 h-[20px] px-[10px] rounded-[10px] font-kurdis-semi-condensed font-bold text-[12px] leading-none text-foam bg-[#BD2121]">{{ 'customer.dashboard.cancelled' | t }}</span>
         {%- else -%}
-          <span class="inline-flex items-center whitespace-nowrap shrink-0 h-[20px] px-[10px] rounded-[10px] font-kurdis-semi-condensed font-bold text-[12px] leading-none text-espresso bg-sky-blue">{{ 'customer.dashboard.active_autoships' | t: count: autoship_count }}</span>
+          <span class="inline-flex items-center whitespace-nowrap shrink-0 h-[20px] px-[10px] rounded-[10px] font-kurdis-semi-condensed font-bold text-[12px] leading-none text-espresso bg-sky-blue" data-wb-autoship-count data-wb-count-template="{{ 'customer.dashboard.active_autoships' | t: count: '{n}' }}">{{ 'customer.dashboard.active_autoships' | t: count: autoship_count }}</span>
         {%- endif -%}
       </div>
       <div class="flex items-baseline justify-between mb-2 !gap-2">
@@ -111,7 +114,7 @@
           <span class="font-kurdis-semi-condensed font-bold text-[10px] leading-none whitespace-nowrap text-bear-black">{{ 'customer.dashboard.next_shipment_label' | t }} <span data-wb-autoship-date>{{ autoship_next_date }}</span></span>
         {%- endunless -%}
       </div>
-      <ul class="flex flex-col !gap-1.5 mb-4">
+      <ul class="flex flex-col !gap-1.5 mb-4" data-wb-autoship-items data-wb-more-template="{{ 'customer.dashboard.more_count' | t: count: '{n}' }}">
         {%- for item in autoship_items -%}
           <li class="flex items-center justify-between !gap-2 font-kurdis-semi-condensed font-bold text-[10px] leading-none text-[#955325]">
             <span>{{ item }}</span>
@@ -124,7 +127,10 @@
       {%- if is_cancelled -%}
         {%- render 'customer-form-button', type: 'button', label: t_reactivate, style: 'secondary-gold', class: 'shadow-button !w-full !h-[40px] !text-[15px]' -%}
       {%- else -%}
-        {%- render 'customer-form-button', type: 'button', label: t_manage, style: 'secondary-gold', class: 'shadow-button !w-full !h-[40px] !text-[15px]' -%}
+        {%- comment -%} Wrapper is the click target; account.ts navigates to subscriptions.portal_url {%- endcomment -%}
+        <div data-wb-autoship-manage>
+          {%- render 'customer-form-button', type: 'button', label: t_manage, style: 'secondary-gold', class: 'shadow-button !w-full !h-[40px] !text-[15px]' -%}
+        </div>
       {%- endif -%}
     </div>
 
@@ -134,7 +140,7 @@
         <a href="#" class="absolute right-0 top-0 font-kurdis-semi-condensed font-bold text-[10px] leading-none hover-underline text-espresso">{{ 'customer.dashboard.view_credit_history' | t }}</a>
         <span class="absolute left-0 top-1/2 -translate-y-1/2 font-gothic_condensed font-extrabold uppercase text-espresso text-[20px] leading-[1.04] max-w-[80px]">{{ 'customer.dashboard.your_credit' | t }}</span>
         <div class="text-center pt-4">
-          <div class="font-kurdis-condensed font-extrabold text-[45px] leading-none text-dark-gold" data-wb-credit>{{ credits_formatted }}</div>
+          <div class="font-kurdis-condensed font-extrabold text-[45px] leading-none text-dark-gold">{{ credits_formatted }}</div>
           <div class="font-kurdis-semi-condensed font-bold text-[10px] leading-none mt-2 text-dark-gold">{{ 'customer.dashboard.expires_label' | t }} <span data-wb-credit-expiry>{{ credits_expiry }}</span></div>
         </div>
       </div>
