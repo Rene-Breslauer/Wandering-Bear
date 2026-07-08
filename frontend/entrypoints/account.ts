@@ -108,7 +108,13 @@ function renderMembership(m: Membership | null): void {
   // Credit balance + expiry from the worker (balance_formatted is the source of truth;
   // the native metafield is only the pre-hydration fallback). Expiry label is static SSR.
   setText(root, 'credit', m.credits.balance_formatted);
-  setText(root, 'credit-expiry', formatExpiry(m.credits.expires_at));
+  const expiry = formatExpiry(m.credits.expires_at);
+  setText(root, 'credit-expiry', expiry);
+  // No expiry (null → e.g. zero credits): hide the whole "Expires …" line instead of
+  // leaving the SSR fallback date showing.
+  root.querySelectorAll<HTMLElement>('[data-wb-expiry-line]').forEach((el) => {
+    el.style.display = expiry ? '' : 'none';
+  });
 
   // Progress column. progress === null ⇒ top tier (ELITE) — SSR already hides the column.
   if (m.progress) {
