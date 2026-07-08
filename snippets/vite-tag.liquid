@@ -6,9 +6,11 @@
   assign entry = entry | default: vite-tag
   assign path = entry | replace: '~/', '../' | replace: '@/', '../'
 %}
-{% if path == "/frontend/entrypoints/main.css" or path == "main.css" %}
-  {{ 'wb-main.Cj3Vjvel.css' | asset_url | stylesheet_tag: preload: preload_stylesheet }}
+{% if path == "/frontend/entrypoints/account.ts" or path == "account.ts" %}
+  <script src="{{ 'wb-account.CbtibIVT.js' | asset_url }}" type="module" crossorigin="anonymous"></script>
+{% elsif path == "/frontend/entrypoints/main.css" or path == "main.css" %}
+  {{ 'wb-main.D8OGPgXQ.css' | asset_url | stylesheet_tag: preload: preload_stylesheet }}
 {% elsif path == "/frontend/entrypoints/main.js" or path == "main.js" %}
-  <script src="{{ 'wb-main.CWRjxT_K.js' | asset_url }}" type="module" crossorigin="anonymous"></script>
-  {{ 'wb-main.BMV8ZJrL.css' | asset_url | stylesheet_tag: preload: preload_stylesheet }}
+  <script src="{{ 'wb-main.C37eJwaM.js' | asset_url }}" type="module" crossorigin="anonymous"></script>
+  {{ 'wb-main.By3v8C2v.css' | asset_url | stylesheet_tag: preload: preload_stylesheet }}
 {% endif %}
