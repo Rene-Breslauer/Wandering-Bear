@@ -83,6 +83,9 @@ const root = document.querySelector<HTMLElement>('[data-wb-account]');
 const workerUrl = (root?.dataset.workerUrl ?? '').trim().replace(/\/$/, '');
 const customerId = root?.dataset.customerId ?? '';
 const devToken = (root?.dataset.workerToken ?? '').trim();
+// Stay AI customer-portal URL (settings.manage_autoship_url) — target for the autoship
+// "+N more" link and the manage control. The worker's portal_url comes back empty.
+const portalUrl = (root?.dataset.portalUrl ?? '').trim();
 
 /** Build a worker URL: dev surface ({url}/dev/<path>?customerId=[&token=]) or App Proxy (/apps/wb/<path>). */
 function wbUrl(path: string, params: Record<string, string> = {}): string {
@@ -192,7 +195,7 @@ function renderSubscriptions(subs: Subscriptions | null): void {
       row.appendChild(title);
       if (i === shown.length - 1 && more > 0) {
         const link = document.createElement('a');
-        link.href = subs.portal_url || first.manage_url || '#';
+        link.href = portalUrl || subs.portal_url || first.manage_url || '#';
         link.className = 'hover-underline shrink-0 whitespace-nowrap text-[#955325]';
         link.textContent = moreLabel;
         row.appendChild(link);

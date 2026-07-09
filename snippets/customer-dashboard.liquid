@@ -26,12 +26,13 @@
   assign credits_expiry = '01/01/2028'
   assign fname = first_name | default: customer.first_name
 
-  # ---- MOCKS (TODO worker: /apps/wb/subscriptions, /apps/wb/membership, /apps/wb/credits) ----
+  # ---- SSR fallback only (account.ts overwrites from the worker). Title = product_group.headline
+  # + product.metafields.custom.flavor_name; "+N more" links to the Stay AI portal. ----
   assign autoship_count = 2
-  assign autoship_bundle = '96oz Bundle—3+Boxes'
+  assign autoship_bundle = 'Cold Brew On Tap (96oz) - Straight Black'
   assign autoship_next_date = 'July 25, 2025'
-  assign autoship_more = 4
-  assign autoship_items = 'Cold Brew On Tap (96oz)—Blueberry Muffin|Cold Brew On Tap (96oz)—Banana Bread' | split: '|'
+  assign autoship_more = 3
+  assign autoship_items = 'Cold Brew On Tap (96oz) - Straight Black' | split: '|'
 
   if display_tier == 'FREE'
     assign next_tier_label = 'VIP'
@@ -135,7 +136,7 @@
           <li class="flex items-center justify-between !gap-2 font-kurdis-semi-condensed font-bold text-[10px] leading-none text-[#955325]">
             <span>{{ item }}</span>
             {%- if forloop.last and autoship_more > 0 -%}
-              <a href="#" class="hover-underline shrink-0 whitespace-nowrap text-[#955325]">{{ 'customer.dashboard.more_count' | t: count: autoship_more }}</a>
+              <a href="{{ settings.manage_autoship_url }}" class="hover-underline shrink-0 whitespace-nowrap text-[#955325]">{{ 'customer.dashboard.more_count' | t: count: autoship_more }}</a>
             {%- endif -%}
           </li>
         {%- endfor -%}

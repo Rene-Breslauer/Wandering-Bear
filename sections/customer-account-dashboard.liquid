@@ -43,7 +43,8 @@
        data-wb-loading
        data-worker-url="{{ settings.account_worker_url | default: '' }}"
        data-worker-token="{{ settings.account_worker_dev_token | default: '' }}"
-       data-customer-id="{{ customer.id }}">
+       data-customer-id="{{ customer.id }}"
+       data-wb-portal-url="{{ settings.manage_autoship_url }}">
     {%- render 'customer-dashboard', tier: real_tier, autoship_state: real_autoship, credits_formatted: credits_formatted -%}
   </div>
   {%- render 'vite-tag' with 'account.ts' -%}
