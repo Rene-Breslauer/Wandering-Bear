@@ -108,7 +108,13 @@ function renderMembership(m: Membership | null): void {
   // Credit balance + expiry from the worker (balance_formatted is the source of truth;
   // the native metafield is only the pre-hydration fallback). Expiry label is static SSR.
   setText(root, 'credit', m.credits.balance_formatted);
-  setText(root, 'credit-expiry', formatExpiry(m.credits.expires_at));
+  const expiry = formatExpiry(m.credits.expires_at);
+  setText(root, 'credit-expiry', expiry);
+  // No expiry (null → e.g. zero credits): hide the whole "Expires …" line instead of
+  // leaving the SSR fallback date showing.
+  root.querySelectorAll<HTMLElement>('[data-wb-expiry-line]').forEach((el) => {
+    el.style.display = expiry ? '' : 'none';
+  });
 
   // Progress column. progress === null ⇒ top tier (ELITE) — SSR already hides the column.
   if (m.progress) {
@@ -130,14 +136,18 @@ function fillTemplate(el: HTMLElement | null, templateAttr: string, n: number): 
 function renderSubscriptions(subs: Subscriptions | null): void {
   if (!root || !subs) return;
 
-  const card = root.querySelector<HTMLElement>('[data-wb-autoship]');
-  if (!card) return; // FREE layout renders no autoship card.
-
   const first = subs.subscriptions[0];
   const hasAutoship = subs.active_count > 0 && first != null;
-  card.setAttribute('data-wb-autoship-state', hasAutoship ? 'active' : 'none');
-  if (!first) return;
 
+  // Row 1 layout follows the worker's autoship state, independent of tier: show the autoship
+  // card + compact credit when there's an active autoship, else the wide credit block.
+  root.querySelector('[data-wb-row-autoship]')?.toggleAttribute('data-wb-hide', !hasAutoship);
+  root.querySelector('[data-wb-row-nocard]')?.toggleAttribute('data-wb-hide', hasAutoship);
+  if (!hasAutoship || !first) return;
+
+  const card = root.querySelector<HTMLElement>('[data-wb-autoship]');
+  if (!card) return;
+  card.setAttribute('data-wb-autoship-state', 'active');
   setText(card, 'autoship-bundle', first.bundle_title);
   setText(card, 'autoship-date', first.next_order_date ?? undefined);
 

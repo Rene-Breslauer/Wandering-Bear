@@ -71,6 +71,13 @@
     }
 }
 
+/* ---- Worker-driven visibility toggle (account.ts) ------------------------ */
+/* Row 1 renders both variants (autoship card / wide credit); account.ts hides one
+   with data-wb-hide based on the worker's active_count. Unlayered → beats utilities. */
+[data-wb-hide] {
+    display: none;
+}
+
 /* ---- Worker hydration states (account.ts) -------------------------------- */
 /* account.ts sets data-wb-loading (initial) → removed on success; data-wb-error on
    failure. The error note is hidden until the root carries data-wb-error. */
