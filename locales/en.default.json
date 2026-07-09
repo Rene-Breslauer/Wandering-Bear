@@ -107,6 +107,20 @@
       "contact_title": "Still Wandering Around?",
       "contact_subtext": "Let our team help you get where you need to go.",
       "contact_cta": "Contact Us"
+    },
+    "order": {
+      "back_to_account": "Back to Account",
+      "title": "Order {{ name }}",
+      "qty": "Qty: {{ count }}",
+      "subtotal": "Subtotal",
+      "discount": "Discount",
+      "shipping": "Shipping",
+      "tax": "Tax",
+      "total": "Total",
+      "delivery": "Delivery",
+      "track": "Track Order",
+      "tracking": "Tracking",
+      "payment": "Payment"
     }
   },
   "accessibility": {
