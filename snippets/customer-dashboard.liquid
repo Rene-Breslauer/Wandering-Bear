@@ -137,10 +137,8 @@
       {%- if is_cancelled -%}
         {%- render 'customer-form-button', type: 'button', label: t_reactivate, style: 'secondary-gold', class: 'shadow-button !w-full !h-[40px] !text-[15px]' -%}
       {%- else -%}
-        {%- comment -%} Wrapper is the click target; account.ts navigates to subscriptions.portal_url {%- endcomment -%}
-        <div data-wb-autoship-manage>
-          {%- render 'customer-form-button', type: 'button', label: t_manage, style: 'secondary-gold', class: 'shadow-button !w-full !h-[40px] !text-[15px]' -%}
-        </div>
+        {%- comment -%} Manage Upcoming Orders → Stay AI customer portal (settings.manage_autoship_url). The portal auto-detects the logged-in member. {%- endcomment -%}
+        {%- render 'wb-button', style: 'secondary-gold', label: t_manage, link: settings.manage_autoship_url, class: 'shadow-button !w-full !h-[40px] !text-[15px]' -%}
       {%- endif -%}
     </div>
 

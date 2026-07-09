@@ -181,13 +181,8 @@ function renderSubscriptions(subs: Subscriptions | null): void {
     });
   }
 
-  // MANAGE control → Stay AI portal. Hide/disable if no portal_url yet.
-  const manage = card.querySelector<HTMLElement>('[data-wb-autoship-manage]');
-  if (manage) {
-    const href = subs.portal_url || first.manage_url;
-    if (href) manage.addEventListener('click', () => { window.location.href = href; });
-    else manage.setAttribute('data-wb-disabled', '');
-  }
+  // MANAGE control is now a static SSR link to settings.manage_autoship_url (Stay AI
+  // portal) — the worker's portal_url/manage_url come back empty, so no JS wiring here.
 }
 
 async function hydrate(): Promise<void> {
