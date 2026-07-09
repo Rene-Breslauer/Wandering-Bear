@@ -97,7 +97,8 @@
       </div>
       <div class="font-kurdis-semi-condensed font-bold text-[10px] leading-none mt-3 text-dark-gold" data-wb-expiry-line>{{ 'customer.dashboard.expires_label' | t }} <span data-wb-credit-expiry>{{ credits_expiry }}</span></div>
     </div>
-    {%- render 'customer-form-button', type: 'button', label: t_redeem, style: 'secondary-gold', class: 'shrink-0 shadow-button !w-full smd:!w-[335px] !h-[40px] !text-[15px]' -%}
+    {%- comment -%} Redeem = spend credits at checkout (Inveterate's native store-credits field). Button routes to the cart → checkout. {%- endcomment -%}
+    {%- render 'wb-button', style: 'secondary-gold', label: t_redeem, link: routes.cart_url, class: 'shrink-0 shadow-button !w-full smd:!w-[335px] !h-[40px] !text-[15px]' -%}
   </div>
 </div>
 
@@ -153,7 +154,7 @@
           <div class="font-kurdis-semi-condensed font-bold text-[10px] leading-none mt-2 text-dark-gold" data-wb-expiry-line>{{ 'customer.dashboard.expires_label' | t }} <span data-wb-credit-expiry>{{ credits_expiry }}</span></div>
         </div>
       </div>
-      {%- render 'customer-form-button', type: 'button', label: t_redeem, style: 'secondary-gold', class: 'shadow-button !w-full !h-[40px] !text-[15px]' -%}
+      {%- render 'wb-button', style: 'secondary-gold', label: t_redeem, link: routes.cart_url, class: 'shadow-button !w-full !h-[40px] !text-[15px]' -%}
     </div>
   </div>
 </div>
