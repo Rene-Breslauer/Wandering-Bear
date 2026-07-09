@@ -8,7 +8,11 @@
 %}
 
 {% capture slide_styles %}
-    width: calc(100% / 5.8);
+    --width: calc(100% / 5.8);
+    --width-mobile: calc(100% / 2.8);
+
+    --margin-right: 20px;
+    --margin-right-mobile: 10px;
 {% endcapture %}
 
 <div x-data="swiperSlider('{{ active_collection_title }}', '{{ active_collection_accent_text }}','{{ active_collection_handle }}')" class="relative z-1 pt-2 pb-[60px] max-w-[100vw] overflow-x-hidden" style="background-color: {{ color_scheme.settings.background }}">
@@ -60,13 +64,12 @@
         </div>
     </div>
     <div class="swiper multi-collection-slider mt-[40px] md:!-mt-9 max-w-[100vw]">
-        <div class="swiper-wrapper"
-        :class="swiper.slides.length < 5 ? 'justify-center' : ''">
+        <div class="swiper-wrapper">
             {% for product in section.blocks[0].settings.collection.products %}
                 {% liquid
                     assign collection = block.settings.collection
                 %}
-                {% render 'multi-coll-carousel-slide', product: product %}
+                {% render 'multi-coll-carousel-slide', product: product, slide_styles: slide_styles %}
             {% endfor %}
         </div>
         <div class="!hidden md:!flex swiper-button-next group transition-all duration-300" style="right: calc(calc(var(--slide-width) * 0.87) - 18px);">
@@ -77,6 +80,24 @@
         </div>
     </div>
 </div>
+
+{% stylesheet %}
+    .multi-collection-slider .swiper-wrapper {
+        @media (min-width: 768px) {
+            transform: translate3d(12px, 0px, 0px);
+        }
+    }
+
+    .multi-collection-slider .swiper-slide {
+        width: var(--width); 
+        margin-right: var(--margin-right);
+
+        @media (max-width: 768px) {
+            width: var(--width-mobile);
+            margin-right: var(--margin-right-mobile);
+        }
+    }
+{% endstylesheet %}
 
 {% schema %}
     {
