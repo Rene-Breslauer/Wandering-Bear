@@ -105,8 +105,9 @@
       </div>
       <div class="font-kurdis-semi-condensed font-bold text-[10px] leading-none mt-3 text-dark-gold" data-wb-expiry-line>{{ 'customer.dashboard.expires_label' | t }} <span data-wb-credit-expiry>{{ credits_expiry }}</span></div>
     </div>
-    {%- comment -%} Redeem → Inveterate member portal (redeem modal lives there). {%- endcomment -%}
-    {%- render 'wb-button', style: 'secondary-gold', label: t_redeem, link: redeem_url, class: 'shrink-0 shadow-button !w-full smd:!w-[335px] !h-[40px] !text-[15px]' -%}
+    {%- comment -%} Redeem → on-page redemption modal (generate Inveterate code, apply to cart);
+      falls back to the /community/membership portal link when JS is off. {%- endcomment -%}
+    {%- render 'customer-credit-redeem', label: t_redeem, link: redeem_url, balance_formatted: credits_formatted, class: 'shrink-0 shadow-button !w-full smd:!w-[335px] !h-[40px] !text-[15px]' -%}
   </div>
 </div>
 
@@ -166,7 +167,7 @@
           <div class="font-kurdis-semi-condensed font-bold text-[10px] leading-none mt-2 text-dark-gold" data-wb-expiry-line>{{ 'customer.dashboard.expires_label' | t }} <span data-wb-credit-expiry>{{ credits_expiry }}</span></div>
         </div>
       </div>
-      {%- render 'wb-button', style: 'secondary-gold', label: t_redeem, link: redeem_url, class: 'shadow-button !w-full !h-[40px] !text-[15px]' -%}
+      {%- render 'customer-credit-redeem', label: t_redeem, link: redeem_url, balance_formatted: credits_formatted, class: 'shadow-button !w-full !h-[40px] !text-[15px]' -%}
     </div>
   </div>
 </div>
