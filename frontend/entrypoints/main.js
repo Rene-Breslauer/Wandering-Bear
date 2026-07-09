@@ -16,6 +16,7 @@ import '../styles/header.css';
 import '../styles/media-gallery-bundle.css';
 import '../styles/main-product.css';
 import '../styles/products-slider.css';
+import '../styles/multi-coll-carousel.css';
 
 
 

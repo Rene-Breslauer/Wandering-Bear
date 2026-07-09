@@ -28,7 +28,7 @@
     </svg>
     {% if foreground_bg_image != blank %}
         <div class="relative -mt-[10px] md:mt-0 !h-fit order-2 w-3/4 md:w-1/2 max-h-full object-cover md:!absolute z-[1] -left-8 md:left-0 bottom-0 4xl:w-fit 4xl:max-w-[800px]">
-        {% render 'picture', source: foreground_bg_image, class: 'md:!h-full md:!min-h-full object-contain', alt: foreground_bg_image.alt, width: 1920, height: 1080 %}
+        {% render 'picture', source: foreground_bg_image, class: 'md:!h-full md:!min-h-full flex justify-start object-contain !w-auto', alt: foreground_bg_image.alt, width: 1920, height: 1080 %}
         </div>
     {% endif %}
     {% render 'picture', source: background_image, mobile_source: background_image_mobile, class: 'w-full !h-full object-cover !max-w-none absolute inset-0', alt: background_image.alt, width: 1920, height: 1080 %}
@@ -65,9 +65,9 @@
                 {% if subtitle != blank %}
                     <span class="body block !mb-5 max-w-[316px] md:!max-w-full" style="color: {{ color_scheme.settings.foreground }}">{{ subtitle }}</span>
                 {% endif %}
-                <div class="max-w-[316px] w-full md:!max-w-full !font-kurdis-semi-condensed">
+                <div class="max-w-[316px] w-full md:!max-w-full !font-kurdis-semi-condensed pl-2">
                 {% for bullet in bulletpoints %}
-                    <div class="wb-flex gap-2 block !mb-5 items-center w-full">
+                    <div class="wb-flex gap-4 block !mb-5 items-center w-full">
                         {% if bullet.settings.image != blank %}
                             {{ bullet.settings.image | image_url: width: 20 | image_tag: class: '!w-[14px]', alt: bullet.settings.image.alt }}
                         {% endif %}

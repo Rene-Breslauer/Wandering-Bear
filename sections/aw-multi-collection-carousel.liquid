@@ -81,24 +81,6 @@
     </div>
 </div>
 
-{% stylesheet %}
-    .multi-collection-slider .swiper-wrapper {
-        @media (min-width: 768px) {
-            transform: translate3d(12px, 0px, 0px);
-        }
-    }
-
-    .multi-collection-slider .swiper-slide {
-        width: var(--width); 
-        margin-right: var(--margin-right);
-
-        @media (max-width: 768px) {
-            width: var(--width-mobile);
-            margin-right: var(--margin-right-mobile);
-        }
-    }
-{% endstylesheet %}
-
 {% schema %}
     {
         "name": "AW Multi Coll Carousel",
