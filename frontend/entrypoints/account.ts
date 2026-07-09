@@ -127,10 +127,12 @@ function renderMembership(m: Membership | null): void {
   // from the worker. SSR credit balance is the instant fallback until this overwrites it.
 }
 
-/** Fill a localized "{n} …" template ("{n} Active Autoships", "+ {n} more"). */
+/** Fill a localized "__N__ …" template ("__N__ Active Autoships", "+ __N__ more").
+ *  Placeholder is brace-free (__N__, not {n}) — a literal `}` inside a Liquid `{{ }}`
+ *  expression breaks the parser, which failed snippet validation on upload. */
 function fillTemplate(el: HTMLElement | null, templateAttr: string, n: number): string {
   const tpl = el?.getAttribute(templateAttr) ?? '';
-  return tpl.replace('{n}', String(n));
+  return tpl.replace('__N__', String(n));
 }
 
 function renderSubscriptions(subs: Subscriptions | null): void {

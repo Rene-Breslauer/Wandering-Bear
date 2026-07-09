@@ -24,3 +24,6 @@ snippets/vite-tag.liquid
 /CLAUDE.md
 /docs/
 /scripts/figma-pull.sh
+
+# Vite build manifest — not a theme asset (Shopify rejects assets/ subfolders); hashes are baked into vite-tag.liquid
+assets/.vite/
