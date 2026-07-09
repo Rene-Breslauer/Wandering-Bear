@@ -7,6 +7,7 @@ export default (Alpine: typeof Alpine) => {
         selectedProduct: null,
         swiper: null,
         swiperThumbs: null,
+        jsLoaded: false,
 
         _initSwiperThumbs() {
 
@@ -60,13 +61,16 @@ export default (Alpine: typeof Alpine) => {
         },
 
         init() {
+          window.addEventListener('product-loaded', (event: Event) => {
+            this.jsLoaded = (event as CustomEvent).detail.jsLoaded
+          })
+
           window.addEventListener('product-changed', (event: Event) => {
             this.selectedProduct = (event as CustomEvent).detail.product
             this.renderGallery(this.selectedProduct)
           })
 
           this._initSwiper()
-
         },
 
         async renderGallery(product) {
@@ -110,6 +114,7 @@ export default (Alpine: typeof Alpine) => {
               })
 
               mediaWrapper?.classList.remove('opacity-0')
+              this.jsLoaded = true
 
             } catch (error) {
               console.error('error', error)

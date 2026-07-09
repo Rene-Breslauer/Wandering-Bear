@@ -1,7 +1,7 @@
 {% liquid
     assign vip = product.metafields.custom.vip
     assign product_data = product.metafields.custom.product_group.value
-    assign pdp_link = product_data.pdp_link | append: '?variant=' | append: product.selected_or_first_available_variant.id
+    assign pdp_link = product_data.pdp_link | append: '?product=' | append: product.id
 %}
 
 
