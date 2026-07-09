@@ -199,7 +199,8 @@
         <div class="membership-upsell">
           <p class="body font-bold text-espresso mb-1">{{ 'customer.dashboard.upgrade_today' | t }} <span class="font-parslay text-gold">{{ 'customer.dashboard.why_wait' | t }}</span></p>
           <p class="font-kurdis-semi-condensed font-semibold text-[12px] leading-[1.2] text-center mb-3 text-bear-black">{{ 'customer.dashboard.elite_upsell_desc' | t }}</p>
-          {%- render 'wb-button', style: 'secondary-gold', label: t_upgrade, link: membership_url, class: 'shadow-button !w-full smd:!w-[335px] !h-[40px] !text-[15px]' -%}
+          {%- comment -%} Upgrade to Elite = add the $25 Elite product to cart (settings.elite_product), reusing the shared elite add-to-cart snippet. {%- endcomment -%}
+          {%- render 'elite-atc-button', label: t_upgrade, style: 'secondary-gold', class: 'shadow-button !w-full smd:!w-[335px] !h-[40px] !text-[15px]' -%}
         </div>
       </div>
     {%- endunless -%}
