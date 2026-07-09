@@ -338,32 +338,30 @@ export default (Alpine: AlpineType) => {
 
 
         init() {
+            let queryParams = new URLSearchParams(window.location.search)
+            let productId = Number(queryParams.get('product'));
+
             this.bundleProducts = JSON.parse(this.$refs.productObject.textContent);
             this.bundleParentProducts = JSON.parse(this.$refs.bundleParentProducts.textContent);
-            this.selectedProduct = this.bundleProducts[this.selectedProductId];
+            this.selectedProduct = queryParams && productId ? this.bundleProducts[productId] : this.bundleProducts[this.selectedProductId];
 
-            let queryParams = new URLSearchParams(window.location.search)
+            if (productId && (productId !== this.selectedProductId)) {
+              this.selectProduct(productId);
+            } else {
+              this.$nextTick(() => {
+                window.dispatchEvent(new CustomEvent('product-loaded', {
+                  detail: {
+                    jsLoaded: true
+                  },
+                  bubbles: true,
+                  composed: true
+                }));
+              })
+            }
 
             if (this.bundleQty) {
               this.qtyLimit = this.bundleQty;
             }
-
-            // Populate bundle if sent a link with query params
-            queryParams.forEach((value, key) => {
-              if (key === "bundle") {
-                  let [variantId, quantity] = value.split("_")
-                  let parsedQuantity = parseInt(quantity, 10)
-
-                  this.selectedBundleProducts[variantId] = {
-                    productId: variantId,
-                    quantity: parsedQuantity,
-                  }
-                 
-              } else if (key === "bundle_interval") {
-                  this.purchaseOption = value === 'sub' ? 'autoship' : 'one_time';
-              }
-            })
-
             this._setProgressBarPrices();
         },
 
@@ -397,9 +395,12 @@ export default (Alpine: AlpineType) => {
         },
         
         selectProduct(productId) {
+            this._addQueryParam('product', productId);
             this.selectedProduct = this.bundleProducts[productId];
             this._setProgressBarPrices();
-            window.dispatchEvent(new CustomEvent('product-changed', { detail: { product: this.selectedProduct }, bubbles: true, composed: true }));
+            this.$nextTick(() => {
+              window.dispatchEvent(new CustomEvent('product-changed', { detail: { product: this.selectedProduct }, bubbles: true, composed: true }));
+            })
         },
 
         changeFlavorType(type) {

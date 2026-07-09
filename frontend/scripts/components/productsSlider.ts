@@ -21,7 +21,7 @@ export default (Alpine: any) => {
     init() {
       if (!(this.$el instanceof HTMLElement)) return
       if (initialized.has(this.$el)) return
-      if (this.$el.dataset.layout !== 'slider') return
+      if (this.$el?.dataset?.layout !== 'slider') return
 
       const track = this.$el as HTMLElement
       const swiperEl = track.querySelector<HTMLElement>('.products-slider__swiper')
@@ -29,6 +29,10 @@ export default (Alpine: any) => {
 
       const data = track.dataset as ProductsSliderDataset
       const showNavigation = data.showNavigation !== 'false'
+
+      const nextEl = track?.querySelector<HTMLElement>('.products-slider__button-next')
+      const prevEl = track?.querySelector<HTMLElement>('.products-slider__button-prev')
+      const hasNavigation = showNavigation && nextEl && prevEl
 
       new Swiper(swiperEl, {
         modules: [Navigation],
@@ -40,12 +44,11 @@ export default (Alpine: any) => {
         observer: true,
         observeParents: true,
         loop: false,
-        navigation: showNavigation
-          ? {
-              nextEl: track.querySelector<HTMLElement>('.products-slider__button-next'),
-              prevEl: track.querySelector<HTMLElement>('.products-slider__button-prev'),
-            }
-          : undefined,
+        navigation: {
+          enabled: Boolean(hasNavigation),
+          nextEl,
+          prevEl,
+        },
         breakpoints: {
           768: {
             slidesPerView: parseFloat(data.slidesTablet || '2.5'),
