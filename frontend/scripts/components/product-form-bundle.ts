@@ -63,18 +63,40 @@ export default (Alpine: AlpineType) => {
         },
 
         get addToCartText() {
+            if (this.bundleType === '32oz') {
+              if (this.flavorType === 'mix') {
+                return this.canAddToCart ? 'Add to bag' : `Add ${this.qtyLimit} flavors`;
+              }
+
+              return this.bundleSize >= 1 ? 'Add to bag' : 'Add 1 flavor';
+            }
+
             return this.bundleSize >= 1 ? 'Add to bag' : 'Add 1 flavor';
         },
 
+        get canAddToCart() {
+          if (this.bundleType !== '32oz') {
+            return this.bundleSize >= 1;
+          }
+
+          if (this.flavorType === 'single') {
+            return this.bundleSize >= 1;
+          }
+
+          return this.bundleSize === this.qtyLimit;
+        },
+
         get currentSavingsAmount() {
+            if (this.purchaseOption !== 'autoship') {
+                return 0;
+            }
+
             const bundleSize = (this.bundleSize <= 2) ? (this.bundleSize - 1) : 2;
             const originalPrice = this.selectedProduct?.variants[0].price;
             const newSellingPlanPrice = this.selectedProduct?.variants[bundleSize]?.selling_plan_price;
-            const newOtpPrice = this.selectedProduct?.variants[bundleSize]?.price;
             const savingsAmountAutoship = this.bundleSize * (originalPrice - newSellingPlanPrice);
-            const savingsAmountOneTime = this.bundleSize * (originalPrice - newOtpPrice);
 
-            return this.purchaseOption === 'autoship' ? savingsAmountAutoship : savingsAmountOneTime;
+            return savingsAmountAutoship;
         },
 
         get currentSavingsAmountFormatted() {
@@ -188,20 +210,23 @@ export default (Alpine: AlpineType) => {
 
             const price = this.purchaseOption === 'autoship' ? autoshipPrice : otpPrice;
 
-
-            if (discountType === 'Percentage') {            
+            if (discountType === 'Percentage') {
               autoshipSavings = 100 - (this.selectedProduct?.variants[index].selling_plan_price / compareAtPrice) * 100;
               otpSavings = 100 - (this.selectedProduct?.variants[index].price / compareAtPrice) * 100;
             } else {
-              autoshipSavings = compareAtPrice - this.selectedProduct?.variants[index].price
-              otpSavings = compareAtPrice - this.selectedProduct?.variants[index].price
+              autoshipSavings = compareAtPrice - autoshipPrice;
+              otpSavings = compareAtPrice - otpPrice;
             }
 
             const savings = this.purchaseOption === 'autoship' ? autoshipSavings : otpSavings;
             const savingsFormatted = discountType === 'Percentage' ? Math.round(savings) + '% off' : this._formatPrice(savings, { withoutCents: true }) + ' off';
 
-            savingsEl.textContent = savings > 0 ? savingsFormatted : ' '
-            priceEl.textContent = this._formatPrice(price)
+            if (savingsEl) {
+              savingsEl.textContent = savings > 0 ? savingsFormatted : ' ';
+            }
+            if (priceEl) {
+              priceEl.textContent = this._formatPrice(price);
+            }
           })
         },
 
@@ -338,6 +363,7 @@ export default (Alpine: AlpineType) => {
               }
             })
 
+            this._setProgressBarPrices();
         },
 
         onPurchaseOptionChange() {
@@ -371,6 +397,7 @@ export default (Alpine: AlpineType) => {
         
         selectProduct(productId) {
             this.selectedProduct = this.bundleProducts[productId];
+            this._setProgressBarPrices();
             window.dispatchEvent(new CustomEvent('product-changed', { detail: { product: this.selectedProduct }, bubbles: true, composed: true }));
         },
 
@@ -420,6 +447,10 @@ export default (Alpine: AlpineType) => {
         },
 
         async addToCart() {
+            if (!this.canAddToCart || this.loading) {
+              return;
+            }
+
             this.loading = true;
 
             let guid = this._createGuid();

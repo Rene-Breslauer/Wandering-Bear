@@ -53,7 +53,7 @@
         echo ' custom-color '
       endif
     endif
-    if block_settings.font_family != blank
+    if block_settings.font_family != blank or block_settings.font_family_mobile != blank
       echo ' text-block--font-family-override '
     endif
     if block_settings.background
@@ -74,6 +74,7 @@
     {% render 'spacing-style', settings: block_settings %}
     {% render 'typography-style', settings: block_settings %}
     {% if block_settings.font_family != blank %}--font-family-override: {{ block_settings.font_family }};{% endif %}
+    {% if block_settings.font_family_mobile != blank %}--font-family-override-mobile: {{ block_settings.font_family_mobile }};{% endif %}
     --width: {{ text_width }};
     --max-width: var(--max-width--{{ type }}-{{ block_settings.max_width }});
     {% if text_width == "100%" %}
@@ -349,6 +350,10 @@
       text-transform: var(--text-transform-mobile, var(--text-transform));
       text-wrap: var(--text-wrap-mobile, var(--text-wrap));
       color: var(--color-mobile, var(--color));
+    }
+
+    .text-block--font-family-override > * {
+      font-family: var(--font-family-override-mobile, var(--font-family-override));
     }
   }
 {% endstylesheet %}

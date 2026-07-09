@@ -5,10 +5,12 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
+import 'overlayscrollbars/overlayscrollbars.css';
 
 import '../styles/typography.css';
 import '../styles/colors.css';
 import '../styles/components.css';
+import '../styles/account.css';
 import '../styles/multi-collection-slider.css';
 import '../styles/divider.css';
 import '../styles/footer.css';
@@ -40,12 +42,15 @@ const init = async () => {
     const { default: Accordion } = await import("~/scripts/components/accordion")
     const { default: Footer } = await import("~/scripts/components/footer")
     const { default: Modal } = await import("~/scripts/components/modal")
+    const { default: BackInStock } = await import("~/scripts/components/back-in-stock")
+    const { default: EliteAtc } = await import("~/scripts/components/elite-atc")
     const { default: DiagramToggle } = await import("~/scripts/components/diagramToggle")
     const { default: ProductForm } = await import("~/scripts/components/product-form")
     const { default: HowToMix } = await import("~/scripts/components/how-to-mix")
     const { default: WaysToEnjoy } = await import("~/scripts/components/ways-to-enjoy")
     const { default: ProductValueProps } = await import("~/scripts/components/productValueProps")
-    const { default: registerProductsSlider } = await import("~/scripts/components/productsSlider")
+    const { default: ProductsSlider } = await import("~/scripts/components/productsSlider")
+    const { default: OverlayScrollbar } = await import("~/scripts/components/overlayScrollbar")
 
     Alpine.plugin(morph)
 
@@ -59,14 +64,17 @@ const init = async () => {
     Alpine.plugin(Accordion)
     Alpine.plugin(Footer)
     Alpine.plugin(Modal)
+    Alpine.plugin(BackInStock)
+    Alpine.plugin(EliteAtc)
     Alpine.plugin(DiagramToggle)
     Alpine.plugin(ProductForm)
     Alpine.plugin(HowToMix)
     Alpine.plugin(WaysToEnjoy)
     Alpine.plugin(ProductValueProps)
+    Alpine.plugin(ProductsSlider)
+    Alpine.plugin(OverlayScrollbar)
 
     Alpine.start()
-    registerProductsSlider()
     window.Alpine = Alpine
 }
 
@@ -75,4 +83,5 @@ document.addEventListener("mousemove", init, { once: true })
 document.addEventListener("scroll", init, { once: true })
 document.addEventListener("touchstart", init, { once: true })
 document.addEventListener("keydown", init, { once: true })
+document.addEventListener("DOMContentLoaded", init, { once: true })
 

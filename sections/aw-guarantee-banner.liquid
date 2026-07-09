@@ -13,7 +13,7 @@
 <div class="wb-flex flex-col lg:!flex-row relative" style="background-color: {{ background_color }}">
     {% if image != blank %}
         <div class="wb-flex w-full lg:!w-1/2 relative items-center justify-center">
-            <div class="w-full h-full wb-flex items-stretch justify-stretch">
+            <div class="w-full h-full wb-flex items-stretch justify-stretch lg:[&_picture]:w-full">
               {% render 'picture', source: image, class: '!w-[100vw] lg:!w-auto !h-auto object-cover !min-h-full !min-w-full ', alt: image.alt, width: 1920, height: 1080, preload: 'lazy', loading: 'lazy' %}
             </div>
             {{ badge | image_url: width: 100 | image_tag: class: 'absolute z-[2] -bottom-10 lg:!bottom-auto lg:-right-10 !w-[188px] !h-auto', loading: 'eager', preload: 'eager' }}
@@ -22,13 +22,13 @@
     <div class="wb-flex justify-start items-center w-full lg:!w-1/2" style="color: {{ text_color }}">
         <div class="wb-flex flex-col gap-1.5! max-w-full w-1/2 py-[43px] px-[30px] md:!px-[77px] w-full text-center lg:!text-left lg:max-w-[645px]">
         {% if title != blank %}
-            <span class="h2 text-[28px]/none! font-(family-name:--font-gothic_condensed)! font-extrabold! md:font-(family-name:--font-kurdis)! md:text-[25px]/none!{% if subtitle == blank and description != blank %} mb-4{% endif %}" style="color: {{ text_color }}">{{ title }}</span>
+            <span class="h2 text-[28px]/none! font-(family-name:--font-gothic_condensed)! font-extrabold! text-[#F2E6DC] md:font-(family-name:--font-kurdis)! md:text-[25px]/none!{% if subtitle == blank and description != blank %} mb-4{% endif %}" style="color: {{ text_color }}">{{ title }}</span>
         {% endif %}
         {% if subtitle != blank %}
-            <span class="h3 text-[20px]/none! font-extrabold! font-(family-name:--font-gothic_condensed)! md:text-base/none!{% if description != blank %} mb-4{% endif %}" style="color: {{ text_color }}">{{ subtitle }}</span>
+            <span class="h3 text-[20px]/none! font-extrabold! font-(family-name:--font-gothic_condensed)! text-[#F2E6DC] md:text-base/none!{% if description != blank %} mb-4{% endif %}" style="color: {{ text_color }}">{{ subtitle }}</span>
         {% endif %}
         {% if description != blank %}
-            <span class="body font-(family-name:--font-kurdis)!" style="color: {{ text_color }}">{{ description }}</span>
+            <span class="body font-(family-name:--font-kurdis)! text-[#F2E6DC]" style="color: {{ text_color }}">{{ description }}</span>
         {% endif %}
         </div>
     </div>

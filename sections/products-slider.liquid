@@ -71,7 +71,7 @@
 
   assign inner_width_class = 'w-full'
   if section_width == 'page-width'
-    assign inner_width_class = 'container mx-auto max-w-[1096px]'
+    assign inner_width_class = 'container mx-auto max-w-[1092px]'
   endif
 %}
 
@@ -142,6 +142,7 @@
     {% else %}
       <div
         class="products-slider__track relative z-[1] w-full max-w-[100vw] overflow-x-hidden"
+        x-data="productsSlider"
         data-products-slider
         data-layout="{{ layout_type }}"
         data-slides-mobile="{{ section_settings.slides_per_view_mobile }}"

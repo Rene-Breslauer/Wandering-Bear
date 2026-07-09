@@ -19,6 +19,7 @@
     --color-espresso: #431A03;
     --color-espresso/100: #431A03/100%;
     --color-cream: #F7F7F7/100%;
+    --color-cream-200: #F2E6DC/100%;
     --color-kraft: #805C33/100%;
     --color-foam: #FEF8F3/100%;
     --color-dark-foam: #F9F3ED/100%;
@@ -32,6 +33,11 @@
     
     .wb-flex {
         display: flex;
+    }
+
+    html:has(body.no-scroll),
+    body.no-scroll {
+        overflow: hidden;
     }
 }
 

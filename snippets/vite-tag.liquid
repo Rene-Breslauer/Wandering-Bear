@@ -6,6 +6,7 @@
   assign entry = entry | default: vite-tag
   assign path = entry | replace: '~/', '../' | replace: '@/', '../'
 %}
+<<<<<<< HEAD
 {% if path == "/frontend/entrypoints/main.css" or path == "main.css" %}
   {{ 'wb-main.BRUyQoAa.css' | asset_url | stylesheet_tag: preload: preload_stylesheet }}
 {% elsif path == "/frontend/entrypoints/main.js" or path == "main.js" %}
@@ -14,4 +15,13 @@
   <link rel="modulepreload" href="{{ 'wb-navigation.DYsn27oD.js' | asset_url }}" crossorigin="anonymous">
   <link rel="modulepreload" href="{{ 'wb-swiper-core.D7W3CLDJ.js' | asset_url }}" crossorigin="anonymous">
   {{ 'wb-main.CVZJBndv.css' | asset_url | stylesheet_tag: preload: preload_stylesheet }}
+=======
+{% if path == "/frontend/entrypoints/account.ts" or path == "account.ts" %}
+  <script src="{{ 'wb-account.DNMYo5zs.js' | asset_url }}" type="module" crossorigin="anonymous"></script>
+{% elsif path == "/frontend/entrypoints/main.css" or path == "main.css" %}
+  {{ 'wb-main.HxMCP5SQ.css' | asset_url | stylesheet_tag: preload: preload_stylesheet }}
+{% elsif path == "/frontend/entrypoints/main.js" or path == "main.js" %}
+  <script src="{{ 'wb-main.BvjbBH8c.js' | asset_url }}" type="module" crossorigin="anonymous"></script>
+  {{ 'wb-main.l9gImqqO.css' | asset_url | stylesheet_tag: preload: preload_stylesheet }}
+>>>>>>> main
 {% endif %}

@@ -80,7 +80,7 @@
             data-index="{{ diagram_item_index }}">
                 {{ block.settings.icon | image_url: width: 100 | image_tag: class: icon_class, alt: block.settings.title }}
                 <div class="wb-flex flex-col gap-0.5 md:gap-1">
-                    <span class="h2 text-[20px] uppercase md:text-[22px]">{{ block.settings.title }}</span>
+                    <span class="h2 text-[20px]! uppercase">{{ block.settings.title }}</span>
                     <span class="body">{{ block.settings.description }}</span>
                 </div>
             </div>
@@ -92,10 +92,10 @@
     {% if background_image != blank %}
         {% render 'picture', source: background_image, class: 'w-full !h-full object-cover !max-w-none absolute inset-0 md:!-top-[77px]', alt: background_image.alt, width: 1920, height: 1080, preload: 'eager', loading: 'eager' %}
     {% endif %}
-   <div class="wb-flex flex-col mx-auto relative z-[2]">
+   <div class="wb-flex flex-col mx-auto relative z-1">
     {% if title_type == 'image' %}
         {% if title_image != blank %}
-            <div class="max-w-[442px] w-full mx-auto">
+            <div class="max-w-[300px] md:max-w-[442px] w-full mx-auto">
                 {% render 'title-image', image: title_image, image_mobile: title_image_mobile, alt: title_alt, class: 'w-full max-h-full object-contain' %}
             </div>
         {% endif %}
@@ -146,7 +146,7 @@
 
     {{ diagram_content }}
         {% if diagram_image != blank %}
-            <div class="max-w-[511px] md:w-[40vw]! mx-auto lg:w-[34vw]! xl:w-[22vw]!" x-ref="diagramImage">
+            <div class="max-w-[284px] -mt-3.5 sm:mt-0 sm:max-w-[511px] md:w-[40vw]! mx-auto lg:w-[34vw]! xl:w-[22vw]!" x-ref="diagramImage">
                 <picture>
                     <source srcset="{{ diagram_image | image_url: width: 1920 }}" media="(min-width: 1920px)">
                     <source srcset="{{ diagram_image | image_url: width: 1440 }}" media="(min-width: 1440px)">
