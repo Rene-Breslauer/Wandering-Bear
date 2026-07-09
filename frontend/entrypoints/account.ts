@@ -195,7 +195,7 @@ function renderSubscriptions(subs: Subscriptions | null): void {
       row.appendChild(title);
       if (i === shown.length - 1 && more > 0) {
         const link = document.createElement('a');
-        link.href = portalUrl || subs.portal_url || first.manage_url || '#';
+        link.href = subs.portal_url || portalUrl || first.manage_url || '#';
         link.className = 'hover-underline shrink-0 whitespace-nowrap text-[#955325]';
         link.textContent = moreLabel;
         row.appendChild(link);
@@ -204,8 +204,11 @@ function renderSubscriptions(subs: Subscriptions | null): void {
     });
   }
 
-  // MANAGE control is now a static SSR link to settings.manage_autoship_url (Stay AI
-  // portal) — the worker's portal_url/manage_url come back empty, so no JS wiring here.
+  // MANAGE control → per-customer Stay AI portal from the worker's portal_url (Stay AI
+  // generate-portal-link token). Overrides the SSR base href (settings.manage_autoship_url,
+  // which auto-detects the logged-in member); falls back to it when portal_url is empty.
+  const manage = card.querySelector<HTMLAnchorElement>('[data-wb-autoship-manage] a');
+  if (manage && subs.portal_url) manage.href = subs.portal_url;
 }
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
