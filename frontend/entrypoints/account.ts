@@ -117,6 +117,14 @@ function formatExpiry(iso: string | null): string | null {
   return m ? `${m[2]}/${m[3]}/${m[1]}` : null;
 }
 
+/** Collapse a duplicated worker title ("A—A" → "A"). The worker builds titles as
+ *  `headline—<part>`; for some products (e.g. the 96oz bundle) both halves are identical.
+ *  Only collapses EXACT-equal halves, so legit "headline—variant" titles are untouched. */
+function dedupeTitle(t: string): string {
+  const parts = t.split('—');
+  return parts.length === 2 && parts[0].trim() === parts[1].trim() ? parts[0].trim() : t;
+}
+
 /** Set textContent on every matching hook, skipping empty values. */
 function setText(scope: ParentNode, hook: string, value: string | null | undefined): void {
   if (value == null || value === '') return;
@@ -172,7 +180,7 @@ function renderSubscriptions(subs: Subscriptions | null): void {
   const card = root.querySelector<HTMLElement>('[data-wb-autoship]');
   if (!card) return;
   card.setAttribute('data-wb-autoship-state', 'active');
-  setText(card, 'autoship-bundle', first.bundle_title);
+  setText(card, 'autoship-bundle', dedupeTitle(first.bundle_title));
   setText(card, 'autoship-date', first.next_order_date ?? undefined);
 
   // Active-count badge — localized "{n} Active Autoships".
@@ -191,7 +199,7 @@ function renderSubscriptions(subs: Subscriptions | null): void {
       row.className =
         'flex items-center justify-between !gap-2 font-kurdis-semi-condensed font-bold text-[10px] leading-none text-[#955325]';
       const title = document.createElement('span');
-      title.textContent = li.title;
+      title.textContent = dedupeTitle(li.title);
       row.appendChild(title);
       if (i === shown.length - 1 && more > 0) {
         const link = document.createElement('a');
