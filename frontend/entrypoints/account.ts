@@ -105,9 +105,8 @@ function setText(scope: ParentNode, hook: string, value: string | null | undefin
 function renderMembership(m: Membership | null): void {
   if (!root || !m) return;
 
-  // Credit balance + expiry from the worker (balance_formatted is the source of truth;
-  // the native metafield is only the pre-hydration fallback). Expiry label is static SSR.
-  setText(root, 'credit', m.credits.balance_formatted);
+  // Credit BALANCE is native SSR (Inveterate `balance` metafield) — not hydrated here.
+  // Only the expiry comes from the worker (there is no native credit-expiry metafield).
   const expiry = formatExpiry(m.credits.expires_at);
   setText(root, 'credit-expiry', expiry);
   // No expiry (null → e.g. zero credits): hide the whole "Expires …" line instead of

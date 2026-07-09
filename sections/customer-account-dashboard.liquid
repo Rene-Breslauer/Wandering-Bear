@@ -13,8 +13,11 @@
   assign membership_tier = membership_tier | strip
   assign real_tier = membership_tier | default: 'FREE'
 
-  assign credits_earned = customer.metafields.inveterate.credits_earned | default: 0
-  assign credits_formatted = credits_earned | money_without_trailing_zeros
+  # "YOUR CREDIT" = redeemable store-credit balance (Inveterate `balance`, NOT `credits_earned`
+  # which is lifetime total). Native metafield — no worker call. number_decimal is in dollars,
+  # so ×100 → cents for the money filter. Ref: help.inveterate.com/dev/.../customer-metafields.
+  assign credit_balance = customer.metafields.inveterate.balance | default: 0
+  assign credits_formatted = credit_balance | times: 100 | money
 
   # TODO worker (/apps/wb/subscriptions): real autoship state (none|active|cancelled).
   # Mock: members have an active autoship, FREE has none.
