@@ -12,6 +12,11 @@
   assign credits_formatted = credits_earned | money_without_trailing_zeros
   assign credits_expiry = '01/01/2028'
   assign t_redeem = 'customer.dashboard.redeem_credits' | t
+  # Items in cart → checkout (Inveterate's native "Store credits to use" field); empty → cart.
+  assign redeem_url = routes.cart_url
+  if cart.item_count > 0
+    assign redeem_url = '/checkout'
+  endif
 -%}
 
 <section class="w-full" style="background-color: var(--color-brand-beige);">
@@ -39,7 +44,7 @@
         </div>
         <div class="font-kurdis-semi-condensed font-bold text-[10px] leading-none mt-3 text-dark-gold" data-wb-expiry-line>{{ 'customer.dashboard.expires_label' | t }} <span data-wb-credit-expiry>{{ credits_expiry }}</span></div>
       </div>
-      {%- render 'wb-button', style: 'secondary-gold', label: t_redeem, link: routes.cart_url, class: 'shrink-0 shadow-button !w-full smd:!w-[335px] !h-[40px] !text-[15px]' -%}
+      {%- render 'wb-button', style: 'secondary-gold', label: t_redeem, link: redeem_url, class: 'shrink-0 shadow-button !w-full smd:!w-[335px] !h-[40px] !text-[15px]' -%}
     </div>
 
     {%- comment -%} ---------- Transaction history (worker /credits, filled by account.ts) ---------- {%- endcomment -%}

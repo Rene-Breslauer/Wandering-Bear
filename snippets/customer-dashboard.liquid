@@ -55,6 +55,12 @@
   assign t_manage = 'customer.dashboard.manage_orders' | t
   assign t_reactivate = 'customer.dashboard.reactivate' | t
   assign t_redeem = 'customer.dashboard.redeem_credits' | t
+  # Redeem = spend credits at checkout (Inveterate's native "Store credits to use" field).
+  # With items in cart → straight to checkout; empty cart → cart page to build an order first.
+  assign redeem_url = routes.cart_url
+  if cart.item_count > 0
+    assign redeem_url = '/checkout'
+  endif
   assign t_upgrade = 'customer.dashboard.upgrade_elite_cta' | t
   assign t_contact = 'customer.dashboard.contact_cta' | t
   assign t_shop = 'customer.dashboard.no_orders_cta' | t
@@ -97,8 +103,8 @@
       </div>
       <div class="font-kurdis-semi-condensed font-bold text-[10px] leading-none mt-3 text-dark-gold" data-wb-expiry-line>{{ 'customer.dashboard.expires_label' | t }} <span data-wb-credit-expiry>{{ credits_expiry }}</span></div>
     </div>
-    {%- comment -%} Redeem = spend credits at checkout (Inveterate's native store-credits field). Button routes to the cart → checkout. {%- endcomment -%}
-    {%- render 'wb-button', style: 'secondary-gold', label: t_redeem, link: routes.cart_url, class: 'shrink-0 shadow-button !w-full smd:!w-[335px] !h-[40px] !text-[15px]' -%}
+    {%- comment -%} Redeem = spend credits at checkout (Inveterate's native store-credits field). With items → checkout, else cart. {%- endcomment -%}
+    {%- render 'wb-button', style: 'secondary-gold', label: t_redeem, link: redeem_url, class: 'shrink-0 shadow-button !w-full smd:!w-[335px] !h-[40px] !text-[15px]' -%}
   </div>
 </div>
 
@@ -152,7 +158,7 @@
           <div class="font-kurdis-semi-condensed font-bold text-[10px] leading-none mt-2 text-dark-gold" data-wb-expiry-line>{{ 'customer.dashboard.expires_label' | t }} <span data-wb-credit-expiry>{{ credits_expiry }}</span></div>
         </div>
       </div>
-      {%- render 'wb-button', style: 'secondary-gold', label: t_redeem, link: routes.cart_url, class: 'shadow-button !w-full !h-[40px] !text-[15px]' -%}
+      {%- render 'wb-button', style: 'secondary-gold', label: t_redeem, link: redeem_url, class: 'shadow-button !w-full !h-[40px] !text-[15px]' -%}
     </div>
   </div>
 </div>
