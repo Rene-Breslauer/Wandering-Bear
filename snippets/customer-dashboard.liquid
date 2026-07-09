@@ -50,6 +50,11 @@
   assign card = 'rounded-[10px] bg-foam shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]'
   assign membership_url = routes.root_url | append: '/pages/membership'
 
+  # Stay AI customer portal for the "Manage Upcoming Orders" / "+N more" links. Defaults to the
+  # App Proxy path /apps/retextion (auto-detects the logged-in member) so the link always works
+  # even before the merchant fills settings.manage_autoship_url; a set value overrides it.
+  assign manage_url = settings.manage_autoship_url | default: '/apps/retextion'
+
   # t filter is not evaluated inside render arguments — translate first.
   assign t_manage = 'customer.dashboard.manage_orders' | t
   assign t_reactivate = 'customer.dashboard.reactivate' | t
@@ -133,7 +138,7 @@
           <li class="flex items-center justify-between !gap-2 font-kurdis-semi-condensed font-bold text-[10px] leading-none text-[#955325]">
             <span>{{ item }}</span>
             {%- if forloop.last and autoship_more > 0 -%}
-              <a href="{{ settings.manage_autoship_url }}" class="hover-underline shrink-0 whitespace-nowrap text-[#955325]">{{ 'customer.dashboard.more_count' | t: count: autoship_more }}</a>
+              <a href="{{ manage_url }}" class="hover-underline shrink-0 whitespace-nowrap text-[#955325]">{{ 'customer.dashboard.more_count' | t: count: autoship_more }}</a>
             {%- endif -%}
           </li>
           {%- endif -%}
@@ -142,11 +147,11 @@
       {%- if is_cancelled -%}
         {%- render 'customer-form-button', type: 'button', label: t_reactivate, style: 'secondary-gold', class: 'shadow-button !w-full !h-[40px] !text-[15px]' -%}
       {%- else -%}
-        {%- comment -%} Manage → Stay AI portal. SSR href = settings.manage_autoship_url (base App Proxy,
-          auto-detects the logged-in member); account.ts overrides it with the worker's per-customer
-          portal_url (Stay AI generate-portal-link token) when present. {%- endcomment -%}
+        {%- comment -%} Manage → Stay AI portal. SSR href = manage_url (settings.manage_autoship_url,
+          defaulted to /apps/retextion, which auto-detects the logged-in member); account.ts overrides
+          it with the worker's per-customer portal_url (Stay AI generate-portal-link token) when present. {%- endcomment -%}
         <div data-wb-autoship-manage>
-          {%- render 'wb-button', style: 'secondary-gold', label: t_manage, link: settings.manage_autoship_url, class: 'shadow-button !w-full !h-[40px] !text-[15px]' -%}
+          {%- render 'wb-button', style: 'secondary-gold', label: t_manage, link: manage_url, class: 'shadow-button !w-full !h-[40px] !text-[15px]' -%}
         </div>
       {%- endif -%}
     </div>
