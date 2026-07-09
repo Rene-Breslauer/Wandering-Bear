@@ -13,7 +13,7 @@
 {%- enddoc -%}
 
 <div class="wb-redeem-root"
-     x-data="creditRedemption({ balanceFormatted: {{ balance_formatted | default: '' | json }}, currency: {{ shop.currency | json }} })"
+     x-data="creditRedemption({ balanceFormatted: '{{ balance_formatted | default: '' }}', currency: '{{ shop.currency }}' })"
      @click.prevent="open()"
      @keydown.escape.window="isOpen && close()">
 
