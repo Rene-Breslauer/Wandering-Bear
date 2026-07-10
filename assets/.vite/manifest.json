@@ -15,8 +15,8 @@
     "file": "wb-events.CKdcfN1K.js",
     "name": "events"
   },
-  "_wb-swiper.DjTz7BiD.js": {
-    "file": "wb-swiper.DjTz7BiD.js",
+  "_wb-swiper.DKzcduta.js": {
+    "file": "wb-swiper.DKzcduta.js",
     "name": "swiper",
     "imports": [
       "frontend/entrypoints/main.js"
@@ -29,7 +29,7 @@
     "isEntry": true
   },
   "frontend/entrypoints/main.css": {
-    "file": "wb-main.C8KOeYX8.css",
+    "file": "wb-main.B2rczlJ2.css",
     "name": "main",
     "names": [
       "main.css"
@@ -38,7 +38,7 @@
     "isEntry": true
   },
   "frontend/entrypoints/main.js": {
-    "file": "wb-main.Ds0DW59d.js",
+    "file": "wb-main._LpzKxaa.js",
     "name": "main",
     "src": "frontend/entrypoints/main.js",
     "isEntry": true,
@@ -121,13 +121,13 @@
     "isDynamicEntry": true
   },
   "frontend/scripts/components/media-gallery-bundle.ts": {
-    "file": "wb-media-gallery-bundle.DKBc2OJE.js",
+    "file": "wb-media-gallery-bundle.CUhW8FQy.js",
     "name": "media-gallery-bundle",
     "src": "frontend/scripts/components/media-gallery-bundle.ts",
     "isDynamicEntry": true,
     "imports": [
       "frontend/entrypoints/main.js",
-      "_wb-swiper.DjTz7BiD.js"
+      "_wb-swiper.DKzcduta.js"
     ]
   },
   "frontend/scripts/components/modal.ts": {
@@ -167,23 +167,23 @@
     "isDynamicEntry": true
   },
   "frontend/scripts/components/productsSlider.ts": {
-    "file": "wb-productsSlider.CnmhpG-9.js",
+    "file": "wb-productsSlider.CeXYU2Dd.js",
     "name": "productsSlider",
     "src": "frontend/scripts/components/productsSlider.ts",
     "isDynamicEntry": true,
     "imports": [
       "frontend/entrypoints/main.js",
-      "_wb-swiper.DjTz7BiD.js"
+      "_wb-swiper.DKzcduta.js"
     ]
   },
   "frontend/scripts/components/swiperSlider.ts": {
-    "file": "wb-swiperSlider.Cr33D7IQ.js",
+    "file": "wb-swiperSlider.nw3eTtml.js",
     "name": "swiperSlider",
     "src": "frontend/scripts/components/swiperSlider.ts",
     "isDynamicEntry": true,
     "imports": [
       "frontend/entrypoints/main.js",
-      "_wb-swiper.DjTz7BiD.js"
+      "_wb-swiper.DKzcduta.js"
     ]
   },
   "frontend/scripts/components/tooltip.ts": {

@@ -20,8 +20,41 @@ import '../styles/main-product.css';
 import '../styles/products-slider.css';
 import '../styles/multi-coll-carousel.css';
 
-
 export {}
+
+const positionBadges = () => {
+    document.querySelectorAll('[data-anchor-target]').forEach((badge) => {
+      const anchor = document.querySelector(
+        `[data-anchor="${badge.dataset.anchorTarget}"]`
+      )
+  
+      if (!anchor || !badge.offsetParent) return
+  
+      const anchorRect = anchor.getBoundingClientRect()
+      const parentRect = badge.offsetParent.getBoundingClientRect()
+      const mobile = window.innerWidth < 1024
+  
+      const x = Number(
+        mobile
+          ? badge.dataset.anchorXMobile || badge.dataset.anchorX || 0
+          : badge.dataset.anchorX || 0
+      )
+  
+      const y = Number(
+        mobile
+          ? badge.dataset.anchorYMobile || badge.dataset.anchorY || 0
+          : badge.dataset.anchorY || 0
+      )
+  
+      badge.style.left = `${anchorRect.right - parentRect.left + x}px`
+      badge.style.top = `${anchorRect.bottom - parentRect.top + y}px`
+      badge.style.opacity = '1'
+    })
+  }
+  
+  document.addEventListener('DOMContentLoaded', positionBadges)
+  window.addEventListener('load', positionBadges)
+  window.addEventListener('resize', positionBadges)
 
 let loaded = false
 
