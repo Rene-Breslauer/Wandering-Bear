@@ -99,7 +99,7 @@
         "collection_tile_RwjxDn": {
           "type": "collection_tile",
           "settings": {
-            "url": "",
+            "url": "shopify://collections/test-single-serve-12-cartons-11oz",
             "image": "shopify://shop_images/wb-col-3.png",
             "hover_image": "shopify://shop_images/Mask_group-2_82320e84-9058-4f03-a6c3-d62f181ad141.png",
             "image_mobile": "shopify://shop_images/MobileTile_3_Text.png",
