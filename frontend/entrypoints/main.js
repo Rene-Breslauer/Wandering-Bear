@@ -83,6 +83,7 @@ const init = async () => {
     const { default: ProductValueProps } = await import("~/scripts/components/productValueProps")
     const { default: ProductsSlider } = await import("~/scripts/components/productsSlider")
     const { default: OverlayScrollbar } = await import("~/scripts/components/overlayScrollbar")
+    const { default: Cart } = await import("~/scripts/components/cart")
 
     Alpine.plugin(morph)
 
@@ -105,6 +106,7 @@ const init = async () => {
     Alpine.plugin(ProductValueProps)
     Alpine.plugin(ProductsSlider)
     Alpine.plugin(OverlayScrollbar)
+    Alpine.plugin(Cart)
 
     Alpine.start()
     window.Alpine = Alpine

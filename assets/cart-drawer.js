@@ -91,6 +91,7 @@ class CartDrawerComponent extends DialogComponent {
   open() {
     this.showDialog();
 
+    document.dispatchEvent(new CustomEvent('cart-open'));
     /**
      * Close cart drawer when installments CTA is clicked to avoid overlapping dialogs
      */

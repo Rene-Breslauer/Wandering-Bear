@@ -190,6 +190,7 @@
       {
         "id": {{ bundle_product.id | json }},
         "handle": {{ bundle_product.handle | json }},
+        "bundle_type": "{{- bundle_product.metafields.custom.product_group.value.display_name -}}",
         "variant_id": {{ bundle_parent_variant.id | json }}{% if bundle_parent_variant.selling_plan_allocations.size > 0 %},{% endif %}
         {% for allocation in bundle_parent_variant.selling_plan_allocations %}
           {%- assign selling_plan_name = allocation.selling_plan.name -%}
@@ -209,6 +210,9 @@
             "id": {{- child_product.id -}},
             "title": "{{- child_product.title -}}",
             "handle": "{{- child_product.handle -}}",
+            "flavor_name": "{{- child_product.metafields.custom.flavor_name -}}",
+            "bundle_name": "{{- child_product.metafields.custom.product_group.value.display_name | handleize -}}",
+            "collection_handle": "{{- child_product.metafields.custom.flavor_collection.value.handle -}}",
             "variants": {
                 {% for child_variant in child_product.variants %}
                     "{{- forloop.index0 -}}": {
