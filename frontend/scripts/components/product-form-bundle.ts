@@ -110,8 +110,6 @@ export default (Alpine: AlpineType) => {
           } else {
             return this.bundleParentProducts[this._mapToBundle()];
           }
-          // const index = (this.bundleSize <= 2) ? (this.bundleSize - 1) : 2;
-          // return this.bundleParentProducts[index]
         },
         
         get assignedBundleProducts() {
@@ -467,7 +465,6 @@ export default (Alpine: AlpineType) => {
             let bundleName = ''
 
             this.assignedBundleProducts.forEach((item) => {
-                console.log('item',item);
                 collectionHandle = item.collectionHandle;
                 bundleName = item.bundleName;
 
@@ -484,6 +481,8 @@ export default (Alpine: AlpineType) => {
                 }
                 bundleCart.items.push(bundleItem);
             })
+
+            console.log('parentProduct', this.parentProduct);
 
             let bundleParent = {
               id: this.parentProduct.variant_id,
@@ -519,16 +518,18 @@ export default (Alpine: AlpineType) => {
               return
             }
           
-            const cart = await fetch('/cart.js').then(r => r.json())
-          
-            document.dispatchEvent(
-              new CartAddEvent(cart, 'bundle-atc', {
-                source: 'bundle-atc',
-                itemCount: cart.item_count,
-                autoOpen: true,
-              })
-            )
+            const cart = await fetch('/cart.js').then((response) => response.json())
 
+            document.dispatchEvent(
+              new CartAddEvent(
+                {},
+                'bundle-atc',
+                {
+                  resource: cart,
+                }
+              )
+            )
+                      
             this.selectedBundleProducts = {};
 
             this.loading = false;

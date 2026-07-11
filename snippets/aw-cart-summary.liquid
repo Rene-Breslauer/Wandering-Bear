@@ -60,6 +60,16 @@
         </span>
     </div>
     <div class="absolute bottom-0 left-0 right-0 w-full h-[1px] right-0 bg-[#431A031A]"></div>
+
+</div>
+<div>
+  <div class="relative flex justify-between items-center gap-4 px-6 py-4 font-kurdis-semi-condensed text-bear-black font-bold text-sm">
+    <div class="absolute bottom-0 left-0 right-0 w-full h-[1px] right-0 bg-[#431A031A]"></div>
+    <span class="cart-totals__original-label">Total</span>
+    <span class="cart-totals__original-value cart-secondary-typography" data-testid="cart-subtotal-value">
+      {{ cart.total_price | money }}
+    </span>
+  </div>
 </div>
 
   {% # We need to keep this node in place to allow morphing to work properly # %}
@@ -105,32 +115,8 @@
 
 </div>
 
-<div class="cart__ctas">
-  <button
-    type="submit"
-    id="checkout"
-    class="cart__checkout-button button"
-    name="checkout"
-    {% if cart == empty %}
-      disabled
-    {% endif %}
-    form="cart-form"
-  >
-    <span class="button-text">
-      {{ 'content.checkout' | t }}
-    </span>
-  </button>
-
-  {% if additional_checkout_buttons and settings.show_accelerated_checkout_buttons %}
-    <div
-      class="
-        additional-checkout-buttons
-        {% if accelerated_checkout_buttons_layout == 'vertical' %}additional-checkout-buttons--vertical{% endif %}
-      "
-    >
-      {{ content_for_additional_checkout_buttons }}
-    </div>
-  {% endif %}
+<div class="py-5 px-11 w-full">
+    {% render 'buttons', button_type: 'checkout', cart: cart %}
 </div>
 
 {% stylesheet %}

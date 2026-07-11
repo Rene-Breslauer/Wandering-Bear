@@ -15,8 +15,8 @@
     "file": "wb-events.Ch18nOqL.js",
     "name": "events"
   },
-  "_wb-swiper.B0njzU_D.js": {
-    "file": "wb-swiper.B0njzU_D.js",
+  "_wb-swiper.CW0lUYW5.js": {
+    "file": "wb-swiper.CW0lUYW5.js",
     "name": "swiper",
     "imports": [
       "frontend/entrypoints/main.js"
@@ -29,7 +29,7 @@
     "isEntry": true
   },
   "frontend/entrypoints/main.css": {
-    "file": "wb-main.B5imEgkO.css",
+    "file": "wb-main.9YkP0r1e.css",
     "name": "main",
     "names": [
       "main.css"
@@ -38,7 +38,7 @@
     "isEntry": true
   },
   "frontend/entrypoints/main.js": {
-    "file": "wb-main.D0l7iFNH.js",
+    "file": "wb-main.Bfk8a5jy.js",
     "name": "main",
     "src": "frontend/entrypoints/main.js",
     "isEntry": true,
@@ -83,7 +83,7 @@
     "isDynamicEntry": true
   },
   "frontend/scripts/components/cart.ts": {
-    "file": "wb-cart.B8EiDpOs.js",
+    "file": "wb-cart.CdimZ9pr.js",
     "name": "cart",
     "src": "frontend/scripts/components/cart.ts",
     "isDynamicEntry": true,
@@ -131,13 +131,13 @@
     "isDynamicEntry": true
   },
   "frontend/scripts/components/media-gallery-bundle.ts": {
-    "file": "wb-media-gallery-bundle.XmAUrT4F.js",
+    "file": "wb-media-gallery-bundle.JjZ7HKbk.js",
     "name": "media-gallery-bundle",
     "src": "frontend/scripts/components/media-gallery-bundle.ts",
     "isDynamicEntry": true,
     "imports": [
       "frontend/entrypoints/main.js",
-      "_wb-swiper.B0njzU_D.js"
+      "_wb-swiper.CW0lUYW5.js"
     ]
   },
   "frontend/scripts/components/modal.ts": {
@@ -153,7 +153,7 @@
     "isDynamicEntry": true
   },
   "frontend/scripts/components/product-form-bundle.ts": {
-    "file": "wb-product-form-bundle.tEU089f-.js",
+    "file": "wb-product-form-bundle.B6oFCe1m.js",
     "name": "product-form-bundle",
     "src": "frontend/scripts/components/product-form-bundle.ts",
     "isDynamicEntry": true,
@@ -177,23 +177,23 @@
     "isDynamicEntry": true
   },
   "frontend/scripts/components/productsSlider.ts": {
-    "file": "wb-productsSlider.Bb6_jBVP.js",
+    "file": "wb-productsSlider.DPJ2sf8p.js",
     "name": "productsSlider",
     "src": "frontend/scripts/components/productsSlider.ts",
     "isDynamicEntry": true,
     "imports": [
       "frontend/entrypoints/main.js",
-      "_wb-swiper.B0njzU_D.js"
+      "_wb-swiper.CW0lUYW5.js"
     ]
   },
   "frontend/scripts/components/swiperSlider.ts": {
-    "file": "wb-swiperSlider.Bcj4PcWz.js",
+    "file": "wb-swiperSlider.CsAp4nw7.js",
     "name": "swiperSlider",
     "src": "frontend/scripts/components/swiperSlider.ts",
     "isDynamicEntry": true,
     "imports": [
       "frontend/entrypoints/main.js",
-      "_wb-swiper.B0njzU_D.js"
+      "_wb-swiper.CW0lUYW5.js"
     ]
   },
   "frontend/scripts/components/tooltip.ts": {

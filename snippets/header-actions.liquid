@@ -100,6 +100,16 @@
       type="module"
       fetchpriority="low"
     ></script>
+    <script
+      src="{{ 'cart-products.js' | asset_url }}"
+      type="module"
+      fetchpriority="low"
+    ></script>
+    <script
+      src="{{ 'bundle-editor.js' | asset_url }}"
+      type="module"
+      fetchpriority="low"
+    ></script>
 
     {% capture empty_cart_drawer_content %}
       <div class="cart-drawer__header">
@@ -116,6 +126,7 @@
       </div>
 
       <div
+        data-cart-drawer-content
         class="cart-drawer__content"
         aria-label="{{ 'accessibility.cart' | t }}"
       >
@@ -155,30 +166,32 @@
       >
         {{ cart_icon }}
       </button>
-
       <dialog
-        ref="dialog"
-        class="cart-drawer__dialog dialog-modal dialog-drawer color-{{ settings.drawer_color_scheme }}{% if cart.empty? %} cart-drawer--empty {% endif %}"
-        data-testid="cart-drawer-dialog"
-        aria-labelledby="{% if cart.empty? %}cart-drawer-heading-empty{% else %}cart-drawer-heading{% endif %}"
-        scroll-lock
-        cart-summary-sticky="true"
-      >
+      ref="dialog"
+      class="cart-drawer__dialog dialog-modal dialog-drawer color-{{ settings.drawer_color_scheme }}{% if cart.empty? %} cart-drawer--empty{% endif %}"
+      data-testid="cart-drawer-dialog"
+      aria-labelledby="{% if cart.empty? %}cart-drawer-heading-empty{% else %}cart-drawer-heading{% endif %}"
+      scroll-lock
+      cart-summary-sticky="true"
+    >
       <div>
-          <span
-            ref="liveRegion"
-            class="visually-hidden"
-            role="status"
-          ></span>
-          <div 
-            class="cart-drawer__inner"
-            data-hydration-key="cart-drawer-inner"
-          >
-            <div>
-              {% capture cart_items_children %}
-                {%- if cart.empty? -%}
-                  {{ empty_cart_drawer_content }}
-                {%- else -%}
+        <span
+          ref="liveRegion"
+          class="visually-hidden"
+          role="status"
+        ></span>
+    
+        <div
+          class="cart-drawer__inner"
+          data-hydration-key="cart-drawer-inner"
+        >
+          <div>
+            {% capture cart_items_children %}
+              {%- if cart.empty? -%}
+                {{ empty_cart_drawer_content }}
+              {%- else -%}
+    
+                <div data-cart-view>
                   <div
                     class="cart-drawer__header"
                     id="cart-drawer-header"
@@ -190,7 +203,7 @@
                       {{ 'content.cart_title' | t }}
                       {% render 'cart-bubble' %}
                     </h2>
-
+    
                     <button
                       ref="closeButton"
                       on:click="cart-drawer-component/close"
@@ -202,7 +215,7 @@
                       </span>
                     </button>
                   </div>
-
+    
                   <scroll-hint
                     class="cart-drawer__content"
                     aria-label="{{ 'accessibility.cart' | t }}"
@@ -213,25 +226,32 @@
                     >
                       {% render 'cart-products' %}
                     </scroll-hint>
-
-                    <div
-                      class="cart-drawer__summary"
-                    >
+    
+                    <div class="cart-drawer__summary">
                       {% render 'aw-cart-summary', section_id: section.id %}
                     </div>
                   </scroll-hint>
-                {%- endif -%}
-              {% endcapture %}
-              {% render 'cart-items-component', children: cart_items_children, is_drawer: true, section_id: section.id %}
-            </div>
+                </div>
+    
+              {%- endif -%}
+            {% endcapture %}
+    
+            {% render 'cart-items-component',
+              children: cart_items_children,
+              is_drawer: true,
+              section_id: section.id
+            %}
           </div>
-          <div
-          class="modify-bundle bg-[#F2E6DC] absolute top-0 right-0 bottom-0 left-0 z-1000 transition-all duration-300"
-          :class='$store.cart.state === "modifyBundle" ? "translate-x-0" : "translate-x-full"'>
-            {% render 'cart-modify-bundle', bundleItems: bundleItems %}
-          </div>
-          </div>
-      </dialog>
+        </div>
+      </div>
+
+      <bundle-editor-component
+        class="modify-bundle bg-[#F2E6DC] absolute top-0 right-0 bottom-0 left-0 z-1000"
+        data-testid="bundle-editor"
+      >
+        <div data-bundle-panel class="h-full"></div>
+      </bundle-editor-component>
+    </dialog>
      
     </cart-drawer-component>
   {% else %}
@@ -364,6 +384,15 @@
     }
   }
 
+  bundle-editor-component.modify-bundle {
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+  }
+
+  bundle-editor-component.modify-bundle[data-open] {
+    transform: translateX(0);
+  }
+
   .cart-drawer__dialog {
     position: fixed;
     overflow: hidden;
@@ -453,7 +482,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--gap-xl);
+    /* gap: var(--gap-xl); */
     padding: var(--cart-drawer-summary-padding);
     margin-top: auto;
     background-color: var(--color-background);

@@ -14,12 +14,6 @@
   assign block_settings = block.settings
 %}
 
-{% style %}
-  [data-frequency-dropdown].open {
-    display: block;
-  }
-{% endstyle %}
-
 <script
   src="{{ 'component-cart-items.js' | asset_url }}"
   type="module"
@@ -35,8 +29,13 @@
   type="module"
   fetchpriority="low"
 ></script>
+<script
+  src="{{ 'cart-products.js' | asset_url }}"
+  type="module"
+  fetchpriority="low"
+></script>
 
-<div
+<cart-products-component
   {{ block.shopify_attributes }}
   class="cart-items__wrapper"
   {% if settings.product_title_case == 'uppercase' %}
@@ -167,23 +166,30 @@
                     {% else %}
                       {{ parent_item.product.title }}
                     {% endif %}
-                    <button type="button" class="cursor-pointer" 
-                    data-key="{{ parent_item.key }}" 
-                    data-bundle-id="{{ bundle_id }}" @click="removeBundle('{{ bundle_id }}')">
-                      {% render 'icons', icon: 'delete', class: 'text-sm' %} 
+                    <button
+                      type="button"
+                      class="cursor-pointer"
+                      data-action="remove-bundle"
+                      data-bundle-id="{{ bundle_id | escape }}"
+                      aria-label="Remove {{ product_title | default: parent_item.product.title | escape }}"
+                    >
+                      {% render 'icons', icon: 'delete', class: 'text-sm' %}
                     </button>
                     <div class="absolute bottom-0 left-0 w-full h-[1px] right-0 bg-[#431A031A]"></div>
                   </div>
                 {% endif %}
 
                 {% assign total_bundle_price = 0 %}
+                {% assign total_original_price = 0 %}
                 {% for item in cart.items %}
 
                   {% if item.properties._bundle_id == bundle_id %}
                     {% unless item.properties._bundle_parent == 'true' %}
-                    {% assign compare_at_price = item.product.variants.first.compare_at_price | money %}
-                    {% assign total_bundle_price = total_bundle_price | plus: item.price | times: item.quantity %}
-
+                    {% assign compare_at_price = item.variant.compare_at_price | default: item.original_price %}
+                    {% assign bundle_line_price = item.price | times: item.quantity %}
+                    {% assign original_line_price = compare_at_price | times: item.quantity %}
+                    {% assign total_bundle_price = total_bundle_price | plus: bundle_line_price %}
+                    {% assign total_original_price = total_original_price | plus: original_line_price %}
                       <div data-key="{{ item.key }}" 
                       data-bundle-id="{{ bundle_id }}" 
                       class="relative flex p-4 gap-2">
@@ -196,7 +202,7 @@
                           </div>
                           <div class="flex items-center gap-1 font-bold text-xs">
                             <div>
-                              <s>{{ compare_at_price }}</s>
+                              <s>{{ compare_at_price | money }}</s>
                             </div>
                             <div>
                               <span class="text-kraft">{{ item.price | money }} x {{ item.quantity }}</span>
@@ -224,88 +230,121 @@
                 
                  {% comment %} Frequency Dropdown {% endcomment %}
 
-                 <div data-selector-container class="flex justify-center w-full bg-[#F9F3ED] py-3.5 px-4">
-                    <div
-                        x-data="{
-                            open: false,
-                            toggle() {
-                                if (this.open) {
-                                    return this.close()
-                                }
-
-                                this.$refs.button.focus()
-
-                                this.open = true
-                            },
-                            close(focusAfter) {
-                                if (! this.open) return
-
-                                this.open = false
-
-                                focusAfter && focusAfter.focus()
-                            }
-                        }"
-                        x-on:keydown.escape.prevent.stop="close($refs.button)"
-                        x-on:focusin.window="! $refs.panel.contains($event.target) && close()"
-                        x-id="['dropdown-button']"
-                        class="relative w-full"
-                    >
-                        <!-- Button -->
-                        <button
-                            x-ref="button"
-                            x-on:click="toggle()"
-                            :aria-expanded="open"
-                            :aria-controls="$id('dropdown-button')"
-                            type="button"
-                            class="relative cursor-pointer text-left flex items-center whitespace-nowrap font-kurdis-semi-condensed text-espresso font-bold justify-between gap-2 py-2 rounded-[2px] w-full border border-[#E0D2C6] px-4"
-                        >
-                        <span data-frequency>
-                        {% if has_selling_plan %}
-                            {% render 'icons', icon: 'recurring', class: 'text-sm inline-flex' %} 
+                 <div
+                    data-frequency-selector
+                    data-bundle-id="{{ bundle_id | escape }}"
+                    class="flex justify-center w-full bg-[#F9F3ED] py-3.5 px-4"
+                  >
+                    <div class="relative w-full">
+                      <button
+                        type="button"
+                        data-action="toggle-frequency"
+                        aria-expanded="false"
+                        aria-controls="bundle-frequency-{{ bundle_id | handleize }}"
+                        class="relative cursor-pointer text-left flex items-center whitespace-nowrap font-kurdis-semi-condensed text-espresso font-bold justify-between gap-2 py-2 rounded-[2px] w-full border border-[#E0D2C6] px-4"
+                      >
+                        <span data-frequency class="flex items-center gap-2">
+                          {% if has_selling_plan %}
+                            {% render 'icons',
+                              icon: 'recurring',
+                              class: 'text-sm inline-flex'
+                            %}
                           {% endif %}
-                            {{ selector_value }}
-                        </span>
-                            <!-- Heroicon: micro chevron-down -->
-                            {% render 'icons', icon: 'chevron-down', class: 'text-sm' %}
-                        </button>
 
-                        <!-- Panel -->
-                        <div
-                            data-frequency-dropdown
-                            id="frequency-dropdown"
-                            x-ref="panel"
-                            x-show="open"
-                            x-transition.origin.top.left
-                            x-on:click.outside="close($refs.button)"
-                            :id="$id('dropdown-button')"
-                            x-cloak
-                            class="absolute top-0 left-0 min-w-48 rounded-[2px] shadow-button z-10 origin-top-left bg-[#F9F3ED] outline-none border border-[#E0D2C6] w-full"
-                        >
-                        {% for selling_plan_group in parent_item.product.selling_plan_groups %}
+                          <span data-frequency-label>
+                            {{ selector_value }}
+                          </span>
+                        </span>
+
+                        {% render 'icons', icon: 'chevron-down', class: 'text-sm' %}
+                      </button>
+
+                      <div
+                        id="bundle-frequency-{{ bundle_id | handleize }}"
+                        data-frequency-dropdown
+                        class="absolute top-0 left-0 min-w-48 rounded-[2px] shadow-button z-10 origin-top-left bg-[#F9F3ED] outline-none border border-[#E0D2C6] w-full"
+                        hidden
+                      >
+                        {%- assign current_plan_id = parent_item.selling_plan_allocation.selling_plan.id -%}
+
+                        {%- comment -%} Capture each option so the currently-selected one can be rendered first. {%- endcomment -%}
+                        {%- capture subscription_options -%}
+                          {% for selling_plan_group in parent_item.product.selling_plan_groups %}
                             {% for selling_plan in selling_plan_group.selling_plans %}
-                              {% if selling_plan.name contains '1 Month' or selling_plan.name contains '1 month' %}
-                                <a href="#{{ selling_plan.id }}" class="relative font-kurdis-semi-condensed text-espresso font-bold px-4 lg:py-2 py-2 w-full flex items-center transition-colors text-left text-gray-800 hover:bg-gray-50 gap-2 focus-visible:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
-                                      {% render 'icons', icon: 'recurring', class: 'text-sm inline-flex' %} 
-                                      {{ selling_plan.name | split: ' - ' | first }}
-                                      <div class="absolute bottom-0 left-0 w-full h-[1px] right-0 bg-[#E0D2C6]"></div>
-                                </a>
+                              {% if selling_plan.name contains '1 Month'
+                                or selling_plan.name contains '1 month'
+                              %}
+                                {% assign selling_plan_label = selling_plan.name
+                                  | split: ' - '
+                                  | first
+                                %}
+
+                                <button
+                                  type="button"
+                                  data-action="change-frequency"
+                                  data-bundle-id="{{ bundle_id | escape }}"
+                                  data-selling-plan-id="{{ selling_plan.id }}"
+                                  data-selling-plan-name="{{ selling_plan_label | escape }}"
+                                  {% if has_selling_plan and selling_plan.id == current_plan_id %}aria-current="true"{% endif %}
+                                  class="relative cursor-pointer font-kurdis-semi-condensed text-espresso font-bold px-4 py-2 w-full flex items-center transition-colors text-left text-gray-800 hover:bg-gray-50 gap-2 focus-visible:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                  {% render 'icons',
+                                    icon: 'recurring',
+                                    class: 'text-sm inline-flex'
+                                  %}
+
+                                  {{ selling_plan_label }}
+
+                                  <span class="absolute bottom-0 left-0 w-full h-px bg-[#E0D2C6]"></span>
+                                </button>
                               {% endif %}
                             {% endfor %}
                           {% endfor %}
-                          <a href="#one-time-purchase" class="relative pl-6 pr-4 py-4 font-kurdis-semi-condensed text-espresso font-bold py-2 w-full flex items-center transition-colors text-left text-gray-800 hover:bg-gray-50 focus-visible:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
-                              One Time Purchase
-                          </a>
-                        </div>
+                        {%- endcapture -%}
+
+                        {%- capture one_time_option -%}
+                          <button
+                            type="button"
+                            data-action="change-frequency"
+                            data-bundle-id="{{ bundle_id | escape }}"
+                            data-selling-plan-id=""
+                            data-selling-plan-name="One Time Purchase"
+                            {% unless has_selling_plan %}aria-current="true"{% endunless %}
+                            class="relative cursor-pointer pl-6 pr-4 font-kurdis-semi-condensed text-espresso font-bold py-2 w-full flex items-center transition-colors text-left text-gray-800 hover:bg-gray-50 focus-visible:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            One Time Purchase
+                          </button>
+                        {%- endcapture -%}
+
+                        {%- comment -%} Selected frequency first. {%- endcomment -%}
+                        {% if has_selling_plan %}
+                          {{ subscription_options }}
+                          {{ one_time_option }}
+                        {% else %}
+                          {{ one_time_option }}
+                          {{ subscription_options }}
+                        {% endif %}
+                      </div>
                     </div>
                   </div>
 
                   <div class="flex items-center justify-between relative p-4">
-                  <div @click="modifyBundle('{{ collection_handle }}', '{{ parent_item.properties._bundle_name | handleize }}', '{{ parent_item.properties._bundle_id }}')" class="inline-flex items-center gap-1 cursor-pointer text-kraft">
-                    {% render 'icons', icon: 'edit', class: 'text-sm inline-flex' %} 
-                    <button type="button" class="underline text-sm cursor-pointer">Add/Modify Flavors</button>
-                  </div>
+                    <button
+                      type="button"
+                      class="inline-flex items-center gap-1 cursor-pointer text-kraft underline text-sm"
+                      data-bundle-edit-trigger
+                      data-bundle-id="{{ bundle_id | escape }}"
+                      data-collection-handle="{{ collection_handle | escape }}"
+                      data-bundle-name="{{ parent_item.properties._bundle_name | handleize }}"
+                    >
+                      {% render 'icons', icon: 'edit', class: 'text-sm inline-flex' %}
+                      Add/Modify Flavors
+                    </button>
                   {% comment %} Total bundle price {% endcomment %}
-                  <span class="text-sm">{{ total_bundle_price | money }}</span>
+                  <div class="flex items-center gap-1">
+                    <span class="text-sm line-through">{{ total_original_price | money }}</span>
+                    <span class="text-sm">{{ total_bundle_price | money }}</span>
+                  </div>
                 </div>
                 <div class="absolute bottom-0 left-0 w-full h-[1px] right-0 bg-[#431A031A]"></div>
                 </div>
@@ -318,7 +357,8 @@
 
               <tr
                 role="row"
-                class="cart-items__table-row{% if item.parent_relationship.parent != null %} cart-items__nested-line{% endif %}{% unless item.unit_price_measurement %} cart-items__table-row--full-width-variants{% endunless %}"
+                class="cart-items__table-row{% if item.parent_relationship.parent != null %} cart-items__nested-line{% endif %}{% unless item.unit_price_measurement %} cart-items__table-row--full-width-variants{% endunless %}
+                bg-[#F9F3ED] font-kurdis-semi-condensed rounded-[5px] overflow-hidden"
                 ref="cartItemRows[]"
                 data-parent-key="{{ item.parent_relationship.parent.key }}"
                 data-key="{{ item.key }}"
@@ -328,6 +368,10 @@
                   role="cell"
                   headers="productImage"
                 >
+                <div class="w-full flex font-gothic_condensed text-bear-black font-bold uppercase text-lg justify-between items-center relative p-4 bg-[#F9F3ED] font-kurdis-semi-condensed rounded-[5px] overflow-hidden">
+                {{ item.product.title }}
+                </div>
+               
                   {% if item.image -%}
                     {% liquid
                       assign ratio = 1
@@ -575,7 +619,7 @@
       </div>
     </form>
   {%- endif -%}
-</div>
+</cart-products-component>
 
 {% stylesheet %}
   .cart-items {
