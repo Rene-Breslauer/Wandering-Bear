@@ -12,7 +12,7 @@
     @click="toggleTooltip()"
     class="cursor-pointer {% unless badge %} p-2 -m-2 {% endunless %}"
   >
-    {% render 'icons', icon: 'info' %}
+    {% render 'icons', icon: 'info', class: 'min-w-3' %}
   </div>
 
   <template x-teleport="body">
