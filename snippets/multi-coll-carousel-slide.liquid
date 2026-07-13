@@ -13,7 +13,7 @@
 
 <div class="swiper-slide shadow-button relative group sm:!min-w-[135px] pb-1.5 aspect-[135/229]" style="{{ slide_styles }}">
     {% if vip %}
-        <div class="flex justify-center items-center absolute top-0 right-1 left-0 w-auto mx-auto z-[2]">
+        <div class="flex justify-center items-center absolute top-0 right-1 left-0 w-auto mx-auto z-[3]">
             <div class="relative w-full">
             <div class="wb-flex gap-1 items-center text-white text-center text-2xl font-bold py-1.5 md:py-2.5 px-2 md:px-4 w-full h-full relative z-[2]">
                 {% render 'icons', icon: 'crown', class: 'min-w-5' %}
@@ -40,7 +40,7 @@
             </div>
         {% endif %}
         <div class="relative flex-col bottom-0 mx-auto h-full flex justify-end text-center justify-center items-center z-[2] w-full px-4">
-            <div class="h-[50px] md:h-[100px] flex flex-col justify-start md:justify-end items-center">
+            <div class="h-29 md:h-[100px] flex flex-col justify-start md:justify-end items-center">
                 {% if product.metafields.custom.carousel_image != blank %}
                     <span class="h2 !text-xl text-espresso block !mb-2 !leading-[1.2]">{{ product.title | split: '- ' | last }}</span>
                 {% endif %}
