@@ -297,7 +297,7 @@
           "settings": {
             "image": "shopify://shop_images/image_44_6f333248-0a41-4ef3-af40-2bc9dc095453.png",
             "hide_on_mobile": false,
-            "max_width": "179",
+            "max_width": "150",
             "max_width_mobile": "122"
           }
         },
