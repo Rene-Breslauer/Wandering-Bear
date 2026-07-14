@@ -14,12 +14,22 @@ import { Alpine as AlpineType } from 'alpinejs'
  */
 
 type RedeemConfig = { balanceFormatted?: string; currency?: string }
+/** UI-facing shape the modal renders. */
 type RedeemResult = {
   code: string
   amount_formatted: string
   new_balance_formatted: string
   currency: string
   apply_url?: string
+}
+/** Worker POST /credits/redeem response (docs/tasks/09-redemption + worker contracts.ts). */
+type WorkerRedeem = {
+  code: string | null
+  balance: number
+  balance_formatted: string
+  currency: string
+  redeemed: number
+  redeemed_formatted: string
 }
 type Envelope<T> = { ok: true; data: T } | { ok: false; error?: { code?: string; message?: string } }
 
@@ -69,18 +79,19 @@ export default (Alpine: AlpineType) => {
       document.body.classList.remove('no-scroll')
     },
 
-    /** Worker endpoint: dev surface ({url}/dev/redemption?customerId=[&token=]) or App Proxy. */
+    /** Worker endpoint: dev surface ({url}/dev/credits/redeem?customerId=[&token=]) or App Proxy
+     *  (/apps/wb/credits/redeem). */
     endpoint(): string {
       const root = this.root
       const workerUrl = (root?.dataset.workerUrl ?? '').trim().replace(/\/$/, '')
       if (workerUrl) {
-        const u = new URL(`${workerUrl}/dev/redemption`)
+        const u = new URL(`${workerUrl}/dev/credits/redeem`)
         u.searchParams.set('customerId', root?.dataset.customerId ?? '')
         const token = (root?.dataset.workerToken ?? '').trim()
         if (token) u.searchParams.set('token', token)
         return u.toString()
       }
-      return new URL('/apps/wb/redemption', window.location.origin).toString()
+      return new URL('/apps/wb/credits/redeem', window.location.origin).toString()
     },
 
     async submit() {
@@ -95,7 +106,7 @@ export default (Alpine: AlpineType) => {
       try {
         this.result = this.isMock
           ? await this.mockRedeem(partial ? amt : this.balance)
-          : await this.realRedeem(partial ? { mode: 'partial', amount: amt } : { mode: 'full' })
+          : await this.realRedeem(partial ? { amount: Math.round(amt * 100) } : {})
         this.step = 'result'
       } catch (e) {
         this.error = (e as Error).message || 'redemption_failed'
@@ -104,7 +115,7 @@ export default (Alpine: AlpineType) => {
       }
     },
 
-    async realRedeem(body: { mode: string; amount?: number }): Promise<RedeemResult> {
+    async realRedeem(body: { amount?: number }): Promise<RedeemResult> {
       const usesWorker = (this.root?.dataset.workerUrl ?? '').trim() !== ''
       const res = await fetch(this.endpoint(), {
         method: 'POST',
@@ -112,9 +123,16 @@ export default (Alpine: AlpineType) => {
         credentials: usesWorker ? 'omit' : 'same-origin',
         body: JSON.stringify(body),
       })
-      const json = (await res.json()) as Envelope<RedeemResult>
+      const json = (await res.json()) as Envelope<WorkerRedeem>
       if (!json.ok) throw new Error(json.error?.code || 'redemption_failed')
-      return json.data
+      const d = json.data
+      // Map the worker shape → the UI shape (redeemed = the amount just spent; balance = remaining).
+      return {
+        code: d.code || '',
+        amount_formatted: d.redeemed_formatted,
+        new_balance_formatted: d.balance_formatted,
+        currency: d.currency,
+      }
     },
 
     /** Client-side mock (QA only, ?wb_redeem_mock=1) — assumes a $ currency for display. */
