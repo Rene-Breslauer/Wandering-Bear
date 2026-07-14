@@ -395,13 +395,38 @@ export default (Alpine: AlpineType) => {
             }
 
         },
-        
+
         selectProduct(productId, productHandle) {
-            this._updateUrl(productHandle);
-            this.selectedProduct = this.bundleProducts[productId];
-            this._setProgressBarPrices();
+            const scrollY = window.scrollY
+
+            this._updateUrl(productHandle)
+            this.selectedProduct = this.bundleProducts[productId]
+            this._setProgressBarPrices()
+
             this.$nextTick(() => {
-              window.dispatchEvent(new CustomEvent('product-changed', { detail: { product: this.selectedProduct }, bubbles: true, composed: true }));
+              const flavorScroll =
+                document.querySelector(
+                  '.flavor-container [data-overlayscrollbars-viewport]'
+                ) || document.querySelector('.flavor-container')
+
+              if (flavorScroll instanceof HTMLElement) {
+                flavorScroll.scrollTop = 0
+              }
+
+              window.scrollTo(0, scrollY)
+
+              window.dispatchEvent(
+                new CustomEvent('product-changed', {
+                  detail: { product: this.selectedProduct },
+                  bubbles: true,
+                  composed: true,
+                })
+              )
+
+              requestAnimationFrame(() => {
+                window.scrollTo(0, scrollY)
+                requestAnimationFrame(() => window.scrollTo(0, scrollY))
+              })
             })
         },
 
