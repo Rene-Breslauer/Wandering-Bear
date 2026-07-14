@@ -60,7 +60,7 @@
       </div>
 
       {%- comment -%} Order summary (right-aligned) {%- endcomment -%}
-      <div class="border-t border-espresso pt-5 flex flex-col items-end !gap-2 body text-espresso">
+      <div class="border-t border-espresso pt-5 flex flex-col items-end !gap-4 body text-espresso">
         <div class="flex w-full max-w-[360px] justify-between"><span>{{ 'customer.order.subtotal' | t }}</span><span>{{ order.line_items_subtotal_price | money }}</span></div>
         {%- for discount in order.cart_level_discount_applications -%}
           <div class="flex w-full max-w-[360px] justify-between text-dark-gold"><span>{{ 'customer.order.discount' | t }} ({{ discount.title }})</span><span>-{{ discount.total_allocated_amount | money }}</span></div>
