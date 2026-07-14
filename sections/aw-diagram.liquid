@@ -42,6 +42,11 @@
 
 %}
 
+{% capture title_styles %}
+    --font-size: {{ section.settings.font_size | default: 24 }}px;
+    --font-size-mobile: {{ section.settings.font_size_mobile | default: 24 }}px;
+{% endcapture %}
+
 {% capture diagram_content %}
     {% assign class = '' %}
     {% assign diagram_item_count = 0 %}
@@ -105,7 +110,7 @@
         {% endif %}
     {% elsif title_type == 'text' %}
         {% if title != blank %}
-            <span class="h1 mb-8" style="color: {{ text_color }}">{{ title }}</span>
+            <span class="h1 mb-8 title-text leading-[1.2]" style="color: {{ text_color }}; {{ title_styles }}">{{ title }}</span>
         {% endif %}
     {% endif %}
    </div>
@@ -164,7 +169,7 @@
                   image: diagram_image,
                   image_mobile: diagram_image_mobile,
                   alt: title_alt,
-                  class: '!flex order-1 md:order-2 w-full max-h-full object-contain relative z-[2] mx-auto'
+                  class: 'diagram-image !flex order-1 md:order-2 w-full max-h-full object-contain relative z-[2] mx-auto'
                 %}
             </div>
         {% endif %}
@@ -172,7 +177,19 @@
 </div>
 
 {% stylesheet %}
+    .no-scroll .aw-diagram .diagram-image {
+        z-index: 1;
+    }
+
+    .aw-diagram .title-text {
+        font-size: var(--font-size) !important;
+    }
+
     @media screen and (max-width: 1023px) {
+        .aw-diagram .title-text {
+            font-size: var(--font-size-mobile) !important;
+        }
+
         .aw-diagram .diagram-lines {
             display: none !important;
         }
@@ -272,6 +289,28 @@
                 "type": "text",
                 "id": "title",
                 "label": "Title",
+                "visible_if": "{{ section.settings.title_type == 'text' }}"
+            },
+            {
+                "type": "range",
+                "id": "font_size",
+                "label": "Font Size",
+                "min": 16,
+                "max": 100,
+                "step": 1,
+                "unit": "px",
+                "default": 24,
+                "visible_if": "{{ section.settings.title_type == 'text' }}"
+            },
+            {
+                "type": "range",
+                "id": "font_size_mobile",
+                "label": "Font Size Mobile",
+                "min": 16,
+                "max": 100,
+                "step": 1,
+                "unit": "px",
+                "default": 24,
                 "visible_if": "{{ section.settings.title_type == 'text' }}"
             },
             {

@@ -14,6 +14,11 @@
     assign button_link = section_settings.button_link
 %}
 
+{% capture title_styles %}
+    --font-size: {{ section.settings.font_size | default: 24 }}px;
+    --font-size-mobile: {{ section.settings.font_size_mobile | default: 24 }}px;
+{% endcapture %}
+
 
 <div class="wb-flex justify-center relative" style="background: {{ background_color }};">
     <div class="max-w-[1096px] w-full mx-auto wb-flex flex-col px-4 py-9">
@@ -27,7 +32,7 @@
                 {% endif %}
             {% elsif title_type == 'text' %}
                 {% if title != blank %}
-                    <span class="h1 mb-8" style="color: {{ text_color }}">{{ title }}</span>
+                    <span class="h1 mb-8 title-text leading-[1.2] text-bear-black! text-center mx-auto" style="{{ title_styles }}">{{ title }}</span>
                 {% endif %}
             {% endif %}
             {% if faqs_metaobject != blank %}
@@ -54,6 +59,18 @@
     </div>
     </div>
 </div>
+
+{% stylesheet %}
+    .title-text {
+        font-size: var(--font-size) !important;
+    }
+
+    @media screen and (max-width: 1023px) {
+        .title-text {
+            font-size: var(--font-size-mobile) !important;
+        }
+    }
+{% endstylesheet %}
 
 {% schema %}
     {
@@ -90,6 +107,28 @@
                 "type": "text",
                 "id": "title",
                 "label": "Title",
+                "visible_if": "{{ section.settings.title_type == 'text' }}"
+            },
+            {
+                "type": "range",
+                "id": "font_size",
+                "label": "Font Size",
+                "min": 16,
+                "max": 100,
+                "step": 1,
+                "unit": "px",
+                "default": 24,
+                "visible_if": "{{ section.settings.title_type == 'text' }}"
+            },
+            {
+                "type": "range",
+                "id": "font_size_mobile",
+                "label": "Font Size Mobile",
+                "min": 16,
+                "max": 100,
+                "step": 1,
+                "unit": "px",
+                "default": 24,
                 "visible_if": "{{ section.settings.title_type == 'text' }}"
             },
             {
