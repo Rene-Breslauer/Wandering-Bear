@@ -24,8 +24,25 @@
           assign product_badge_color = product_badge.value.background_color
           assign product_badge_text_color = product_badge.value.text_color
         %}
+        {% if child_product.handle == product.handle %}
+          {% render 'product-selector', title: title, image: image, flavor_description: flavor_description, member_only: member_only, product_badge: product_badge, product_badge_text: product_badge_text, product_badge_color: product_badge_color, product_badge_text_color: product_badge_text_color, child_product: child_product, bundle_type: bundle_type %}
+        {% endif %}
+      {% endfor %}
+      {% for child_product in bundle_collection.products %}
+        {% liquid
+          assign title = child_product.title | split: ' - ' | last
+          assign image = child_product.metafields.custom.variant_selector_image
+          assign flavor_description = child_product.metafields.airf.p_flavor | default: ''
+          assign member_only = child_product.metafields.product.member_only | default: false
 
-        {% render 'product-selector', title: title, image: image, flavor_description: flavor_description, member_only: member_only, product_badge: product_badge, product_badge_text: product_badge_text, product_badge_color: product_badge_color, product_badge_text_color: product_badge_text_color, child_product: child_product, bundle_type: bundle_type %}
+          assign product_badge = child_product.metafields.product.product_badge
+          assign product_badge_text = product_badge.value.badge_text
+          assign product_badge_color = product_badge.value.background_color
+          assign product_badge_text_color = product_badge.value.text_color
+        %}
+        {% unless child_product.handle == product.handle %}
+          {% render 'product-selector', title: title, image: image, flavor_description: flavor_description, member_only: member_only, product_badge: product_badge, product_badge_text: product_badge_text, product_badge_color: product_badge_color, product_badge_text_color: product_badge_text_color, child_product: child_product, bundle_type: bundle_type %}
+        {% endunless %}
       {% endfor %}
     </div>
   </div>

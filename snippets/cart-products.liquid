@@ -193,16 +193,16 @@
                       <div data-key="{{ item.key }}" 
                       data-bundle-id="{{ bundle_id }}" 
                       class="relative flex p-4 gap-2">
-                        <div class="w-12">
+                        <a href="{{ item.url | append: '?' | append: item.product.metafields.custom.product_group.value.template_suffix }}" class="w-12">
                           {{ item.image | image_url: width: 100 | image_tag }}
-                        </div>
+                        </a>
                         <div class="flex flex-col">
                           <div class="font-bold text-bear-black text-sm">
                             {{ item.properties._flavor }}
                           </div>
                           <div class="flex items-center gap-1 font-bold text-xs">
                             <div>
-                              <s>{{ compare_at_price | money }}</s>
+                              <s>{{ item.product.variants[0].price | money }}</s>
                             </div>
                             <div>
                               <span class="text-kraft">{{ item.price | money }} x {{ item.quantity }}</span>

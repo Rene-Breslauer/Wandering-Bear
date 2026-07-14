@@ -54,7 +54,7 @@
                 <div class="relative group w-full h-full {% if forloop.index == 2 %} -mt-6 md:!mt-0 {% endif %}">
                     <a href="{{ url }}" class="relative block w-full h-fit">
                     {% if badge != blank %}
-                        {{ badge | image_url: width: 100 | image_tag: class: 'hidden md:block absolute z-[3] -top-[50px] -left-[50px] !w-[148px] !h-auto' }}
+                        {{ badge | image_url: width: 100 | image_tag: class: 'hidden md:block absolute z-[3] -top-[50px] -left-[50px] md:-left-10 lg:-left-[50px] !w-[148px] !h-auto' }}
                     {% endif %}
                     <div class="wb-grid grid-cols-1 grid-rows-1 relative block w-full h-full">
                         {% if image != blank %}

@@ -11,12 +11,12 @@
 %}
 
 
-<div class="swiper-slide relative group sm:!min-w-[135px] pb-1.5" style="{{ slide_styles }}">
+<div class="swiper-slide shadow-button relative group sm:!min-w-[135px] pb-1.5 aspect-[135/229]" style="{{ slide_styles }}">
     {% if vip %}
-        <div class="flex justify-center items-center absolute top-0 right-1 left-0 w-auto mx-auto z-[2]">
+        <div class="flex justify-center items-center absolute top-0 right-1 left-0 w-auto mx-auto z-[3]">
             <div class="relative w-full">
-            <div class="wb-flex gap-1 items-center text-white text-center text-2xl font-bold py-1.5 md:py-2.5 !px-4 w-full h-full relative z-[2]">
-                {% render 'icons', icon: 'crown' %}
+            <div class="wb-flex gap-1 items-center text-white text-center text-2xl font-bold py-1.5 md:py-2.5 px-2 md:px-4 w-full h-full relative z-[2]">
+                {% render 'icons', icon: 'crown', class: 'min-w-5' %}
                 <span class="text-xs font-kurdis-semi-condensed font-bold whitespace-nowrap text-cream">VIP/Elite Only</span>
                 {% render 'tooltip', content: settings.member_tooltip, class: 'text-cream' %}
             </div>
@@ -31,7 +31,7 @@
     <a href="{{ product_url }}">
         
         {% if product.metafields.custom.carousel_image != blank %}
-            {% render 'picture', source: product.metafields.custom.carousel_image, class: 'w-full h-full object-cover w-full h-full shadow-button border border-transparent group-hover:border-gold rounded-[14px] lg:rounded-[1vw] transition-all duration-300' %}
+            {% render 'picture', source: product.metafields.custom.carousel_image, class: 'w-full h-full object-cover w-full h-full border border-transparent group-hover:border-gold rounded-[14px] lg:rounded-[1vw] transition-all duration-300 absolute h-full w-full' %}
         {% else %}
             <img src="{{ 'placeholder-image.png' | asset_url }}" class="w-full h-full object-cover w-full h-full" alt="{{ product.title }}">
             <div class="absolute top-0 z-[1] wb-flex flex-col h-full w-full items-center justify-center p-4">
@@ -39,30 +39,19 @@
                 <span class="text-xs text-center">Add Carousel Image metafield image for <em>{{ product.title }}</em></span>
             </div>
         {% endif %}
-        <div class="absolute bottom-auto top-[65%] sm:top-[75%] md:top-[70%] lg:!top-[75%] mx-auto text-center aw-flex justify-center items-center z-[2] w-full px-4">
-            {% if product.metafields.custom.carousel_image != blank %}
-                <span class="h2 !text-xl text-espresso block !mb-2 !leading-[1.2]">{{ product.title | split: '- ' | last }}</span>
-            {% endif %}
+        <div class="relative flex-col bottom-0 mx-auto h-full flex justify-end text-center justify-center items-center z-[2] w-full px-4">
+            <div class="h-[60px] lg:h-[100px] flex flex-col justify-start md:justify-end items-center">
+                {% if product.metafields.custom.carousel_image != blank %}
+                    <span class="h2 !text-xl text-espresso block mb-5 lg:mb-2 !leading-[1.2]">{{ product.title | split: '- ' | last }}</span>
+                {% endif %}
+                <div class="invisible group-hover:visible group/button hidden md:!flex h-[36px] w-[158px] group-hover:opacity-100 group-hover:translate-y-0 opacity-0 translate-y-5 transition-all duration-500 mx-auto relative items-center justify-center">
+                <span class="text-gold h-fit relative z-[2] font-kurdis-condensed text-[15px] group-hover/button:!text-[#F2E6DC] font-bold">SHOP NOW</span>
+                <svg class="button-shadow absolute inset-0 w-full h-full text-[#F2E6DC] fill-[#F2E6DC] stroke-[#AF7404] group-hover/button:!text-gold group-hover/button:!stroke-gold transition-all duration-300" xmlns="http://www.w3.org/2000/svg" width="160" height="32" viewBox="0 0 160 32" fill="none">
+                    <path d="M89.7174 0.507812C109.214 0.542541 128.714 0.695037 148.204 0.990234C149.67 1.01218 151.435 1.00517 153.066 1.20605C154.683 1.40529 156.277 1.81919 157.346 2.75977C158.138 3.45552 158.693 4.1827 159.038 5.18848C159.375 6.17367 159.501 7.39517 159.501 9.05859C159.501 11.4282 159.378 13.589 159.283 15.7266C159.187 17.868 159.118 19.9947 159.219 22.3262C159.273 23.5563 159.409 25.1293 159.047 26.6172C158.674 28.1464 157.78 29.5917 155.825 30.5967C155.073 30.9833 154.216 31.1483 153.368 31.2227C152.522 31.2968 151.636 31.2834 150.836 31.2881C104.813 31.5852 58.7895 31.4834 12.7731 31.4834C9.34576 31.4834 6.98332 31.3362 5.23889 30.8213C3.45027 30.2932 2.31811 29.3807 1.34045 27.9219H1.33948C0.478714 26.635 0.490645 25.1544 0.50354 23.9033C0.528433 21.5645 0.552543 19.2261 0.576782 16.8877C0.601022 14.5492 0.625129 12.2102 0.650024 9.87109C0.670782 7.92473 0.710061 5.71494 2.05627 3.8291L2.17932 3.66406C3.47001 1.99382 5.49024 1.36051 7.6051 1.12012C9.77183 0.873845 12.2201 1.02803 14.2487 0.998047C19.7814 0.915085 25.314 0.843965 30.8492 0.782227C50.4719 0.564209 70.0947 0.471155 89.7174 0.507812Z" fill="currentColor" stroke="#AF7404"/>
+                </svg>
+            </div>
         </div>
-        <div class="!hidden translate-x-[-50%] left-1/2 group/button md:!flex h-[36px] w-[158px] group-hover:opacity-100 group-hover:translate-y-0 opacity-0 translate-y-5 transition-all duration-500 mx-auto absolute bottom-2 md:!bottom-5 wb-flex items-center justify-center">
-            <span class="text-gold -mt-1 h-fit relative z-[2] font-kurdis-condensed text-[15px] group-hover/button:!text-[#F2E6DC] font-bold">SHOP NOW</span>
-            <svg preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" width="213" height="51" viewBox="0 0 213 51" fill="none" class="absolute inset-0 w-full h-full text-[#F2E6DC] fill-[#F2E6DC] stroke-[#AF7404] group-hover/button:!text-gold group-hover/button:!stroke-gold transition-all duration-300">
-                <g fill="currentColor" stroke="currentColor" filter="url(#filter0_d_3_52)">
-                    <path stroke="#AF7404" d="M1.89748 4.47133C0.285803 6.96547 0.2212 9.90479 0.193998 12.7225C0.129395 19.4279 0.0681918 26.1305 0.00358848 32.8359C-0.0134124 34.6582 -0.0100122 36.555 0.979438 38.1892C3.36296 42.1185 6.37211 42.9756 15.2738 42.9756C74.9808 42.9756 134.691 43.1222 194.402 42.6964C196.52 42.6825 198.846 42.771 200.583 41.7839C205.292 39.11 204.779 34.224 204.636 30.599C204.371 23.8493 205 18.3025 205 11.55C205 6.82721 204.351 4.93034 202.426 3.06112C199.961 0.663758 194.827 0.766068 190.981 0.70247C165.697 0.279407 140.4 0.060962 115.106 0.0111898C89.6491 -0.0413475 64.1921 0.0913783 38.735 0.403837C31.5538 0.492321 24.376 0.59463 17.1983 0.71353C11.7784 0.802014 4.90324 -0.171309 1.89748 4.47133Z"/>
-                </g>
-                <defs>
-                    <filter id="filter0_d_3_52" x="0" y="0" width="213" height="51" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                    <feFlood flood-opacity="0" result="BackgroundImageFix"/>
-                    <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-                    <feOffset dx="4" dy="4"/>
-                    <feGaussianBlur stdDeviation="2"/>
-                    <feComposite in2="hardAlpha" operator="out"/>
-                    <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
-                    <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_3_52"/>
-                    <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_3_52" result="shape"/>
-                    </filter>
-                </defs>
-            </svg>
         </div>
+        
     </a>
 </div>
