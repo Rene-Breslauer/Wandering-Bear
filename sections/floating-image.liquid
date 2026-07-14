@@ -33,7 +33,7 @@
         <div class="relative z-[3] md:!w-1/2 wb-flex flex-col max-w-[263px] md:!max-w-[457px] mx-auto md:!mx-0">
             <div class="flex flex-col mb-6 md:!mb-8 relative md:-left-6.5">
                 {% if badge != blank %}
-                    {{ badge | image_url: width: 100 | image_tag: class: 'absolute z-[2] -top-[30px] -left-[30px] !w-[60px] !h-auto', loading: 'eager', preload: 'eager' }}
+                    {{ badge | image_url: width: 100 | image_tag: class: 'absolute z-[2] -top-[30px] -left-[30px] !w-[60px] !h-auto shadow-button', loading: 'eager', preload: 'eager' }}
                 {% endif %}
                 {% if title_type == 'text' %}
                     <h2 class="h2 title-text !leading-[1.1]" style="color: {{ color_scheme.settings.foreground }}; {{ title_styles }}">{{ title | replace: '\b', '<br>' }}</h2>
