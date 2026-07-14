@@ -116,7 +116,7 @@
   <div class="flex flex-col md:!flex-row !gap-4 mb-4">
 
     {%- comment -%} Autoship card — active or cancelled. Filled by account.ts from Stay AI (worker). {%- endcomment -%}
-    <div class="flex-1 {{ card }} p-5 md:!p-6" data-wb-autoship>
+    <div class="flex-1 {{ card }} p-5 md:!p-6 flex flex-col" data-wb-autoship>
       <div class="flex items-center justify-between mb-3">
         <span class="font-kurdis-semi-condensed font-bold text-[12px] leading-none text-bear-black">
           {%- if is_cancelled -%}{{ 'customer.dashboard.previous_autoship' | t }}{%- else -%}{{ 'customer.dashboard.next_autoship' | t }}{%- endif -%}
@@ -127,13 +127,13 @@
           <span class="inline-flex items-center whitespace-nowrap shrink-0 min-w-[80px] h-[20px] px-[10px] rounded-[10px] font-kurdis-semi-condensed font-bold text-[12px] leading-none text-espresso bg-sky-blue" data-wb-autoship-count data-wb-count-template="{{ 'customer.dashboard.active_autoships' | t: count: '__N__' }}"></span>
         {%- endif -%}
       </div>
-      <div class="flex items-baseline justify-between mb-2 !gap-2">
+      <div class="wb-autoship-head flex items-baseline justify-between !gap-2">
         <span class="font-kurdis-semi-condensed font-bold text-[12px] leading-none text-bear-black" data-wb-autoship-bundle>{{ autoship_bundle }}</span>
         {%- unless is_cancelled -%}
           <span class="font-kurdis-semi-condensed font-bold text-[10px] leading-none whitespace-nowrap text-bear-black">{{ 'customer.dashboard.next_shipment_label' | t }} <span data-wb-autoship-date>{{ autoship_next_date }}</span></span>
         {%- endunless -%}
       </div>
-      <ul class="flex flex-col !gap-1.5 mb-4" data-wb-autoship-items data-wb-more-template="{{ 'customer.dashboard.more_count' | t: count: '__N__' }}">
+      <ul class="flex flex-col mb-2" data-wb-autoship-items data-wb-more-template="{{ 'customer.dashboard.more_count' | t: count: '__N__' }}">
         {%- for item in autoship_items -%}
           {%- if item != blank -%}
           <li class="flex items-center justify-between !gap-2 font-kurdis-semi-condensed font-bold text-[10px] leading-none text-[#955325]">
@@ -146,12 +146,12 @@
         {%- endfor -%}
       </ul>
       {%- if is_cancelled -%}
-        {%- render 'customer-form-button', type: 'button', label: t_reactivate, style: 'secondary-gold', class: 'shadow-button !w-full !h-[40px] !text-[15px]' -%}
+        {%- render 'customer-form-button', type: 'button', label: t_reactivate, style: 'secondary-gold', class: 'mt-auto shadow-button !w-full !h-[40px] !text-[15px]' -%}
       {%- else -%}
         {%- comment -%} Manage → Stay AI portal. SSR href = manage_url (settings.manage_autoship_url,
           defaulted to /apps/retextion, which auto-detects the logged-in member); account.ts overrides
           it with the worker's per-customer portal_url (Stay AI generate-portal-link token) when present. {%- endcomment -%}
-        <div data-wb-autoship-manage>
+        <div data-wb-autoship-manage class="mt-auto">
           {%- render 'wb-button', style: 'secondary-gold', label: t_manage, link: manage_url, class: 'shadow-button !w-full !h-[40px] !text-[15px]' -%}
         </div>
       {%- endif -%}

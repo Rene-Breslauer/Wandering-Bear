@@ -190,8 +190,16 @@ function renderSubscriptions(subs: Subscriptions | null): void {
   // Line-item list (show up to 2, "+N more" links to the portal).
   const list = card.querySelector<HTMLElement>('[data-wb-autoship-items]');
   if (list && first.line_items.length) {
-    const shown = first.line_items.slice(0, 2);
-    const more = first.items_total - shown.length;
+    // The worker includes the bundle itself as a line item (title === bundle_title), which
+    // duplicates the card headline. Drop it so the list shows only the bundle's components.
+    // Fall back to the raw list if filtering would empty it (a bundle with no sub-items).
+    const bundleKey = dedupeTitle(first.bundle_title);
+    const filtered = first.line_items.filter((li) => dedupeTitle(li.title) !== bundleKey);
+    const items = filtered.length ? filtered : first.line_items;
+    const removed = first.line_items.length - items.length; // bundle lines dropped from the count
+    const total = Math.max(items.length, first.items_total - removed);
+    const shown = items.slice(0, 2);
+    const more = Math.max(0, total - shown.length);
     const moreLabel = fillTemplate(list, 'data-wb-more-template', more);
     list.textContent = '';
     shown.forEach((li, i) => {

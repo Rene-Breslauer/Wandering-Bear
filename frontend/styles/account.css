@@ -11,10 +11,12 @@
    ========================================================================== */
 
 /* ---- Layout containers (single source of truth) ------------------------- */
-/* Content column: dashboard, order page, credit history, addresses. */
+/* Content column: dashboard, order page, credit history, addresses.
+   Matches the product page container width on desktop (product-information__grid
+   max-w-[1092px]); stays fluid below that. */
 .account-container {
     width: 100%;
-    max-width: 774px;
+    max-width: 1092px;
     margin-inline: auto;
     padding-inline: 1rem;
 }
@@ -112,6 +114,55 @@
     background: rgba(67, 26, 3, 0.10);
     animation: wb-pulse 1.1s ease-in-out infinite;
 }
+/* Pin the autoship Manage/Reactivate button to the bottom of the card so it aligns with the
+   credit card's Redeem button when the two stretch to equal height. In CSS (not the Tailwind
+   flex/mt-auto utilities) so it applies regardless of what the JIT compiled for this snippet. */
+[data-wb-autoship] {
+    display: flex;
+    flex-direction: column;
+}
+[data-wb-autoship] > [data-wb-autoship-manage],
+[data-wb-autoship] > .mt-auto {
+    margin-top: auto;
+}
+
+/* Active-autoships badge — sky-blue pill (Figma "Rectangle 10492": #BFD7E9, radius 10px).
+   Set explicitly because the theme's @theme token is `--color-sky-blue: #BFD7E9/100%`, whose
+   `/100%` suffix yields an invalid colour, so `bg-sky-blue` doesn't paint. */
+[data-wb-autoship-count] {
+    background-color: #bfd7e9;
+    border-radius: 10px;
+}
+
+/* Autoship rows — 1px #F0EDEA divider + spacing (Figma "Line 13"). Applies to the head
+   row (bundle title + next shipment) and every line item incl. the last, so each row is
+   underlined. Targets the [data-wb-autoship-items] hook → works for SSR and the rows
+   account.ts rebuilds. */
+.wb-autoship-head,
+[data-wb-autoship-items] > li {
+    /* Bleed to the card edges so the divider spans full width, then re-inset the content.
+       Negative margin must match the card padding (p-5 = 20px, md:!p-6 = 24px on desktop). */
+    margin-inline: -1.25rem;
+    padding-inline: 1.25rem;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #f0edea;
+}
+[data-wb-autoship-items] > li + li {
+    padding-top: 5px;
+}
+/* Space from the head divider to the first line item (matches the 5px rhythm;
+   overrides the mb-2 utility on the head row). */
+.wb-autoship-head {
+    margin-bottom: 5px;
+}
+@media (min-width: 1024px) {
+    .wb-autoship-head,
+    [data-wb-autoship-items] > li {
+        margin-inline: -1.5rem;
+        padding-inline: 1.5rem;
+    }
+}
+
 /* Worker fills the autoship line-item list; empty until then (no preset rows). */
 [data-wb-account][data-wb-loading] [data-wb-autoship-items]:empty {
     display: block;
