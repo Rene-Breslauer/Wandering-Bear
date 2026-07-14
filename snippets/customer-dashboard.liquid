@@ -51,12 +51,9 @@
   assign card = 'rounded-[10px] bg-foam shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]'
   assign membership_url = '/pages/membership'
 
-  # Small credit line: shows "Expires <date>" (worker) or, when there's no expiry, the lifetime
-  # credits earned (Inveterate credits_earned) — "how many credits in total". The big number is
-  # the redeemable balance (inveterate.balance, set in the section).
-  assign ce_native = customer.metafields.inveterate.credits_earned | default: 0 | times: 100 | money_without_trailing_zeros
-  assign credits_earned_formatted = credits_earned_formatted | default: ce_native
-  assign no_expiry_text = 'customer.dashboard.total_earned' | t: amount: credits_earned_formatted
+  # Small credit line: shows "Expires <date>" (worker). When there's no expiry the line is hidden
+  # entirely (no "Total earned" fallback). The big number is the redeemable balance
+  # (inveterate.balance, set in the section).
 
   # Stay AI customer portal for the "Manage Upcoming Orders" / "+N more" links. Defaults to the
   # App Proxy path /apps/retextion (auto-detects the logged-in member) so the link always works
@@ -111,7 +108,7 @@
         <span class="inline-block origin-bottom-left rotate-[-4deg] font-gothic_condensed font-extrabold uppercase text-espresso text-[20px] leading-[0.95] max-w-[68px]">{{ 'customer.dashboard.your_credit' | t }}</span>
         <span class="font-kurdis-condensed font-extrabold text-[45px] leading-[0.78] text-dark-gold">{{ credits_formatted }}</span>
       </div>
-      <div class="font-kurdis-semi-condensed font-bold text-[10px] leading-none mt-3 text-dark-gold" data-wb-expiry-line data-wb-no-expiry="{{ no_expiry_text }}">{{ 'customer.dashboard.expires_label' | t }} <span data-wb-credit-expiry>{{ credits_expiry }}</span></div>
+      <div class="font-kurdis-semi-condensed font-bold text-[10px] leading-none mt-3 text-dark-gold" data-wb-expiry-line>{{ 'customer.dashboard.expires_label' | t }} <span data-wb-credit-expiry>{{ credits_expiry }}</span></div>
     </div>
     {%- comment -%} Redeem → on-page redemption modal (generate Inveterate code, apply to cart);
       falls back to the /community/membership portal link when JS is off. {%- endcomment -%}
@@ -171,7 +168,7 @@
         <span class="absolute left-0 top-1/2 -translate-y-1/2 rotate-[-1.99deg] opacity-90 font-gothic_condensed font-extrabold uppercase text-espresso text-[20px] leading-[1.04] max-w-[80px]">{{ 'customer.dashboard.your_credit' | t }}</span>
         <div class="text-center pt-4">
           <div class="font-kurdis-condensed font-extrabold text-[45px] leading-none text-dark-gold">{{ credits_formatted }}</div>
-          <div class="font-kurdis-semi-condensed font-bold text-[10px] leading-none mt-2 text-dark-gold" data-wb-expiry-line data-wb-no-expiry="{{ no_expiry_text }}">{{ 'customer.dashboard.expires_label' | t }} <span data-wb-credit-expiry>{{ credits_expiry }}</span></div>
+          <div class="font-kurdis-semi-condensed font-bold text-[10px] leading-none mt-2 text-dark-gold" data-wb-expiry-line>{{ 'customer.dashboard.expires_label' | t }} <span data-wb-credit-expiry>{{ credits_expiry }}</span></div>
         </div>
       </div>
       {%- render 'customer-credit-redeem', label: t_redeem, link: redeem_url, balance_formatted: credits_formatted, class: 'shadow-button !w-full !h-[40px] !text-[15px]' -%}
