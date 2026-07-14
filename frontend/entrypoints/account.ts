@@ -216,7 +216,25 @@ function renderSubscriptions(subs: Subscriptions | null): void {
     if (t) title.textContent = t;
   }
 
-  setText(card, 'autoship-bundle', dedupeTitle(first.bundle_title));
+  // The worker may merge several bundles' line items into one subscription and label
+  // bundle_title with the first line item (often a flavour, not a bundle). Prefer a real
+  // bundle line ("…Bundle…") for the headline; list only flavour items (drop every bundle
+  // line) so "+N more" counts flavours, not bundle rows. Surface the headline bundle's own
+  // flavour first by matching box size (e.g. "1 Box").
+  const isBundleTitle = (t: string): boolean => /bundle/i.test(t);
+  const boxSize = (t: string): string => t.match(/(\d+)\s*box/i)?.[1] ?? '';
+  const bundleLines = first.line_items.filter((li) => isBundleTitle(li.title));
+  const headlineTitle = bundleLines[0]?.title ?? first.bundle_title;
+  const headlineBox = boxSize(headlineTitle);
+  const flavourItems = first.line_items
+    .filter((li) => !isBundleTitle(li.title))
+    .sort((a, b) => {
+      const am = headlineBox && boxSize(a.title) === headlineBox ? 0 : 1;
+      const bm = headlineBox && boxSize(b.title) === headlineBox ? 0 : 1;
+      return am - bm;
+    });
+
+  setText(card, 'autoship-bundle', dedupeTitle(headlineTitle));
   if (!isCancelled) setText(card, 'autoship-date', first.next_order_date ?? undefined);
 
   // Active-count badge — localized "{n} Active Autoships" (active only; CSS hides it when cancelled).
@@ -225,28 +243,20 @@ function renderSubscriptions(subs: Subscriptions | null): void {
     if (countEl) countEl.textContent = fillTemplate(countEl, 'data-wb-count-template', subs.active_count);
   }
 
-  // Line-item list (show up to 2, "+N more" links to the portal).
+  // Line-item list (flavours only; show up to 2, "+N more" links to the portal).
   const list = card.querySelector<HTMLElement>('[data-wb-autoship-items]');
-  if (list && first.line_items.length) {
-    // The worker includes the bundle itself as a line item (title === bundle_title), which
-    // duplicates the card headline. Drop it so the list shows only the bundle's components.
-    // Fall back to the raw list if filtering would empty it (a bundle with no sub-items).
-    const bundleKey = dedupeTitle(first.bundle_title);
-    const filtered = first.line_items.filter((li) => dedupeTitle(li.title) !== bundleKey);
-    const items = filtered.length ? filtered : first.line_items;
-    const removed = first.line_items.length - items.length; // bundle lines dropped from the count
-    const total = Math.max(items.length, first.items_total - removed);
-    const shown = items.slice(0, 2);
-    const more = Math.max(0, total - shown.length);
+  if (list && flavourItems.length) {
+    const shown = flavourItems.slice(0, 2);
+    const more = Math.max(0, flavourItems.length - shown.length);
     const moreLabel = fillTemplate(list, 'data-wb-more-template', more);
     list.textContent = '';
     shown.forEach((li, i) => {
       const row = document.createElement('li');
       row.className =
         'flex items-center justify-between !gap-2 font-kurdis-semi-condensed font-bold text-[10px] leading-none text-[#955325]';
-      const title = document.createElement('span');
-      title.textContent = dedupeTitle(li.title);
-      row.appendChild(title);
+      const itemTitle = document.createElement('span');
+      itemTitle.textContent = dedupeTitle(li.title);
+      row.appendChild(itemTitle);
       if (i === shown.length - 1 && more > 0) {
         const link = document.createElement('a');
         link.href = subs.portal_url || portalUrl || first.manage_url || '#';
