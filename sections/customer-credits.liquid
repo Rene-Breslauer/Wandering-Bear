@@ -9,13 +9,14 @@
 {%- enddoc -%}
 {%- liquid
   assign card = 'rounded-[10px] bg-foam shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]'
-  # Redeemable store credits (what the member can redeem now); pairs with the expiry. Same
-  # number_decimal unit as credits_earned → same filter, no ×100. (Header keeps credits_earned.)
+  # Redeemable store credits (what the member can redeem now); pairs with the expiry. The Inveterate
+  # metafield is a DECIMAL DOLLAR amount (e.g. 2120.0 = $2,120); `money` expects cents, so multiply
+  # by 100 before formatting (matches the account worker's balance_formatted).
   assign credit_balance = customer.metafields.inveterate.balance | default: 0
-  assign credits_formatted = credit_balance | money_without_trailing_zeros
+  assign credits_formatted = credit_balance | times: 100 | money_without_trailing_zeros
   assign credits_expiry = ''
-  # No-expiry fallback for the small line: lifetime credits earned (credits_earned).
-  assign credits_earned_formatted = customer.metafields.inveterate.credits_earned | default: 0 | money_without_trailing_zeros
+  # No-expiry fallback for the small line: lifetime credits earned (credits_earned), same ×100.
+  assign credits_earned_formatted = customer.metafields.inveterate.credits_earned | default: 0 | times: 100 | money_without_trailing_zeros
   assign no_expiry_text = 'customer.dashboard.total_earned' | t: amount: credits_earned_formatted
   assign t_redeem = 'customer.dashboard.redeem_credits' | t
   # Redeem → Inveterate member portal (the redeem modal lives in the portal runtime, which

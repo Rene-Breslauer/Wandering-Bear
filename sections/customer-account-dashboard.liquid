@@ -14,10 +14,11 @@
   assign real_tier = membership_tier | default: 'FREE'
 
   # "YOUR CREDIT" = redeemable store credits (inveterate.balance) — what the member can redeem NOW,
-  # which the credit-expiry (worker) refers to. Same number_decimal unit as credits_earned, so it
-  # formats identically (money_without_trailing_zeros; do NOT ×100). The header keeps credits_earned.
+  # which the credit-expiry (worker) refers to. The Inveterate metafield stores a DECIMAL DOLLAR
+  # amount (e.g. 2120.0 = $2,120), but Shopify's `money` filter expects cents — so multiply by 100
+  # before formatting (the account worker does the same ×100 to build balance_formatted).
   assign credit_balance = customer.metafields.inveterate.balance | default: 0
-  assign credits_formatted = credit_balance | money_without_trailing_zeros
+  assign credits_formatted = credit_balance | times: 100 | money_without_trailing_zeros
 
   # TODO worker (/apps/wb/subscriptions): real autoship state (none|active|cancelled).
   # Mock: members have an active autoship, FREE has none.

@@ -54,7 +54,7 @@
   # Small credit line: shows "Expires <date>" (worker) or, when there's no expiry, the lifetime
   # credits earned (Inveterate credits_earned) — "how many credits in total". The big number is
   # the redeemable balance (inveterate.balance, set in the section).
-  assign ce_native = customer.metafields.inveterate.credits_earned | default: 0 | money_without_trailing_zeros
+  assign ce_native = customer.metafields.inveterate.credits_earned | default: 0 | times: 100 | money_without_trailing_zeros
   assign credits_earned_formatted = credits_earned_formatted | default: ce_native
   assign no_expiry_text = 'customer.dashboard.total_earned' | t: amount: credits_earned_formatted
 
