@@ -278,28 +278,28 @@
         <table class="w-full border-collapse wb-orders-table">
           <thead>
             <tr class="text-left tag text-espresso uppercase">
-              <th class="p-3 border-b border-espresso/20">{{ 'customer.dashboard.col_order' | t }}</th>
-              <th class="p-3 border-b border-espresso/20">{{ 'customer.dashboard.col_date' | t }}</th>
-              <th class="p-3 border-b border-espresso/20">{{ 'customer.dashboard.col_tracking' | t }}</th>
-              <th class="p-3 border-b border-espresso/20 hidden md:!table-cell">{{ 'customer.dashboard.col_payment' | t }}</th>
-              <th class="p-3 border-b border-espresso/20 hidden md:!table-cell">{{ 'customer.dashboard.col_fulfillment' | t }}</th>
-              <th class="p-3 border-b border-espresso/20 hidden md:!table-cell text-right">{{ 'customer.dashboard.col_total' | t }}</th>
+              <th class="px-2 py-3 md:!p-3 border-b border-espresso/20">{{ 'customer.dashboard.col_order' | t }}</th>
+              <th class="px-2 py-3 md:!p-3 border-b border-espresso/20">{{ 'customer.dashboard.col_date' | t }}</th>
+              <th class="px-2 py-3 md:!p-3 border-b border-espresso/20">{{ 'customer.dashboard.col_tracking' | t }}</th>
+              <th class="px-2 py-3 md:!p-3 border-b border-espresso/20 hidden md:!table-cell">{{ 'customer.dashboard.col_payment' | t }}</th>
+              <th class="px-2 py-3 md:!p-3 border-b border-espresso/20 hidden md:!table-cell">{{ 'customer.dashboard.col_fulfillment' | t }}</th>
+              <th class="px-2 py-3 md:!p-3 border-b border-espresso/20 hidden md:!table-cell text-right">{{ 'customer.dashboard.col_total' | t }}</th>
             </tr>
           </thead>
           <tbody>
             {%- for order in customer.orders -%}
               {%- assign fulfillment = order.fulfillments.first -%}
               <tr class="body text-espresso">
-                <td class="p-3 border-b border-espresso/10"><a href="{{ order.customer_url }}" class="font-bold hover-underline">{{ order.name }}</a></td>
-                <td class="p-3 border-b border-espresso/10 whitespace-nowrap">{{ order.created_at | date: '%B %-d, %Y' }}</td>
-                <td class="p-3 border-b border-espresso/10">
+                <td class="px-2 py-3 md:!p-3 border-b border-espresso/10"><a href="{{ order.customer_url }}" class="font-bold hover-underline">{{ order.name }}</a></td>
+                <td class="px-2 py-3 md:!p-3 border-b border-espresso/10 whitespace-nowrap">{{ order.created_at | date: '%b %-d, %Y' }}</td>
+                <td class="px-2 py-3 md:!p-3 border-b border-espresso/10">
                   {%- if fulfillment.tracking_number -%}
                     {%- if fulfillment.tracking_url -%}<a href="{{ fulfillment.tracking_url }}" class="hover-underline" target="_blank" rel="noopener">{{ fulfillment.tracking_number }}</a>{%- else -%}{{ fulfillment.tracking_number }}{%- endif -%}
                   {%- else -%}&mdash;{%- endif -%}
                 </td>
-                <td class="p-3 border-b border-espresso/10 hidden md:!table-cell">{{ order.financial_status_label }}</td>
-                <td class="p-3 border-b border-espresso/10 hidden md:!table-cell">{{ order.fulfillment_status_label }}</td>
-                <td class="p-3 border-b border-espresso/10 hidden md:!table-cell text-right whitespace-nowrap">{{ order.total_price | money }}</td>
+                <td class="px-2 py-3 md:!p-3 border-b border-espresso/10 hidden md:!table-cell">{{ order.financial_status_label }}</td>
+                <td class="px-2 py-3 md:!p-3 border-b border-espresso/10 hidden md:!table-cell">{{ order.fulfillment_status_label }}</td>
+                <td class="px-2 py-3 md:!p-3 border-b border-espresso/10 hidden md:!table-cell text-right whitespace-nowrap">{{ order.total_price | money }}</td>
               </tr>
             {%- endfor -%}
           </tbody>
@@ -315,24 +315,24 @@
       <table class="w-full border border-espresso/20 border-collapse">
         <thead>
           <tr class="text-left tag text-espresso uppercase">
-            <th class="p-3 border-b border-espresso/20">{{ 'customer.dashboard.col_order' | t }}</th>
-            <th class="p-3 border-b border-espresso/20">{{ 'customer.dashboard.col_date' | t }}</th>
-            <th class="p-3 border-b border-espresso/20">{{ 'customer.dashboard.col_tracking' | t }}</th>
-            <th class="p-3 border-b border-espresso/20 hidden md:!table-cell">{{ 'customer.dashboard.col_payment' | t }}</th>
-            <th class="p-3 border-b border-espresso/20 hidden md:!table-cell">{{ 'customer.dashboard.col_fulfillment' | t }}</th>
-            <th class="p-3 border-b border-espresso/20 hidden md:!table-cell text-right">{{ 'customer.dashboard.col_total' | t }}</th>
+            <th class="px-2 py-3 md:!p-3 border-b border-espresso/20">{{ 'customer.dashboard.col_order' | t }}</th>
+            <th class="px-2 py-3 md:!p-3 border-b border-espresso/20">{{ 'customer.dashboard.col_date' | t }}</th>
+            <th class="px-2 py-3 md:!p-3 border-b border-espresso/20">{{ 'customer.dashboard.col_tracking' | t }}</th>
+            <th class="px-2 py-3 md:!p-3 border-b border-espresso/20 hidden md:!table-cell">{{ 'customer.dashboard.col_payment' | t }}</th>
+            <th class="px-2 py-3 md:!p-3 border-b border-espresso/20 hidden md:!table-cell">{{ 'customer.dashboard.col_fulfillment' | t }}</th>
+            <th class="px-2 py-3 md:!p-3 border-b border-espresso/20 hidden md:!table-cell text-right">{{ 'customer.dashboard.col_total' | t }}</th>
           </tr>
         </thead>
         <tbody>
           {%- for row in mock_orders -%}
             {%- assign c = row | split: '|' -%}
             <tr class="body text-espresso">
-              <td class="p-3 border-b border-espresso/10"><span class="font-bold hover-underline">{{ c[0] }}</span></td>
-              <td class="p-3 border-b border-espresso/10 whitespace-nowrap">{{ c[1] }}</td>
-              <td class="p-3 border-b border-espresso/10"><span class="hover-underline">{{ c[2] }}</span></td>
-              <td class="p-3 border-b border-espresso/10 hidden md:!table-cell">{{ c[3] }}</td>
-              <td class="p-3 border-b border-espresso/10 hidden md:!table-cell">{{ c[4] }}</td>
-              <td class="p-3 border-b border-espresso/10 hidden md:!table-cell text-right whitespace-nowrap">{{ c[5] }}</td>
+              <td class="px-2 py-3 md:!p-3 border-b border-espresso/10"><span class="font-bold hover-underline">{{ c[0] }}</span></td>
+              <td class="px-2 py-3 md:!p-3 border-b border-espresso/10 whitespace-nowrap">{{ c[1] }}</td>
+              <td class="px-2 py-3 md:!p-3 border-b border-espresso/10"><span class="hover-underline">{{ c[2] }}</span></td>
+              <td class="px-2 py-3 md:!p-3 border-b border-espresso/10 hidden md:!table-cell">{{ c[3] }}</td>
+              <td class="px-2 py-3 md:!p-3 border-b border-espresso/10 hidden md:!table-cell">{{ c[4] }}</td>
+              <td class="px-2 py-3 md:!p-3 border-b border-espresso/10 hidden md:!table-cell text-right whitespace-nowrap">{{ c[5] }}</td>
             </tr>
           {%- endfor -%}
         </tbody>
@@ -355,6 +355,6 @@
        style="background-image: url({{ 'account-contact-clouds.png' | asset_url }});">
     <h2 class="font-kurdis-condensed font-extrabold uppercase text-espresso text-[24px] md:text-[28px] mb-2">{{ 'customer.dashboard.contact_title' | t }}</h2>
     <p class="body text-espresso mb-4">{{ 'customer.dashboard.contact_subtext' | t }}</p>
-    {%- render 'wb-button', style: 'secondary-gold', label: t_contact, link: '/pages/contact', class: '!h-[40px]' -%}
+    {%- render 'wb-button', style: 'secondary-gold', label: t_contact, link: '/pages/contact', class: 'mx-auto !h-[40px]' -%}
   </div>
 </div>
