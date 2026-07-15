@@ -3,6 +3,7 @@
     assign class = ''
     assign title_type = section.settings.title_type
     assign title = section.settings.title
+    assign title_color = section.settings.title_color
     assign title_alt = section.settings.title_alt
     assign title_image = section.settings.title_image
     assign title_image_mobile = section.settings.title_image_mobile
@@ -30,7 +31,7 @@
             {% endif %}
         {% elsif title_type == 'text' %}
             {% if title != blank %}
-                <span class="h1 mb-8 title-text leading-[1.2]" style="color: {{ text_color }}; {{ title_styles }}">{{ title }}</span>
+                <span class="h1 mb-8 title-text leading-[1.2]"{% if title_color != blank %} style="color: {{ title_color }}; {{ title_styles }}"{% else %} style="{{ title_styles }}"{% endif %}>{{ title }}</span>
             {% endif %}
         {% endif %}
 
@@ -70,6 +71,7 @@
                 assign text_color = color_scheme.text
                 assign title_type = block_settings.title_type
                 assign title = block_settings.title
+                assign title_color = block_settings.title_color | default: text_color
                 assign title_alt = block_settings.title_alt
                 assign title_image = block_settings.title_image
                 assign title_image_mobile = block_settings.title_image_mobile
@@ -214,7 +216,7 @@
 
                 {% if title != blank and title_type == 'text' %}
                     <div class="wb-flex flex-col mx-auto relative z-[1]">
-                        <span class="h1 mb-8 title-text leading-[1.2]" style="color: {{ text_color }}; {{ block_title_styles }}">{{ title }}</span>
+                        <span class="h1 mb-8 title-text leading-[1.2]" style="color: {{ title_color }}; {{ block_title_styles }}">{{ title }}</span>
                     </div>
                 {% endif %}
 
@@ -516,6 +518,75 @@
       "visible_if": "{{ section.settings.background_type_mobile == 'image' }}"
     },
     {
+      "type": "select",
+      "id": "title_type",
+      "label": "Title Type",
+      "options": [
+        {
+          "value": "text",
+          "label": "Text"
+        },
+        {
+          "value": "image",
+          "label": "Image"
+        }
+      ],
+      "default": "text"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "visible_if": "{{ section.settings.title_type == 'text' }}"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "info": "Leave empty to use the color scheme text color.",
+      "visible_if": "{{ section.settings.title_type == 'text' }}"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Font Size",
+      "min": 16,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 24,
+      "visible_if": "{{ section.settings.title_type == 'text' }}"
+    },
+    {
+      "type": "range",
+      "id": "font_size_mobile",
+      "label": "Font Size Mobile",
+      "min": 16,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 24,
+      "visible_if": "{{ section.settings.title_type == 'text' }}"
+    },
+    {
+      "type": "text",
+      "id": "title_alt",
+      "label": "Title Alt",
+      "visible_if": "{{ section.settings.title_type == 'image' }}"
+    },
+    {
+      "type": "image_picker",
+      "id": "title_image",
+      "label": "Title Image",
+      "visible_if": "{{ section.settings.title_type == 'image' }}"
+    },
+    {
+      "type": "image_picker",
+      "id": "title_image_mobile",
+      "label": "Title Image Mobile",
+      "visible_if": "{{ section.settings.title_type == 'image' }}"
+    },
+    {
       "type": "header",
       "content": "t:content.padding"
     },
@@ -562,68 +633,6 @@
       "step": 1,
       "unit": "px",
       "default": 0
-    },
-    {
-      "type": "select",
-      "id": "title_type",
-      "label": "Title Type",
-      "options": [
-        {
-          "value": "text",
-          "label": "Text"
-        },
-        {
-          "value": "image",
-          "label": "Image"
-        }
-      ],
-      "default": "text"
-    },
-    {
-      "type": "text",
-      "id": "title",
-      "label": "Title",
-      "visible_if": "{{ section.settings.title_type == 'text' }}"
-    },
-    {
-      "type": "range",
-      "id": "font_size",
-      "label": "Font Size",
-      "min": 16,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 24,
-      "visible_if": "{{ section.settings.title_type == 'text' }}"
-    },
-    {
-      "type": "range",
-      "id": "font_size_mobile",
-      "label": "Font Size Mobile",
-      "min": 16,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 24,
-      "visible_if": "{{ section.settings.title_type == 'text' }}"
-    },
-    {
-      "type": "text",
-      "id": "title_alt",
-      "label": "Title Alt",
-      "visible_if": "{{ section.settings.title_type == 'image' }}"
-    },
-    {
-      "type": "image_picker",
-      "id": "title_image",
-      "label": "Title Image",
-      "visible_if": "{{ section.settings.title_type == 'image' }}"
-    },
-    {
-      "type": "image_picker",
-      "id": "title_image_mobile",
-      "label": "Title Image Mobile",
-      "visible_if": "{{ section.settings.title_type == 'image' }}"
     }
   ],
   "blocks": [
@@ -662,6 +671,13 @@
           "type": "text",
           "id": "title",
           "label": "Title",
+          "visible_if": "{{ block.settings.title_type == 'text' }}"
+        },
+        {
+          "type": "color",
+          "id": "title_color",
+          "label": "Title color",
+          "info": "Leave empty to use the color scheme text color.",
           "visible_if": "{{ block.settings.title_type == 'text' }}"
         },
         {

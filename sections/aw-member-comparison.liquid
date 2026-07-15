@@ -4,6 +4,7 @@
     assign text_color = color_scheme.settings.foreground_heading
     assign title_type = section_settings.title_type
     assign title = section_settings.title
+    assign title_color = section_settings.title_color | default: text_color
     assign title_alt = section_settings.title_alt
     assign title_image = section_settings.title_image
     assign title_image_mobile = section_settings.title_image_mobile
@@ -112,7 +113,7 @@
                         {% endif %}
                     {% elsif title_type == 'text' %}
                         {% if title != blank %}
-                            <span class="h1 md:mb-8 title-text leading-[1.2]" style="color: {{ text_color }}; {{ title_styles }}">{{ title }}</span>
+                            <span class="h1 md:mb-8 title-text leading-[1.2]" style="color: {{ title_color }}; {{ title_styles }}">{{ title }}</span>
                         {% endif %}
                     {% endif %}
                 </div>
@@ -340,54 +341,6 @@
       "visible_if": "{{ section.settings.background_type_mobile == 'image' }}"
     },
     {
-      "type": "header",
-      "content": "t:content.padding"
-    },
-    {
-      "type": "range",
-      "id": "padding-block-start",
-      "label": "t:settings.top",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "padding-block-end",
-      "label": "t:settings.bottom",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 0
-    },
-    {
-      "type": "header",
-      "content": "t:content.mobile"
-    },
-    {
-      "type": "range",
-      "id": "padding-block-start-mobile",
-      "label": "t:settings.top_mobile",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "padding-block-end-mobile",
-      "label": "t:settings.bottom_mobile",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 0
-    },
-    {
       "type": "select",
       "id": "title_type",
       "label": "Title Type",
@@ -407,6 +360,13 @@
       "type": "text",
       "id": "title",
       "label": "Title",
+      "visible_if": "{{ section.settings.title_type == 'text' }}"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "info": "Leave empty to use the color scheme text color.",
       "visible_if": "{{ section.settings.title_type == 'text' }}"
     },
     {
@@ -463,6 +423,54 @@
       "type": "image_picker",
       "id": "bullet_icon",
       "label": "Bullet Icon"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "t:content.mobile"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start-mobile",
+      "label": "t:settings.top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end-mobile",
+      "label": "t:settings.bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
     }
   ],
   "blocks": [
