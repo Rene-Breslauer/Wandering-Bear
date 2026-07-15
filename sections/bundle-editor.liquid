@@ -13,6 +13,21 @@
   be passed to Liquid through the Section Rendering API).
 {% endcomment %}
 
+{% style %}
+  button[data-bundle-increment][disabled] {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  button[data-bundle-decrement][disabled] {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  button[data-bundle-add][disabled] {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+{% endstyle %}
+
 {%- liquid
   assign group = collection.products.first.metafields.custom.product_group.value
 
@@ -68,13 +83,13 @@
     </button>
 
     <h2 class="h6 uppercase font-gothic_condensed font-bold text-bear-black text-lg">
-      Modify {{ headline }} Bundle
+      Modify {{ headline }}
     </h2>
   </div>
 
   <div class="p-3">
     {% comment %} Progress / tier indicator {% endcomment %}
-    {% if tier_count > 0 %}
+    {% if tier_count > 0 and collection.handle != '32oz-bundle' %}
       <div class="wb-flex gap-1 flex-col w-full bg-white/50 p-4.5 rounded-[5px] font-kurdis relative button-shadow uppercase mb-2.5 text-bear-black">
         <div class="flex items-center justify-between">
           {% for tier_product in bundle_products %}
@@ -125,9 +140,15 @@
       </div>
     {% endif %}
 
+    {% comment %} 32oz Multi-Serve Variety Indicator {% endcomment %}
+    {% if tier_count > 0 and collection.handle == '32oz-bundle' %}
+      <div data-32oz-multi-serve-container>
+      </div>
+    {% endif %}
+
     {% comment %} Editable flavor list {% endcomment %}
     <form on:submit="bundle-editor-component/update" class="wb-flex">
-      <div class="wb-flex flex-col gap-3 max-h-[calc(100vh-250px)] overflow-auto">
+      <div class="w-full flex flex-col gap-3 max-h-[calc(100vh-250px)] overflow-auto">
         {% paginate collection.products by 50 %}
           {% for product in collection.products %}
             {%- capture variants_json -%}
@@ -144,35 +165,37 @@
               {%- endfor -%}
               ]
             {%- endcapture -%}
+            {% assign cart_image = product.metafields.custom.cart_bundle_image | default: product.featured_image %}
             <div
               data-bundle-row
               data-product-id="{{ product.id }}"
               data-variant-id="{{ product.variants.first.id }}"
               data-variants="{{ variants_json | strip | escape }}"
               data-quantity="0"
-              class="wb-flex bg-[#FFFFFF80] rounded-[5px] p-3 gap-3"
+              class="wb-flex bg-[#FFFFFF80] rounded-[5px] gap-3"
             >
-              <div class="w-[68px]">
-                {%- if product.featured_image -%}
+              <div class="w-[78px]">
+                {%- if cart_image -%}
                   {{
-                    product.featured_image
+                    cart_image
                     | image_url: width: 136
-                    | image_tag: width: 68, height: 68, alt: product.title, class: '!w-full !h-full object-cover'
+                    | image_tag: width: 78, height: 67, alt: product.title, class: '!w-full !h-full object-contain min-w-[78px] min-h-[67px]'
                   }}
                 {%- else -%}
                   {{ 'image' | placeholder_svg_tag: '!w-full !h-full object-cover' }}
                 {%- endif -%}
               </div>
-              <div class="flex items-center justify-between w-full gap-3">
+              <div class="flex items-center justify-between w-full gap-3 p-3">
                 <div class="w-full wb-flex flex-col">
-                  <h3 class="font-gothic_condensed uppercase font-bold text-bear-black text-lg">{{ product.title }}</h3>
+                  <span class="font-kurdis-semi-condensed text-xs text-espresso font-bold uppercase">{{ product.metafields.custom.product_badge.value.badge_text }}</span>
+                  <h3 class="font-gothic_condensed uppercase font-bold text-bear-black text-lg">{{ product.title | split: '- ' | last }}</h3>
                   <span class="font-kurdis-semi-condensed text-xs text-kraft font-bold lowercase">
                     <span data-bundle-price>{{ product.variants.first.price | money }}</span> per {{ singular }}
                   </span>
                 </div>
 
                 {% comment %} Add button (quantity 0) {% endcomment %}
-                <div
+                <button
                   data-bundle-add
                   class="group relative flex items-center justify-center cursor-pointer shadow-button w-20 min-w-20"
                   on:click="bundle-editor-component/increment"
@@ -181,12 +204,13 @@
                   <svg class="text-kraft group-hover:text-gold" xmlns="http://www.w3.org/2000/svg" width="80" height="40" viewBox="0 0 80 40" fill="none">
                     <path d="M0.740482 4.15938C0.111533 6.47951 0.0863218 9.21376 0.0757066 11.8348C0.0504956 18.0724 0.0266114 24.3075 0.00140038 30.5451C-0.0052341 32.2401 -0.00390717 34.0047 0.38222 35.5249C1.31237 39.18 2.48668 39.9773 5.96049 39.9773C29.2608 39.9773 52.5624 40.1137 75.8641 39.7175C76.6907 39.7047 77.5983 39.787 78.2764 38.8687C80.1141 36.3814 79.9138 31.8363 79.858 28.4641C79.7545 22.1854 80 17.0255 80 10.7442C80 6.3509 79.7466 4.58636 78.9955 2.84755C78.0335 0.61745 76.0299 0.712621 74.5292 0.653461C64.6624 0.259913 54.7903 0.0567088 44.9195 0.0104091C34.985 -0.0384628 25.0506 0.0850031 15.1161 0.375662C12.3137 0.457973 9.5126 0.553144 6.71152 0.663749C4.59644 0.74606 1.91346 -0.159357 0.740482 4.15938Z" fill="currentColor"/>
                   </svg>
-                </div>
+                </button>
 
                 {% comment %} Stepper (quantity > 0) {% endcomment %}
                 <div data-bundle-stepper class="w-fit wb-flex justify-end items-center hidden">
                   <div class="wb-flex items-center gap-2 w-fit justify-end">
                     <button
+                      data-bundle-decrement
                       type="button"
                       class="group relative cursor-pointer wb-flex justify-center items-center shadow-button w-[30px]"
                       on:click="bundle-editor-component/decrement"
@@ -200,6 +224,7 @@
                     <span data-bundle-qty class="font-kurdis-semi-condensed text-lg text-espresso font-bold w-6 text-center">0</span>
 
                     <button
+                      data-bundle-increment
                       type="button"
                       class="group relative cursor-pointer wb-flex justify-center items-center shadow-button w-[30px]"
                       on:click="bundle-editor-component/increment"

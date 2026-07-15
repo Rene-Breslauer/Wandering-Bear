@@ -185,11 +185,15 @@
 
                   {% if item.properties._bundle_id == bundle_id %}
                     {% unless item.properties._bundle_parent == 'true' %}
-                    {% assign compare_at_price = item.variant.compare_at_price | default: item.original_price %}
+                    {% assign compare_at_price = item.compare_at_price | default: item.original_price %}
                     {% assign bundle_line_price = item.price | times: item.quantity %}
                     {% assign original_line_price = compare_at_price | times: item.quantity %}
                     {% assign total_bundle_price = total_bundle_price | plus: bundle_line_price %}
-                    {% assign total_original_price = total_original_price | plus: original_line_price %}
+                    {% assign total_original_price = total_original_price | plus: item.product.variants[0].price %}
+                    {% assign child_title = item.properties._flavor %}
+                    {% if child_title == blank %}
+                      {% assign child_title = item.product.title | split: '- ' | last %}
+                    {% endif %}
                       <div data-key="{{ item.key }}" 
                       data-bundle-id="{{ bundle_id }}" 
                       class="relative flex p-4 gap-2">
@@ -198,7 +202,7 @@
                         </a>
                         <div class="flex flex-col">
                           <div class="font-bold text-bear-black text-sm">
-                            {{ item.properties._flavor }}
+                            {{ child_title }}
                           </div>
                           <div class="flex items-center gap-1 font-bold text-xs">
                             <div>
@@ -331,8 +335,13 @@
                   <div class="flex items-center justify-between relative p-4">
                     <button
                       type="button"
-                      class="inline-flex items-center gap-1 cursor-pointer text-kraft underline text-sm"
+                      class="inline-flex items-center gap-1 cursor-pointer text-kraft underline text-sm font-kurdis-semi-condensed font-bold"
                       data-bundle-edit-trigger
+                      {% if parent_item.properties._bundle_type == '32oz' %}
+                        data-bundle-type="{{ parent_item.properties._bundle_type }}"
+                        data-bundle-size="{{ parent_item.properties._bundle_size }}"
+                        data-flavor-type="{{ parent_item.properties._flavor_type }}"
+                      {% endif %}
                       data-bundle-id="{{ bundle_id | escape }}"
                       data-collection-handle="{{ collection_handle | escape }}"
                       data-bundle-name="{{ parent_item.properties._bundle_name | handleize }}"
@@ -342,8 +351,8 @@
                     </button>
                   {% comment %} Total bundle price {% endcomment %}
                   <div class="flex items-center gap-1">
-                    <span class="text-sm line-through">{{ total_original_price | money }}</span>
-                    <span class="text-sm">{{ total_bundle_price | money }}</span>
+                    <span class="text-sm line-through text-[#1B1B1B80] font-bold">{{ total_original_price | money }}</span>
+                    <span class="text-sm font-bold text-bear-black">{{ total_bundle_price | money }}</span>
                   </div>
                 </div>
                 <div class="absolute bottom-0 left-0 w-full h-[1px] right-0 bg-[#431A031A]"></div>

@@ -143,6 +143,8 @@ export default (Alpine: AlpineType) => {
                     _flavor_name: product.flavor_name ? product.flavor_name : '',
                     _bundle_name: product.bundle_name ? product.bundle_name : '',
                     _product_badge: product.badge ? product.badge : '',
+                    _flavor_type: this.flavorType ? this.flavorType : '',
+                    _bundle_type: this.bundleType ? this.bundleType : '',
                   },
                 }
               })
@@ -392,6 +394,7 @@ export default (Alpine: AlpineType) => {
               },
             }
 
+
         },
         
         selectProduct(productId, productHandle) {
@@ -479,10 +482,16 @@ export default (Alpine: AlpineType) => {
                     _collection_handle: collectionHandle,
                   },
                 }
+
+                if (this.bundleType === '32oz') {
+                  bundleItem.properties._flavor_type = this.flavorType;
+                  bundleItem.properties._bundle_type = this.bundleType;
+                  bundleItem.properties._bundle_size = this.bundleSize;
+                }
+
                 bundleCart.items.push(bundleItem);
             })
 
-            console.log('parentProduct', this.parentProduct);
 
             let bundleParent = {
               id: this.parentProduct.variant_id,
@@ -494,6 +503,12 @@ export default (Alpine: AlpineType) => {
                 _bundle_name: bundleName,
                 _collection_handle: collectionHandle,
               },
+            }
+
+            if (this.bundleType === '32oz') {
+              bundleParent.properties._flavor_type = this.flavorType;
+              bundleParent.properties._bundle_type = this.bundleType;
+              bundleParent.properties._bundle_size = this.bundleSize;
             }
 
             bundleCart.items.unshift(bundleParent);

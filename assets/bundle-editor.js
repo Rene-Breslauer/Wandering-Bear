@@ -71,6 +71,9 @@ class BundleEditorComponent extends Component {
       collectionHandle: trigger.dataset.collectionHandle ?? '',
       bundleName: trigger.dataset.bundleName ?? '',
       bundleId: trigger.dataset.bundleId ?? '',
+      bundleType: trigger.dataset.bundleType ?? '',
+      bundleSize: trigger.dataset.bundleSize ?? '',
+      flavorType: trigger.dataset.flavorType ?? '',
     });
   }
 
@@ -78,7 +81,7 @@ class BundleEditorComponent extends Component {
    * Fetches the section-rendered editor, hydrates quantities and reveals the panel.
    * @param {{ collectionHandle: string, bundleName: string, bundleId: string }} config
    */
-  async open({ collectionHandle, bundleName, bundleId }) {
+  async open({ collectionHandle, bundleName, bundleId, bundleType, bundleSize, flavorType }) {
     const panel = this.#panel;
     if (!collectionHandle || !panel) return;
 
@@ -95,6 +98,9 @@ class BundleEditorComponent extends Component {
       collectionHandle,
       bundleName: bundleName || root.dataset.bundleName || '',
       bundleId,
+      bundleType,
+      bundleSize,
+      flavorType,
       tiers: this.#parseJSON(root.dataset.tiers, []),
       tierCount: Number(root.dataset.tierCount || 0),
       rows: Array.from(panel.querySelectorAll('[data-bundle-row]')).map((el) => ({
@@ -108,6 +114,8 @@ class BundleEditorComponent extends Component {
         flavorName: null,
       })),
     };
+
+    console.log('this.#state', this.#state);
 
     await this.#hydrateQuantities();
     this.#render();
@@ -204,7 +212,34 @@ class BundleEditorComponent extends Component {
 
   /** @returns {boolean} */
   get #bundleChanged() {
+    this.checkQuantityLimit();
     return this.#state?.rows.some((row) => row.quantity !== row.originalQuantity) ?? false;
+  }
+
+  checkQuantityLimit() {
+    if (this.#state?.bundleType === '32oz') {
+      // disable increment button if quantity limit is reached
+      // disable update button if quantity limit is < bundle size
+
+      // total qty not by rows, but by the bundle size
+      const totalQuantity = this.#state?.rows.reduce((total, row) => total + Number(row.quantity || 0), 0);
+      const quantityLimitReached = totalQuantity >= Number(this.#state?.bundleSize);
+      console.log('quantityLimitReached', quantityLimitReached);
+
+      if (quantityLimitReached) {
+        this.querySelectorAll('[data-bundle-increment]').forEach((button) => button.disabled = true);
+        this.querySelectorAll('[data-bundle-add]').forEach((button) => button.disabled = true);
+        console.log('add buttons', this.querySelectorAll('[data-bundle-add]'));
+        this.querySelector('[data-bundle-update]').disabled = false;
+        return true;
+      } else {
+        this.querySelectorAll('[data-bundle-increment]').forEach((button) => button.disabled = false);
+        this.querySelectorAll('[data-bundle-add]').forEach((button) => button.disabled = false);
+        this.querySelector('[data-bundle-update]').disabled = true;
+        return false;
+      }
+    }
+    return false;
   }
 
   /**
