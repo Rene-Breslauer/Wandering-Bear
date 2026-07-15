@@ -90,7 +90,9 @@
         "padding-block-start": 40,
         "padding-block-end": 40,
         "padding-block-start-mobile": 32,
-        "padding-block-end-mobile": 32
+        "padding-block-end-mobile": 32,
+        "arrow_background": "#FEF8F3",
+        "arrow_icon_color": "#431A03"
       }
     },
     "listicle_1": {

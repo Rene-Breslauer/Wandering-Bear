@@ -56,7 +56,7 @@
           and wraps after the ">" at 35px on mobile.
         {% endcomment %}
         {% if s.title != blank %}
-          <h1 class="wb-listicle-hero__title display-md leading-[1.05] uppercase text-balance text-center smd:!text-left" style="color: {{ text_color }};">
+          <h1 class="wb-listicle-hero__title display-md leading-[1.05] uppercase text-balance text-center smd:!text-left mb-4 smd:!mb-0" style="color: {{ text_color }};">
             {{ s.title | replace: '\b', '<br class="smd:!hidden">' }}
           </h1>
         {% endif %}

@@ -14,6 +14,9 @@
   assign color_scheme = s.color_scheme
   assign card_bg = s.card_background | default: '#E6CDB7'
   assign card_text = s.card_text_color | default: '#431A03'
+  # Figma: arrows are Foam #FEF8F3, not the card colour, with their own drop shadow.
+  assign arrow_bg = s.arrow_background | default: '#FEF8F3'
+  assign arrow_icon = s.arrow_icon_color | default: '#431A03'
 %}
 
 {% capture type_styles %}
@@ -64,24 +67,28 @@
       </div>
 
       {% if s.show_navigation %}
+        {% comment %}
+          Figma overlaps the arrows onto the cards — prev by 17px, next by 19px. The track starts
+          at the container's 64px padding, so the arrow sits 25px before it: 64 − 25 = 39.
+        {% endcomment %}
         <button
           type="button"
-          class="review-carousel__prev absolute left-0 top-1/2 -translate-y-1/2 z-[2] w-11 h-11 rounded-full wb-flex items-center justify-center transition-opacity hover:!opacity-80"
-          style="background-color: {{ card_bg }};"
+          class="review-carousel__arrow review-carousel__prev absolute left-0 smd:!left-[39px] top-1/2 -translate-y-1/2 z-[2] w-11 h-11 rounded-full wb-flex items-center justify-center transition-opacity hover:!opacity-80"
+          style="background-color: {{ arrow_bg }};"
           aria-label="{{ 'general.slider.previous' | t | default: 'Previous' }}"
         >
           <svg class="w-[9px] h-[15px]" viewBox="0 0 9 15" fill="none" aria-hidden="true">
-            <path d="M8 1L1.5 7.5L8 14" stroke="{{ card_text }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M8 1L1.5 7.5L8 14" stroke="{{ arrow_icon }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </button>
         <button
           type="button"
-          class="review-carousel__next absolute right-0 top-1/2 -translate-y-1/2 z-[2] w-11 h-11 rounded-full wb-flex items-center justify-center transition-opacity hover:!opacity-80"
-          style="background-color: {{ card_bg }};"
+          class="review-carousel__arrow review-carousel__next absolute right-0 smd:!right-[41px] top-1/2 -translate-y-1/2 z-[2] w-11 h-11 rounded-full wb-flex items-center justify-center transition-opacity hover:!opacity-80"
+          style="background-color: {{ arrow_bg }};"
           aria-label="{{ 'general.slider.next' | t | default: 'Next' }}"
         >
           <svg class="w-[9px] h-[15px]" viewBox="0 0 9 15" fill="none" aria-hidden="true">
-            <path d="M1 1L7.5 7.5L1 14" stroke="{{ card_text }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M1 1L7.5 7.5L1 14" stroke="{{ arrow_icon }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </button>
       {% endif %}
@@ -102,6 +109,11 @@
     .wb-reviews__title {
       font-size: var(--font-size-mobile) !important;
     }
+  }
+
+  /* Figma DROP_SHADOW on the arrows: 0 4px 4px #000 25% — lifts them off the band. */
+  .review-carousel__arrow {
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   }
 
   .wb-reviews__bubble {
@@ -159,8 +171,13 @@
      following slide start before the previous one ends, so slide 4 always leaked ~18px into
      the window no matter how wide the track was. With slides tiling exactly, slide 4 lands
      fully outside and gets clipped, while the bubble still bleeds left over its neighbour. */
+  /* Tilting a ~130px-tall card by 3° pushes its corners ~3.2px sideways. Inset the card inside
+     its slide by more than that and the tilt stays within the slide box — so the track can clip
+     flush at its edges without ever cutting a card or revealing the one before it. */
   .wb-reviews__slide {
     position: relative;
+    padding-left: 5px;
+    padding-right: 5px;
   }
 
   /* Alpine (and Swiper with it) is imported lazily on first interaction — see main.js. Until it
@@ -189,13 +206,6 @@
       margin-left: -18px;
     }
 
-    /* Last card of the triplet stops short of the slide edge. Without the gap its tilted right
-       corner and slide 4's tilted left corner overlap, and no clip line can hide one without
-       cutting the other. Figma's cards vary in width anyway (252 / 266 / 253). */
-    .wb-reviews__slide:nth-child(3n + 3) .wb-reviews__bubble {
-      width: calc(100% + 10px);
-      margin-right: 8px;
-    }
   }
 
   .wb-reviews__slide:nth-child(3n + 2) {
@@ -219,16 +229,14 @@
     transform: rotate(3.3deg);
   }
 
-  /* The tilt pushes each card's corners ~3px past its slide, and the tails overhang below.
-     Padding gives that overhang room inside the clip — without it the track sliced the first
-     card's left edge and the last card's right edge, and a straight cut across a tilted edge
-     reads as a kink rather than a crop.
-     The right inset then hides slide 4, landing in the gap opened by the margin-right below. */
+  /* Tails overhang below, so the track needs vertical room. Horizontally it clips flush:
+     each card is inset inside its own slide (see .wb-reviews__slide padding) so the tilt never
+     reaches the track edge. Any horizontal slack here would show the previous card's edge once
+     the carousel advances — the neighbour can't hide it, since the Y stagger leaves its top
+     strip uncovered. */
   .review-carousel__swiper {
     padding-top: 18px;
     padding-bottom: 30px;
-    padding-left: 10px;
-    clip-path: inset(-40px 4px -40px -40px);
   }
 
   .review-carousel__dots .swiper-pagination-bullet {
@@ -310,6 +318,18 @@
       "id": "show_navigation",
       "label": "Show arrows",
       "default": true
+    },
+    {
+      "type": "color",
+      "id": "arrow_background",
+      "label": "Arrow background",
+      "default": "#FEF8F3"
+    },
+    {
+      "type": "color",
+      "id": "arrow_icon_color",
+      "label": "Arrow icon color",
+      "default": "#431A03"
     },
     {
       "type": "checkbox",
