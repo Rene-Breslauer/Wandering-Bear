@@ -200,7 +200,7 @@
           "type": "logo",
           "settings": {
             "image": "shopify://shop_images/logo-3_95ab9dd9-43e9-4d30-a53d-dcdec39ee189.png",
-            "hide_on_mobile": false,
+            "hide_on_mobile": true,
             "max_width": "173",
             "max_width_mobile": ""
           }
