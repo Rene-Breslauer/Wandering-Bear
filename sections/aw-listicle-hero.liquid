@@ -48,28 +48,32 @@
       {% endif %}
     </div>
 
-    <div class="wb-flex flex-col justify-center px-6 py-10 smd:!pl-[109px] smd:!pr-10 smd:!py-14">
+    {% comment %}
+      Centred at 750 and below. smd is min-width:750, which would already switch at 750 itself,
+      so the left-aligned desktop layout starts at 751.
+    {% endcomment %}
+    <div class="wb-flex flex-col justify-center px-6 py-10 min-[751px]:!pl-[109px] min-[751px]:!pr-10 min-[751px]:!py-14">
       {% comment %} Figma: title 538×54 — one line at 45px. Subtitle wraps at 429px. {% endcomment %}
-      <div class="w-full max-w-[540px]">
+      <div class="w-full max-w-[540px] mx-auto min-[751px]:!mx-0">
         {% comment %}
           \b is a mobile-only break here: the title is one line at 45px on desktop (Figma 538×54)
           and wraps after the ">" at 35px on mobile.
         {% endcomment %}
         {% if s.title != blank %}
-          <h1 class="wb-listicle-hero__title display-md leading-[1.05] uppercase text-balance text-center smd:!text-left mb-4 smd:!mb-0" style="color: {{ text_color }};">
-            {{ s.title | replace: '\b', '<br class="smd:!hidden">' }}
+          <h1 class="wb-listicle-hero__title display-md leading-[1.05] uppercase text-balance text-center min-[751px]:!text-left mb-4 min-[751px]:!mb-0" style="color: {{ text_color }};">
+            {{ s.title | replace: '\b', '<br class="min-[751px]:!hidden">' }}
           </h1>
         {% endif %}
 
         {% if s.subtitle != blank %}
-          <p class="wb-listicle-hero__sub h3 leading-[1.3] mt-3 max-w-[430px]" style="color: {{ text_color }};">
+          <p class="wb-listicle-hero__sub h3 leading-[1.3] mt-3 max-w-[430px] mx-auto min-[751px]:!mx-0" style="color: {{ text_color }};">
             {{ s.subtitle | replace: '\b', '<br>' }}
           </p>
         {% endif %}
 
         {% comment %} Button centres on mobile only; desktop keeps its left alignment and nudge. {% endcomment %}
         {% if buttons.size > 0 %}
-          <div class="wb-flex flex-col sm:!flex-row !gap-4 mt-6 justify-center items-center smd:!justify-start smd:!items-start smd:relative smd:-left-1">
+          <div class="wb-flex flex-col sm:!flex-row !gap-4 mt-6 justify-center items-center min-[751px]:!justify-start min-[751px]:!items-start min-[751px]:relative min-[751px]:-left-1">
             {% for button in buttons %}
               {% render 'wb-button',
                 style: button.settings.style | default: 'secondary-gold',
