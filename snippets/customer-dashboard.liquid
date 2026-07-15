@@ -233,7 +233,7 @@
         <div class="w-full h-[10px] rounded-full overflow-hidden mb-2" style="background-color: var(--color-brand-beige);">
           <div class="h-full rounded-full" style="width: {{ progress_percent }}%; background-color: var(--color-brand-gold);" data-wb-progress-bar></div>
         </div>
-        <p class="font-kurdis-semi-condensed font-bold text-[10px] leading-none mb-4 text-espresso text-center" data-wb-progress-text>{{ progress_text }}</p>
+        <p class="font-kurdis-semi-condensed font-bold text-[10px] leading-none mb-4 text-espresso text-center"><span data-wb-progress-text>{{ progress_text }}</span> or <a href="{{ membership_url }}" class="hover-underline">sign up for autoship</a></p>
 
         <div class="membership-upsell">
           <p class="body font-bold text-espresso mb-1">{{ 'customer.dashboard.upgrade_today' | t }} <span class="font-parslay text-gold">{{ 'customer.dashboard.why_wait' | t }}</span></p>
