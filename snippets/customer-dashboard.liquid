@@ -123,7 +123,9 @@
     </div>
     {%- comment -%} Redeem → on-page modal. Button class is ALWAYS the standard one (never touch it);
       the 335px desktop width lives on this wrapper, not the button. {%- endcomment -%}
-    <div class="w-full shrink-0 md:w-[311px]">
+    {%- comment -%} Match the Elite button's actual desktop width (470px — its column is fixed
+      because the account container is capped at 1092px); full-width when stacked, like Elite. {%- endcomment -%}
+    <div class="w-full shrink-0 md:w-[470px]">
       {%- render 'customer-credit-redeem', label: t_redeem, link: redeem_url, balance_formatted: credits_formatted, class: 'shadow-button !w-full !h-[40px] !text-[15px]' -%}
     </div>
   </div>
