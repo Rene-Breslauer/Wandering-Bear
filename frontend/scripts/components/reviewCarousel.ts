@@ -29,9 +29,17 @@ export default (Alpine: any) => {
       const slideCount = swiperEl.querySelectorAll('.swiper-slide').length
       const canLoop = slideCount >= perViewDesktop * 2
 
+      const perViewMobile = parseFloat(data.slidesMobile || '1')
+      const perViewTablet = parseFloat(data.slidesTablet || '2')
+
+      // Advance a whole page at a time. Cards overlap in a cycle of three — 1st flush, 2nd and
+      // 3rd bleeding left over their neighbour — so stepping one slide at a time lands the
+      // carousel mid-cycle: the new leftmost card still carries its bleed and hangs past the
+      // track edge with nothing to overlap. Paging by slidesPerView keeps cycle and frame aligned.
       new Swiper(swiperEl, {
         modules: [Navigation, Pagination],
-        slidesPerView: parseFloat(data.slidesMobile || '1'),
+        slidesPerView: perViewMobile,
+        slidesPerGroup: perViewMobile,
         spaceBetween: parseInt(data.spaceMobile || '12', 10),
         loop: canLoop,
         watchOverflow: true,
@@ -47,11 +55,13 @@ export default (Alpine: any) => {
         },
         breakpoints: {
           768: {
-            slidesPerView: parseFloat(data.slidesTablet || '2'),
+            slidesPerView: perViewTablet,
+            slidesPerGroup: perViewTablet,
             spaceBetween: parseInt(data.spaceDesktop || '16', 10),
           },
           1024: {
             slidesPerView: perViewDesktop,
+            slidesPerGroup: perViewDesktop,
             spaceBetween: parseInt(data.spaceDesktop || '16', 10),
           },
         },

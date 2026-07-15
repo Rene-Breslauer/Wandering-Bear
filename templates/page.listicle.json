@@ -27,7 +27,7 @@
       "settings": {
         "color_scheme": "",
         "image": "shopify://shop_images/hero.png",
-        "title": "COLD BREW > HOT TAKES",
+        "title": "COLD BREW > \\bHOT TAKES",
         "subtitle": "Temperatures don't dictate taste. Coffee indulgence without the sugar, crash, or compromise.",
         "text_color": "#431a03",
         "font_size": 45,
@@ -99,7 +99,9 @@
         "padding-block-start": 40,
         "padding-block-end": 40,
         "padding-block-start-mobile": 32,
-        "padding-block-end-mobile": 32
+        "padding-block-end-mobile": 32,
+        "arrow_background": "#FEF8F3",
+        "arrow_icon_color": "#431A03"
       }
     },
     "listicle_1": {
@@ -133,7 +135,7 @@
           "type": "item",
           "settings": {
             "title": "LIVE LONGER\\bAND HEALTHIER",
-            "body": "<p>According to a study of over 170,000 people, those who drank 1.5-3.5 cups of coffee per day were up to 30% less likely to die than those who didn't.</p><p>So feel good about that morning coffee...and better about your second morning coffee...and fantastic about your afternoon coffee. You're going to live forever.</p>",
+            "body": "<p>According to <u>a study of over 170,000 people</u>, those who drank 1.5-3.5 cups of coffee per day were up to 30% less likely to die than those who didn't.</p><p>So feel good about that morning coffee...and better about your second morning coffee...and fantastic about your afternoon coffee. You're going to live forever.</p>",
             "image_side": "auto",
             "image": "shopify://shop_images/item-3-live-longer.png",
             "button_label": "",
@@ -230,7 +232,12 @@
         "background_gradient": "",
         "background_type_mobile": "same",
         "background_solid_mobile": "",
-        "background_gradient_mobile": ""
+        "background_gradient_mobile": "",
+        "grayscale": true,
+        "padding_top": 65,
+        "padding_bottom": 61,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 40
       }
     },
     "listicle_2": {
@@ -293,3 +300,4 @@
     "listicle_2"
   ]
 }
+
