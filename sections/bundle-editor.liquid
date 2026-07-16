@@ -13,6 +13,31 @@
   be passed to Liquid through the Section Rendering API).
 {% endcomment %}
 
+{% liquid
+  assign block_settings = block.settings
+  assign is_member = false
+  assign member_tier = ''
+
+  for tag in customer.tags
+    case tag
+      when 'inveterate-tier#72ccf378'
+        assign member_tier = 'VIP'
+      when 'inveterate-tier#dc38b982'
+        assign member_tier = 'Elite'
+      when 'inveterate-tier#99a431e2'
+        assign member_tier = 'Elite'
+    endcase
+  endfor
+  
+  for item in cart.items
+    if item.title contains 'Membership'
+      assign is_member = true
+      assign member_tier = 'Elite'
+      break
+    endif
+  endfor
+%}
+
 {% style %}
   button[data-bundle-increment][disabled] {
     opacity: 0.5;
@@ -190,82 +215,6 @@
           collection: collection
         %}
         </div>
-          {% comment %} <div class="wb-flex gap-1 flex-col w-full bg-white/50 p-4.5 rounded-[5px] font-kurdis relative button-shadow uppercase mb-2.5 text-bear-black mt-4.5">
-          <div class="flex items-center justify-between">
-            {% for tier_product in bundle_products %}
-              {% assign label = singular %}
-              {% if forloop.index > 1 %}
-                {% assign label = plural %}
-              {% endif %}
-              <div class="max-w-[70px] w-full text-center flex flex-col items-center justify-center font-gothic_condensed uppercase font-bold {% cycle 'items-start', 'items-center', 'items-end' %}">
-                <span class="text-center w-full">{{ forloop.index }} {{ label }}</span>
-              </div>
-            {% endfor %}
-          </div>
-
-          <div class="flex items-center justify-between relative w-[calc(100%-46px)] mx-auto">
-            {% for tier_product in bundle_products %}
-              <div class="wb-flex items-center justify-between relative w-full {% cycle 'justify-start', 'justify-center', 'justify-end' %}">
-                <div data-tier="{{ forloop.index }}" class="col-width flex items-center justify-center">
-                  <div
-                    data-tier-dot="{{ forloop.index }}"
-                    class="wb-flex items-center justify-center h-4.5 w-4.5 rounded-full mx-auto transition-all duration-300 relative z-[2] outline outline-[#CFBDB1] bg-[#F2E6DC]"
-                  >
-                    <div
-                      data-tier-dot-inner
-                      class="wb-flex items-center justify-center h-3.5 w-3.5 rounded-full bg-transparent"
-                    ></div>
-                  </div>
-                </div>
-              </div>
-            {% endfor %}
-
-            <div class="absolute right-0 left-0 rounded-full mx-auto">
-              <div class="relative h-[2px] bg-[#CFBDB1]">
-                <div
-                  data-bundle-progress
-                  class="absolute top-0 left-0 h-full max-w-full bg-gold transition-all duration-300"
-                  style="width: 0%;"
-                ></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="flex items-center justify-between text-[12px]">
-            {% for tier_product in bundle_products %}
-              {%- assign ea_variant = collection.products.first.variants[forloop.index0] -%}
-              {%- assign first_variant = collection.products.first.variants.first -%}
-
-              {% comment %} Selling Plan Price {% endcomment %}
-
-              {% for selling_plan in ea_variant.selling_plan_allocations %}
-                {% if selling_plan.selling_plan.name contains '1 month' or selling_plan.selling_plan.name contains '1 Month' %}
-                  {%- assign selling_plan_price = selling_plan.per_delivery_price -%}
-                  {%- break -%}
-                {% endif %}
-              {% endfor %}
-
-              <div class="max-w-[70px] w-full wb-flex gap-1 flex-col items-center text-center justify-center {% cycle 'ea': 'items-start', 'items-center', 'items-end' %}">
-                <div class="text-bear-black w-full font-semibold font-kurdis-semi-condensed leading-[120%] normal-case flex flex-col items-center whitespace-nowrap h-full">
-                  <span data-otp class="text-center">{{ ea_variant.price | money }}/ea</span>
-                  <span data-selling-plan class="text-center">{{ selling_plan_price | money }}/ea</span>
-
-                  {% comment %} Flat rate off {% endcomment %}
-                  {% assign flat_rate_off = first_variant.price | minus: ea_variant.price %}
-                  {% assign flat_rate_off_selling_plan = first_variant.price | minus: selling_plan_price %}
-                  {% if flat_rate_off > 0 %}
-                    <span data-otp data-flat-rate-off class="text-kraft text-center">{{ flat_rate_off | money_without_trailing_zeros }} off</span>
-                  {% endif %}
-                  {% if flat_rate_off_selling_plan > 0 %}
-                    <span data-selling-plan data-flat-rate-off class="text-kraft text-center">{{ flat_rate_off_selling_plan | money_without_trailing_zeros }} off</span>
-                  {% endif %}
-                </div>
-              </div>
-
-
-            {% endfor %}
-          </div>
-        </div> {% endcomment %}
       {% endif %}
 
       {% comment %} 32oz Multi-Serve Variety Indicator — populated client-side by
@@ -282,7 +231,10 @@
 
   <div class="px-5 mb-5">
     {% comment %} Editable flavor list {% endcomment %}
-    <form on:submit="bundle-editor-component/update" class="wb-flex">
+    <form on:submit="bundle-editor-component/update" class="wb-flex"
+    data-is-member="{{ is_member }}"
+    data-member-tier="{{ member_tier }}"
+    >
       <div data-bundle-editor-content class="w-full flex flex-col gap-3 overflow-auto">
         {% paginate collection.products by 50 %}
           {% for product in collection.products %}
@@ -341,7 +293,7 @@
 
                 {% comment %} Add button (quantity 0 / unselected) {% endcomment %}
               
-                {% if member_only %}
+                {% if member_only and member_tier != 'Elite' %}
                   <button
                     on:click="bundle-editor-component/openMembershipModal"
                     type="button"
@@ -423,6 +375,8 @@
       <div data-bundle-editor-footer class="fixed bottom-0 left-0 right-0 bg-cream pt-3">
         {% comment %} Autoship & Bundling Savings — amount updated by bundle-editor.js. {% endcomment %}
         <div
+          data-is-member="{{ is_member }}"
+          data-member-tier="{{ member_tier }}"
           data-bundle-savings-row
           class="items-center justify-between px-6 py-3.5 border-t border-b border-[#431A031A] font-kurdis-semi-condensed text-gold text-xs font-bold"
           style="display: none;"

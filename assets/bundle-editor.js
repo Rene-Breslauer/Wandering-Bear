@@ -112,6 +112,8 @@ class BundleEditorComponent extends Component {
       bundleSize,
       flavorType,
       sellingPlan,
+      isMember: this.querySelector('form').dataset.isMember === 'true',
+      memberTier: this.querySelector('form').dataset.memberTier || '',
       tiers: this.#parseJSON(root.dataset.tiers, []),
       tierCount: Number(root.dataset.tierCount || 0),
       rows: Array.from(panel.querySelectorAll('[data-bundle-row]')).map((el) => ({
@@ -201,15 +203,18 @@ class BundleEditorComponent extends Component {
   #render() {
     if (!this.#state) return;
 
+    const isMember = this.#state?.isMember ?? false;
+    const memberTier = this.#state?.memberTier ?? '';
+
     const hasSellingPlan = this.#state?.sellingPlan && this.#state?.sellingPlan !== null;
     const sellingPlanElements = this.querySelectorAll('[data-selling-plan]');
     const otpElements = this.querySelectorAll('[data-otp]');
 
     sellingPlanElements.forEach(element => {
-      element?.classList?.toggle('hidden', !hasSellingPlan);
+      element?.classList?.toggle('hidden', !hasSellingPlan && memberTier !== 'Elite');
     });
     otpElements.forEach(element => {
-      element?.classList?.toggle('hidden', hasSellingPlan);
+      element?.classList?.toggle('hidden', hasSellingPlan || memberTier === 'Elite');
     });
 
     const total = this.#totalQuantity;
@@ -244,7 +249,7 @@ class BundleEditorComponent extends Component {
       const price = row.el.querySelector('[data-bundle-price]');
       const variant = row.variants[variantIndex];
       
-      if (price && variant) price.textContent = variant.selling_plan_price && hasSellingPlan ? variant.selling_plan_price : variant.price;
+      if (price && variant) price.textContent = variant.selling_plan_price && (hasSellingPlan || memberTier === 'Elite') ? variant.selling_plan_price : variant.price;
     }
 
     // Mix mode caps the total at the carton count; block adding beyond it.
@@ -379,6 +384,10 @@ class BundleEditorComponent extends Component {
   #renderSavings() {
 
     const sellingPlan = this.#state?.sellingPlan;
+    const isMember = this.#state?.isMember ?? false;
+    const memberTier = this.#state?.memberTier ?? '';
+    const hasSellingPlan = this.#state?.sellingPlan && this.#state?.sellingPlan !== null;
+
     const savingsTextSellingPlan = this.querySelector('[data-savings-selling-plan]');
     const savingsTextOTP = this.querySelector('[data-savings-otp]');
 
@@ -391,7 +400,7 @@ class BundleEditorComponent extends Component {
     if (!(row instanceof HTMLElement) || !(amountEl instanceof HTMLElement)) return;
 
     const tier = this.#tierIndex(this.#totalQuantity);
-    const useSellingPlan = Boolean(this.#state?.tiers?.[tier]?.selling_plan_id);
+    const useSellingPlan = Boolean(this.#state?.tiers?.[tier]?.selling_plan_id && hasSellingPlan);
 
     let savings = 0;
     for (const r of this.#state?.rows ?? []) {
@@ -401,11 +410,13 @@ class BundleEditorComponent extends Component {
       if (!variant) continue;
       const original = Number(r.variants[0]?.price_cents ?? variant.price_cents ?? 0);
       const effective =
-        useSellingPlan && variant.selling_plan_price_cents != null
+        (useSellingPlan || memberTier === 'Elite')
           ? Number(variant.selling_plan_price_cents)
           : Number(variant.price_cents ?? 0);
       savings += Math.max(0, original - effective) * qty;
     }
+
+
 
     amountEl.textContent = `-${this.#formatMoney(savings)}`;
     row.style.display = savings > 0 ? 'flex' : 'none';

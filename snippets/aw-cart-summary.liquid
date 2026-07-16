@@ -7,7 +7,7 @@
 {%- enddoc -%}
 
 {% capture shipping_fee %}
-    {% if is_elite or is_vip or is_autoship %}
+    {% if member_tier == 'Elite' or member_tier == 'VIP' or is_autoship %}
         FREE
     {% else %}
         Calculated at checkout
@@ -31,13 +31,15 @@
     {% if cart.total_discounts > 0 %}
         <div class="flex justify-between items-center">
             <span class="cart-totals__original-label">Discounts</span>
-            <span
-            class="cart-totals__original-value cart-secondary-typography"
-            data-testid="cart-subtotal-value"
-            >
-            -{{ cart.total_discounts | money -}}
-            </span>
         </div>
+        {% for discount in cart.cart_level_discount_applications %}
+          <div class="ml-3.5 text-gold font-semibold text-xs flex justify-between items-center">
+            <span class="cart-totals__original-label">{{ discount.title }}</span>
+            <span class="cart-totals__original-value cart-secondary-typography" data-testid="cart-subtotal-value">
+              -{{ discount.total_allocated_amount | money -}}
+            </span>
+          </div>
+        {% endfor %}
     {% endif %}
 
     <div class="flex justify-between items-center">
@@ -118,9 +120,6 @@
 
 <div class="!py-5 px-6 w-full flex flex-col justify-center items-center">
     {% render 'cart-buttons', button_type: 'checkout', cart: cart %}
-    <div class="flex justify-center items-center mt-5 mb-2 text-xs font-kurdis-semi-condensed font-bold text-gold">
-      Total savings: {{ total_savings }}
-    </div>
 </div>
 
 {% stylesheet %}
