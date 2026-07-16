@@ -16,6 +16,12 @@
     [data-step-title].active {
         background: var(--color-beige);
     }
+
+    .recipe-media video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
 {% endstyle %}
 
 {% capture menu %}
@@ -29,8 +35,8 @@
                 %}
 
                 <div class="wb-flex min-w-[104px] grow bg-foam border-2 border-espresso rounded-[30px] p-1.25 md:mb-5 lg:p-1.5 lg:flex-1 lg:basis-0">
-                    <div @click="setActive('{{ title_handleize }}')" data-step-title class="{% if forloop.first %} active {% endif %} w-full flex justify-center items-center px-1 sm:px-1.25 py-3 rounded-[30px] cursor-pointer font-gothic_condensed font-bold text-base uppercase leading-[22px] tracking-[1%] text-center"
-                    :class="{ 'active': activeTitle === '{{ title_handleize }}' }" data-title="{{ title_handleize }}">
+                    <div @click="setActive('{{ title_handleize }}')" data-step-title class="{% if forloop.first %} active {% endif %} w-full flex justify-center items-center px-1 sm:px-1.25 py-3 rounded-[30px] cursor-pointer font-gothic_condensed font-bold text-base uppercase leading-[22px] tracking-[1%] text-center transition-all duration-300 hover:bg-cream"
+                    :class="{ 'active pointer-events-none': activeTitle === '{{ title_handleize }}' }" data-title="{{ title_handleize }}">
                         <span>{{ title }}</span>
                     </div>
                 </div>
@@ -98,12 +104,28 @@
             {% liquid 
                 assign metaobject = block.settings.metaobject
                 assign title_handleize = block.settings.title | handleize
-                assign image = metaobject.image
+                assign media = metaobject.image.value
+                assign is_video = false
+                if media.sources != blank
+                    assign is_video = true
+                endif
             %}
 
-            <div class="wb-flex justify-center mt-5" x-cloak x-show="activeTitle === '{{ title_handleize }}'" x-cloak>
-                <div class="px-4.5 w-full mx-auto smd:px-0 smd:mx-0 smd:max-w-[339px]">
-                    {{ image | image_url: width: 1000 | image_tag }}
+            <div class="wb-flex justify-center mt-5" x-cloak x-show="activeTitle === '{{ title_handleize }}'">
+                <div class="recipe-media px-4.5 w-full mx-auto smd:px-0 smd:mx-0 smd:max-w-[339px] aspect-[9/16] overflow-hidden rounded-lg">
+                    {% if is_video %}
+                        {{
+                          media
+                          | video_tag:
+                            autoplay: false,
+                            loop: false,
+                            controls: true,
+                            muted: false,
+                            class: 'w-full h-full object-cover rounded-[5px] min-w-[339px]'
+                        }}
+                    {% else %}
+                        {{ media | image_url: width: 1000 | image_tag: class: 'w-full h-full object-cover' }}
+                    {% endif %}
                 </div>
             </div>
         {% endif %}
@@ -115,11 +137,11 @@
 
     <div class="wb-flex justify-between w-full max-w-[966px] mx-auto relative z-[2]">
         <div class="wb-flex flex-col-reverse items-center lg:flex-row justify-between w-full">
-            <div>
+            <div class="w-full lg:w-auto">
                 {{ recipe_image }}
             </div>
             <div class="wb-flex flex-col  justify-center items-center px-3.5 md:px-6">
-                <h2 class="text-[35px]/none font-extrabold text-center uppercase font-gothic_condensed md:text-[55px] leading-[61px] tracking-[1%]">{{ section.settings.title }}</h2>
+                <h2 class="text-[35px]/none font-extrabold font-(family-name:--font-kurdis-condensed) md:font-(family-name:--font-gothic_condensed) text-center uppercase md:text-[55px] leading-[61px] tracking-[1%] lg:mb-3">{{ section.settings.title }}</h2>
                 {{ recipe_text }}
                 {{ menu }}
                 <div class="hidden lg:!block">
@@ -129,7 +151,6 @@
         </div>
     </div>
 </div>
-
 
 {% schema %}
 {
