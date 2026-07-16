@@ -24,7 +24,7 @@
           {{ crown_icon | image_url: width: 60 | image_tag: class: '!w-[32px] !h-auto', alt: '' }}
         {% endif %}
         {% if title != blank %}
-          <h2 class="font-bold text-[45px] font-gothic_condensed" style="color: {{ text_color }}">{{ title }}</h2>
+          <h2 class="font-bold text-[45px] text-center font-gothic_condensed" style="color: {{ text_color }}">{{ title | replace: '\n', '<br/>' }}</h2>
         {% endif %}
         {% if subtitle != blank %}
           <p class="body text-base/[120%]! max-w-[460px] font-kurdis-semi-condensed! text-bear-black! font-semibold! md:text-lg/[120%]!" style="color: {{ text_color }}">{{ subtitle }}</p>
@@ -97,7 +97,7 @@
         {{ crown_icon | image_url: width: 60 | image_tag: class: '!w-[35px] !h-auto mb-2.5', alt: '' }}
       {% endif %}
       {% if title != blank %}
-        <h2 class="h1 text-[35px]/none! font-extrabold md:text-[45px]/none!" style="color: {{ text_color }}">{{ title }}</h2>
+        <h2 class="h1 text-[35px]/none! font-extrabold md:text-[45px]/none!" style="color: {{ text_color }}">{{ title | replace: '\n', '<br/>' }}</h2>
       {% endif %}
       {% if subtitle != blank %}
         <p class="body text-bear-black! font-kurdis-semi-condensed! font-semibold! text-base/[120%]! md:text-lg/[120%]!" style="color: {{ text_color }}">{{ subtitle }}</p>
@@ -311,7 +311,8 @@
     {
       "type": "text",
       "id": "title",
-      "label": "Title"
+      "label": "Title",
+      "info": "Use \\n to add a line break."
     },
     {
       "type": "textarea",

@@ -141,7 +141,7 @@
                 {{ recipe_image }}
             </div>
             <div class="wb-flex flex-col  justify-center items-center px-3.5 md:px-6">
-                <h2 class="text-[35px]/none font-extrabold font-(family-name:--font-kurdis-condensed) md:font-(family-name:--font-gothic_condensed) text-center uppercase md:text-[55px] leading-[61px] tracking-[1%] lg:mb-3">{{ section.settings.title }}</h2>
+                <h2 class="text-[35px]/none font-extrabold font-(family-name:--font-kurdis-condensed) md:font-(family-name:--font-gothic_condensed) text-center uppercase md:text-[55px] leading-[61px] tracking-[1%] lg:mb-3">{{ section.settings.title | replace: '\n', '<br/>' }}</h2>
                 {{ recipe_text }}
                 {{ menu }}
                 <div class="hidden lg:!block">
@@ -305,7 +305,8 @@
     {
       "type": "text",
       "id": "title",
-      "label": "Title"
+      "label": "Title",
+      "info": "Use \\n to add a line break."
     },
     {
       "type": "header",
