@@ -20,7 +20,7 @@ class BundleEditorComponent extends Component {
    * @property {HTMLElement} el
    * @property {number} productId
    * @property {number} variantId
-   * @property {Array<{ id: number, price: string, selling_plan_price: string | null }>} variants
+   * @property {Array<{ id: number, price: string, price_cents: number, selling_plan_price: string | null, selling_plan_price_cents: number | null }>} variants
    * @property {number} quantity
    * @property {number} originalQuantity
    * @property {string | null} key
@@ -32,6 +32,9 @@ class BundleEditorComponent extends Component {
    * @property {string} collectionHandle
    * @property {string} bundleName
    * @property {string} bundleId
+   * @property {string} bundleType - '32oz' for multi-serve bundles, '' otherwise.
+   * @property {string} bundleSize - Fixed carton count for 32oz bundles.
+   * @property {string} flavorType - 'single' or 'mix' for 32oz bundles.
    * @property {Array<{ variant_id: number, selling_plan_id: number | null }>} tiers
    * @property {number} tierCount
    * @property {BundleRow[]} rows
@@ -39,6 +42,12 @@ class BundleEditorComponent extends Component {
 
   /** @type {BundleState | null} */
   #state = null;
+
+  /** @type {boolean} */
+  #loading = false;
+
+  /** Guards against the submit firing `update` twice (which retries a stale line). */
+  #committing = false;
 
   #onTriggerClick = this.#handleTriggerClick.bind(this);
 
@@ -111,13 +120,12 @@ class BundleEditorComponent extends Component {
         quantity: 0,
         originalQuantity: 0,
         key: null,
-        flavorName: null,
+        flavorName: /** @type {HTMLElement} */ (el).dataset.flavorName || null,
       })),
     };
 
-    console.log('this.#state', this.#state);
-
     await this.#hydrateQuantities();
+    this.dataset.bundleMode = this.#isSingle ? 'single' : this.#isMix ? 'mix' : 'default';
     this.#render();
     this.setAttribute('data-open', '');
   }
@@ -139,8 +147,28 @@ class BundleEditorComponent extends Component {
       row.quantity = cartItem?.quantity ?? 0;
       row.originalQuantity = row.quantity;
       row.key = cartItem?.key ?? null;
-      row.flavorName = cartItem?.properties?._flavor ?? null;
+      row.flavorName = cartItem?.properties?._flavor ?? row.flavorName;
     }
+  }
+
+  /** @returns {boolean} True for any 32oz multi-serve bundle. */
+  get #is32oz() {
+    return this.#state?.bundleType === '32oz';
+  }
+
+  /** @returns {boolean} 32oz mix/variety bundle (multiple flavors + indicator). */
+  get #isMix() {
+    return this.#is32oz && this.#state?.flavorType === 'mix';
+  }
+
+  /** @returns {boolean} 32oz single-flavor bundle (single-select). */
+  get #isSingle() {
+    return this.#is32oz && this.#state?.flavorType === 'single';
+  }
+
+  /** @returns {number} Fixed carton count for a 32oz bundle. */
+  get #bundleSizeNum() {
+    return Number(this.#state?.bundleSize || 0);
   }
 
   /** @returns {number} */
@@ -149,21 +177,31 @@ class BundleEditorComponent extends Component {
   }
 
   /**
-   * Maps a bundle count to the pricing/variant tier index (0, 1 or 2).
+   * Maps a bundle count to the pricing/variant tier index.
+   *
+   * 32oz bundles have a fixed carton count and only two tiers; the tier is
+   * decided by the carton count, mirroring `_mapTo32ozBundle` in
+   * `product-form-bundle.ts` (≤3 cartons → tier 0, otherwise tier 1). Other
+   * bundles use the generic 1/2/3 mapping.
+   *
    * @param {number} count
    * @returns {number}
    */
   #tierIndex(count) {
+    if (this.#is32oz) {
+      return this.#bundleSizeNum <= 3 ? 0 : 1;
+    }
     if (count <= 0) return 0;
     return count < 3 ? count - 1 : 2;
   }
 
-  /** Syncs the DOM (quantities, prices, progress, tier dots, update button) to state. */
+  /** Syncs the DOM (quantities, prices, progress, indicator, savings, update button) to state. */
   #render() {
     if (!this.#state) return;
 
     const total = this.#totalQuantity;
     const variantIndex = this.#tierIndex(total);
+    const atCap = this.#is32oz && total >= this.#bundleSizeNum;
 
     for (const row of this.#state.rows) {
       row.el.dataset.quantity = String(row.quantity);
@@ -173,15 +211,33 @@ class BundleEditorComponent extends Component {
 
       // Toggle via inline style rather than the `hidden` class: the theme's
       // custom `.wb-flex` rule overrides Tailwind's `.hidden`, so a class swap
-      // would leave the stepper visible. Inline styles beat any class.
+      // would leave elements visible. Inline styles beat any class.
       const add = row.el.querySelector('[data-bundle-add]');
+      const selected = row.el.querySelector('[data-bundle-selected]');
       const stepper = row.el.querySelector('[data-bundle-stepper]');
-      if (add instanceof HTMLElement) add.style.display = row.quantity > 0 ? 'none' : '';
-      if (stepper instanceof HTMLElement) stepper.style.display = row.quantity > 0 ? '' : 'none';
+      const active = row.quantity > 0;
+
+      if (this.#isSingle) {
+        // Single-select: no stepper; the chosen flavor shows the SELECTED state.
+        if (stepper instanceof HTMLElement) stepper.style.display = 'none';
+        if (add instanceof HTMLElement) add.style.display = active ? 'none' : '';
+        if (selected instanceof HTMLElement) selected.style.display = active ? '' : 'none';
+      } else {
+        if (selected instanceof HTMLElement) selected.style.display = 'none';
+        if (add instanceof HTMLElement) add.style.display = active ? 'none' : '';
+        if (stepper instanceof HTMLElement) stepper.style.display = active ? '' : 'none';
+      }
 
       const price = row.el.querySelector('[data-bundle-price]');
       const variant = row.variants[variantIndex];
       if (price && variant) price.textContent = variant.selling_plan_price ?? variant.price;
+    }
+
+    // Mix mode caps the total at the carton count; block adding beyond it.
+    if (this.#isMix) {
+      for (const b of this.querySelectorAll('[data-bundle-increment], [data-bundle-add]')) {
+        if (b instanceof HTMLButtonElement) b.disabled = atCap;
+      }
     }
 
     const tierCount = this.#state.tierCount || this.#state.tiers.length;
@@ -201,45 +257,138 @@ class BundleEditorComponent extends Component {
       inner?.classList.toggle('!bg-gold', active);
     }
 
-    const changed = this.#bundleChanged;
+    this.#renderIndicator();
+    this.#renderSavings();
+
+    const canUpdate = this.#canUpdate;
     const button = this.querySelector('[data-bundle-update]');
     if (button instanceof HTMLButtonElement) {
-      button.disabled = !changed;
-      button.classList.toggle('opacity-50', !changed);
-      button.classList.toggle('!pointer-events-none', !changed);
+      button.disabled = !canUpdate;
+      button.classList.toggle('opacity-50', !canUpdate);
+      button.classList.toggle('!pointer-events-none', !canUpdate);
+    }
+
+    /** Set the content height to 100% of the viewport height minus the header and footer heights */
+    const header = this.querySelector('[data-bundle-editor-header]');
+    const footer = this.querySelector('[data-bundle-editor-footer]');
+    console.log(header, footer);
+    if (header && footer) {
+      const headerHeight = header.offsetHeight;
+      const footerHeight = footer.offsetHeight;
+      const content = this.querySelector('[data-bundle-editor-content]');
+      console.log(content);
+      content.style.height = `calc(100vh - ${headerHeight + footerHeight}px)`;
     }
   }
 
-  /** @returns {boolean} */
+  /** @returns {boolean} True when any flavor quantity differs from the cart. */
   get #bundleChanged() {
-    this.checkQuantityLimit();
     return this.#state?.rows.some((row) => row.quantity !== row.originalQuantity) ?? false;
   }
 
-  checkQuantityLimit() {
-    if (this.#state?.bundleType === '32oz') {
-      // disable increment button if quantity limit is reached
-      // disable update button if quantity limit is < bundle size
+  /**
+   * Whether the current selection can be committed. 32oz bundles must be filled
+   * to the exact carton count; other bundles just need at least one item.
+   * @returns {boolean}
+   */
+  get #canUpdate() {
+    if (!this.#bundleChanged) return false;
+    const total = this.#totalQuantity;
+    if (this.#is32oz) return total === this.#bundleSizeNum;
+    return total > 0;
+  }
 
-      // total qty not by rows, but by the bundle size
-      const totalQuantity = this.#state?.rows.reduce((total, row) => total + Number(row.quantity || 0), 0);
-      const quantityLimitReached = totalQuantity >= Number(this.#state?.bundleSize);
-      console.log('quantityLimitReached', quantityLimitReached);
+  /** Renders the 32oz variety flavor indicator (one carton card per serving). */
+  #renderIndicator() {
+    const container = this.querySelector('[data-32oz-multi-serve-container]');
+    if (!(container instanceof HTMLElement)) return;
 
-      if (quantityLimitReached) {
-        this.querySelectorAll('[data-bundle-increment]').forEach((button) => button.disabled = true);
-        this.querySelectorAll('[data-bundle-add]').forEach((button) => button.disabled = true);
-        console.log('add buttons', this.querySelectorAll('[data-bundle-add]'));
-        this.querySelector('[data-bundle-update]').disabled = false;
-        return true;
+    if (!this.#isMix) {
+      container.style.display = 'none';
+      container.innerHTML = '';
+      return;
+    }
+
+    /** @type {Array<{ src: string, name: string }>} */
+    const cartons = [];
+    for (const row of this.#state?.rows ?? []) {
+      const bundleImage = row.el.dataset.bundleImage ?? '';
+      const img = row.el.querySelector('img');
+      const src = bundleImage ? bundleImage : img?.getAttribute('src') ?? '';
+      const name = row.el.dataset.flavorName ?? '';
+      for (let i = 0; i < Number(row.quantity || 0); i += 1) cartons.push({ src, name });
+    }
+
+    const slots = this.#bundleSizeNum || this.#totalQuantity;
+    let html = '';
+    for (let i = 0; i < slots; i += 1) {
+      const carton = cartons[i];
+      const rotate = i % 2 === 0 ? 'rotate-[9.03deg]' : '-rotate-[9.03deg]';
+      if (carton) {
+        html +=
+          `<div class="wb-flex flex-col justify-center items-center gap-1 p-2 rounded-[5px] bg-[#F9F3ED] w-[51px] min-w-[51px] max-w-[51px]">` +
+          `<img src="${this.#escape(carton.src)}" alt="${this.#escape(carton.name)}" class="!max-w-5 !h-10 object-contain ${rotate}" width="24" height="48">` +
+          `<span class="font-kurdis-semi-condensed text-[10px] text-bear-black font-bold text-center leading-tight">${this.#escape(carton.name)}</span>` +
+          `</div>`;
       } else {
-        this.querySelectorAll('[data-bundle-increment]').forEach((button) => button.disabled = false);
-        this.querySelectorAll('[data-bundle-add]').forEach((button) => button.disabled = false);
-        this.querySelector('[data-bundle-update]').disabled = true;
-        return false;
+        html +=
+          `<div class="wb-flex flex-col justify-center items-center p-2 rounded-[5px] h-[71px] border border-dashed border-[#CFBDB1] w-[51px] min-w-[51px] max-w-[51px]"><div class="!h-10"></div></div>`;
       }
     }
-    return false;
+
+    container.innerHTML = html;
+    container.style.display = 'flex';
+  }
+
+  /** Renders the "Autoship & Bundling Savings" line for 32oz bundles. */
+  #renderSavings() {
+    const row = this.querySelector('[data-bundle-savings-row]');
+    const amountEl = this.querySelector('[data-bundle-savings]');
+    if (!(row instanceof HTMLElement) || !(amountEl instanceof HTMLElement)) return;
+
+    if (!this.#is32oz) {
+      row.style.display = 'none';
+      return;
+    }
+
+    const tier = this.#tierIndex(this.#totalQuantity);
+    const useSellingPlan = Boolean(this.#state?.tiers?.[tier]?.selling_plan_id);
+
+    let savings = 0;
+    for (const r of this.#state?.rows ?? []) {
+      const qty = Number(r.quantity || 0);
+      if (!qty) continue;
+      const variant = r.variants[tier];
+      if (!variant) continue;
+      const original = Number(r.variants[0]?.price_cents ?? variant.price_cents ?? 0);
+      const effective =
+        useSellingPlan && variant.selling_plan_price_cents != null
+          ? Number(variant.selling_plan_price_cents)
+          : Number(variant.price_cents ?? 0);
+      savings += Math.max(0, original - effective) * qty;
+    }
+
+    amountEl.textContent = `-${this.#formatMoney(savings)}`;
+    row.style.display = savings > 0 ? 'flex' : 'none';
+  }
+
+  /**
+   * @param {number} cents
+   * @returns {string}
+   */
+  #formatMoney(cents) {
+    return (Number(cents || 0) / 100).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+  }
+
+  /**
+   * @param {string} value
+   * @returns {string}
+   */
+  #escape(value) {
+    return String(value).replace(
+      /[&<>"']/g,
+      (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c] ?? c)
+    );
   }
 
   /**
@@ -253,13 +402,34 @@ class BundleEditorComponent extends Component {
   }
 
   /**
-   * Increments a flavor's quantity. Bound declaratively via `on:click`.
+   * Increments a flavor's quantity (or selects it in single-flavor mode).
+   * Bound declaratively via `on:click`.
    * @param {Event} event
    */
   increment(event) {
     const row = this.#rowFromEvent(event);
     if (!row) return;
+
+    if (this.#isSingle) {
+      this.#selectSingle(row);
+      return;
+    }
+
+    // 32oz mix bundles are capped at the fixed carton count.
+    if (this.#is32oz && this.#totalQuantity >= this.#bundleSizeNum) return;
+
     row.quantity += 1;
+    this.#render();
+  }
+
+  /**
+   * Makes a flavor the sole selection for a single-flavor 32oz bundle: it takes
+   * the full carton count and every other flavor is cleared.
+   * @param {BundleRow} row
+   */
+  #selectSingle(row) {
+    for (const r of this.#state?.rows ?? []) r.quantity = 0;
+    row.quantity = this.#bundleSizeNum || 1;
     this.#render();
   }
 
@@ -281,11 +451,38 @@ class BundleEditorComponent extends Component {
 
   /**
    * Commits the edited bundle to the cart. Bound declaratively via `on:submit`.
+   * Re-entrancy guarded: the submit can fire twice, and a second pass would
+   * retry an already-removed line ("updates parameter is invalid").
    * @param {SubmitEvent} [event]
    */
   async update(event) {
     event?.preventDefault();
+    this.#handleLoading(event,true);
 
+    if (this.#committing) return;
+    this.#committing = true;
+
+    try {
+      await this.#commit();
+      
+    } finally {
+      this.#committing = false;
+      this.#handleLoading(event,false);
+    }
+  }
+
+  /**
+   * @param {boolean} loading
+   */
+  #handleLoading(event,loading) {
+    if (event.target instanceof HTMLElement) {
+      event.target.querySelector('[data-no-load]').classList.toggle('hidden', loading);
+      event.target.querySelector('[data-loading]').classList.toggle('hidden', !loading);
+    }
+  }
+
+  /** Performs the actual cart mutation for {@link update}. */
+  async #commit() {
     const state = this.#state;
     if (!state || !this.#bundleChanged) return;
 
@@ -294,10 +491,17 @@ class BundleEditorComponent extends Component {
     /** @type {Array<Record<string, unknown>>} */
     const additions = [];
 
-    const { bundleId, collectionHandle, bundleName } = state;
+    const { bundleId, collectionHandle, bundleName, bundleType, flavorType } = state;
 
     const bundleCount = state.rows.reduce((total, row) => total + Number(row.quantity || 0), 0);
     if (bundleCount <= 0) return;
+
+    // Preserve the 32oz identity so the edited bundle keeps rendering (and
+    // re-editing) as a 32oz bundle in the cart.
+    const bundleProps =
+      bundleType === '32oz'
+        ? { _bundle_type: bundleType, _flavor_type: flavorType, _bundle_size: bundleCount }
+        : {};
 
     const bundleVariantIndex = this.#tierIndex(bundleCount);
     const parentTier = state.tiers[bundleVariantIndex];
@@ -314,23 +518,35 @@ class BundleEditorComponent extends Component {
     const newParentVariantId = Number(parentTier.variant_id);
     const oldParentVariantId = oldParentProduct ? Number(oldParentProduct.variant_id || oldParentProduct.id) : null;
     const parentChanged = oldParentVariantId !== newParentVariantId;
-    const sellingPlanId = parentTier.selling_plan_id || null;
+
+    // Only carry a selling plan when the bundle in the cart is actually a
+    // subscription. Forcing `parentTier.selling_plan_id` onto a one-time bundle
+    // (or onto a child variant that doesn't offer that exact plan) makes the
+    // cart reject the add with a selling-plan error. Parent keeps the tier's
+    // plan; each child uses its own plan id.
+    const isSubscription = Boolean(oldParentProduct?.selling_plan_allocation?.selling_plan?.id);
+    const parentSellingPlan = isSubscription ? parentTier.selling_plan_id || null : null;
 
     /**
      * @param {BundleRow} row
      * @param {number} variantId
+     * @param {number | null} sellingPlan
      */
-    const addChild = (row, variantId) => {
+    const addChild = (row, variantId, sellingPlan) => {
       if (!row.quantity || !variantId) return;
       additions.push({
         id: Number(variantId),
         quantity: Number(row.quantity),
-        selling_plan: sellingPlanId,
+        selling_plan: sellingPlan,
         properties: {
           _bundle_id: bundleId,
           _bundle_name: bundleName,
           _collection_handle: collectionHandle,
+          // `_flavor` is what the PDP writes and what `cart-products.liquid`
+          // reads for the child line title; keep `_flavor_name` for parity.
+          _flavor: row.flavorName,
           _flavor_name: row.flavorName,
+          ...bundleProps,
         },
       });
     };
@@ -339,30 +555,33 @@ class BundleEditorComponent extends Component {
       additions.push({
         id: newParentVariantId,
         quantity: 1,
-        selling_plan: sellingPlanId,
+        selling_plan: parentSellingPlan,
         properties: {
           _bundle_id: bundleId,
           _bundle_parent: 'true',
           _bundle_name: bundleName,
           _collection_handle: collectionHandle,
+          ...bundleProps,
         },
       });
     };
 
     for (const row of state.rows) {
-      const newChildVariantId = row.variants?.[bundleVariantIndex]?.id || row.variantId;
+      const childVariant = row.variants?.[bundleVariantIndex];
+      const newChildVariantId = childVariant?.id || row.variantId;
+      const childSellingPlan = isSubscription ? childVariant?.selling_plan_id || null : null;
 
       if (row.key) {
         if (parentChanged) {
           updates[row.key] = 0;
-          addChild(row, newChildVariantId);
+          addChild(row, newChildVariantId, childSellingPlan);
         } else {
           updates[row.key] = Number(row.quantity);
         }
         continue;
       }
 
-      addChild(row, newChildVariantId);
+      addChild(row, newChildVariantId, childSellingPlan);
     }
 
     if (oldParentProduct && parentChanged) updates[oldParentProduct.key] = 0;

@@ -66,11 +66,11 @@ class CartProductsComponent extends HTMLElement {
           case 'remove-bundle':
             await this.#removeBundle(button);
             break;
-      
-          case 'edit-bundle':
-            this.#editBundle(button);
+
+          case 'remove-line':
+            await this.#removeLine(button);
             break;
-      
+
           case 'toggle-frequency':
             this.#toggleFrequency(button);
             break;
@@ -168,31 +168,30 @@ class CartProductsComponent extends HTMLElement {
     }
   
     /**
-     * Requests that the drawer switch to the bundle editor.
+     * Removes a single (non-bundle) cart line by its line-item key.
      *
      * @param {HTMLButtonElement} button
      */
-    #editBundle(button) {
-      const {
-        bundleId,
-        collectionHandle,
-        bundleName,
-      } = button.dataset;
-  
-      if (!bundleId) return;
-  
-      document.dispatchEvent(
-        new CustomEvent('cart-bundle:edit', {
-          bubbles: true,
-          detail: {
-            bundleId,
-            collectionHandle,
-            bundleName,
-          },
-        })
-      );
+    async #removeLine(button) {
+      const key = button.dataset.key;
+
+      if (!key || this.#busy) return;
+
+      this.#setBusy(true);
+
+      try {
+        const updatedCart = await this.#updateCart({
+          [key]: 0,
+        });
+
+        this.#dispatchCartChange(updatedCart);
+      } catch (error) {
+        this.#handleError(error);
+      } finally {
+        this.#setBusy(false);
+      }
     }
-  
+
     /**
      * Opens or closes a bundle frequency dropdown.
      *
@@ -234,14 +233,26 @@ class CartProductsComponent extends HTMLElement {
      */
     async #changeFrequency(button) {
       const bundleId = button.dataset.bundleId;
-  
-      const sellingPlanId =
+
+      // The parent's selected plan ('' → One Time Purchase).
+      const parentPlanId =
         button.dataset.sellingPlanId || null;
-  
+
+      const isSubscription = Boolean(parentPlanId);
+
+      // Per-line "1 Month" plan ids, rendered on the selector. Each line must
+      // use its OWN plan; applying the parent's plan to a child variant is
+      // rejected by the cart ("Cannot apply selling plan to variant").
+      const selector = button.closest('[data-frequency-selector]');
+      const planMap = this.#parseJSON(
+        selector instanceof HTMLElement ? selector.dataset.subscriptionPlans : null,
+        {}
+      );
+
       if (!bundleId || this.#busy) return;
-  
+
       this.#setBusy(true);
-  
+
       try {
         const cart = await this.#getCart();
 
@@ -259,13 +270,21 @@ class CartProductsComponent extends HTMLElement {
 
         // Apply the frequency to every line in the bundle (parent + flavors).
         // Changing only the parent leaves the flavor lines on the old plan,
-        // producing a half-subscription bundle.
+        // producing a half-subscription bundle. All dropdown options are "1
+        // Month" plans, so for a subscription each line uses its OWN mapped
+        // monthly plan (a child can't accept the parent's plan); one-time drops
+        // every plan (null). Fall back to the clicked plan if a line is absent
+        // from the map.
         let updatedCart;
         for (const line of bundleLines) {
+          const linePlan = isSubscription
+            ? planMap[line.key] || parentPlanId || null
+            : null;
+
           updatedCart = await this.#changeLine({
             id: line.key,
             quantity: line.quantity,
-            selling_plan: sellingPlanId,
+            selling_plan: linePlan,
           });
         }
 
@@ -334,6 +353,23 @@ class CartProductsComponent extends HTMLElement {
       });
     }
   
+    /**
+     * Safely parses a JSON string, returning a fallback on failure.
+     *
+     * @param {string | null | undefined} value
+     * @param {any} fallback
+     * @returns {any}
+     */
+    #parseJSON(value, fallback) {
+      if (!value) return fallback;
+
+      try {
+        return JSON.parse(value);
+      } catch {
+        return fallback;
+      }
+    }
+
     /**
      * Loads the current Shopify cart.
      *

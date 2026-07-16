@@ -17,6 +17,42 @@
   fetchpriority="low"
 ></script>
 
+{%  liquid  
+     assign total_original_price = 0
+     assign total_price = 0
+
+     for item in cart.items
+      assign quantified = false
+      for tag in item.product.tags
+        if tag contains 'quantified'
+          assign quantified = true
+          break
+        endif
+      endfor
+
+      ## Total Savings Calculation ##
+
+      if quantified
+        if item.compare_at_price > item.price
+          assign total_original_price = total_original_price | plus: item.compare_at_price | times: item.quantity
+          assign total_price = total_price | plus: item.price | times: item.quantity
+        else
+          assign total_original_price = total_original_price | plus: item.product.variants.first.price | times: item.quantity
+          assign total_price = total_price | plus: item.price | times: item.quantity
+        endif
+      elsif item.compare_at_price > item.price
+        assign total_original_price = total_original_price | plus: item.compare_at_price
+        assign total_price = total_price | plus: item.price
+      else 
+        assign total_original_price = total_original_price | plus: item.final_line_price
+        assign total_price = total_price | plus: item.price
+      endif
+    endfor
+
+    assign total_savings = total_original_price | minus: total_price | money
+%}
+
+
 {% capture cart_icon %}
   <cart-icon
     class="header-actions__cart-icon flex justify-center items-center {% unless cart == empty %} header-actions__cart-icon--has-cart{% endunless %}"
@@ -225,9 +261,9 @@
                     >
                       {% render 'cart-products' %}
                     </scroll-hint>
-    
+
                     <div class="cart-drawer__summary">
-                      {% render 'aw-cart-summary', section_id: section.id %}
+                      {% render 'aw-cart-summary', section_id: section.id, total_savings: total_savings %}
                     </div>
                   </scroll-hint>
                 </div>

@@ -3,6 +3,7 @@
 
   @param {string} [accelerated_checkout_buttons_layout] - { 'vertical' } Forced layout of the additional checkout buttons, instead of relying on platform's layout.
   @param {string} [section_id] - The section ID for cart discount component.
+  @param {string} [total_savings] - The total savings for the cart.
 {%- enddoc -%}
 
 {% capture shipping_fee %}
@@ -116,7 +117,10 @@
 </div>
 
 <div class="py-5 px-11 w-full">
-    {% render 'buttons', button_type: 'checkout', cart: cart %}
+    {% render 'cart-buttons', button_type: 'checkout', cart: cart %}
+    <div class="flex justify-center items-center mt-5 mb-2 text-xs font-kurdis-semi-condensed font-bold text-gold">
+      Total savings: {{ total_savings }}
+    </div>
 </div>
 
 {% stylesheet %}

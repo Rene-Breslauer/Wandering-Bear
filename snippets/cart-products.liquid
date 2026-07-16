@@ -35,6 +35,15 @@
   fetchpriority="low"
 ></script>
 
+{% style %}
+
+  button[data-frequency-button][aria-expanded="true"] {
+    svg.chevron-down   {
+      transform: rotate(180deg);
+    }
+  }
+{% endstyle %}
+
 <cart-products-component
   {{ block.shopify_attributes }}
   class="cart-items__wrapper"
@@ -75,60 +84,12 @@
         class="cart-items flex flex-col !gap-3 spacing-style{% if block_settings.dividers %} cart-items--dividers{% endif %}"
         style="{%  render 'spacing-style', settings: block_settings %} --cart-items-gap:{{ block_settings.gap | append: "px" }};"
       >
-        <table
-          class="cart-items__table"
-          role="table"
-        >
-          <caption
-            class="visually-hidden"
-            role="caption"
-          >
-            {{ 'content.cart_total' | t }}
-            <span>{{ cart.total_price | money_with_currency }}</span>
-          </caption>
-
-          <thead
-            class="visually-hidden"
-            role="rowgroup"
-          >
-            <tr
-              role="row"
-              class="cart-items__table-row"
-            >
-              <th
-                id="productImage"
-                scope="col"
-                role="columnheader"
-              >
-                {{ 'content.product_image' | t }}
-              </th>
-              <th
-                id="productInformation"
-                scope="col"
-                role="columnheader"
-              >
-                {{ 'content.product_information' | t }}
-              </th>
-              <th
-                id="quantity"
-                scope="col"
-                role="columnheader"
-              >
-                {{ 'content.quantity' | t }}
-              </th>
-              <th
-                id="productTotal"
-                scope="col"
-                role="columnheader"
-              >
-                {{ 'content.product_total' | t }}
-              </th>
-            </tr>
-          </thead>
-
-          <tbody role="rowgroup">
-
-          {% comment %} Bundle items: {% endcomment %}
+          {% comment %} Bundle items: rendered as cards OUTSIDE the table.
+             Divs/buttons are invalid children of <tbody>; the browser
+             foster-parents them out of the table, which corrupts the drawer
+             when `cart-items-component` morphs the section on cart updates and
+             breaks the edit/remove buttons. Keep bundle cards as siblings of
+             the table inside `.cart-items`. {% endcomment %}
 
             {% assign bundle_parent_ids = '' %}
 
@@ -168,7 +129,7 @@
                     {% endif %}
                     <button
                       type="button"
-                      class="cursor-pointer"
+                      class="cursor-pointer text-kraft hover:!text-gold transition-all duration-300"
                       data-action="remove-bundle"
                       data-bundle-id="{{ bundle_id | escape }}"
                       aria-label="Remove {{ product_title | default: parent_item.product.title | escape }}"
@@ -189,13 +150,14 @@
                     {% assign bundle_line_price = item.price | times: item.quantity %}
                     {% assign original_line_price = compare_at_price | times: item.quantity %}
                     {% assign total_bundle_price = total_bundle_price | plus: bundle_line_price %}
-                    {% assign total_original_price = total_original_price | plus: item.product.variants[0].price %}
+                    {% assign total_original_price = total_original_price | plus: item.product.variants[0].price | times: item.quantity %}
                     {% assign child_title = item.properties._flavor %}
                     {% if child_title == blank %}
                       {% assign child_title = item.product.title | split: '- ' | last %}
                     {% endif %}
                       <div data-key="{{ item.key }}" 
                       data-bundle-id="{{ bundle_id }}" 
+                      data-bundle-image="{{ item.product.metafields.custom.bundle_image | image_url: width: 200 }}"
                       class="relative flex p-4 gap-2">
                         <a href="{{ item.url | append: '?' | append: item.product.metafields.custom.product_group.value.template_suffix }}" class="w-12">
                           {{ item.image | image_url: width: 100 | image_tag }}
@@ -234,13 +196,43 @@
                 
                  {% comment %} Frequency Dropdown {% endcomment %}
 
+                 {%- comment -%}
+                   Map of each bundle line key → its own "1 Month" selling plan id.
+                   Changing frequency must apply each line's OWN plan; applying the
+                   parent's plan to child variants is rejected ("Cannot apply selling
+                   plan to variant").
+                 {%- endcomment -%}
+                 {%- capture bundle_subscription_plans -%}
+                 {
+                 {%- assign sub_first = true -%}
+                 {%- for line in cart.items -%}
+                   {%- if line.properties._bundle_id == bundle_id -%}
+                     {%- assign line_month_plan = '' -%}
+                     {%- for spg in line.product.selling_plan_groups -%}
+                       {%- for sp in spg.selling_plans -%}
+                         {%- if sp.name contains '1 Month' or sp.name contains '1 month' -%}
+                           {%- assign line_month_plan = sp.id -%}
+                           {%- break -%}
+                         {%- endif -%}
+                       {%- endfor -%}
+                       {%- if line_month_plan != '' -%}{%- break -%}{%- endif -%}
+                     {%- endfor -%}
+                     {%- unless sub_first -%},{%- endunless -%}{{ line.key | json }}:{{ line_month_plan | json }}
+                     {%- assign sub_first = false -%}
+                   {%- endif -%}
+                 {%- endfor -%}
+                 }
+                 {%- endcapture -%}
+
                  <div
                     data-frequency-selector
                     data-bundle-id="{{ bundle_id | escape }}"
+                    data-subscription-plans="{{ bundle_subscription_plans | strip | escape }}"
                     class="flex justify-center w-full bg-[#F9F3ED] py-3.5 px-4"
                   >
                     <div class="relative w-full">
                       <button
+                        data-frequency-button
                         type="button"
                         data-action="toggle-frequency"
                         aria-expanded="false"
@@ -260,7 +252,7 @@
                           </span>
                         </span>
 
-                        {% render 'icons', icon: 'chevron-down', class: 'text-sm' %}
+                        {% render 'icons', icon: 'chevron-down', class: 'chevron-down text-sm relative z-[12] transition-transform duration-300'%}
                       </button>
 
                       <div
@@ -333,9 +325,10 @@
                   </div>
 
                   <div class="flex items-center justify-between relative p-4">
+                    <div class="absolute top-0 left-0 w-full h-[1px] right-0 bg-[#431A031A]"></div>
                     <button
                       type="button"
-                      class="inline-flex items-center gap-1 cursor-pointer text-kraft underline text-sm font-kurdis-semi-condensed font-bold"
+                      class="inline-flex items-center gap-1 cursor-pointer text-kraft underline text-sm font-kurdis-semi-condensed font-bold hover:!text-gold transition-all duration-300"
                       data-bundle-edit-trigger
                       {% if parent_item.properties._bundle_type == '32oz' %}
                         data-bundle-type="{{ parent_item.properties._bundle_type }}"
@@ -359,15 +352,88 @@
                 </div>
             {% endfor %}
 
+        <table
+          class="cart-items__table"
+          role="table"
+        >
+          <caption
+            class="visually-hidden"
+            role="caption"
+          >
+            {{ 'content.cart_total' | t }}
+            <span>{{ cart.total_price | money_with_currency }}</span>
+          </caption>
+
+          <thead
+            class="visually-hidden"
+            role="rowgroup"
+          >
+            <tr
+              role="row"
+              class="cart-items__table-row"
+            >
+              <th
+                id="productImage"
+                scope="col"
+                role="columnheader"
+              >
+                {{ 'content.product_image' | t }}
+              </th>
+              <th
+                id="productInformation"
+                scope="col"
+                role="columnheader"
+              >
+                {{ 'content.product_information' | t }}
+              </th>
+              <th
+                id="quantity"
+                scope="col"
+                role="columnheader"
+              >
+                {{ 'content.quantity' | t }}
+              </th>
+              <th
+                id="productTotal"
+                scope="col"
+                role="columnheader"
+              >
+                {{ 'content.product_total' | t }}
+              </th>
+            </tr>
+          </thead>
+
+          <tbody role="rowgroup">
+
             {% comment %} Non-bundle items: {% endcomment %}
-              
+
             {% for item in cart.items %}
               {% unless item.properties._bundle_id != blank %}
+              {% liquid
+                 assign quantified = false
+                 
+                 for tag in item.product.tags
+                  if tag == 'custom-quantity-rule'
+                    assign quantified = true
+                    break
+                  endif
+                 endfor
+
+                assign price = item.final_line_price
+                if quantified
+                  assign original_price = item.product.variants[0].price | times: item.quantity
+                elsif item.compare_at_price > item.final_line_price
+                  assign original_price = item.compare_at_price
+                else
+                  assign original_price = item.original_line_price
+                endif
+                assign unit_price = item.unit_price | money
+              %}
 
               <tr
                 role="row"
                 class="cart-items__table-row{% if item.parent_relationship.parent != null %} cart-items__nested-line{% endif %}{% unless item.unit_price_measurement %} cart-items__table-row--full-width-variants{% endunless %}
-                bg-[#F9F3ED] font-kurdis-semi-condensed rounded-[5px] overflow-hidden !py-2.5 px-3"
+                bg-[#F9F3ED] font-kurdis-semi-condensed rounded-[5px] overflow-hidden"
                 ref="cartItemRows[]"
                 data-parent-key="{{ item.parent_relationship.parent.key }}"
                 data-key="{{ item.key }}"
@@ -375,7 +441,7 @@
               <td role="cell" headers="productInformation" class="flex w-full col-span-full">
               </td>
                 <td
-                  class="cart-items__media"
+                  class="cart-items__media !py-3 !pl-4"
                   role="cell"
                   headers="productImage"
                 >
@@ -410,7 +476,7 @@
                   role="cell"
                   headers="productInformation"
                 >
-                  <div class="cart-items__product-info">
+                  <div class="cart-items__product-info !pt-3">
                     <p>
                       <a
                         href="{{ item.url }}"
@@ -425,35 +491,7 @@
                     <div class="font-kurdis-semi-condensed text-espresso font-bold text-sm">
                       {{ item.price | money }} x {{ item.quantity }}
                     </div>
-                    {% comment %} <div class="cart-items__unit-price-wrapper">
-                      <div>
-                        {% if item.original_price != item.final_price %}
-                          <span class="visually-hidden">{{ 'content.price_sale' | t }}</span>
-                          <span>{{ item.final_price | money }}</span>
-                          <span class="visually-hidden">{{ 'content.price_regular' | t }}</span>
-                          <s class="compare-at-price">
-                            {% if item.variant.compare_at_price > item.original_price %}
-                              {{ item.variant.compare_at_price | money }}
-                            {% else %}
-                              {{ item.original_price | money }}
-                            {% endif %}
-                          </s>
-                        {% else %}
-                          {% if item.variant.compare_at_price > item.original_price %}
-                            <span class="visually-hidden">{{ 'content.price_sale' | t }}</span>
-                          {% else %}
-                            <span class="visually-hidden">{{ 'content.price' | t }}</span>
-                          {% endif %}
-  
-                          <span>{{ item.original_price | money }}</span>
-  
-                          {% if item.variant.compare_at_price > item.original_price %}
-                            <span class="visually-hidden">{{ 'content.price_regular' | t }}</span>
-                            <s class="compare-at-price">{{ item.variant.compare_at_price | money }}</s>
-                          {% endif %}
-                        {% endif %}
-                      </div>
-                    </div> {% endcomment %}
+                    
                     {% if item.product.vendor and block_settings.vendor %}
                       <p>
                         {{ item.product.vendor }}
@@ -476,50 +514,27 @@
 
                 
                 </td>
-                {% comment %} <td
-                  class="cart-items__error hidden"
-                  role="cell"
-                  ref="cartItemErrorContainer-{{ item.index | plus: 1 }}"
-                  headers="quantity"
-                >
-                  <div
-                    class="cart-item__error"
-                    role="alert"
-                  >
-                    <span class="svg-wrapper">
-                      {{- 'icon-error.svg' | inline_asset_content -}}
-                    </span>
-                    <small
-                      class="cart-item__error-text cart-primary-typography"
-                      ref="cartItemError-{{ item.index | plus: 1 }}"
-                    ></small>
-                  </div>
-                </td> {% endcomment %}
-                {%- liquid
-                  if settings.currency_code_enabled_cart_items
-                    assign price = item.final_line_price | money_with_currency
-                    assign unit_price = item.unit_price | money_with_currency
-                  else
-                    assign price = item.final_line_price | money
-                    assign unit_price = item.unit_price | money
-                  endif
-                -%}
                 <td
                   class="cart-items__price cart-secondary-typography"
                   role="cell"
                   headers="productTotal"
                 >
+                  {% comment %} Handled by cart-products.js (data-action), not the theme's
+                     `on:click="/onLineItemRemove"` binding: that binding resolves to the
+                     closest *-component ancestor, which here is cart-products-component
+                     (not a Horizon Component), so it silently no-ops. {% endcomment %}
                   <button
                   class="button cart-items__remove"
                   type="button"
                   aria-label="{{ 'accessibility.remove_item' | t: title: item.title | escape }}"
-                  on:click="/onLineItemRemove/{{ item.index | plus: 1 }}"
+                  data-action="remove-line"
+                  data-key="{{ item.key }}"
                   {% assign can_remove = item.instructions.can_remove | default: true, allow_false: true %}
                   {% if can_remove == false %}
                     hidden
                   {% endif %}
                 >
-                  {{- 'icon-delete.svg' | inline_asset_content -}}
+                  {% render 'icons', icon: 'delete', class: 'text-sm inline-flex' %}
                   <span class="visually-hidden">{{ 'accessibility.remove' | t }}</span>
                 </button>
                 </td>
@@ -532,8 +547,10 @@
                  data-bundle-id="{{ bundle_id | escape }}"
                  class="flex justify-center w-full bg-[#F9F3ED]"
                >
-                 <div class="relative w-full">
+                 <div class="relative w-full px-4 py-3">
+                  <div class="absolute top-0 left-0 w-full h-[1px] bg-[#431A031A]"></div>
                    <button
+                     data-frequency-button
                      type="button"
                      data-action="toggle-frequency"
                      aria-expanded="false"
@@ -553,7 +570,7 @@
                        </span>
                      </span>
 
-                     {% render 'icons', icon: 'chevron-down', class: 'text-sm' %}
+                     {% render 'icons', icon: 'chevron-down', class: 'chevron-down text-sm relative z-[12] transition-transform duration-300' %}
                    </button>
 
                    <div
@@ -625,8 +642,12 @@
                  </div>
                </div>
                 </td>
-                <td class="w-full col-span-full flex justify-end items-center">
-                  <span>{{ item.price | money }}</span>
+                <td class="w-full font-kurdis-semi-condensed col-span-full flex justify-end items-center gap-1 text-sm font-bold text-bear-black py-3 px-4 relative">
+                  <div class="absolute top-0 left-0 w-full h-[1px] bg-[#431A031A]"></div>
+                  {% if original_price > price %}
+                    <span class="line-through opacity-50">{{ original_price | money }}</span>
+                  {% endif %}
+                  <span>{{ price | money}}</span>
                 </td>
               </tr>
               {% endunless %}
