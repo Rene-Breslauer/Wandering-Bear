@@ -444,6 +444,7 @@ class CartProductsComponent extends HTMLElement {
      * @returns {Promise<object>}
      */
     async #changeLine(change) {
+      console.log('change', change);
       const response = await fetch(
         `${window.Shopify.routes.root}cart/change.js`,
         {

@@ -142,8 +142,9 @@
 
                 {% assign total_bundle_price = 0 %}
                 {% assign total_original_price = 0 %}
+                {% assign bundle_total_autoship_savings = 0 %}
                 {% for item in cart.items %}
-
+                  
                   {% if item.properties._bundle_id == bundle_id %}
                     {% unless item.properties._bundle_parent == 'true' %}
                     {% assign compare_at_price = item.compare_at_price | default: item.original_price %}
@@ -151,6 +152,17 @@
                     {% assign original_line_price = compare_at_price | times: item.quantity %}
                     {% assign total_bundle_price = total_bundle_price | plus: bundle_line_price %}
                     {% assign total_original_price = total_original_price | plus: item.product.variants[0].price | times: item.quantity %}
+
+                    {% for selling_plan in item.product.variants[0].selling_plan_allocations %}
+                      {% if selling_plan.selling_plan.name contains '1 month' or selling_plan.selling_plan.name contains '1 Month' %}
+                        {% assign bundle_total_autoship_savings = bundle_total_autoship_savings | plus: item.product.variants[0].price | times: item.quantity | minus: selling_plan.per_delivery_price | times: item.quantity %}
+                        {% break %}
+                      {% endif %}
+                    {% endfor %}
+
+                    {% assign bundle_total_autoship_savings_percentage = bundle_total_autoship_savings | divided_by: total_original_price | times: 100 %}
+                    {% assign bundle_total_autoship_savings_percentage = bundle_total_autoship_savings_percentage | round: 2 %}
+
                     {% assign child_title = item.properties._flavor %}
                     {% if child_title == blank %}
                       {% assign child_title = item.product.title | split: '- ' | last %}
@@ -224,105 +236,119 @@
                  }
                  {%- endcapture -%}
 
-                 <div
-                    data-frequency-selector
-                    data-bundle-id="{{ bundle_id | escape }}"
-                    data-subscription-plans="{{ bundle_subscription_plans | strip | escape }}"
-                    class="flex justify-center w-full bg-[#F9F3ED] py-3.5 px-4"
-                  >
-                    <div class="relative w-full">
-                      <button
-                        data-frequency-button
-                        type="button"
-                        data-action="toggle-frequency"
-                        aria-expanded="false"
-                        aria-controls="bundle-frequency-{{ bundle_id | handleize }}"
-                        class="relative cursor-pointer text-left flex items-center whitespace-nowrap font-kurdis-semi-condensed text-espresso font-bold justify-between gap-2 py-2 rounded-[2px] w-full border border-[#E0D2C6] px-4"
-                      >
-                        <span data-frequency class="flex items-center gap-2">
-                          {% if has_selling_plan %}
-                            {% render 'icons',
-                              icon: 'recurring',
-                              class: 'text-sm inline-flex'
-                            %}
-                          {% endif %}
+                 {{ bundle_total_autoship_savings }}
 
-                          <span data-frequency-label>
-                            {{ selector_value }}
-                          </span>
-                        </span>
-
-                        {% render 'icons', icon: 'chevron-down', class: 'chevron-down text-sm relative z-[12] transition-transform duration-300'%}
-                      </button>
-
-                      <div
-                        id="bundle-frequency-{{ bundle_id | handleize }}"
-                        data-frequency-dropdown
-                        class="absolute top-0 left-0 min-w-48 rounded-[2px] shadow-button z-10 origin-top-left bg-[#F9F3ED] outline-none border border-[#E0D2C6] w-full"
-                        hidden
-                      >
-                        {%- assign current_plan_id = parent_item.selling_plan_allocation.selling_plan.id -%}
-
-                        {%- comment -%} Capture each option so the currently-selected one can be rendered first. {%- endcomment -%}
-                        {%- capture subscription_options -%}
-                          {% for selling_plan_group in parent_item.product.selling_plan_groups %}
-                            {% for selling_plan in selling_plan_group.selling_plans %}
-                              {% if selling_plan.name contains '1 Month'
-                                or selling_plan.name contains '1 month'
+                 {% if has_selling_plan %}
+                  <div
+                      data-frequency-selector
+                      data-bundle-id="{{ bundle_id | escape }}"
+                      data-subscription-plans="{{ bundle_subscription_plans | strip | escape }}"
+                      class="flex justify-center w-full bg-[#F9F3ED] py-3.5 px-4"
+                    >
+                      <div class="relative w-full">
+                        <button
+                          data-frequency-button
+                          type="button"
+                          data-action="toggle-frequency"
+                          aria-expanded="false"
+                          aria-controls="bundle-frequency-{{ bundle_id | handleize }}"
+                          class="relative cursor-pointer text-left flex items-center whitespace-nowrap font-kurdis-semi-condensed text-espresso font-bold justify-between gap-2 py-2 rounded-[2px] w-full border border-[#E0D2C6] px-4"
+                        >
+                          <span data-frequency class="flex items-center gap-2">
+                            {% if has_selling_plan %}
+                              {% render 'icons',
+                                icon: 'recurring',
+                                class: 'text-sm inline-flex'
                               %}
-                                {% assign selling_plan_label = selling_plan.name
-                                  | split: ' - '
-                                  | first
-                                %}
+                            {% endif %}
 
-                                <button
-                                  type="button"
-                                  data-action="change-frequency"
-                                  data-bundle-id="{{ bundle_id | escape }}"
-                                  data-selling-plan-id="{{ selling_plan.id }}"
-                                  data-selling-plan-name="{{ selling_plan_label | escape }}"
-                                  {% if has_selling_plan and selling_plan.id == current_plan_id %}aria-current="true"{% endif %}
-                                  class="relative cursor-pointer font-kurdis-semi-condensed text-espresso font-bold px-4 py-2 w-full flex items-center transition-colors text-left text-gray-800 hover:bg-gray-50 gap-2 focus-visible:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                                >
-                                  {% render 'icons',
-                                    icon: 'recurring',
-                                    class: 'text-sm inline-flex'
+                            <span data-frequency-label>
+                              {{ selector_value }}
+                            </span>
+                          </span>
+
+                          {% render 'icons', icon: 'chevron-down', class: 'chevron-down text-sm relative z-[12] transition-transform duration-300'%}
+                        </button>
+
+                        <div
+                          id="bundle-frequency-{{ bundle_id | handleize }}"
+                          data-frequency-dropdown
+                          class="absolute top-0 left-0 min-w-48 rounded-[2px] shadow-button z-10 origin-top-left bg-[#F9F3ED] outline-none border border-[#E0D2C6] w-full"
+                          hidden
+                        >
+                          {%- assign current_plan_id = parent_item.selling_plan_allocation.selling_plan.id -%}
+
+                          {%- comment -%} Capture each option so the currently-selected one can be rendered first. {%- endcomment -%}
+                          {%- capture subscription_options -%}
+                            {% for selling_plan_group in parent_item.product.selling_plan_groups %}
+                              {% for selling_plan in selling_plan_group.selling_plans %}
+                                {% assign selling_plan_name = selling_plan.name | downcase %}
+                                {% assign variant_title = parent_item.product.title | split: ' – ' | last | downcase %}
+                                {% if selling_plan_name contains '1 month' %}
+                                  {% assign selling_plan_label = selling_plan.name
+                                    | split: ' - '
+                                    | first
                                   %}
 
-                                  {{ selling_plan_label }}
+                                  <button
+                                    type="button"
+                                    data-action="change-frequency"
+                                    data-bundle-id="{{ bundle_id | escape }}"
+                                    data-selling-plan-id="{{ selling_plan.id }}"
+                                    data-selling-plan-name="{{ selling_plan_label | escape }}"
+                                    {% if has_selling_plan and selling_plan.id == current_plan_id %}aria-current="true"{% endif %}
+                                    class="relative cursor-pointer font-kurdis-semi-condensed text-espresso font-bold px-4 py-2 w-full flex items-center transition-colors text-left text-gray-800 hover:bg-gray-50 gap-2 focus-visible:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                                  >
+                                    {% render 'icons',
+                                      icon: 'recurring',
+                                      class: 'text-sm inline-flex'
+                                    %}
 
-                                  <span class="absolute bottom-0 left-0 w-full h-px bg-[#E0D2C6]"></span>
-                                </button>
-                              {% endif %}
+                                    {{ selling_plan_label }}
+
+                                    {% comment %} {{ selling_plan.name }} {% endcomment %}
+
+
+                                    <span class="absolute bottom-0 left-0 w-full h-px bg-[#E0D2C6]"></span>
+                                  </button>
+                                {% endif %}
+                              {% endfor %}
                             {% endfor %}
-                          {% endfor %}
-                        {%- endcapture -%}
+                          {%- endcapture -%}
 
-                        {%- capture one_time_option -%}
-                          <button
-                            type="button"
-                            data-action="change-frequency"
-                            data-bundle-id="{{ bundle_id | escape }}"
-                            data-selling-plan-id=""
-                            data-selling-plan-name="One Time Purchase"
-                            {% unless has_selling_plan %}aria-current="true"{% endunless %}
-                            class="relative cursor-pointer pl-6 pr-4 font-kurdis-semi-condensed text-espresso font-bold py-2 w-full flex items-center transition-colors text-left text-gray-800 hover:bg-gray-50 focus-visible:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                          >
-                            One Time Purchase
-                          </button>
-                        {%- endcapture -%}
+                          {%- capture one_time_option -%}
+                            <button
+                              type="button"
+                              data-action="change-frequency"
+                              data-bundle-id="{{ bundle_id | escape }}"
+                              data-selling-plan-id=""
+                              data-selling-plan-name="One Time Purchase"
+                              {% unless has_selling_plan %}aria-current="true"{% endunless %}
+                              class="relative cursor-pointer pl-6 pr-4 font-kurdis-semi-condensed text-espresso font-bold py-2 w-full flex items-center transition-colors text-left text-gray-800 hover:bg-gray-50 focus-visible:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                              One Time Purchase
+                            </button>
+                          {%- endcapture -%}
 
-                        {%- comment -%} Selected frequency first. {%- endcomment -%}
-                        {% if has_selling_plan %}
-                          {{ subscription_options }}
-                          {{ one_time_option }}
-                        {% else %}
-                          {{ one_time_option }}
-                          {{ subscription_options }}
-                        {% endif %}
+                          {%- comment -%} Selected frequency first. {%- endcomment -%}
+                          {% if has_selling_plan %}
+                            {{ subscription_options }}
+                            {{ one_time_option }}
+                          {% else %}
+                            {{ one_time_option }}
+                            {{ subscription_options }}
+                          {% endif %}
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  {% else %}
+                    <div class="py-3.5 px-4">
+                      <button type="button" class="w-full border border-espresso flex justify-center items-center py-2 px-4 rounded-[2px] text-espresso font-kurdis-semi-condensed font-semibold text-sm cursor-pointer hover:bg-gold hover:!text-white transition-all duration-300 hover:border-gold" 
+                      data-upgrade-to-autoship>
+                        Upgrade to Autoship and Save {{ bundle_total_autoship_savings_percentage }}%
+                      </button>
+                    </div>
+                  {% endif %}
 
                   <div class="flex items-center justify-between relative p-4">
                     <div class="absolute top-0 left-0 w-full h-[1px] right-0 bg-[#431A031A]"></div>
@@ -336,6 +362,7 @@
                         data-flavor-type="{{ parent_item.properties._flavor_type }}"
                       {% endif %}
                       data-bundle-id="{{ bundle_id | escape }}"
+                      data-selling-plan="{{ parent_item.selling_plan_allocation.selling_plan.id }}"
                       data-collection-handle="{{ collection_handle | escape }}"
                       data-bundle-name="{{ parent_item.properties._bundle_name | handleize }}"
                     >
@@ -542,6 +569,7 @@
                                   
                  {% comment %} Frequency Dropdown {% endcomment %}
 
+                 {% unless item.title contains 'Membership' %}
                  <div
                  data-frequency-selector
                  data-bundle-id="{{ bundle_id | escape }}"
@@ -641,6 +669,8 @@
                    </div>
                  </div>
                </div>
+               {% endunless %}
+
                 </td>
                 <td class="w-full font-kurdis-semi-condensed col-span-full flex justify-end items-center gap-1 text-sm font-bold text-bear-black py-3 px-4 relative">
                   <div class="absolute top-0 left-0 w-full h-[1px] bg-[#431A031A]"></div>

@@ -83,6 +83,7 @@ class BundleEditorComponent extends Component {
       bundleType: trigger.dataset.bundleType ?? '',
       bundleSize: trigger.dataset.bundleSize ?? '',
       flavorType: trigger.dataset.flavorType ?? '',
+      sellingPlan: trigger.dataset.sellingPlan ?? '',
     });
   }
 
@@ -90,7 +91,7 @@ class BundleEditorComponent extends Component {
    * Fetches the section-rendered editor, hydrates quantities and reveals the panel.
    * @param {{ collectionHandle: string, bundleName: string, bundleId: string }} config
    */
-  async open({ collectionHandle, bundleName, bundleId, bundleType, bundleSize, flavorType }) {
+  async open({ collectionHandle, bundleName, bundleId, bundleType, bundleSize, flavorType, sellingPlan }) {
     const panel = this.#panel;
     if (!collectionHandle || !panel) return;
 
@@ -110,6 +111,7 @@ class BundleEditorComponent extends Component {
       bundleType,
       bundleSize,
       flavorType,
+      sellingPlan,
       tiers: this.#parseJSON(root.dataset.tiers, []),
       tierCount: Number(root.dataset.tierCount || 0),
       rows: Array.from(panel.querySelectorAll('[data-bundle-row]')).map((el) => ({
@@ -199,6 +201,26 @@ class BundleEditorComponent extends Component {
   #render() {
     if (!this.#state) return;
 
+    const hasSellingPlan = this.#state?.sellingPlan && this.#state?.sellingPlan !== null;
+    const sellingPlanElements = this.querySelectorAll('[data-selling-plan]');
+    const otpElements = this.querySelectorAll('[data-otp]');
+
+    if (hasSellingPlan) {
+      sellingPlanElements.forEach(element => {
+        element.style.display = 'flex';
+      });
+      otpElements.forEach(element => {
+        element.style.display = 'none';
+      });
+    } else {
+      sellingPlanElements.forEach(element => {
+        element.style.display = 'none';
+      });
+      otpElements.forEach(element => {
+        element.style.display = 'flex';
+      });
+    }
+
     const total = this.#totalQuantity;
     const variantIndex = this.#tierIndex(total);
     const atCap = this.#is32oz && total >= this.#bundleSizeNum;
@@ -230,7 +252,8 @@ class BundleEditorComponent extends Component {
 
       const price = row.el.querySelector('[data-bundle-price]');
       const variant = row.variants[variantIndex];
-      if (price && variant) price.textContent = variant.selling_plan_price ?? variant.price;
+      
+      if (price && variant) price.textContent = variant.selling_plan_price && hasSellingPlan ? variant.selling_plan_price : variant.price;
     }
 
     // Mix mode caps the total at the carton count; block adding beyond it.
@@ -279,6 +302,8 @@ class BundleEditorComponent extends Component {
       console.log(content);
       content.style.height = `calc(100vh - ${headerHeight + footerHeight}px)`;
     }
+
+
   }
 
   /** @returns {boolean} True when any flavor quantity differs from the cart. */
@@ -340,16 +365,20 @@ class BundleEditorComponent extends Component {
     container.style.display = 'flex';
   }
 
-  /** Renders the "Autoship & Bundling Savings" line for 32oz bundles. */
+  /** Renders the "Autoship & Bundling Savings" */
   #renderSavings() {
+
+    const sellingPlan = this.#state?.sellingPlan;
+    const savingsTextSellingPlan = this.querySelector('[data-savings-selling-plan]');
+    const savingsTextOTP = this.querySelector('[data-savings-otp]');
+
+    if (savingsTextSellingPlan && savingsTextOTP) {
+      sellingPlan && sellingPlan !== null ? savingsTextSellingPlan.classList.remove('hidden') : savingsTextOTP.classList.remove('hidden');
+    }
+    
     const row = this.querySelector('[data-bundle-savings-row]');
     const amountEl = this.querySelector('[data-bundle-savings]');
     if (!(row instanceof HTMLElement) || !(amountEl instanceof HTMLElement)) return;
-
-    if (!this.#is32oz) {
-      row.style.display = 'none';
-      return;
-    }
 
     const tier = this.#tierIndex(this.#totalQuantity);
     const useSellingPlan = Boolean(this.#state?.tiers?.[tier]?.selling_plan_id);

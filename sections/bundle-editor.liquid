@@ -76,7 +76,7 @@
     <div class="flex justify-between items-center {% if collection.handle == '32oz-bundle' %} mb-6.5 {% endif %}">
       <button
         type="button"
-        class="cursor-pointer flex items-center gap-1 font-kurdis text-xs text-espresso font-bold"
+        class="cursor-pointer flex items-center gap-3 font-kurdis-semi-condensed text-xs text-espresso font-bold hover:!text-gold"
         on:click="bundle-editor-component/backToCart"
       >
         {% render 'icons', icon: 'chevron-left', class: 'text-sm' %}
@@ -130,11 +130,28 @@
           <div class="flex items-center justify-between text-[12px]">
             {% for tier_product in bundle_products %}
               {%- assign ea_variant = collection.products.first.variants[forloop.index0] -%}
+
+              {% comment %} Selling Plan Price {% endcomment %}
+
+              {% for selling_plan in ea_variant.selling_plan_allocations %}
+                {% if selling_plan.selling_plan.name contains '1 month' or selling_plan.selling_plan.name contains '1 Month' %}
+                  {%- assign selling_plan_price = selling_plan.per_delivery_price -%}
+                  {%- break -%}
+                {% endif %}
+              {% endfor %}
+
               <div class="w-1/3 wb-flex gap-1 flex-col items-center justify-center {% cycle 'ea': 'items-start', 'items-center', 'items-end' %}">
-                <div class="text-bear-black font-semibold font-kurdis-semi-condensed leading-[120%] normal-case inline-block whitespace-nowrap h-full">
+                <div data-otp class="text-bear-black font-semibold font-kurdis-semi-condensed leading-[120%] normal-case inline-block whitespace-nowrap h-full">
                   <span>{{ ea_variant.price | money }}/ea</span>
                 </div>
               </div>
+
+              <div data-selling-plan class="w-1/3 wb-flex gap-1 flex-col items-center justify-center {% cycle 'ea': 'items-start', 'items-center', 'items-end' %}">
+                <div class="text-bear-black font-semibold font-kurdis-semi-condensed leading-[120%] normal-case inline-block whitespace-nowrap h-full">
+                  <span>{{ selling_plan_price | money }}/ea</span>
+                </div>
+              </div>
+
             {% endfor %}
           </div>
         </div>
@@ -158,6 +175,7 @@
       <div data-bundle-editor-content class="w-full flex flex-col gap-3 overflow-auto">
         {% paginate collection.products by 50 %}
           {% for product in collection.products %}
+            {% assign member_only = product.metafields.product.member_only | default: false %}
             {%- capture variants_json -%}
               [
               {%- for variant in product.variants -%}
@@ -198,25 +216,44 @@
               </div>
               <div class="flex items-center justify-between w-full gap-3 p-3">
                 <div class="w-full wb-flex flex-col">
-                  <span class="font-kurdis-semi-condensed text-xs text-espresso font-bold uppercase">{{ product.metafields.custom.product_badge.value.badge_text }}</span>
-                  <h3 class="font-gothic_condensed uppercase font-bold text-bear-black text-lg">{{ product.title | split: '- ' | last }}</h3>
+                  {% if product.metafields.product.product_badge.value.badge_text != blank %}
+                    <span class="font-kurdis-semi-condensed text-[10px] text-espresso font-bold uppercase">{{ product.metafields.product.product_badge.value.badge_text }}</span>
+                  {% endif %}
+                  <h3 class="font-gothic_condensed leading-[1.2] uppercase font-bold text-bear-black text-lg">{{ product.title | split: '- ' | last }}</h3>
                   <span class="font-kurdis-semi-condensed text-xs text-kraft font-bold lowercase">
                     <span data-bundle-price>{{ product.variants.first.price | money }}</span> per {{ singular }}
                   </span>
                 </div>
 
                 {% comment %} Add button (quantity 0 / unselected) {% endcomment %}
-                <button
-                  data-bundle-add
-                  type="button"
-                  class="group relative flex items-center justify-center cursor-pointer shadow-button w-20 min-w-20"
-                  on:click="bundle-editor-component/increment"
-                >
-                  <span class="absolute whitespace-nowrap text-cream uppercase font-kurdis-condensed text-sm font-bold">+ Add</span>
-                  <svg class="text-kraft group-hover:!text-gold" xmlns="http://www.w3.org/2000/svg" width="80" height="40" viewBox="0 0 80 40" fill="none">
-                    <path d="M0.740482 4.15938C0.111533 6.47951 0.0863218 9.21376 0.0757066 11.8348C0.0504956 18.0724 0.0266114 24.3075 0.00140038 30.5451C-0.0052341 32.2401 -0.00390717 34.0047 0.38222 35.5249C1.31237 39.18 2.48668 39.9773 5.96049 39.9773C29.2608 39.9773 52.5624 40.1137 75.8641 39.7175C76.6907 39.7047 77.5983 39.787 78.2764 38.8687C80.1141 36.3814 79.9138 31.8363 79.858 28.4641C79.7545 22.1854 80 17.0255 80 10.7442C80 6.3509 79.7466 4.58636 78.9955 2.84755C78.0335 0.61745 76.0299 0.712621 74.5292 0.653461C64.6624 0.259913 54.7903 0.0567088 44.9195 0.0104091C34.985 -0.0384628 25.0506 0.0850031 15.1161 0.375662C12.3137 0.457973 9.5126 0.553144 6.71152 0.663749C4.59644 0.74606 1.91346 -0.159357 0.740482 4.15938Z" fill="currentColor"/>
-                  </svg>
-                </button>
+              
+                {% if member_only %}
+                  <button
+                    on:click="dispatch('open-modal', { modal: 'member-only-modal' })"
+                    type="button"
+                    class="group relative flex items-center justify-center cursor-pointer shadow-button w-20 min-w-20"
+                  >
+                    <span class="absolute whitespace-nowrap text-cream uppercase font-kurdis-condensed text-sm font-bold">
+                    {% render 'icons', icon: 'unlock', class: 'mr-1' %}
+                     Locked
+                    </span>
+                    <svg class="text-kraft group-hover:!text-gold" xmlns="http://www.w3.org/2000/svg" width="80" height="40" viewBox="0 0 80 40" fill="none">
+                      <path d="M0.740482 4.15938C0.111533 6.47951 0.0863218 9.21376 0.0757066 11.8348C0.0504956 18.0724 0.0266114 24.3075 0.00140038 30.5451C-0.0052341 32.2401 -0.00390717 34.0047 0.38222 35.5249C1.31237 39.18 2.48668 39.9773 5.96049 39.9773C29.2608 39.9773 52.5624 40.1137 75.8641 39.7175C76.6907 39.7047 77.5983 39.787 78.2764 38.8687C80.1141 36.3814 79.9138 31.8363 79.858 28.4641C79.7545 22.1854 80 17.0255 80 10.7442C80 6.3509 79.7466 4.58636 78.9955 2.84755C78.0335 0.61745 76.0299 0.712621 74.5292 0.653461C64.6624 0.259913 54.7903 0.0567088 44.9195 0.0104091C34.985 -0.0384628 25.0506 0.0850031 15.1161 0.375662C12.3137 0.457973 9.5126 0.553144 6.71152 0.663749C4.59644 0.74606 1.91346 -0.159357 0.740482 4.15938Z" fill="currentColor"/>
+                    </svg>
+                  </button>
+                {% else %}
+                  <button
+                    data-bundle-add
+                    type="button"
+                    class="group relative flex items-center justify-center cursor-pointer shadow-button w-20 min-w-20"
+                    on:click="bundle-editor-component/increment"
+                  >
+                    <span class="absolute whitespace-nowrap text-cream uppercase font-kurdis-condensed text-sm font-bold">+ Add</span>
+                    <svg class="text-kraft group-hover:!text-gold" xmlns="http://www.w3.org/2000/svg" width="80" height="40" viewBox="0 0 80 40" fill="none">
+                      <path d="M0.740482 4.15938C0.111533 6.47951 0.0863218 9.21376 0.0757066 11.8348C0.0504956 18.0724 0.0266114 24.3075 0.00140038 30.5451C-0.0052341 32.2401 -0.00390717 34.0047 0.38222 35.5249C1.31237 39.18 2.48668 39.9773 5.96049 39.9773C29.2608 39.9773 52.5624 40.1137 75.8641 39.7175C76.6907 39.7047 77.5983 39.787 78.2764 38.8687C80.1141 36.3814 79.9138 31.8363 79.858 28.4641C79.7545 22.1854 80 17.0255 80 10.7442C80 6.3509 79.7466 4.58636 78.9955 2.84755C78.0335 0.61745 76.0299 0.712621 74.5292 0.653461C64.6624 0.259913 54.7903 0.0567088 44.9195 0.0104091C34.985 -0.0384628 25.0506 0.0850031 15.1161 0.375662C12.3137 0.457973 9.5126 0.553144 6.71152 0.663749C4.59644 0.74606 1.91346 -0.159357 0.740482 4.15938Z" fill="currentColor"/>
+                    </svg>
+                  </button>
+                {% endif %}
 
                 {% comment %} Selected state (single-flavor mode) — shown by
                    bundle-editor.js on the chosen flavor. {% endcomment %}
@@ -276,7 +313,8 @@
           class="items-center justify-between px-6 py-3.5 border-t border-b border-[#431A031A] font-kurdis-semi-condensed text-gold text-xs font-bold"
           style="display: none;"
         >
-          <span>Autoship &amp; Bundling Savings</span>
+          <span data-savings-selling-plan class="hidden">Autoship &amp; Bundling Savings</span>
+          <span data-savings-otp class="hidden">Bundling Savings</span>
           <span data-bundle-savings>-$0.00</span>
         </div>
         <div class="pt-3 pb-9 flex justify-center items-center">
