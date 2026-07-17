@@ -198,7 +198,7 @@
                                 assign mobile_margin_role = 'last'
                             endif
                         %}
-                        <div class="diagram-item wb-flex flex-row {% unless forloop.last %} md:!flex-col {% endunless %} gap-4 {{ class }}"
+                        <div class="diagram-item diagram-item-{{ template.suffix }} diagram-item-{{ template.suffix }}-{{ block_index }} wb-flex flex-row {% unless forloop.last %} md:!flex-col {% endunless %} gap-4 {{ class }}"
                         style="--diagram-order-mobile: {{ mobile_order }};"
                         data-callout
                         data-mobile-margin="{{ mobile_margin_role }}"
@@ -357,7 +357,8 @@
     }
 
     @media screen and (max-width: 749px) {
-        .aw-diagram-toggle .diagram-item[data-mobile-margin='first'] {
+        .aw-diagram-toggle .diagram-item[data-mobile-margin='first'],
+        .diagram-item-single-serve-2.diagram-item[data-mobile-margin='middle'] {
           align-items: center;
         }
     }
