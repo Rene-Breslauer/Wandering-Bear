@@ -207,8 +207,8 @@
               "type": "text",
               "name": "t:names.text",
               "settings": {
-                "block_class": "",
-                "text": "<h3>{{ closest.product.metafields.custom.flavor_name.value }} ﻿• {{ closest.product.metafields.custom.size.value.display_name.value }}</h3>",
+                "block_class": "product-title",
+                "text": "<h3><strong>{{ closest.product.metafields.custom.flavor_name.value }}</strong> ﻿• {{ closest.product.metafields.custom.size.value.product_size.value }}</h3>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
@@ -263,7 +263,7 @@
             "price_EzJzMm": {
               "type": "price",
               "settings": {
-                "show_sale_price_first": true,
+                "show_sale_price_first": false,
                 "show_installments": false,
                 "show_tax_info": false,
                 "type_preset": "h6",
@@ -295,7 +295,7 @@
       "settings": {
         "title": "{{ collection.metafields.custom.title.value }}",
         "description": "{{ collection.metafields.custom.description.value }}",
-        "image": "shopify://shop_images/clouds.png",
+        "image": "shopify://shop_images/bright-blue-sky-2026-01-06-10-19-02-utc_1.png",
         "layout_type": "grid",
         "product_card_size": "medium",
         "mobile_product_card_size": "small",
@@ -304,7 +304,7 @@
         "product_grid_width": "centered",
         "full_width_on_mobile": true,
         "columns_gap_horizontal": 16,
-        "columns_gap_vertical": 24,
+        "columns_gap_vertical": 22,
         "padding-inline-start": 30,
         "padding-inline-end": 30,
         "color_scheme": "scheme-3b11458a-b7da-4318-b7a5-e12dd98e6bc9",

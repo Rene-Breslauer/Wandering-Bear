@@ -8,12 +8,14 @@
 {%- enddoc -%}
 
 <li>
+  
   <a
     href="{{ url }}"
     class="
+      relative
       filter-pills__pill inline-flex !justify-center text-center items-center gap-1.5 whitespace-nowrap rounded-[10px] min-w-[87px]
       border-[1.5px] border-espresso px-2 lg:px-4 py-2 font-kurdis-semi-condensed text-[15px]
-      font-bold leading-tight no-underline transition-all duration-300
+      font-bold leading-tight no-underline transition-all duration-300 group
       {% if is_current %}
         bg-kraft text-foam shadow-button
       {% else %}
@@ -26,6 +28,14 @@
       aria-current="true"
     {% endif %}
   >
+    {% if icon != blank %}
+      {{ icon | image_url: width: 100 | image_tag: class: 'absolute -top-4 -left-2 w-7 h-7 shadow-button hidden md:block' }}
+    {% endif %}
+
     {{- label -}}
+
+    {% if label contains 'VIP' %}
+      {% render 'icons' with icon: 'crown', class: 'w-4 h-4 text-gold transition-all duration-300 group-hover:!text-foam' %}
+    {% endif %}
   </a>
 </li>

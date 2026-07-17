@@ -22,7 +22,6 @@
   }
 {% endjavascript %}
 
-{% comment %} We always render this full-width, as the child blocks have width: page/full settings {% endcomment %}
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
 <picture>
   <source srcset="{{ section.settings.image | image_url: width: 1920 }}" media="(min-width: 750px)">
@@ -37,8 +36,8 @@
 >
   {% render 'skip-to-content-link', href: '#ResultsList', text: 'accessibility.skip_to_results_list' %}
 
-  <div class="w-full mt-5 lg:mt-[40px] mb-8 lg:mb-[50px] gap-2">
-      <div class="mx-auto flex flex-col gap-2 items-center">
+  <div class="w-full mt-5 lg:mt-[37px] mb-8 lg:mb-[46px] gap-2">
+      <div class="mx-auto flex flex-col gap-3 items-center">
         <h1 class="display-lg font-gothic_condensed uppercase font-bold !text-[35px] max-w-[250px] mx-auto lg:max-w-none lg:!text-[60px] text-center leading-[1.1] !m-0">{{ section.settings.title }}</h1>
         {% if section.settings.description != blank %}
           <p class="body font-kurdis-semi-condensed font-semibold text-[12px] text-center leading-[1.6] !m-0">
@@ -58,30 +57,15 @@
       results_size: collection.products_count
     %}
   <div
-    class="collection-wrapper !max-w-[970px] mx-auto gap-style{% if section.settings.product_grid_width == 'full-width' %} collection-wrapper--grid-full-width{% endif %}"
+    class="collection-wrapper !max-w-[970px] w-full mx-auto gap-style{% if section.settings.product_grid_width == 'full-width' %} collection-wrapper--grid-full-width{% endif %}"
   >
     
-   
-
- 
-
     {% assign products_per_page = 24 %}
 
     {% if section.settings.enable_infinite_scroll == false %}
       {% assign products_per_page = section.settings.products_per_page %}
     {% endif %}
 
-    {%- comment -%}
-      Optional grouping. `custom.sort` is a list of `size` metaobjects; each one becomes
-      a titled group holding the products whose own `custom.size` points at that same
-      entry. Matching on the metaobject rather than a tag string means a renamed or
-      re-cased label can't silently drop a product out of its group.
-
-      The groups render as full-width items INSIDE the single product grid rather than
-      as one `product-grid` per group: that snippet hardcodes `id="ResultsList"` and the
-      `grid` / `viewMoreNext` refs that `results-list.js` binds to, so rendering it more
-      than once would duplicate ids and break infinite scroll and pagination.
-    {%- endcomment -%}
     {% assign sort_groups = collection.metafields.custom.sort.value %}
 
     {% paginate collection.products by products_per_page %}
@@ -95,12 +79,6 @@
             {% continue %}
           {% endif %}
 
-          {%- comment -%}
-            Capture first so an empty group renders no heading.
-
-            The `grouped_ids` guard also feeds the leftover pass below, so every product
-            is rendered exactly once no matter how the metafields are configured.
-          {%- endcomment -%}
           {% capture group_items %}
             {% for product in collection.products %}
               {% assign product_token = ',' | append: product.id | append: ',' %}
@@ -124,26 +102,14 @@
             {% endfor %}
           {% endcapture %}
 
-          {%- comment -%}
-            Strip before testing: the capture always holds the loop's whitespace, so an
-            empty group would otherwise pass a bare `!= blank` and print a heading with
-            no products under it.
-          {%- endcomment -%}
+
           {% assign group_items = group_items | strip %}
           {% if group_items != blank %}
-            {%- comment -%}
-              role="presentation" keeps the list's items products only, while the h2
-              stays in the heading order so screen readers can jump between groups.
-            {%- endcomment -%}
-            {%- comment -%}
-              Per the design the rule sits UNDER the heading row, between the copy and
-              that group's products — not above the heading.
-            {%- endcomment -%}
             <li
-              class="product-grid__group col-span-full flex flex-wrap items-baseline gap-x-3 gap-y-1 pb-2 border-b border-[#431A031A]{% unless forloop.first %} mt-6{% endunless %}"
+              class="product-grid__group col-span-full flex flex-wrap items-baseline gap-x-3 gap-y-1 pb-4 border-b border-[#431A031A]{% unless forloop.first %} mt-6{% endunless %}"
               role="presentation"
             >
-              <h2 class="font-gothic_condensed uppercase font-bold text-[25px] leading-[1.1] !m-0">
+              <h2 class="font-gothic_condensed uppercase font-bold {% if group.title contains '96' or '128' %} text-[30px] {% else %} text-[25px] {% endif %} leading-[1.1] !m-0">
                 {{- group.title | default: group.display_name -}}
               </h2>
               {% if group.description != blank %}
@@ -156,11 +122,6 @@
           {% endif %}
         {% endfor %}
 
-        {%- comment -%}
-          Everything no group claimed. Also the whole grid when `custom.sort` is unset,
-          so an unconfigured collection keeps rendering exactly as before, and a product
-          missing its tag still shows up rather than silently vanishing.
-        {%- endcomment -%}
         {% for product in collection.products %}
           {% assign product_token = ',' | append: product.id | append: ',' %}
           {% unless grouped_ids contains product_token %}
