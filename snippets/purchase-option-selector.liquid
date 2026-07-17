@@ -26,7 +26,7 @@
       <div class="col-start-2 wb-flex flex-col row-start-2 col-end-4">
         <span class="text-sm font-kurdis-semi-condensed">Skip, reschedule, cancel at anytime</span>
       </div>
-      <div class="col-start-3 row-start-1 wb-flex justify-end gap-1 text-sm">
+      <div class="col-start-3 row-start-1 wb-flex justify-end gap-1 text-sm font-kurdis-semi-condensed font-semibold">
         <span class="line-through text-[#1B1B1B80]" x-show="totalPrice.original !== totalPrice.autoship" x-text="totalPrice.original"></span>
         <span x-text="totalPrice.autoship"></span>
       </div>
@@ -63,7 +63,7 @@
       <div class="col-start-2 wb-flex flex-col row-start-1 font-gothic_condensed uppercase font-bold -mt-0.75">
         <span class="subscription-label-name transition-colors duration-300">One Time Purchase</span>
       </div>
-      <div class="col-start-3 row-start-1 wb-flex justify-end gap-1 text-sm">
+      <div class="col-start-3 row-start-1 wb-flex justify-end gap-1 text-sm font-kurdis-semi-condensed font-semibold">
         <span class="line-through text-[#1B1B1B80]" x-show="totalPrice.original !== totalPrice.oneTime" x-text="totalPrice.original"></span>
         <span x-text="totalPrice.oneTime"></span>
       </div>
@@ -76,7 +76,7 @@
   :class="canAddToCart ? 'cursor-pointer' : 'pointer-events-none cursor-default'"
   class="group relative flex w-full items-center justify-center shadow-button h-[61px] uppercase mb-0.5 md:mb-3.75 disabled:pointer-events-none" @click.prevent="addToCart"
 >
-  <span x-show="!loading" x-text="addToCartText" class="relative z-[2] text-[#F2E6DC] text-[20px]/5 font-['Kurdis_SemiCondensed'] font-bold mt-0.5 uppercase">
+  <span x-show="!loading" x-text="addToCartText" class="relative z-[2] text-[#F2E6DC] text-[20px]/5 font-['Kurdis_SemiCondensed'] font-bold md:mt-0.5 uppercase">
     Add 1 Flavor
   </span>
   {% render 'loading-animation', class: 'z-[2]' %}
