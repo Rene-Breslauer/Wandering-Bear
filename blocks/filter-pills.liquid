@@ -54,38 +54,52 @@
     fetchpriority="low"
   ></script>
 
-  <filter-pills-component
-    class="filter-pills col-span-full block mb-4"
-    section-id="{{ section.id }}"
-  >
+  {% if product.metafields.custom.filters != blank %}
+    <filter-pills-component
+      class="filter-pills col-span-full block mb-4"
+      section-id="{{ section.id }}"
+    >
 
-  {{ shop.metaobjects.tag.value }}
-
-  {% assign tag = shop.metaobjects.tag.values | where: 'value', 'value' %}
-
- 
-
-    <nav aria-label="{{ nav_label | escape }}" class="mb-10 lg:mb-2.5">
-      <ul class="filter-pills__list list-unstyled flex flex-wrap items-center justify-center gap-2 !m-0 px-2 lg:!px-0" role="list">
-        {% if block.settings.show_all %}
-          {% render 'filter-pill',
-            label: show_all_label,
-            url: collection.url,
-            is_current: show_all_is_current,
-            count: collection.all_products_count
-          %}
-        {% endif %}
-
-        {% if curated_tags.size > 0 %}
-          {% for tag_entry in curated_tags %}
-            {% liquid
-              assign curated = tag_entry.value
-              assign value = target_filter.values | where: 'label', curated | first
-              unless value
-                assign value = target_filter.values | where: 'value', curated | first
-              endunless
+      <nav aria-label="{{ nav_label | escape }}" class="mb-10 lg:mb-2.5">
+        <ul class="filter-pills__list list-unstyled flex flex-wrap items-center justify-center gap-2 !m-0 px-2 lg:!px-0" role="list">
+          {% if block.settings.show_all %}
+            {% render 'filter-pill',
+              label: show_all_label,
+              url: collection.url,
+              is_current: show_all_is_current,
+              count: collection.all_products_count
             %}
-            {% if value %}
+          {% endif %}
+
+          {% if curated_tags.size > 0 %}
+            {% for tag_entry in curated_tags %}
+              {% liquid
+                assign curated = tag_entry.value
+                assign value = target_filter.values | where: 'label', curated | first
+                unless value
+                  assign value = target_filter.values | where: 'value', curated | first
+                endunless
+              %}
+              {% if value %}
+                {% assign icon = null %}
+                {% assign tag_object = shop.metaobjects.tag.values | where: 'value', value.label | first %}
+                {% if tag_object.icon != blank %}
+                  {% assign icon = tag_object.icon.value %}
+                {% endif %}
+
+                {% assign encoded_value = value.value | url_encode %}
+                {% capture pill_url %}{{ collection.url }}?{{ filter_param }}={{ encoded_value }}{% endcapture %}
+                {% render 'filter-pill',
+                  label: value.label,
+                  url: pill_url,
+                  is_current: value.active,
+                  count: value.count,
+                  icon: icon
+                %}
+              {% endif %}
+            {% endfor %}
+          {% else %}
+            {% for value in target_filter.values %}
               {% assign icon = null %}
               {% assign tag_object = shop.metaobjects.tag.values | where: 'value', value.label | first %}
               {% if tag_object.icon != blank %}
@@ -101,36 +115,18 @@
                 count: value.count,
                 icon: icon
               %}
-            {% endif %}
-          {% endfor %}
-        {% else %}
-          {% for value in target_filter.values %}
-            {% assign icon = null %}
-            {% assign tag_object = shop.metaobjects.tag.values | where: 'value', value.label | first %}
-            {% if tag_object.icon != blank %}
-              {% assign icon = tag_object.icon.value %}
-            {% endif %}
+            {% endfor %}
+          {% endif %}
+        </ul>
+      </nav>
 
-            {% assign encoded_value = value.value | url_encode %}
-            {% capture pill_url %}{{ collection.url }}?{{ filter_param }}={{ encoded_value }}{% endcapture %}
-            {% render 'filter-pill',
-              label: value.label,
-              url: pill_url,
-              is_current: value.active,
-              count: value.count,
-              icon: icon
-            %}
-          {% endfor %}
-        {% endif %}
-      </ul>
-    </nav>
-
-    <span
-      class="visually-hidden"
-      role="status"
-      data-filter-pills-status="{{ section.id }}"
-    ></span>
-  </filter-pills-component>
+      <span
+        class="visually-hidden"
+        role="status"
+        data-filter-pills-status="{{ section.id }}"
+      ></span>
+    </filter-pills-component>
+  {% endif %}
 {% endif %}
 
 {% stylesheet %}
