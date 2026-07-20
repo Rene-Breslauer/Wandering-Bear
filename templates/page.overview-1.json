@@ -107,7 +107,7 @@
             "padding-block-end": 0,
             "padding-inline-start": 0,
             "padding-inline-end": 0,
-            "padding-block-start-mobile": 0,
+            "padding-block-start-mobile": 30,
             "padding-block-end-mobile": 0,
             "padding-inline-start-mobile": 0,
             "padding-inline-end-mobile": 0
@@ -271,8 +271,8 @@
         "color_scheme": "",
         "background_type": "gradient",
         "background_gradient": "linear-gradient(180deg, rgba(242, 230, 220, 1) 25.96%, rgba(175, 116, 4, 1) 100%)",
-        "padding-block-start": 44,
-        "padding-block-end": 56
+        "padding-block-start": 67,
+        "padding-block-end": 46
       }
     },
     "marquee_8mdxLw": {
