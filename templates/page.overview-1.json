@@ -299,14 +299,73 @@
         "gap_between_elements": 24
       }
     },
+    "aw_review_carousel_YreQ8A": {
+      "type": "aw-review-carousel",
+      "blocks": {
+        "review_rRg8Xf": {
+          "type": "review",
+          "settings": {
+            "quote": "“Loyal subscriber for 3+ years - Why? Because the brew is perfection. Love this brand, the team and most of all the brew!”"
+          }
+        },
+        "review_hgACJi": {
+          "type": "review",
+          "settings": {
+            "quote": "“Absolutely LOVE Wandering Bear! Not only is their coffee AMAZING but it ships quickly and if I ever have an issue, the staff takes care of me right away.”"
+          }
+        },
+        "review_tG73JH": {
+          "type": "review",
+          "settings": {
+            "quote": "“Loyal subscriber for 3+ years - Why? Because the brew is perfection. Love this brand, the team and most of all the brew!”"
+          }
+        },
+        "review_TCybcL": {
+          "type": "review",
+          "settings": {
+            "quote": "“Absolutely LOVE Wandering Bear! Not only is their coffee AMAZING but it ships quickly and if I ever have an issue, the staff takes care of me right away.”"
+          }
+        }
+      },
+      "block_order": [
+        "review_rRg8Xf",
+        "review_hgACJi",
+        "review_tG73JH",
+        "review_TCybcL"
+      ],
+      "settings": {
+        "color_scheme": "",
+        "title": "Over 16,000 5 Star Reviews",
+        "title_color": "#f4ece5",
+        "font_size": 25,
+        "font_size_mobile": 25,
+        "card_background": "#e6cdb7",
+        "card_text_color": "#431a03",
+        "show_navigation": true,
+        "arrow_background": "#fef8f3",
+        "arrow_icon_color": "#431a03",
+        "show_dots": true,
+        "background_type": "gradient",
+        "background_solid": "#431a03",
+        "background_gradient": "linear-gradient(180deg, rgba(57, 23, 4, 1), rgba(149, 83, 37, 1) 100%)",
+        "background_type_mobile": "same",
+        "background_solid_mobile": "",
+        "background_gradient_mobile": "",
+        "padding-block-start": 40,
+        "padding-block-end": 40,
+        "padding-block-start-mobile": 32,
+        "padding-block-end-mobile": 32
+      }
+    },
     "aw_frequently_asked_questions_dwThL3": {
       "type": "aw-frequently-asked-questions",
       "name": "AW FAQs",
       "settings": {
         "color_scheme": "",
-        "background_type": "transparent",
+        "background_type": "image",
         "background_solid": "#F2E6DC",
         "background_gradient": "",
+        "background_image": "shopify://shop_images/faq-bg.png",
         "background_image_fit": "cover",
         "background_image_overflow": false,
         "background_type_mobile": "same",
@@ -336,6 +395,7 @@
     "aw_col_hero_DFqFUG",
     "lp_product_information_bundle_mQLChG",
     "marquee_8mdxLw",
+    "aw_review_carousel_YreQ8A",
     "aw_frequently_asked_questions_dwThL3"
   ]
 }
