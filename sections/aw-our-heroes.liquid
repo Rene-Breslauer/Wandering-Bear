@@ -4,41 +4,35 @@
 {% endcomment %}
 
 {% liquid
-  assign s = section.settings
-  assign color_scheme = s.color_scheme
-  assign container_class = 'w-full'
-  if s.section_width == 'container'
-    assign container_class = 'w-full max-w-[1280px] mx-auto'
-  endif
+  assign section_settings = section.settings
 %}
 
 <div
-  class="aw-our-heroes relative overflow-hidden spacing-style wb-section-bg"
-  style="{% render 'section-background', settings: s, part: 'style', fallback_color: color_scheme.settings.background %} {% render 'spacing-style', settings: s %}"
+  class="aw-our-heroes relative spacing-style wb-section-bg"
+  style="{% render 'section-background', settings: section_settings, part: 'style', fallback_color: '#AF7404' %} {% render 'spacing-style', settings: section_settings %}"
   {{ section.shopify_attributes }}
 >
-  {% render 'section-background', settings: s, part: 'media', image_fit: 'natural' %}
-
-  <div class="{{ container_class }} relative z-[1] px-6 md:px-10 lg:px-[68px]">
-    {% if s.title != blank %}
+  {% render 'section-background', settings: section_settings, part: 'media', image_fit: 'natural' %}
+  <div class="w-full relative z-1 px-6 md:px-10 lg:px-17">
+    {% if section_settings.title != blank %}
       <div class="aw-our-heroes__header text-center mb-8 md:mb-12">
         <h2
           class="aw-our-heroes__title font-parslay leading-[1.29] tracking-[-0.01em] mx-auto max-w-[932px]"
-          style="color: {{ s.title_color | default: '#F2E6DC' }}"
+          style="color: {{ section_settings.title_color | default: '#F2E6DC' }}"
         >
-          {{ s.title }}
+          {{ section_settings.title }}
         </h2>
 
-        {% if s.title_decoration != blank %}
+        {% if section_settings.title_decoration != blank %}
           <div class="aw-our-heroes__title-decoration mx-auto mt-3 max-w-[242px]">
-            {{ s.title_decoration | image_url: width: 500 | image_tag: class: 'w-full h-auto block', loading: 'lazy', alt: '' }}
+            {{ section_settings.title_decoration | image_url: width: 500 | image_tag: class: 'w-full h-auto block', loading: 'lazy', alt: '' }}
           </div>
         {% endif %}
       </div>
     {% endif %}
 
     {% if section.blocks.size > 0 %}
-      <div class="aw-our-heroes__grid grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-x-6 md:gap-y-12 pb-10 md:pb-16">
+      <div class="aw-our-heroes__grid wb-grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-x-6 md:gap-y-12 pb-10 md:pb-16">
         {% for block in section.blocks %}
           {% liquid
             assign block_bg = block.settings.block_background
@@ -48,8 +42,8 @@
             assign badge_position = block.settings.badge_position | default: 'top-left'
           %}
 
-          <article
-            class="aw-our-heroes__block aw-our-heroes__block--{{ forloop.index }} relative w-full max-w-[509px] mx-auto"
+          <div
+            class="aw-our-heroes__block aw-our-heroes__block--{{ forloop.index }} relative md:col-span-1 w-full max-w-[509px] mx-auto"
             {{ block.shopify_attributes }}
           >
             {% if block_bg != blank %}
@@ -58,7 +52,7 @@
               </div>
             {% endif %}
 
-            <div class="aw-our-heroes__block-inner relative z-[1] px-6 py-8 md:px-8 md:py-10 flex flex-col items-center text-center">
+            <div class="aw-our-heroes__block-inner relative z-1 px-6 py-8 md:px-8 md:py-10 flex flex-col items-center text-center">
               <div class="aw-our-heroes__block-media w-full max-w-[388px] mb-5 md:mb-6">
                 {% if block_image != blank %}
                   {% render 'picture',
@@ -71,7 +65,7 @@
                     loading: 'lazy'
                   %}
                 {% else %}
-                  <div class="aw-our-heroes__block-image-placeholder aspect-[388/328] w-full bg-white/20 rounded-[4px]"></div>
+                  <div class="aw-our-heroes__block-image-placeholder aspect-388/328 w-full bg-white/20 rounded-sm"></div>
                 {% endif %}
               </div>
 
@@ -93,7 +87,7 @@
                 {{ badge | image_url: width: 220 | image_tag: class: 'w-[72px] md:w-[88px] h-auto', loading: 'lazy', alt: '' }}
               </div>
             {% endif %}
-          </article>
+          </div>
         {% endfor %}
       </div>
     {% endif %}
@@ -178,22 +172,6 @@
   "class": "aw-our-heroes-section",
   "settings": [
     {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "Color Scheme",
-      "default": "scheme-1"
-    },
-    {
-      "type": "select",
-      "id": "section_width",
-      "label": "Section width",
-      "options": [
-        { "value": "full", "label": "Full width" },
-        { "value": "container", "label": "Container" }
-      ],
-      "default": "full"
-    },
-    {
       "type": "header",
       "content": "Copy"
     },
@@ -246,24 +224,7 @@
     {
       "type": "image_picker",
       "id": "background_image",
-      "label": "Background image (desktop)"
-    },
-    {
-      "type": "select",
-      "id": "background_image_fit",
-      "label": "Background image fit",
-      "options": [
-        { "value": "cover", "label": "Cover (may crop)" },
-        { "value": "natural", "label": "Natural (no crop)" }
-      ],
-      "default": "natural",
-      "visible_if": "{{ section.settings.background_type == 'image' }}"
-    },
-    {
-      "type": "checkbox",
-      "id": "background_image_overflow",
-      "label": "Allow background image overflow",
-      "default": true,
+      "label": "Background image (desktop)",
       "visible_if": "{{ section.settings.background_type == 'image' }}"
     },
     {
@@ -299,24 +260,7 @@
     {
       "type": "image_picker",
       "id": "background_image_mobile",
-      "label": "Background image (mobile)"
-    },
-    {
-      "type": "select",
-      "id": "background_image_fit_mobile",
-      "label": "Background image fit mobile",
-      "options": [
-        { "value": "cover", "label": "Cover (may crop)" },
-        { "value": "natural", "label": "Natural (no crop)" }
-      ],
-      "default": "natural",
-      "visible_if": "{{ section.settings.background_type_mobile == 'image' }}"
-    },
-    {
-      "type": "checkbox",
-      "id": "background_image_overflow_mobile",
-      "label": "Allow background image overflow",
-      "default": true,
+      "label": "Background image (mobile)",
       "visible_if": "{{ section.settings.background_type_mobile == 'image' }}"
     },
     {
