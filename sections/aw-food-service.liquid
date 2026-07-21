@@ -27,17 +27,37 @@
   if resolved_mobile_bg_type == 'image' and resolved_mobile_bg_image != blank
     assign show_mobile_bg_image = true
   endif
+
+  if section_settings.enable_block_image_mask == false
+    assign enable_block_image_mask = false
+  else
+    assign enable_block_image_mask = true
+  endif
+  assign block_image_mask = section_settings.block_image_mask
+  assign block_image_mask_mobile = section_settings.block_image_mask_mobile
+
+  assign resolved_block_image_mask_mobile = block_image_mask_mobile
+  if resolved_block_image_mask_mobile == blank
+    assign resolved_block_image_mask_mobile = block_image_mask
+  endif
+
+  assign use_block_image_mask = false
+  if enable_block_image_mask
+    if block_image_mask != blank or resolved_block_image_mask_mobile != blank
+      assign use_block_image_mask = true
+    endif
+  endif
 %}
 
 <div
   class="aw-food-service relative spacing-style wb-section-bg"
-  style="{% render 'section-background', settings: section_settings, part: 'style', fallback_color: '#F2E6DC' %} {% render 'spacing-style', settings: section_settings %}"
+  style="{% render 'section-background', settings: section_settings, part: 'style', fallback_color: '#F2E6DC' %} {% render 'spacing-style', settings: section_settings %}{% if use_block_image_mask and resolved_block_image_mask_mobile != blank %} --aw-fs-block-image-mask-mobile: url('{{ resolved_block_image_mask_mobile | image_url }}');{% endif %}{% if use_block_image_mask and block_image_mask != blank %} --aw-fs-block-image-mask: url('{{ block_image_mask | image_url }}');{% endif %}"
   {{ section.shopify_attributes }}
 >
   {% if show_desktop_bg_image or show_mobile_bg_image %}
     <div class="absolute top-0 left-0 right-0 z-0 overflow-visible pointer-events-none" aria-hidden="true">
       {% if show_desktop_bg_image %}
-        <div class="hidden md:block [&_picture]:block [&_picture]:w-full [&_img]:block [&_img]:w-full [&_img]:h-auto [&_img]:max-w-none!">
+        <div class="hidden smd:block [&_picture]:block [&_picture]:w-full [&_img]:block [&_img]:w-full [&_img]:h-auto [&_img]:max-w-none!">
           {% render 'picture',
             source: bg_image,
             mobile_source: bg_image,
@@ -51,7 +71,7 @@
       {% endif %}
 
       {% if show_mobile_bg_image %}
-        <div class="md:hidden [&_picture]:block [&_picture]:w-full [&_img]:block [&_img]:w-full [&_img]:h-auto [&_img]:max-w-none!">
+        <div class="smd:hidden [&_picture]:block [&_picture]:w-full [&_img]:block [&_img]:w-full [&_img]:h-auto [&_img]:max-w-none!">
           {% render 'picture',
             source: resolved_mobile_bg_image,
             mobile_source: resolved_mobile_bg_image,
@@ -66,13 +86,13 @@
     </div>
   {% endif %}
 
-  <div class="container relative z-1 w-full">
-    <div class="w-full max-w-232 mx-auto">
-      <div class="relative pt-2 pb-6 md:pt-6 md:pb-10">
-        <div class="text-center md:text-left max-w-[315px] mx-auto md:max-w-[560px] md:mx-0">
+  <div class="container relative z-1 w-full mx-auto">
+    <div class="w-full smd:px-6 max-w-232 mx-auto md:px-0">
+      <div class="relative">
+        <div class="text-center smd:text-left max-w-[315px] mx-auto smd:max-w-[560px] smd:mx-0">
           {% if section_settings.title != blank %}
             <p
-              class="text-xl md:text-[2.5rem] font-kurdis-condensed font-extrabold uppercase leading-[130%] tracking-[-0.2px] md:tracking-[-0.4px]"
+              class="text-xl smd:text-[2.5rem] font-kurdis-condensed font-extrabold uppercase leading-[130%] tracking-[-0.2px] smd:tracking-[-0.4px]"
               style="color: {{ section_settings.title_color | default: '#1B1B1B' }}"
             >
               {{ section_settings.title }}
@@ -81,16 +101,16 @@
 
           {% if section_settings.subtitle != blank %}
             <h1
-              class="text-xl md:text-[2.5rem] font-kurdis-condensed font-extrabold uppercase leading-[130%] tracking-[-0.2px] md:tracking-[-0.4px] mb-3 md:mb-4 md:-mt-2"
+              class="text-xl smd:text-[2.5rem] font-kurdis-condensed font-extrabold uppercase leading-[130%] tracking-[-0.2px] smd:tracking-[-0.4px] mb-3.5 -mt-1 smd:mb-4 smd:-mt-2.5"
               style="color: {{ section_settings.subtitle_color | default: '#FFFFFF' }}"
             >
-              {{ section_settings.subtitle | replace: '\b', '<br class="md:hidden!">' }}
+              {{ section_settings.subtitle | replace: '\b', '<br class="smd:hidden!">' }}
             </h1>
           {% endif %}
 
           {% if section_settings.intro != blank %}
             <div
-              class="font-kurdis-condensed font-extrabold text-[0.8125rem] leading-[140%] mb-3 w-full max-w-[506px] md:text-base md:mb-4"
+              class="font-kurdis-condensed font-extrabold text-[0.8125rem] leading-[140%] mb-5 w-full max-w-[506px] px-3.5 smd:px-0 smd:text-base smd:mb-6"
               style="color: {{ section_settings.intro_color | default: '#FFFFFF' }}"
             >
               {{ section_settings.intro }}
@@ -99,7 +119,7 @@
 
           {% if section_settings.description != blank %}
             <div
-              class="rte font-kurdis-semi-condensed font-semibold tracking-[-0.2px] text-xs max-w-[468px] leading-[140%] [&_p]:mb-0 md:tracking-normal md:text-[15px]"
+              class="rte font-kurdis-semi-condensed font-semibold tracking-[-0.2px] text-xs max-w-[468px] leading-[140%] [&_p]:mb-0 smd:tracking-normal smd:text-[15px]"
               style="color: {{ section_settings.text_color | default: '#FFFFFF' }}"
             >
               {{ section_settings.description }}
@@ -109,86 +129,102 @@
       </div>
 
       {% if section.blocks.size > 0 %}
-        <div class="relative overflow-visible pb-10 md:pb-20 flex flex-col gap-6 md:gap-5.5">
+        <div class="relative overflow-visible pb-10 smd:pb-20 flex flex-col gap-17.5 mt-[296px] xs:mt-[380px] sm:mt-[500px] smd:gap-5.5 smd:mt-18">
           {% for block in section.blocks %}
             {% liquid
               assign block_bg = block.settings.block_background
               assign block_bg_mobile = block.settings.block_background_mobile
               assign block_image = block.settings.image
-              assign block_image_mobile = block.settings.image_mobile
+              assign block_image_mobile = block.settings.image_mobile | default: block_image
               assign badge = block.settings.badge
               assign badge_position = block.settings.badge_position | default: 'bottom-right'
+              assign badge_position_classes = 'hidden absolute z-[3] pointer-events-none lg:block'
 
               case badge_position
                 when 'top-right'
-                  assign badge_position_classes = 'absolute z-[3] pointer-events-none -top-4.5 -right-6 -rotate-[15deg] md:-top-6 md:-right-9'
+                  assign badge_position_classes = badge_position_classes | append: ' -rotate-[15deg] smd:-top-6 smd:-right-9'
                 when 'top-left'
-                  assign badge_position_classes = 'absolute z-[3] pointer-events-none -top-5.5 -left-8 -rotate-[12deg] md:-top-7 md:-left-11'
+                  assign badge_position_classes = badge_position_classes | append: ' -rotate-[12deg] smd:-top-7 smd:-left-11'
                 when 'bottom-right'
-                  assign badge_position_classes = 'absolute z-[3] pointer-events-none -bottom-4 -right-7 -rotate-[15deg] md:-bottom-5 md:-right-10'
+                  assign badge_position_classes = badge_position_classes | append: ' -rotate-[15deg] smd:-bottom-5 smd:-right-10'
                 when 'bottom-left'
-                  assign badge_position_classes = 'absolute z-[3] pointer-events-none -bottom-4 -left-7 -rotate-[12deg] md:-bottom-5 md:-left-10'
-              endcase
-
-              case forloop.index
-                when 1
-                  assign block_offset_classes = 'md:translate-x-11'
-                when 2
-                  assign block_offset_classes = 'md:-translate-x-10'
-                when 3
-                  assign block_offset_classes = 'md:translate-x-16'
-                when 4
-                  assign block_offset_classes = 'md:-translate-x-10'
+                  assign badge_position_classes = badge_position_classes | append: ' -rotate-[12deg] smd:-bottom-5 smd:-left-10'
               endcase
             %}
 
             <div
-              class="relative overflow-visible mx-auto w-full max-w-[321px] md:max-w-[863px] {{ block_offset_classes }}"
+              class="food-service-block relative overflow-visible mx-auto w-full max-w-[321px] smd:max-w-[863px] odd:smd:mr-0 even:smd:ml-0 odd:smd:ml-auto even:smd:mr-auto"
               {{ block.shopify_attributes }}
             >
               {% if block_bg != blank or block_bg_mobile != blank %}
-                <div class="absolute inset-0 flex items-stretch justify-center pointer-events-none" aria-hidden="true">
-                  {% if block_bg_mobile != blank %}
-                    <div class="block md:hidden w-full h-full">
-                      {{ block_bg_mobile | image_url: width: 900 | image_tag: class: 'w-full h-full object-fill block', loading: 'lazy', alt: '' }}
-                    </div>
-                  {% endif %}
+                {% if block_bg_mobile != blank %}
+                  <svg
+                    class="absolute inset-0 size-full pointer-events-none block smd:hidden"
+                    viewBox="0 0 1 1"
+                    preserveAspectRatio="none"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <image href="{{ block_bg_mobile | image_url }}" width="1" height="1" preserveAspectRatio="none"/>
+                  </svg>
+                {% endif %}
 
-                  {% if block_bg != blank %}
-                    <div class="{% if block_bg_mobile != blank %}hidden md:block{% else %}block{% endif %} w-full h-full">
-                      {{ block_bg | image_url: width: 1800 | image_tag: class: 'w-full h-full object-fill block', loading: 'lazy', alt: '' }}
-                    </div>
-                  {% endif %}
-                </div>
+                {% if block_bg != blank %}
+                  <svg
+                    class="absolute inset-0 size-full pointer-events-none {% if block_bg_mobile != blank %}hidden smd:block{% else %}block{% endif %}"
+                    viewBox="0 0 1 1"
+                    preserveAspectRatio="none"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <image href="{{ block_bg | image_url }}" width="1" height="1" preserveAspectRatio="none"/>
+                  </svg>
+                {% endif %}
               {% endif %}
 
-              <div class="relative z-1 px-5 py-7 md:px-10 md:py-9">
-                <div class="flex flex-col items-center text-center md:grid md:grid-cols-[268px_minmax(0,1fr)] md:items-center md:gap-8 md:text-left">
-                  <div class="order-2 md:order-1 w-full max-w-[264px] md:max-w-[268px] mt-5 md:mt-0 shrink-0">
+              <div class="relative z-1 px-7 pt-8.5 smd:px-6 smd:pt-5 smd:pb-4.5">
+                <div class="food-service-block__content flex flex-col items-center text-center smd:grid smd:grid-cols-[268px_minmax(0,1fr)] smd:items-center smd:gap-8 smd:text-left lg:gap-15.5">
+                  <div class="order-2 smd:order-1 w-full max-w-none smd:max-w-[268px] shrink-0">
                     {% if block_image != blank %}
-                      {% render 'picture',
-                        source: block_image,
-                        mobile_source: block_image_mobile,
-                        class: 'w-full h-auto object-cover',
-                        alt: block.settings.title,
-                        width: 544,
-                        height: 393,
-                        loading: 'lazy'
-                      %}
+                      {% if use_block_image_mask %}
+                        <div
+                          class="w-full aspect-264/211 overflow-hidden translate-y-8.5 smd:translate-y-0 [mask-image:var(--aw-fs-block-image-mask-mobile,var(--aw-fs-block-image-mask))] [-webkit-mask-image:var(--aw-fs-block-image-mask-mobile,var(--aw-fs-block-image-mask))] smd:aspect-268/328 smd:[mask-image:var(--aw-fs-block-image-mask)] smd:[-webkit-mask-image:var(--aw-fs-block-image-mask)] [mask-size:100%_100%] [-webkit-mask-size:100%_100%] [mask-repeat:no-repeat] [-webkit-mask-repeat:no-repeat] [mask-mode:alpha] [-webkit-mask-mode:alpha] [&_picture]:block [&_picture]:size-full [&_img]:block [&_img]:size-full [&_img]:object-cover"
+                        >
+                          {% render 'picture',
+                            source: block_image,
+                            mobile_source: block_image_mobile,
+                            class: 'size-full object-cover',
+                            alt: block.settings.title,
+                            width: 544,
+                            height: 393,
+                            loading: 'lazy'
+                          %}
+                        </div>
+                      {% else %}
+                        {% render 'picture',
+                          source: block_image,
+                          mobile_source: block_image_mobile,
+                          class: 'w-full h-auto object-cover',
+                          alt: block.settings.title,
+                          width: 544,
+                          height: 393,
+                          loading: 'lazy'
+                        %}
+                      {% endif %}
                     {% else %}
-                      <div class="aspect-268/328 w-full bg-white/20"></div>
+                      <div class="aspect-264/211 smd:aspect-268/328 w-full bg-white/20"></div>
                     {% endif %}
                   </div>
 
-                  <div class="order-1 md:order-2 w-full md:max-w-[466px]">
+                  <div class="order-1 smd:order-2 w-full smd:max-w-[466px]">
                     {% if block.settings.title != blank %}
-                      <h2 class="text-xl md:text-[2.5rem] font-kurdis-condensed font-extrabold uppercase leading-[1.29] tracking-[-0.02em] text-bear-black mb-3 md:mb-4">
+                      <h2 class="food-service-block__title text-xl smd:text-[40px] font-kurdis-condensed font-extrabold uppercase leading-[1.29] tracking-[-0.02em] text-bear-black mb-0.5 smd:mb-4">
                         {{ block.settings.title }}
                       </h2>
                     {% endif %}
 
                     {% if block.settings.description != blank %}
-                      <div class="font-kurdis-semi-condensed font-semibold text-[12px] md:text-[15px] leading-[1.38] text-bear-black">
+                      <div class="food-service-block__description font-kurdis-semi-condensed font-semibold text-[12px] smd:text-[15px] leading-[1.38] text-bear-black lg:max-w-[466px]">
                         {{ block.settings.description }}
                       </div>
                     {% endif %}
@@ -198,7 +234,7 @@
 
               {% if badge != blank %}
                 <div class="{{ badge_position_classes }}">
-                  {{ badge | image_url: width: 220 | image_tag: class: 'w-[72px] md:w-[105px] h-auto block', loading: 'lazy', alt: '' }}
+                  {{ badge | image_url: width: 220 | image_tag: class: 'w-[72px] smd:w-[105px] h-auto block', loading: 'lazy', alt: '' }}
                 </div>
               {% endif %}
             </div>
@@ -208,6 +244,14 @@
     </div>
   </div>
 </div>
+
+{% stylesheet %}
+  @media screen and (min-width: 750px) {
+    .food-service-block:nth-child(even) .food-service-block__content {
+      gap: 2.5rem;
+    }
+  }
+{% endstylesheet %}
 
 {% schema %}
 {
@@ -341,6 +385,30 @@
       "label": "Background image (mobile)",
       "info": "Composed background including hero visual.",
       "visible_if": "{{ section.settings.background_type_mobile == 'image' }}"
+    },
+    {
+      "type": "header",
+      "content": "Blocks"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_block_image_mask",
+      "label": "Enable mask for block",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "block_image_mask",
+      "label": "Block image mask (SVG)",
+      "info": "Applied to block images on desktop.",
+      "visible_if": "{{ section.settings.enable_block_image_mask }}"
+    },
+    {
+      "type": "image_picker",
+      "id": "block_image_mask_mobile",
+      "label": "Block image mask mobile (SVG)",
+      "info": "Applied to block images on mobile. Falls back to desktop mask if empty.",
+      "visible_if": "{{ section.settings.enable_block_image_mask }}"
     },
     {
       "type": "header",
