@@ -22,7 +22,10 @@
             "title": "OFFICES",
             "description": "New York City offices were some of Wandering Bear's first customers. It was the first space where we learned our product was the perfect fit for high-volume service. Wandering Bear grew up in the office coffee space where it still has a strong hold and continues to grow. We are proud to fuel teams all around the country.",
             "badge": "shopify://shop_images/super-premium.svg",
-            "badge_position": "bottom-right"
+            "badge_position": "bottom-right",
+            "badge_offset_x": -34,
+            "badge_offset_y": 11,
+            "badge_rotate": 0
           }
         },
         "venue_colleges": {
@@ -34,7 +37,10 @@
             "image_mobile": "shopify://shop_images/colleges-universities-mobile.jpg",
             "title": "Colleges & Universities",
             "description": "High volume, zero compromise. Whether it's a dining hall, locker rooms, or micro markets, our cold brew is built to serve a lot of people without compromising quality. Zero effort, fresh-tasting and consistent, batch after batch, even with limited staff or equipment.",
-            "badge_position": "bottom-right"
+            "badge_position": "bottom-right",
+            "badge_offset_x": 0,
+            "badge_offset_y": 0,
+            "badge_rotate": 0
           }
         },
         "venue_coffee_shops": {
@@ -47,7 +53,10 @@
             "title": "Coffee Shops",
             "description": "Some days you need one cup. Some days you need 50. Wandering Bear works either way. No brewing overnight, no watching a batch, no wasted product when the rush doesn't show. Just a smooth, full-bodied cold brew that's ready the second you need it, so your team can spend less time on process and more time on the customer in front of them.",
             "badge": "shopify://shop_images/coffee.svg",
-            "badge_position": "top-left"
+            "badge_position": "top-left",
+            "badge_offset_x": 5,
+            "badge_offset_y": 8,
+            "badge_rotate": 0
           }
         },
         "venue_HmgRFJ": {
@@ -59,7 +68,10 @@
             "title": "Restaurants & Bars",
             "description": "A smooth, full-bodied cold brew with a chocolate-forward finish. Bold enough to anchor a coffee menu, balanced enough to headline a cocktail list. Easy to work into multiple sections of your menu. Low acidity and ready to drink whether you're pouring it straight, dressing it up behind the bar, or building a signature drink around it.",
             "badge": "shopify://shop_images/wb-tag.svg",
-            "badge_position": "bottom-right"
+            "badge_position": "bottom-right",
+            "badge_offset_x": -30,
+            "badge_offset_y": -20,
+            "badge_rotate": -8
           }
         },
         "venue_hospitality": {
@@ -71,7 +83,10 @@
             "image_mobile": "shopify://shop_images/hospitality-wellness-mobile.jpg",
             "title": "Hospitality & Wellness",
             "description": "From lobby service to hospitals, our cold brew delivers a delicious, consistently smooth pour that reflects well on your space — whether that's guest experience, member wellness, patient care, or caregiver care. Made with just two ingredients, filtered water and organic, 100% Arabica coffee, it holds its quality through long service hours. No stale, sat-out coffee to apologize for.",
-            "badge_position": "top-left"
+            "badge_position": "top-left",
+            "badge_offset_x": 0,
+            "badge_offset_y": 0,
+            "badge_rotate": 0
           }
         }
       },
@@ -102,6 +117,8 @@
         "background_solid_mobile": "#f2e6dc",
         "background_gradient_mobile": "",
         "background_image_mobile": "shopify://shop_images/food-service-background-top-mobile.png",
+        "button_text": "Contact our team to learn more",
+        "button_url": "#",
         "enable_block_image_mask": true,
         "block_image_mask": "shopify://shop_images/food-service-mask.png",
         "padding-block-start": 80,
@@ -177,11 +194,11 @@
         "title_color": "#f2e6dc",
         "title_decoration": "shopify://shop_images/Vector_45.svg",
         "background_type": "image",
-        "background_solid": "#af7404",
+        "background_solid": "rgba(0,0,0,0)",
         "background_gradient": "",
         "background_image": "shopify://shop_images/food-service-background-bottom.png",
         "background_type_mobile": "image",
-        "background_solid_mobile": "#af7404",
+        "background_solid_mobile": "rgba(0,0,0,0)",
         "background_gradient_mobile": "",
         "background_image_mobile": "shopify://shop_images/food-service-background-bottom-mobile.png",
         "enable_block_image_mask": true,

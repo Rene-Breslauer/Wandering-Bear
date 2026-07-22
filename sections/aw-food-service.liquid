@@ -39,6 +39,14 @@
   if enable_block_image_mask and block_image_mask != blank
     assign use_block_image_mask = true
   endif
+
+  assign section_button_url = section_settings.button_url
+  assign section_button_text = section_settings.button_text
+
+  assign is_show_button = false
+  if section_button_url != blank and section_button_text != blank
+    assign is_show_button = true
+  endif
 %}
 
 <div
@@ -79,9 +87,9 @@
   {% endif %}
 
   <div class="container relative z-1 w-full mx-auto">
-    <div class="w-full smd:px-6 max-w-232 mx-auto md:px-0">
+    <div class="w-full px-6 smd:max-w-232 mx-auto md:px-0">
       <div class="relative">
-        <div class="text-center smd:text-left max-w-[315px] mx-auto smd:max-w-[560px] smd:mx-0">
+        <div class="text-center smd:text-left mx-auto smd:max-w-[560px] smd:mx-0">
           {% if section_settings.title != blank %}
             <p
               class="text-xl smd:text-[2.5rem] font-kurdis-condensed font-extrabold uppercase leading-[130%] tracking-[-0.2px] smd:tracking-[-0.4px]"
@@ -117,11 +125,31 @@
               {{ section_settings.description }}
             </div>
           {% endif %}
+
+          {% if is_show_button %}
+            <div class="mt-[240px] xs:mt-[320px] smd:mt-5 smd:max-w-[468px]">
+              <a
+                href="{{ section_button_url }}"
+                class="group relative flex w-full items-center justify-center shadow-button h-[61px] uppercase disabled:pointer-events-none smd:ml-7 smd:max-w-[402px]"
+                title="{{ section_button_text | escape }}"
+              >
+                <span class="relative z-2 text-[#F2E6DC] text-base smd:text-[20px]/5 font-kurdis-semi-condensed font-bold md:mt-0.5 uppercase">
+                  {{ section_button_text | escape }}
+                </span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="absolute inset-0 z-1 h-full w-full text-espresso group-hover:text-gold! transition-all duration-300" viewBox="0 0 402 61" fill="none" preserveAspectRatio="none"
+                >
+                  <path d="M3.72092 6.34305C0.560452 9.88125 0.433767 14.051 0.380426 18.0481C0.25374 27.5605 0.133722 37.0689 0.00703692 46.5812C-0.0263014 49.1662 -0.0196337 51.8571 1.92065 54.1754C6.59468 59.7494 12.4956 60.9654 29.9515 60.9654C147.036 60.9654 264.126 61.1733 381.217 60.5693C385.371 60.5496 389.932 60.6752 393.339 59.2748C402.573 55.4816 401.567 48.5504 401.287 43.4078C400.767 33.8327 402 25.964 402 16.3849C402 9.68512 400.727 6.9942 396.953 4.34252C392.119 0.94161 382.05 1.08675 374.509 0.996527C324.929 0.396367 275.321 0.0864809 225.721 0.0158739C175.8 -0.0586558 125.879 0.12963 75.9583 0.572885C61.8762 0.698409 47.8008 0.843545 33.7254 1.01222C23.0971 1.13774 9.61513 -0.243019 3.72092 6.34305Z" fill="currentColor"/>
+                </svg>
+              </a>
+            </div>
+          {% endif %}
         </div>
       </div>
 
       {% if section.blocks.size > 0 %}
-        <div class="relative overflow-visible pb-10 smd:pb-20 flex flex-col gap-17.5 mt-[296px] xs:mt-[380px] sm:mt-[500px] smd:gap-5.5 smd:mt-18">
+        <div class="relative overflow-visible flex flex-col gap-17.5 smd:gap-5.5 smd:mt-8.5{% unless is_show_button %} mt-[296px] xs:mt-[380px] pb-10 smd:pb-20{% else %} mt-8.5{% endunless %}">
           {% for block in section.blocks %}
             {% liquid
               assign block_bg = block.settings.block_background
@@ -130,22 +158,25 @@
               assign block_image_mobile = block.settings.image_mobile | default: block_image
               assign badge = block.settings.badge
               assign badge_position = block.settings.badge_position | default: 'bottom-right'
+              assign badge_offset_x = block.settings.badge_offset_x | default: 0
+              assign badge_offset_y = block.settings.badge_offset_y | default: 0
+              assign badge_rotate = block.settings.badge_rotate | default: 0
               assign badge_position_classes = 'hidden absolute z-[3] pointer-events-none lg:block'
 
               case badge_position
                 when 'top-right'
-                  assign badge_position_classes = badge_position_classes | append: ' -rotate-[15deg] smd:-top-6 smd:-right-9'
+                  assign badge_position_classes = badge_position_classes | append: ' smd:-top-6 smd:-right-9'
                 when 'top-left'
-                  assign badge_position_classes = badge_position_classes | append: ' -rotate-[12deg] smd:-top-7 smd:-left-11'
+                  assign badge_position_classes = badge_position_classes | append: ' smd:-top-7 smd:-left-11'
                 when 'bottom-right'
-                  assign badge_position_classes = badge_position_classes | append: ' -rotate-[15deg] smd:-bottom-5 smd:-right-10'
+                  assign badge_position_classes = badge_position_classes | append: ' smd:-bottom-5 smd:-right-10'
                 when 'bottom-left'
-                  assign badge_position_classes = badge_position_classes | append: ' -rotate-[12deg] smd:-bottom-5 smd:-left-10'
+                  assign badge_position_classes = badge_position_classes | append: ' smd:-bottom-5 smd:-left-10'
               endcase
             %}
 
             <div
-              class="food-service-block relative overflow-visible mx-auto w-full max-w-[321px] smd:max-w-[863px] odd:smd:mr-0 even:smd:ml-0 odd:smd:ml-auto even:smd:mr-auto"
+              class="food-service-block relative overflow-visible mx-auto w-full smd:max-w-[863px] odd:smd:mr-0 even:smd:ml-0 odd:smd:ml-auto even:smd:mr-auto"
               {{ block.shopify_attributes }}
             >
               {% if block_bg != blank or block_bg_mobile != blank %}
@@ -225,13 +256,36 @@
               </div>
 
               {% if badge != blank %}
-                <div class="{{ badge_position_classes }}">
+                <div
+                  class="{{ badge_position_classes }}"
+                  style="transform: translate({{ badge_offset_x }}px, {{ badge_offset_y }}px) rotate({{ badge_rotate }}deg);"
+                >
                   {{ badge | image_url: width: 220 | image_tag: class: 'w-[72px] smd:w-[105px] h-auto block', loading: 'lazy', alt: '' }}
                 </div>
               {% endif %}
             </div>
           {% endfor %}
         </div>
+
+        {% if is_show_button %}
+          <div class="flex justify-end mb-6.5 mt-16 smd:mt-10 smd:mb-20">
+            <a
+              href="{{ section_button_url }}"
+              class="group relative flex w-full items-center justify-center shadow-button h-[61px] uppercase disabled:pointer-events-none smd:max-w-[402px]"
+              title="{{ section_button_text | escape }}"
+            >
+              <span class="relative z-2 text-[#F2E6DC] text-base smd:text-[20px]/5 font-kurdis-semi-condensed font-bold md:mt-0.5 uppercase">
+                {{ section_button_text | escape }}
+              </span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="absolute inset-0 z-1 h-full w-full text-espresso group-hover:text-gold! transition-all duration-300" viewBox="0 0 402 61" fill="none" preserveAspectRatio="none"
+              >
+                <path d="M3.72092 6.34305C0.560452 9.88125 0.433767 14.051 0.380426 18.0481C0.25374 27.5605 0.133722 37.0689 0.00703692 46.5812C-0.0263014 49.1662 -0.0196337 51.8571 1.92065 54.1754C6.59468 59.7494 12.4956 60.9654 29.9515 60.9654C147.036 60.9654 264.126 61.1733 381.217 60.5693C385.371 60.5496 389.932 60.6752 393.339 59.2748C402.573 55.4816 401.567 48.5504 401.287 43.4078C400.767 33.8327 402 25.964 402 16.3849C402 9.68512 400.727 6.9942 396.953 4.34252C392.119 0.94161 382.05 1.08675 374.509 0.996527C324.929 0.396367 275.321 0.0864809 225.721 0.0158739C175.8 -0.0586558 125.879 0.12963 75.9583 0.572885C61.8762 0.698409 47.8008 0.843545 33.7254 1.01222C23.0971 1.13774 9.61513 -0.243019 3.72092 6.34305Z" fill="currentColor"/>
+              </svg>
+            </a>
+          </div>
+        {% endif %}
       {% endif %}
     </div>
   </div>
@@ -377,6 +431,21 @@
       "label": "Background image (mobile)",
       "info": "Composed background including hero visual.",
       "visible_if": "{{ section.settings.background_type_mobile == 'image' }}"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Contact our team to learn more"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button URL"
     },
     {
       "type": "header",
@@ -535,6 +604,35 @@
             { "value": "bottom-left", "label": "Bottom left" }
           ],
           "default": "bottom-right"
+        },
+        {
+          "type": "range",
+          "id": "badge_offset_x",
+          "label": "Badge offset horizontal",
+          "min": -50,
+          "max": 50,
+          "step": 1,
+          "unit": "px",
+          "default": 0,
+          "info": "Negative moves left, positive moves right."
+        },
+        {
+          "type": "range",
+          "id": "badge_offset_y",
+          "label": "Badge offset vertical",
+          "min": -50,
+          "max": 50,
+          "step": 1,
+          "unit": "px",
+          "default": 0,
+          "info": "Negative moves up, positive moves down."
+        },
+        {
+          "type": "number",
+          "id": "badge_rotate",
+          "label": "Badge rotation",
+          "default": 0,
+          "info": "Rotation in degrees from 0 to 360."
         }
       ]
     }
