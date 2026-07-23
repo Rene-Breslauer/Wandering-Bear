@@ -76,18 +76,21 @@
 -%}
 
 {%- capture crown -%}
-  <svg class="w-[18px] h-[18px] shrink-0 text-gold" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+  {%- comment -%} QA #4: glyph spans y3..15 of the 20-box (center 9 vs 10) → sits ~1px high in items-center; nudge down. {%- endcomment -%}
+  <svg class="w-[18px] h-[18px] shrink-0 text-gold translate-y-[1px]" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
     <path d="M2 6l3.5 3L10 3l4.5 6L18 6l-1.5 9h-13L2 6z"/>
   </svg>
 {%- endcapture -%}
 
 {%- comment -%} ---------- Welcome + Log Out ---------- {%- endcomment -%}
-<div class="flex flex-col items-center text-center smd:!flex-row smd:!items-start smd:!text-left smd:!justify-between mb-6 !gap-1">
+{%- comment -%} QA #5: Log Out sits on the Welcome line (items-center), Kurdis 700 14px (Figma 1:337). {%- endcomment -%}
+<div class="flex flex-col items-center text-center smd:!flex-row smd:!items-center smd:!text-left smd:!justify-between mb-6 !gap-1">
   {%- comment -%} Membership tag sits above the last letter of the name, tilted (Figma). Spec: Kurdis Condensed ExtraBold 12px uppercase centered. {%- endcomment -%}
   <h1 class="font-kurdis-condensed font-extrabold text-espresso text-[28px] md:!text-[36px] leading-none">
-    {{ 'customer.account.welcome' | t: first_name: fname }}<span class="relative inline-block -top-4 md:!-top-5 -ml-1 rotate-[-8deg] bg-gold text-cream font-kurdis-condensed font-extrabold text-[12px] leading-none uppercase text-center px-2 py-1 rounded-[6px] shadow-[2px_3px_4px_0px_rgba(0,0,0,0.2)]">{{ display_tier }}</span>
+    {%- comment -%} QA #1: Figma tag = +4° tilt (vector 1:380 rot 0.0699rad), text #E4B850 on gold. {%- endcomment -%}
+    {{ 'customer.account.welcome' | t: first_name: fname }}<span class="relative inline-block -top-4 md:!-top-5 -ml-1 rotate-[4deg] bg-gold text-[#E4B850] font-kurdis-condensed font-extrabold text-[12px] leading-none uppercase text-center px-2 py-1 rounded-[6px] shadow-[2px_3px_4px_0px_rgba(0,0,0,0.2)]">{{ display_tier }}</span>
   </h1>
-  <a href="{{ routes.account_logout_url }}" class="body font-bold text-espresso hover-underline">{{ 'customer.account.log_out' | t }}</a>
+  <a href="{{ routes.account_logout_url }}" class="font-kurdis-semi-condensed font-bold text-[14px] leading-none text-espresso hover-underline shrink-0">{{ 'customer.account.log_out' | t }}</a>
 </div>
 
 {%- comment -%} Worker load-failure note — hidden by default, shown when account.ts sets data-wb-error on the root {%- endcomment -%}
@@ -202,7 +205,8 @@
       <div class="flex items-start justify-between mb-1">
         {%- comment -%} Left column: label + tier stacked. {%- endcomment -%}
         <div>
-          <span class="font-kurdis-semi-condensed font-bold text-[12px] leading-none text-espresso">{{ 'customer.dashboard.membership_tier' | t }}</span>
+          {%- comment -%} QA #3: card headings are #1B1B1B in Figma (1:346/1:356/1:626/1:635), not espresso. {%- endcomment -%}
+          <span class="font-kurdis-semi-condensed font-bold text-[12px] leading-none text-bear-black">{{ 'customer.dashboard.membership_tier' | t }}</span>
           <div class="font-kurdis-condensed font-extrabold text-gold text-[26px] leading-none mt-2">{{ display_tier }}</div>
         </div>
         {%- comment -%} Right column: membership action links. {%- endcomment -%}
@@ -214,10 +218,13 @@
           <a href="{{ membership_url }}" class="font-kurdis-semi-condensed font-bold text-[10px] leading-none hover-underline text-espresso">{{ 'customer.dashboard.membership_faq' | t }}</a>
         </div>
       </div>
-      <div class="body font-bold text-espresso mt-[15px] mb-[15px]">{{ 'customer.dashboard.whats_included' | t }}</div>
-      <ul class="flex flex-col {% if is_elite %}smd:!flex-row smd:!flex-wrap{% endif %} !gap-x-6 !gap-y-2.5">
+      <div class="body font-bold text-bear-black mt-[15px] mb-[15px]">{{ 'customer.dashboard.whats_included' | t }}</div>
+      {%- comment -%} QA #7: Figma Elite lays the 6 benefits out in COLUMNS (col1: $5 off + Earn $5;
+        col2: Member exclusive + VIP CS; col3: Early access + Anniversary). grid-flow-col with 2 rows
+        fills column-major from the same source order, and mobile (flex-col) keeps the list order. {%- endcomment -%}
+      <ul class="flex flex-col {% if is_elite %}smd:!grid smd:!grid-flow-col smd:!grid-rows-2 smd:!grid-cols-3{% endif %} !gap-x-6 !gap-y-2.5">
         {%- for benefit in benefits -%}
-          <li class="wb-benefit-item flex items-center font-kurdis-semi-condensed text-espresso {% if is_elite %}smd:!w-[calc(33.333%-16px)]{% endif %}">{{ crown }}<span>{{ benefit }}</span></li>
+          <li class="wb-benefit-item flex items-center font-kurdis-semi-condensed text-espresso">{{ crown }}<span>{{ benefit }}</span></li>
         {%- endfor -%}
       </ul>
     </div>
@@ -226,7 +233,7 @@
     {%- unless is_elite -%}
       <div class="flex flex-col md:!flex-1 tier-divider">
         <div class="flex items-start justify-between mb-3">
-          <span class="font-kurdis-semi-condensed font-bold text-[12px] leading-none text-espresso">{{ 'customer.dashboard.progress_next_tier' | t }}</span>
+          <span class="font-kurdis-semi-condensed font-bold text-[12px] leading-none text-bear-black">{{ 'customer.dashboard.progress_next_tier' | t }}</span>
           <a href="/community/membership?customerId={{ customer.id }}" class="font-kurdis-semi-condensed font-bold text-[10px] leading-none hover-underline text-espresso">{{ 'customer.dashboard.change_tier' | t }}</a>
         </div>
         <div class="font-kurdis-condensed font-extrabold text-gold text-[26px] leading-none mt-2 mb-3" data-wb-progress-tier>{{ next_tier_label }}</div>
@@ -236,7 +243,7 @@
         <p class="font-kurdis-semi-condensed font-bold text-[10px] leading-none mb-4 text-espresso text-center"><span data-wb-progress-text>{{ progress_text }}</span>{% if display_tier == 'VIP' %} or upgrade below{% else %} or <a href="{{ membership_url }}" class="hover-underline">sign up for autoship</a>{% endif %}</p>
 
         <div class="membership-upsell">
-          <p class="body font-bold text-espresso mb-1">{{ 'customer.dashboard.upgrade_today' | t }} <span class="font-parslay text-gold">{{ 'customer.dashboard.why_wait' | t }}</span></p>
+          <p class="body font-bold text-bear-black mb-1">{{ 'customer.dashboard.upgrade_today' | t }} <span class="font-parslay text-gold">{{ 'customer.dashboard.why_wait' | t }}</span></p>
           <p class="font-kurdis-semi-condensed font-semibold text-[12px] leading-[1.2] text-center mb-3 text-bear-black">{{ 'customer.dashboard.elite_upsell_desc' | t }}</p>
           {%- comment -%} Upgrade to Elite = add the $25 Elite product to cart (settings.elite_product), reusing the shared elite add-to-cart snippet. {%- endcomment -%}
           {%- render 'elite-atc-button', label: t_upgrade, style: 'secondary-gold', class: 'shadow-button !w-full !h-[40px] !text-[15px]' -%}
@@ -262,7 +269,8 @@
       <span class="font-kurdis-semi-condensed font-bold text-[10px] leading-none text-center text-espresso whitespace-nowrap">{{ 'customer.dashboard.timeframe' | t }}</span>
       {%- comment -%} Link-style timeframe (Figma): no box, blue underline + chevron. {%- endcomment -%}
       <div class="inline-flex items-center !gap-1.5">
-        <select class="appearance-none bg-transparent font-kurdis-semi-condensed font-bold text-[10px] leading-none text-center text-espresso focus:outline-none cursor-pointer">
+        {%- comment -%} QA #11: leading-none on a <select> clips Kurdis ascenders in Chrome — give the line room. {%- endcomment -%}
+        <select class="appearance-none bg-transparent font-kurdis-semi-condensed font-bold text-[10px] leading-[1.4] text-center text-espresso focus:outline-none cursor-pointer">
           <option>Last 3 Months</option>
           <option>Last 6 Months</option>
           <option>Last Year</option>
@@ -278,8 +286,9 @@
     {%- paginate customer.orders by 10 -%}
       <div class="overflow-x-auto">
         <table class="w-full border-collapse wb-orders-table">
+          {%- comment -%} QA #9/#10: rows = Kurdis 700 10px / 18px line (Figma 1:365), whole table #1B1B1B. {%- endcomment -%}
           <thead>
-            <tr class="text-left tag text-espresso uppercase">
+            <tr class="text-left tag text-bear-black uppercase">
               <th class="px-2 py-3 md:!p-3 border-b border-espresso/20">{{ 'customer.dashboard.col_order' | t }}</th>
               <th class="px-2 py-3 md:!p-3 border-b border-espresso/20">{{ 'customer.dashboard.col_date' | t }}</th>
               <th class="px-2 py-3 md:!p-3 border-b border-espresso/20">{{ 'customer.dashboard.col_tracking' | t }}</th>
@@ -291,7 +300,7 @@
           <tbody>
             {%- for order in customer.orders -%}
               {%- assign fulfillment = order.fulfillments.first -%}
-              <tr class="body text-espresso">
+              <tr class="font-kurdis-semi-condensed font-bold text-[10px] leading-[1.8] text-bear-black">
                 <td class="px-2 py-3 md:!p-3 border-b border-espresso/10"><a href="{{ order.customer_url }}" class="font-bold hover-underline">{{ order.name }}</a></td>
                 <td class="px-2 py-3 md:!p-3 border-b border-espresso/10 whitespace-nowrap">{{ order.created_at | date: '%b %-d, %Y' }}</td>
                 <td class="px-2 py-3 md:!p-3 border-b border-espresso/10">
@@ -316,7 +325,7 @@
     <div class="overflow-x-auto">
       <table class="w-full border border-espresso/20 border-collapse">
         <thead>
-          <tr class="text-left tag text-espresso uppercase">
+          <tr class="text-left tag text-bear-black uppercase">
             <th class="px-2 py-3 md:!p-3 border-b border-espresso/20">{{ 'customer.dashboard.col_order' | t }}</th>
             <th class="px-2 py-3 md:!p-3 border-b border-espresso/20">{{ 'customer.dashboard.col_date' | t }}</th>
             <th class="px-2 py-3 md:!p-3 border-b border-espresso/20">{{ 'customer.dashboard.col_tracking' | t }}</th>
@@ -328,7 +337,7 @@
         <tbody>
           {%- for row in mock_orders -%}
             {%- assign c = row | split: '|' -%}
-            <tr class="body text-espresso">
+            <tr class="font-kurdis-semi-condensed font-bold text-[10px] leading-[1.8] text-bear-black">
               <td class="px-2 py-3 md:!p-3 border-b border-espresso/10"><span class="font-bold hover-underline">{{ c[0] }}</span></td>
               <td class="px-2 py-3 md:!p-3 border-b border-espresso/10 whitespace-nowrap">{{ c[1] }}</td>
               <td class="px-2 py-3 md:!p-3 border-b border-espresso/10"><span class="hover-underline">{{ c[2] }}</span></td>

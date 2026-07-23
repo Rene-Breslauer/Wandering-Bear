@@ -20,7 +20,8 @@
 
     {%- comment -%} ---------- Back link + Tracking Number ---------- {%- endcomment -%}
     <div class="flex items-center justify-between !gap-3 mb-6">
-      <a href="{{ routes.account_url }}" class="inline-flex items-center justify-center !gap-2 w-[165px] h-[43px] rounded-[10px] bg-foam shadow-[4px_4px_4px_0px_rgba(0,0,0,0.25)] font-kurdis-condensed font-extrabold uppercase text-[14px] leading-none text-center text-[#4B2A18]">
+      {%- comment -%} QA #14: hover feedback — same opacity pattern as .wb-redeem-btn. {%- endcomment -%}
+      <a href="{{ routes.account_url }}" class="inline-flex items-center justify-center !gap-2 w-[165px] h-[43px] rounded-[10px] bg-foam shadow-[4px_4px_4px_0px_rgba(0,0,0,0.25)] font-kurdis-condensed font-extrabold uppercase text-[14px] leading-none text-center text-[#4B2A18] transition-opacity hover:opacity-80">
         <svg class="w-[14px] h-[10px] shrink-0" viewBox="0 0 14 10" fill="none" aria-hidden="true"><path d="M5 1 1 5l4 4M1 5h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         {{ 'customer.order.back_to_account' | t }}
       </a>
@@ -36,13 +37,14 @@
 
     {%- comment -%} ---------- Card 1: order meta + items table + summary ---------- {%- endcomment -%}
     <div class="{{ card }} p-5 md:!p-8 mb-6">
-      <div class="body font-bold text-espresso">{{ 'customer.order.title' | t: name: order.name }}</div>
-      <div class="font-kurdis-semi-condensed font-bold text-[12px] leading-none text-espresso/70 mt-2 mb-6">{{ 'customer.order.placed_on' | t: date: order.created_at | date: '%B %d, %Y' }}</div>
+      {%- comment -%} QA #12: order-card body text is #1B1B1B (bear-black), matching the dashboard cards. {%- endcomment -%}
+      <div class="body font-bold text-bear-black">{{ 'customer.order.title' | t: name: order.name }}</div>
+      <div class="font-kurdis-semi-condensed font-bold text-[12px] leading-none text-bear-black/70 mt-2 mb-6">{{ 'customer.order.placed_on' | t: date: order.created_at | date: '%B %d, %Y' }}</div>
 
       <div class="overflow-x-auto">
         <table class="w-full border-collapse text-left">
           <thead>
-            <tr class="font-kurdis-semi-condensed font-bold text-[12px] uppercase text-espresso align-bottom">
+            <tr class="font-kurdis-semi-condensed font-bold text-[12px] uppercase text-bear-black align-bottom">
               <th class="font-bold pb-3 pr-4">{{ 'customer.order.col_product' | t }}</th>
               <th class="font-bold pb-3 px-4 whitespace-nowrap">{{ 'customer.order.col_sku' | t }}</th>
               <th class="font-bold pb-3 px-4 text-right whitespace-nowrap">{{ 'customer.order.col_price' | t }}</th>
@@ -52,7 +54,7 @@
           </thead>
           <tbody>
             {%- for line_item in order.line_items -%}
-              <tr class="border-t border-espresso body text-espresso align-top">
+              <tr class="border-t border-espresso body text-bear-black align-top">
                 <td class="py-4 pr-4 font-bold uppercase">{{ line_item.title }}</td>
                 <td class="py-4 px-4 whitespace-nowrap">{{ line_item.sku }}</td>
                 <td class="py-4 px-4 text-right whitespace-nowrap">{{ line_item.price | money }}</td>
@@ -65,7 +67,7 @@
       </div>
 
       {%- comment -%} Order summary (right-aligned) {%- endcomment -%}
-      <div class="border-t border-espresso pt-5 flex flex-col items-end !gap-4 body text-espresso">
+      <div class="border-t border-espresso pt-5 flex flex-col items-end !gap-4 body text-bear-black">
         <div class="flex w-full max-w-[360px] justify-between"><span>{{ 'customer.order.subtotal' | t }}</span><span>{{ order.line_items_subtotal_price | money }}</span></div>
         {%- for discount in order.cart_level_discount_applications -%}
           <div class="flex w-full max-w-[360px] justify-between text-dark-gold"><span>{{ 'customer.order.discount' | t }} ({{ discount.title }})</span><span>-{{ discount.total_allocated_amount | money }}</span></div>
@@ -84,10 +86,11 @@
 
     {%- comment -%} ---------- Card 2: Billing Address ---------- {%- endcomment -%}
     <div class="{{ card }} p-5 md:!p-8 mb-6">
-      <h2 class="font-kurdis-condensed font-extrabold text-espresso text-[18px] leading-none mb-3">{{ 'customer.order.billing_address' | t }}</h2>
-      <div class="text-espresso text-[20px] leading-[1.3] mb-6">{{ 'customer.order.payment_status' | t }}: {{ order.financial_status_label }}</div>
+      <h2 class="font-kurdis-condensed font-extrabold text-bear-black text-[18px] leading-none mb-3">{{ 'customer.order.billing_address' | t }}</h2>
+      {%- comment -%} QA #13: status line had no font class (system fallback) — Kurdis like the rest of the card. {%- endcomment -%}
+      <div class="font-kurdis-semi-condensed font-bold text-bear-black text-[16px] leading-[1.3] mb-6">{{ 'customer.order.payment_status' | t }}: {{ order.financial_status_label }}</div>
       {%- if order.billing_address -%}
-        <address class="font-kurdis-semi-condensed font-bold text-[14px] leading-[1.6] text-espresso not-italic">
+        <address class="font-kurdis-semi-condensed font-bold text-[14px] leading-[1.6] text-bear-black not-italic">
           {{ order.billing_address.address1 }}<br>
           {%- if order.billing_address.address2 != blank %}{{ order.billing_address.address2 }}<br>{% endif -%}
           {{ order.billing_address.city }},<br>
@@ -98,10 +101,10 @@
 
     {%- comment -%} ---------- Card 3: Shipping Address ---------- {%- endcomment -%}
     <div class="{{ card }} p-5 md:!p-8">
-      <h2 class="font-kurdis-condensed font-extrabold text-espresso text-[18px] leading-none mb-3">{{ 'customer.order.shipping_address' | t }}</h2>
-      <div class="text-espresso text-[20px] leading-[1.3] mb-6">{{ 'customer.order.fulfillment_status' | t }}: {{ order.fulfillment_status_label }}</div>
+      <h2 class="font-kurdis-condensed font-extrabold text-bear-black text-[18px] leading-none mb-3">{{ 'customer.order.shipping_address' | t }}</h2>
+      <div class="font-kurdis-semi-condensed font-bold text-bear-black text-[16px] leading-[1.3] mb-6">{{ 'customer.order.fulfillment_status' | t }}: {{ order.fulfillment_status_label }}</div>
       {%- if order.shipping_address -%}
-        <address class="font-kurdis-semi-condensed font-bold text-[14px] leading-[1.6] text-espresso not-italic">
+        <address class="font-kurdis-semi-condensed font-bold text-[14px] leading-[1.6] text-bear-black not-italic">
           {{ order.shipping_address.address1 }}<br>
           {%- if order.shipping_address.address2 != blank %}{{ order.shipping_address.address2 }}<br>{% endif -%}
           {{ order.shipping_address.city }},<br>

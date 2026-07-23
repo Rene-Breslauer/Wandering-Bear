@@ -32,9 +32,12 @@
    base now underlines (not hover-only), hover keeps it. */
 .hover-underline {
     text-decoration: underline;
+    transition: color 0.15s ease;
 }
+/* QA #6: links stay underlined, hover feedback = gold color shift. */
 .hover-underline:hover {
     text-decoration: underline;
+    color: var(--color-dark-gold);
 }
 
 /* ---- Order-history table (customer-dashboard) --------------------------- */
