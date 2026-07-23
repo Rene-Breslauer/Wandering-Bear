@@ -51,7 +51,7 @@
               "static": true,
               "settings": {
                 "block_class": "",
-                "type_preset": "h4",
+                "type_preset": "h5",
                 "font": "var(--font-primary--family)",
                 "font_family": "",
                 "font_family_mobile": "",
@@ -88,6 +88,7 @@
             "blog-post-details": {
               "type": "_blog-post-info-text",
               "name": "t:names.details",
+              "disabled": true,
               "static": true,
               "settings": {
                 "show_date": true,
@@ -102,6 +103,7 @@
             },
             "content": {
               "type": "_blog-post-description",
+              "disabled": true,
               "static": true,
               "settings": {
                 "type_preset": "rte",
