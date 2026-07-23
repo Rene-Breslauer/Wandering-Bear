@@ -9,7 +9,8 @@ export default (Alpine: AlpineType) => {
       selectedProductId: any,
       bundleQty: any,
       flavorType: any,
-      bundleType: any
+      bundleType: any,
+      landingPage: boolean = false
     ) => ({
         selectedProductId: selectedProductId,
         selectedProduct: null,

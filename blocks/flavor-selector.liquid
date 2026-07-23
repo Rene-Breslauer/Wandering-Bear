@@ -8,7 +8,7 @@
     Choose Your Flavor
 </div>
 
-<div class="wb-grid grid-cols-5 gap-4">
+<div class="variant-selector wb-grid grid-cols-5 gap-4">
     {% for product_resource in collection.value.products  %}
         {% if product_resource.id == product.id %}
             {% render 'flavor-swatch', product_resource: product_resource, selected: true %}

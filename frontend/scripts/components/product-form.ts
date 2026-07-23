@@ -8,7 +8,8 @@ export default (Alpine: AlpineType) => {
     Alpine.data("productForm", ( 
         productId: any, 
         selectedVariantId: any,
-        sellingPlanId: any
+        sellingPlanId: any,
+        landingPage: boolean = false
     ) => ({
         productObject: null,
         productId: productId,
@@ -226,48 +227,60 @@ export default (Alpine: AlpineType) => {
             });
         },
 
+        updateSelectedProductPrices(product: any) {
+            // For Overview-2 LP
+            const currentVariants = Object.values(this.productObject[String(product.id)]);
+            console.log('currentVariants', currentVariants);
+            currentVariants.forEach((variant: any) => {
+                variant.currentPrice = this._getVariantDisplayPrice(variant);
+                variant.currentPriceFormatted = this._formatPrice(variant.currentPrice);
+
+                if (variant.compare_at_price > 0) {
+                    variant.currentSavings = variant.currentPrice / variant.compare_at_price;
+                    variant.currentSavingsPercentage = Math.round(100 - variant.currentSavings * 100);
+                    variant.currentSavingsPercentageFormatted = 'Save ' + Math.round(variant.currentSavingsPercentage) + '%';
+                } else {
+                    variant.currentSavingsPercentage = 0;
+                    variant.currentSavingsPercentageFormatted = '';
+                }
+
+                console.log('variant', variant);
+            });
+
+            this.bundleObject = [...currentVariants];
+        },
+
         changeFlavor(productResourceSlug: string) {
+            console.log('changeFlavor', productResourceSlug);
             this.fetchProduct(productResourceSlug);
         },
 
         async fetchProduct(productResourceSlug: string) {
-            // use section rendering to fetch an entirely new section
-            const section = this.$el.closest('.shopify-section') as HTMLElement;
-            console.log('section', section);
-            section.innerHTML = '';
-            const sectionId = section.id;
-
-            console.log('section', section);
-            console.log('sectionId', sectionId);
-
-            console.log('section.innerHTML', section?.innerHTML);
-
-            // fetch the section from the shopify section rendering api
-            const res = await fetch(`/sections/${sectionId}.json`);
-            const data = await res.json();
-            console.log('data', data);
-            section.innerHTML = data.content;
-
-            // const url = new URL(window.location.href);
-            // url.searchParams.set('product', productResourceSlug);
-            // window.history.replaceState({}, '', url.toString());
-
-            // // fetch product from Shopify public products.json
+            const url = new URL(window.location.href);
+            url.searchParams.set('product', productResourceSlug);
+            window.history.replaceState({}, '', url.toString());
           
-            // const res = await fetch(`/products/${productResourceSlug}.json`);
-            // const data = await res.json();
-            // const product = data.product;
+            const res = await fetch(`/products/${productResourceSlug}.json`);
+            const data = await res.json();
+            const product = data.product;
+            const productId = String(product.id);
 
-            // const firstVariantId = String(product.variants[0].id);           
-            // const productObject = this.productObject[String(product.id)];
-            // this.selectedVariantId = productObject[firstVariantId];
+            const firstVariantId = String(product.variants[0].id); 
+            const productObject = this.productObject[productId];
+            this.selectedVariant = productObject[firstVariantId];
+            this.selectedVariantId = this.selectedVariant.id;
 
-            // window.dispatchEvent(new CustomEvent('product-changed', {
-            //     detail: { product: product }
-            // }));
-            // this.selectedVariant = productObject[this.selectedVariantId];
-            // this._syncSelectedVariant();
-            // this.updatePrices();
+            window.dispatchEvent(new CustomEvent('product-changed', {
+                detail: { product: product }
+            }));
+
+            // Check the radio of the selected variant
+            const radio = this.$root?.querySelector(`label[for="flavor-${this.selectedVariantId}"] input`);
+            if (radio) {
+                radio.checked = true;
+            }
+            this._syncSelectedVariant();
+            this.updateSelectedProductPrices(product);
         },
 
         async addToCart() {

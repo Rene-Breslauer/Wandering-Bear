@@ -155,9 +155,9 @@
                     endfor
                   %}
                     <span class="variant-option-name transition-colors duration-300 text-base text-bear-black font-bold font-gothic_condensed uppercase">{{- option_name | escape -}}</span>
-                    <span x-text="productObject[{{ product_option_value.variant.id }}].currentPriceFormatted + '/{{ box_text }}'" class="text-xs text-bear-black font-kurdis-semi-condensed">{{- option_price | money -}}/{{ box_text }}</span>
-                    <span x-text="productObject[{{ product_option_value.variant.id }}].currentSavingsPercentageFormatted"
-                    :class="productObject[{{ product_option_value.variant.id }}].currentSavingsPercentage > 0 ? '!block' : '!hidden'"
+                    <span x-text="productObject['{{ product_option_value.variant.id }}'].currentPriceFormatted + '/{{ box_text }}'" class="text-xs text-bear-black font-kurdis-semi-condensed">{{- option_price | money -}}/{{ box_text }}</span>
+                    <span x-text="productObject['{{ product_option_value.variant.id }}'].currentSavingsPercentageFormatted"
+                    :class="productObject['{{ product_option_value.variant.id }}'].currentSavingsPercentage > 0 ? '!block' : '!hidden'"
                     class="font-kurdis-semi-condensed font-bold text-kraft text-xs/none md:text-[10px] {% if option_savings > 0 %}block{% else %}hidden{% endif %}">{{- option_savings_text | escape -}}</span>
                   </div>
               </label>
@@ -227,7 +227,7 @@
                 "available": {{ variant.available | json }},
                 "title": {{ variant.title | json }},
                 "id": {{ variant.id | json }},
-                "flavor_name": "{{- product_resource.metafields.custom.flavor_name -}}",
+                "flavor_name": "{{- grouped_product.metafields.custom.flavor_name -}}",
                 "quantified": {{ quantified | json }},
                 {% if quantified %}
                   "quantified_units": {{ quantified_units | json }},
