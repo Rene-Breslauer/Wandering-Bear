@@ -57,9 +57,6 @@
 {% assign block_settings = block.settings %}
 
 {% style %}
-  /* These radios are rendered 0x0 and transparent, so the browser's focus ring has nothing
-     to draw around and keyboard users get no indication of where they are in the group.
-     Ring the label instead. :has() is the only way to reach it from the input. */
   .variant-picker label:has(input[type='radio']:focus-visible) {
     outline: 2px solid currentColor;
     outline-offset: -2px;
@@ -141,11 +138,6 @@
                   class="flex !h-[0px] !w-[0px] opacity-0 absolute top-0 left-0"
                   name="{{ product_option.name | escape }}-{{ block.id }}-{{ product_resource.id }}"
                   value="{{ product_option_value | escape }}"
-                  {%- comment -%}
-                    The "Most Popular" badge is visual only — this input carries an explicit
-                    aria-label, which overrides the label text, so the badge would never be
-                    announced. Fold it into the name instead.
-                  {%- endcomment -%}
                   aria-label="{{ product_option_value.name | escape }}{% if is_landing_page_template and forloop.index0 == selected_index %} - {{ 'products.product.most_popular' | t: default: 'Most Popular' }}{% endif %}{% if product_option_value.available == false %} - {{ 'products.product.sold_out' | t }}{% endif %}"
                   {% if product_option_value.available == false %}
                     aria-disabled="true"
@@ -188,7 +180,7 @@
                     endfor
                   %}
                     <span class="variant-option-name transition-colors duration-300 text-base text-bear-black font-bold font-gothic_condensed uppercase">{{- option_name | escape -}}</span>
-                    <span x-text="variantPriceFormatted('{{ product_option_value.variant.id }}', '/{{ box_text }}')" class="text-xs text-bear-black font-kurdis-semi-condensed font-bold">{{- option_price | money -}}/{{ box_text }}</span>
+                    <span x-text="variantPriceFormatted('{{ product_option_value.variant.id }}', '/{{ box_text }}')" class="text-xs text-bear-black font-kurdis-semi-condensed font-semibold">{{- option_price | money -}}/{{ box_text }}</span>
                     <span x-text="variantSavingsFormatted('{{ product_option_value.variant.id }}')"
                     :class="variantSavingsPercentage('{{ product_option_value.variant.id }}') > 0 ? '!block' : '!hidden'"
                     class="font-kurdis-semi-condensed font-bold text-kraft text-xs/none md:text-[10px] {% if option_savings > 0 %}block{% else %}hidden{% endif %}">{{- option_savings_text | escape -}}</span>

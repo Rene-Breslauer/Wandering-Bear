@@ -39,6 +39,11 @@
     {% else %}
       background: var(--background);
     {% endif %}
+
+    @media screen and (max-width: 1023px) {
+      background-image: none;
+      background: section.settings.color_scheme.settings.background;
+    }
   }
 {% endstyle %}
 
@@ -210,7 +215,8 @@
 
 <div x-data="productForm({{ product.id }},{{ product.selected_or_first_available_variant.id }},
 {% if selling_plan_id %}{{ selling_plan_id }}{% else %}null{% endif %},{{ landing_page }})"
-class="section-{{ section.id }}"
+class="section-{{ section.id }}
+{% if landing_page %} pt-5 lg:pt-0 {% endif %}"
 style="{{ background_style }}"
 >
 {% render 'product-information-content',
