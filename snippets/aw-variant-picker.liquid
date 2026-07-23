@@ -52,6 +52,8 @@
 
     assign choose_quantity_text = 'products.product.choose_quantity' | t
     assign box_text = 'products.product.box' | t
+
+    assign savings_display = block.settings.savings_display | default: 'percent'
 %}
 
 {% assign block_settings = block.settings %}
@@ -175,15 +177,26 @@
                       assign option_price = variant.price
                       assign discount = product_resource.variants[0].compare_at_price | minus: variant.price
                       assign option_savings = discount | times: 100.0 | divided_by: product_resource.variants[0].compare_at_price | round: 0
-                      assign option_savings_text = 'Save' | append: ' ' | append: option_savings | append: '%'
+
+                      if savings_display == 'amount'
+                        assign discount_remainder = discount | modulo: 100
+                        if discount_remainder == 0
+                          assign option_savings_amount = discount | money_without_trailing_zeros
+                        else
+                          assign option_savings_amount = discount | money
+                        endif
+                        assign option_savings_text = 'Save' | append: ' ' | append: option_savings_amount
+                      else
+                        assign option_savings_text = 'Save' | append: ' ' | append: option_savings | append: '%'
+                      endif
                     endif
                     endfor
                   %}
                     <span class="variant-option-name transition-colors duration-300 text-base text-bear-black font-bold font-gothic_condensed uppercase">{{- option_name | escape -}}</span>
                     <span x-text="variantPriceFormatted('{{ product_option_value.variant.id }}', '/{{ box_text }}')" class="text-xs text-bear-black font-kurdis-semi-condensed font-semibold">{{- option_price | money -}}/{{ box_text }}</span>
-                    <span x-text="variantSavingsFormatted('{{ product_option_value.variant.id }}')"
+                    <span x-text="{% if savings_display == 'amount' %}variantSavingsAmountFormatted{% else %}variantSavingsFormatted{% endif %}('{{ product_option_value.variant.id }}')"
                     :class="variantSavingsPercentage('{{ product_option_value.variant.id }}') > 0 ? '!block' : '!hidden'"
-                    class="font-kurdis-semi-condensed font-bold text-kraft text-xs/none md:text-[10px] {% if option_savings > 0 %}block{% else %}hidden{% endif %}">{{- option_savings_text | escape -}}</span>
+                    class="font-kurdis-semi-condensed font-semibold text-kraft text-xs/none md:text-[10px] {% if option_savings > 0 %}block{% else %}hidden{% endif %}">{{- option_savings_text | escape -}}</span>
                   </div>
               </label>
             {%- endfor -%}

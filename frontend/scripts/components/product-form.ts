@@ -118,12 +118,24 @@ export default (Alpine: AlpineType) => {
                 variant.currentSavings = 0;
                 variant.currentSavingsPercentage = 0;
                 variant.currentSavingsPercentageFormatted = '';
+                variant.currentSavingsUnitAmount = 0;
+                variant.currentSavingsUnitAmountFormatted = '';
                 return;
             }
 
             variant.currentSavings = price / regularPerBox;
             variant.currentSavingsPercentage = Math.round(100 - variant.currentSavings * 100);
             variant.currentSavingsPercentageFormatted = 'Save ' + variant.currentSavingsPercentage + '%';
+
+            // Flat-rate alternative to the percentage — the same per-unit saving expressed in
+            // currency ("Save $10"). Designs show whole dollars, so cents are dropped when the
+            // amount is exact and kept when it isn't, rather than rounding a real price away.
+            const unitAmount = regularPerBox - price;
+            variant.currentSavingsUnitAmount = unitAmount;
+            variant.currentSavingsUnitAmountFormatted = 'Save ' + this._formatPrice(
+                unitAmount,
+                { withoutCents: unitAmount % 100 === 0 }
+            );
         },
 
         variantById(variantId: any) {
@@ -164,6 +176,11 @@ export default (Alpine: AlpineType) => {
 
         variantSavingsPercentage(variantId: any) {
             return this.variantById(variantId)?.currentSavingsPercentage ?? 0;
+        },
+
+        // Flat-rate counterpart, selected by the variant picker's "Savings display" setting.
+        variantSavingsAmountFormatted(variantId: any) {
+            return this.variantById(variantId)?.currentSavingsUnitAmountFormatted ?? '';
         },
 
         _restoreFromDom() {

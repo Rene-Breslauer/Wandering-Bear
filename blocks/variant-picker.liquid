@@ -50,6 +50,23 @@
       "default": true
     },
     {
+      "type": "select",
+      "id": "savings_display",
+      "label": "Savings display",
+      "info": "How the per-unit saving is shown under each quantity tier.",
+      "options": [
+        {
+          "value": "percent",
+          "label": "Percentage (Save 22%)"
+        },
+        {
+          "value": "amount",
+          "label": "Flat rate (Save $10)"
+        }
+      ],
+      "default": "percent"
+    },
+    {
       "type": "text_alignment",
       "id": "alignment",
       "label": "t:settings.alignment",
