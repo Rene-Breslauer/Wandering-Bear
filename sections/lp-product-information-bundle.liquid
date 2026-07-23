@@ -8,6 +8,8 @@
   assign bundle_collection = section.settings.bundle_collection
   assign disable_gallery_background = section.settings.disable_gallery_background
   assign first_product = bundle_collection.products.first
+  assign landing_page = true
+
 
   for bundle_product in bundle_collection.products
     if bundle_product.id == product_id
@@ -77,7 +79,7 @@
 {% endcapture %}
 
 
-<div id="{{ section.settings.section_id }}" class="section-{{ section.id }}" x-data="productFormBundle({{ selected_product.id }},{{ params }})" style="{{ background_style }}">
+<div id="{{ section.settings.section_id }}" class="section-{{ section.id }}" x-data="productFormBundle({{ selected_product.id }},{{ params }},{{ landing_page }})" style="{{ background_style }}">
   {% render 'product-information-content',
     product_media_size: closest.product.media.size,
     section_id: section.id,

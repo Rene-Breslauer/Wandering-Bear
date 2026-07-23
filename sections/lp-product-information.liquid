@@ -1,33 +1,61 @@
 
 
 <script type="application/ld+json">
-  {{ closest.product | structured_data }}
+  {{ section.settings.product | structured_data }}
 </script>
 
 {% liquid
+  assign product = section.settings.product
   assign bundle_collection = section.settings.bundle_collection
   assign hide_thumbnails_desktop = section.settings.hide_thumbnails_desktop
   assign disable_gallery_background = section.settings.disable_gallery_background
-  assign landing_page = false
-  if template.name == 'page'
-    assign landing_page = true
+  assign landing_page = true
+  
+  if product.selling_plan_allocations.size > 0
+    for selling_plan_allocation in product.selling_plan_allocations
+      if selling_plan_allocation.selling_plan.name contains '1 Month'
+        assign selling_plan_id = selling_plan_allocation.selling_plan.id
+      endif
+    endfor
+  else 
+    assign selling_plan_id = nil
   endif
-
-  assign selling_plan_id = nil
-  for selling_plan_allocation in product.selling_plan_allocations
-    if selling_plan_allocation.selling_plan.name contains '1 Month'
-      assign selling_plan_id = selling_plan_allocation.selling_plan.id
-      break
-    endif
-  endfor
+  assign background_type = section.settings.background_type | default: 'gradient'
+  if background_type == 'gradient'
+      assign background = section.settings.background_gradient | default: 'linear-gradient(180deg, #F8F8F8 0%, #FFFFFF 100%)'
+  else
+    assign background = section.settings.color_scheme.settings.background | default: '#F8F8F8'
+  endif
 %}
 
+{% capture background_style %}
+  --background: {{ background }};
+{% endcapture %}
+
+{% style %}
+  .section-{{ section.id }} {
+    {% if background_type == 'gradient' %}
+      background-image: var(--background);
+    {% else %}
+      background: var(--background);
+    {% endif %}
+
+    @media screen and (max-width: 1023px) {
+      background-image: none;
+      background: section.settings.color_scheme.settings.background;
+    }
+  }
+{% endstyle %}
+
+
 {% capture media_gallery %}
+  <div x-data="mediaGalleryBundle" data-media-gallery-bundle-container>
   {% render 'media-gallery-bundle',
     bundle_product: product,
     hide_thumbnails_desktop: hide_thumbnails_desktop,
     disable_gallery_background: disable_gallery_background
   %}
+  </div>
 {% endcapture %}
 
 {% capture product_details %}
@@ -185,14 +213,20 @@
   </sticky-add-to-cart>
 {% endif %}
 
-<div x-data="productForm({{ product.id }},{{ product.selected_or_first_available_variant.id }},{% if selling_plan_id %}{{ selling_plan_id }}{% else %}null{% endif %}, {{ landing_page }})">
+<div x-data="productForm({{ product.id }},{{ product.selected_or_first_available_variant.id }},
+{% if selling_plan_id %}{{ selling_plan_id }}{% else %}null{% endif %},{{ landing_page }})"
+class="section-{{ section.id }}
+{% if landing_page %} pt-5 lg:pt-0 {% endif %}"
+style="{{ background_style }}"
+>
 {% render 'product-information-content',
   product_media_size: closest.product.media.size,
   section_id: section.id,
   settings: section.settings,
   media_gallery: media_gallery,
   product_details: product_details,
-  additional_blocks: additional_blocks
+  additional_blocks: additional_blocks,
+  savings_badge: savings_badge
 %}
 </div>
 {% stylesheet %}
@@ -382,20 +416,20 @@
 
 {% schema %}
 {
-  "name": "t:names.product_information",
+  "name": "LP Product Information",
   "blocks": [
     {
       "type": "@app"
-    }
+    },
   ],
   "disabled_on": {
     "groups": ["header", "footer"]
   },
   "settings": [
     {
-      "type": "collection",
-      "id": "bundle_collection",
-      "label": "Bundle Collection"
+      "type": "product",
+      "id": "product",
+      "label": "Product"
     },
     {
       "type": "header",
@@ -489,6 +523,29 @@
       "default": "scheme-1"
     },
     {
+      "type": "select",
+      "id": "background_type",
+      "label": "Background Type",
+      "options": [
+        {
+          "value": "gradient",
+          "label": "Gradient"
+        },
+        {
+          "value": "color",
+          "label": "Color"
+        }
+      ],
+      "default": "gradient"
+    },
+    {
+      "type": "color_background",
+      "id": "background_gradient",
+      "label": "Background Gradient",
+      "default": "linear-gradient(180deg, #F8F8F8 0%, #FFFFFF 100%)",
+      "visible_if": "{{ section.settings.background_type == 'gradient' }}"
+    },
+    {
       "type": "header",
       "content": "t:content.padding"
     },
@@ -533,6 +590,10 @@
       "default": 0
     }
   ],
-  "presets": []
+  "presets": [
+    {
+      "name": "LP Product Information"
+    }
+  ]
 }
 {% endschema %}

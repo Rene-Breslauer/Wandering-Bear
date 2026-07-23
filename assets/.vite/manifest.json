@@ -140,12 +140,13 @@
     "isDynamicEntry": true
   },
   "frontend/scripts/components/media-gallery-bundle.ts": {
-    "file": "wb-media-gallery-bundle.MBoCj6C8.js",
+    "file": "wb-media-gallery-bundle.D8xCd9BW.js",
     "name": "media-gallery-bundle",
     "src": "frontend/scripts/components/media-gallery-bundle.ts",
     "isDynamicEntry": true,
     "imports": [
       "_wb-swiper-core.D_6D7Tu7.js",
+      "frontend/entrypoints/main.js",
       "_wb-swiper.K47lYXFL.js"
     ]
   },
@@ -162,7 +163,7 @@
     "isDynamicEntry": true
   },
   "frontend/scripts/components/product-form-bundle.ts": {
-    "file": "wb-product-form-bundle.CV6kVT2y.js",
+    "file": "wb-product-form-bundle.CRAkToAf.js",
     "name": "product-form-bundle",
     "src": "frontend/scripts/components/product-form-bundle.ts",
     "isDynamicEntry": true,
@@ -171,7 +172,7 @@
     ]
   },
   "frontend/scripts/components/product-form.ts": {
-    "file": "wb-product-form.BTFThVRS.js",
+    "file": "wb-product-form.DBh3JvlT.js",
     "name": "product-form",
     "src": "frontend/scripts/components/product-form.ts",
     "isDynamicEntry": true,
