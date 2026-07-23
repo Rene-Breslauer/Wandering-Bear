@@ -166,8 +166,7 @@
               "type": "flavor-selector",
               "name": "Flavor Selector",
               "settings": {
-                "title": "Select Flavor",
-                "collection": "test-cold-brew-on-tap-96oz"
+                "title": "Select Flavor"
               },
               "blocks": {}
             },

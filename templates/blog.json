@@ -6,8 +6,23 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */
+{
   "sections": {
+    "aw_col_hero_exqmCh": {
+      "type": "aw-col-hero",
+      "name": "AW Col Hero",
+      "settings": {
+        "color_scheme": "",
+        "background_color": "#000000",
+        "title": "EVERYTHING TASTES BETTER WITH COFFEE",
+        "description": "",
+        "bullet_color": "#955325",
+        "image": "shopify://shop_images/96oz-bag-in-box.jpg",
+        "button_url": "",
+        "button_text": ""
+      }
+    },
     "main": {
       "type": "main-blog",
       "blocks": {
@@ -15,6 +30,7 @@
           "type": "text",
           "name": "Title",
           "settings": {
+            "block_class": "",
             "text": "<h1>{{ closest.blog.title }}</h1>",
             "width": "fit-content",
             "max_width": "narrow",
@@ -33,7 +49,11 @@
             "padding-block-start": 48,
             "padding-block-end": 48,
             "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "padding-inline-end": 0,
+            "padding-block-start-mobile": 0,
+            "padding-block-end-mobile": 0,
+            "padding-inline-start-mobile": 0,
+            "padding-inline-end-mobile": 0
           },
           "blocks": {}
         },
@@ -44,13 +64,28 @@
             "alignment": "left"
           },
           "blocks": {
+            "image": {
+              "type": "_blog-post-image",
+              "static": true,
+              "settings": {
+                "height": "large",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 4
+              },
+              "blocks": {}
+            },
             "heading": {
               "type": "_heading",
               "name": "t:names.title",
               "static": true,
               "settings": {
+                "block_class": "",
                 "type_preset": "h4",
                 "font": "var(--font-primary--family)",
+                "font_family": "",
+                "font_family_mobile": "",
                 "font_size": "",
                 "line_height": "normal",
                 "letter_spacing": "normal",
@@ -59,12 +94,25 @@
                 "color": "",
                 "text": "",
                 "read_only": true,
+                "type_preset_mobile": "",
+                "font_mobile": "",
+                "font_size_mobile": "",
+                "line_height_mobile": "",
+                "letter_spacing_mobile": "",
+                "case_mobile": "",
+                "wrap_mobile": "",
+                "color_mobile": "",
                 "alignment": "left",
+                "alignment_mobile": "left",
                 "show_alignment": false,
                 "padding-block-start": 0,
                 "padding-block-end": 10,
                 "padding-inline-start": 0,
-                "padding-inline-end": 0
+                "padding-inline-end": 0,
+                "padding-block-start-mobile": 0,
+                "padding-block-end-mobile": 0,
+                "padding-inline-start-mobile": 0,
+                "padding-inline-end-mobile": 0
               },
               "blocks": {}
             },
@@ -83,15 +131,20 @@
               },
               "blocks": {}
             },
-            "image": {
-              "type": "_blog-post-image",
+            "content": {
+              "type": "_blog-post-description",
               "static": true,
               "settings": {
-                "height": "large",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 4
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "padding-block-start": 16,
+                "padding-block-end": 0
               },
               "blocks": {}
             }
@@ -110,6 +163,7 @@
     }
   },
   "order": [
+    "aw_col_hero_exqmCh",
     "main"
   ]
 }
