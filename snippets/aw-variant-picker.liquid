@@ -56,6 +56,17 @@
 
 {% assign block_settings = block.settings %}
 
+{% style %}
+  /* These radios are rendered 0x0 and transparent, so the browser's focus ring has nothing
+     to draw around and keyboard users get no indication of where they are in the group.
+     Ring the label instead. :has() is the only way to reach it from the input. */
+  .variant-picker label:has(input[type='radio']:focus-visible) {
+    outline: 2px solid currentColor;
+    outline-offset: -2px;
+    border-radius: 5px;
+  }
+{% endstyle %}
+
 {% unless product_resource.has_only_default_variant %}
   {% liquid
     assign selling_plan_id = product_resource.selected_or_first_available_variant.selling_plan_id
@@ -122,7 +133,7 @@
                   <div
                   class="absolute bottom-[calc(100%+2px)] w-fit mx-auto px-2 font-kurdis-semi-condensed font-bold py-1 rounded-tl-[5px] rounded-tr-[5px] text-[11px] !leading-[100%] text-center flex items-center justify-center uppercase"
                    style="background-color: {{ section.settings.color_scheme.settings.foreground }}; color: {{ section.settings.color_scheme.settings.background }};">
-                    <span class="text-xs font-bold font-kurdis-semi-condensed"></span>Most Popular</span>
+                    <span class="text-xs font-bold font-kurdis-semi-condensed">Most Popular</span>
                   </div>
                 {% endif %}
                 <input
@@ -130,7 +141,12 @@
                   class="flex !h-[0px] !w-[0px] opacity-0 absolute top-0 left-0"
                   name="{{ product_option.name | escape }}-{{ block.id }}-{{ product_resource.id }}"
                   value="{{ product_option_value | escape }}"
-                  aria-label="{{ product_option_value.name | escape }}{% if product_option_value.available == false %} - {{ 'products.product.sold_out' | t }}{% endif %}"
+                  {%- comment -%}
+                    The "Most Popular" badge is visual only — this input carries an explicit
+                    aria-label, which overrides the label text, so the badge would never be
+                    announced. Fold it into the name instead.
+                  {%- endcomment -%}
+                  aria-label="{{ product_option_value.name | escape }}{% if is_landing_page_template and forloop.index0 == selected_index %} - {{ 'products.product.most_popular' | t: default: 'Most Popular' }}{% endif %}{% if product_option_value.available == false %} - {{ 'products.product.sold_out' | t }}{% endif %}"
                   {% if product_option_value.available == false %}
                     aria-disabled="true"
                   {% endif %}

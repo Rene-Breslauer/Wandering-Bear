@@ -126,9 +126,6 @@ export default (Alpine: AlpineType) => {
             variant.currentSavingsPercentageFormatted = 'Save ' + variant.currentSavingsPercentage + '%';
         },
 
-        // The quantity picker binds by variant id, but on the LP productObject is keyed by
-        // product id with each product holding its own variant map — a flat lookup there
-        // returns undefined and the price/savings spans render empty. Resolve both shapes.
         variantById(variantId: any) {
             const key = String(variantId);
             const root = this.productObject ?? {};
@@ -167,6 +164,43 @@ export default (Alpine: AlpineType) => {
 
         variantSavingsPercentage(variantId: any) {
             return this.variantById(variantId)?.currentSavingsPercentage ?? 0;
+        },
+
+        _restoreFromDom() {
+            const root = this.$root;
+            if (!root) return;
+
+            const flavor = root.querySelector('input[name="flavor"]:checked') as HTMLInputElement | null;
+            const restoredProductId = flavor?.dataset.productId;
+
+            if (restoredProductId && this.productObject?.[String(restoredProductId)]) {
+                this.currentProductId = String(restoredProductId);
+            }
+
+            const purchase = root.querySelector('input[name="purchase_option"]:checked') as HTMLInputElement | null;
+            if (purchase?.value) {
+                this.purchaseOption = purchase.value;
+                this.sellingPlanId = purchase.value === 'autoship'
+                    ? this.selectedVariant?.selling_plan_id ?? null
+                    : null;
+            }
+
+            this._syncSelectedVariant();
+            this.updatePrices();
+        },
+
+        _restoreFromUrl() {
+            const slug = new URL(window.location.href).searchParams.get('product');
+            if (!slug) return;
+
+            const radio = this.$root?.querySelector(
+                `input[name="flavor"][value="${CSS.escape(slug)}"]`
+            ) as HTMLInputElement | null;
+
+            if (!radio) return;
+
+            radio.checked = true;
+            this._restoreFromDom();
         },
 
         _repriceGroup(variants: any[]) {
@@ -308,11 +342,17 @@ export default (Alpine: AlpineType) => {
                 }
             });
 
+
             window.addEventListener('pageshow', (event: PageTransitionEvent) => {
                 if (event.persisted) {
-                    this._syncSelectedVariant();
-                    this.updatePrices();
+                    this._restoreFromDom();
+                } else {
+                    this.$nextTick(() => this._restoreFromDom());
                 }
+            });
+
+            window.addEventListener('popstate', () => {
+                this._restoreFromUrl();
             });
         },
 

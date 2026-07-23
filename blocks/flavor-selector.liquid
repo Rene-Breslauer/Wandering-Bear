@@ -36,6 +36,24 @@
         opacity: 1;
     }
 
+    input[name="flavor"]:checked + .flavor-swatch .swatch-check svg {
+        opacity: 1 !important;
+    }
+
+    .swatch-input:focus-visible + .flavor-swatch::after,
+    .swatch-label:focus-visible .flavor-swatch::after {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+        border-style: dashed;
+    }
+
+    .flavor-selector-group {
+        border: 0;
+        margin: 0;
+        padding: 0;
+        min-width: 0;
+    }
+
     @media (prefers-reduced-motion: reduce) {
         .flavor-swatch::after {
             transition: none;
@@ -43,11 +61,12 @@
     }
 {% endstyle %}
 
-<div class="font-bold font-gothic_condensed text-bear-black block uppercase mb-2.5 text-base">
+<fieldset class="flavor-selector-group">
+  <legend class="font-bold font-gothic_condensed text-bear-black block uppercase mb-2.5 text-base">
     Choose Your Flavor
-</div>
+  </legend>
 
-<div class="variant-selector wb-grid grid-cols-5 gap-4">
+  <div class="variant-selector wb-grid grid-cols-5 gap-4">
     {% for product_resource in collection.value.products  %}
         {% if product_resource.id == product.id %}
             {% assign checked = true %}
@@ -64,7 +83,8 @@
     {% if show_bundle %}
         {% render 'flavor-swatch', type: 'bundle', bundle_url: bundle_url, bundle_swatch: bundle_swatch, bundle_label: bundle_label %}
     {% endif %}
-</div>
+  </div>
+</fieldset>
 
 
 {% schema %}

@@ -7,12 +7,25 @@
    {% if template.suffix == 'concentrate' %} md:mt-5
    {% else if template.suffix == 'overview-2' %} mt-6
    {% else %} md:mt-0.5{% endif %}">
-    <span class="font-bold font-gothic_condensed text-bear-black block uppercase">Choose Your Frequency</span>
+    {% style %}
+      .purchase-options-group {
+        border: 0;
+        margin: 0;
+        padding: 0;
+        min-width: 0;
+      }
+
+      .purchase-options-group label:has(.purchase-option-input:focus-visible) {
+        outline: 2px solid currentColor;
+        outline-offset: 2px;
+      }
+    {% endstyle %}
+
     <input x-model="sellingPlanId" type="hidden" name="selling_plan_id" id="selling_plan_id">
-    
-    <fieldset>
-        
-        <input x-model="purchaseOption" @change="onPurchaseOptionChange('autoship')" type="radio" value="autoship" name="purchase_option" id="autoship" checked class="absolute! top-0 left-0 w-0 h-0 opacity-0 hidden">
+    <fieldset class="purchase-options-group">
+        <legend class="font-bold font-gothic_condensed text-bear-black block uppercase">Choose Your Frequency</legend>
+
+        <input x-model="purchaseOption" @change="onPurchaseOptionChange('autoship')" type="radio" value="autoship" name="purchase_option" id="autoship" checked class="purchase-option-input absolute! top-0 left-0 w-0 h-0 opacity-0">
         <label
             class="relative subscription-value-label wb-grid !grid-cols-[20px_1fr_100px] !gap-x-3 w-full pl-2.5 pr-3.25 py-4 border cursor-pointer font-gothic_condensed rounded-[5px] mt-2.5 text-bear-black hover:bg-dark-foam! hover:[&_.subscription-label-name]:text-dark-gold transition-colors duration-300 md:mt-2.5"
             :class="purchaseOption === 'autoship' ? 'border-kraft pb-3.5!' : 'border-[#CFBDB1]'"
@@ -52,9 +65,8 @@
         <div class="subscription-value-props mt-3.5 pb-2 col-start-1 col-end-4 row-start-3 tracking-tight md:hidden">
             {{ subscription_value_props_mobile }}
         </div>
-    </fieldset>
-    <fieldset>
-        <input x-model="purchaseOption" @change="onPurchaseOptionChange('one_time')" type="radio" value="one_time" name="purchase_option" id="one_time" class="absolute! top-0 left-0 w-0 h-0 opacity-0 hidden">
+
+        <input x-model="purchaseOption" @change="onPurchaseOptionChange('one_time')" type="radio" value="one_time" name="purchase_option" id="one_time" class="purchase-option-input absolute! top-0 left-0 w-0 h-0 opacity-0">
         <label 
             class="wb-grid !grid-cols-[20px_1fr_100px] !gap-x-3 w-full pl-2.5 pr-3.25 py-4 border cursor-pointer font-gothic_condensed rounded-[5px] mt-1.75 text-bear-black hover:bg-dark-foam! hover:[&_.subscription-label-name]:text-dark-gold transition-colors duration-300"
             :class="purchaseOption === 'one_time' ? 'border-kraft' : 'border-[#CFBDB1]'"
