@@ -95,6 +95,20 @@
         "padding-block-end": 80
       }
     },
+    "divider_XaUwnY": {
+      "type": "divider",
+      "name": "t:names.divider_section",
+      "settings": {
+        "color_scheme": "scheme-86fda943-8b90-41a8-a9fe-d5d11e7bb384",
+        "section_width": "page-width",
+        "thickness": 1,
+        "corner_radius": "square",
+        "width_percent": 100,
+        "alignment_horizontal": "center",
+        "padding-block-start": 16,
+        "padding-block-end": 16
+      }
+    },
     "featured_blog_posts_fxA8Q6": {
       "type": "featured-blog-posts",
       "blocks": {
@@ -259,6 +273,7 @@
   },
   "order": [
     "section",
+    "divider_XaUwnY",
     "featured_blog_posts_fxA8Q6"
   ]
 }
