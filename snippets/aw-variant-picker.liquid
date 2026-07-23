@@ -11,12 +11,19 @@
     assign one_month_allocation = blank
     assign product_object = product_resource.metafields.custom.product_group.value
     assign is_concentrate_template = false
+    assign is_landing_page_template = false
+    assign selected_index = 0
+
     if template.suffix == 'concentrate'
       assign is_concentrate_template = true
     endif
+    if template.suffix == 'overview-2'
+      assign is_landing_page_template = true
+      assign selected_index = 1
+    endif
     assign quantified = false
     if variant.metafields.custom.quantified_units != blank
-      if is_concentrate_template or product_object.quantified
+      if is_concentrate_template or product_object.quantified or is_landing_page_template
         assign quantified = true
       endif
     endif
@@ -111,6 +118,13 @@
                 data-variant-id="{{ product_option_value.variant.id }}"
                 class="bg-transparent p-0 m-0 flex !items-start justify-center relative w-full h-full py-1.75 hover:[&_.variant-option-name]:text-dark-gold hover:bg-foam! transition-colors duration-300 md:pb-2.5 md:pt-1.5 {% if variant_style == 'swatch' %} variant-option__button-label--has-swatch{% endif %}"
               >
+                {% if is_landing_page_template and forloop.index0 == selected_index %}
+                  <div
+                  class="absolute bottom-[calc(100%+2px)] w-fit mx-auto px-2 font-kurdis-semi-condensed font-bold py-1 rounded-tl-[5px] rounded-tr-[5px] text-[11px] !leading-[100%] text-center flex items-center justify-center uppercase"
+                   style="background-color: {{ section.settings.color_scheme.settings.foreground }}; color: {{ section.settings.color_scheme.settings.background }};">
+                    <span class="text-xs font-bold font-kurdis-semi-condensed"></span>Most Popular</span>
+                  </div>
+                {% endif %}
                 <input
                   type="radio"
                   class="flex !h-[0px] !w-[0px] opacity-0 absolute top-0 left-0"
@@ -131,7 +145,10 @@
                   {% if product_option_value.variant.id %}
                     data-variant-id="{{ product_option_value.variant.id }}"
                   {% endif %}
-                  {% if product_option_value.selected %}
+                  {% if is_landing_page_template and forloop.index0 == selected_index %}
+                    data-current-checked="true"
+                    checked
+                  {% elsif product_option_value.selected %}
                     data-current-checked="true"
                     checked
                   {% else %}
@@ -155,7 +172,7 @@
                     endfor
                   %}
                     <span class="variant-option-name transition-colors duration-300 text-base text-bear-black font-bold font-gothic_condensed uppercase">{{- option_name | escape -}}</span>
-                    <span x-text="variantPriceFormatted('{{ product_option_value.variant.id }}', '/{{ box_text }}')" class="text-xs text-bear-black font-kurdis-semi-condensed">{{- option_price | money -}}/{{ box_text }}</span>
+                    <span x-text="variantPriceFormatted('{{ product_option_value.variant.id }}', '/{{ box_text }}')" class="text-xs text-bear-black font-kurdis-semi-condensed font-bold">{{- option_price | money -}}/{{ box_text }}</span>
                     <span x-text="variantSavingsFormatted('{{ product_option_value.variant.id }}')"
                     :class="variantSavingsPercentage('{{ product_option_value.variant.id }}') > 0 ? '!block' : '!hidden'"
                     class="font-kurdis-semi-condensed font-bold text-kraft text-xs/none md:text-[10px] {% if option_savings > 0 %}block{% else %}hidden{% endif %}">{{- option_savings_text | escape -}}</span>
@@ -180,7 +197,8 @@
     </form>
   </variant-picker>
 
-  {% render 'purchase-options', product_resource: product_resource, section: section %}
+
+  {% render 'purchase-options', product_resource: product_resource, section: section, variant_picker_blocks: variant_picker_blocks %}
 
 {% if template.suffix == 'overview-2' %}
   <script x-ref="productObject" type="application/json">

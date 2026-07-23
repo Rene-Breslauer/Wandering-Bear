@@ -147,8 +147,7 @@ export default (Alpine: AlpineType) => {
             return null;
         },
 
-        // Variants of the product currently on screen. On the LP that is one group out of
-        // many; on a PDP productObject is already the only variant map.
+
         _currentVariants(): any[] {
             const isVariant = (v: any) => v != null && typeof v === 'object' && 'price' in v;
             const group = this.productObject?.[String(this.currentProductId)];
@@ -225,11 +224,6 @@ export default (Alpine: AlpineType) => {
             const variants = this._currentVariants();
             const checkedId = checked.dataset.variantId;
 
-            // Scoped to the current product: the quantity radios keep the variant ids they
-            // were rendered with, so after a flavor change they still point at the previous
-            // product. Resolving those globally would silently re-select the old flavor and
-            // add it to the cart. Match within this product, then fall back to the same tier
-            // position so the chosen box count carries across the flavor change.
             let variant = variants.find((v: any) => String(v.id) === String(checkedId)) ?? null;
 
             if (!variant) {
@@ -320,6 +314,10 @@ export default (Alpine: AlpineType) => {
                     this.updatePrices();
                 }
             });
+        },
+
+        goToBundle(url: string) {
+            window.location.href = url;
         },
 
         onPurchaseOptionChange(option: string) {

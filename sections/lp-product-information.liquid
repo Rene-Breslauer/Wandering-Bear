@@ -20,7 +20,28 @@
   else 
     assign selling_plan_id = nil
   endif
+  assign background_type = section.settings.background_type | default: 'gradient'
+  if background_type == 'gradient'
+      assign background = section.settings.background_gradient | default: 'linear-gradient(180deg, #F8F8F8 0%, #FFFFFF 100%)'
+  else
+    assign background = section.settings.color_scheme.settings.background | default: '#F8F8F8'
+  endif
 %}
+
+{% capture background_style %}
+  --background: {{ background }};
+{% endcapture %}
+
+{% style %}
+  .section-{{ section.id }} {
+    {% if background_type == 'gradient' %}
+      background-image: var(--background);
+    {% else %}
+      background: var(--background);
+    {% endif %}
+  }
+{% endstyle %}
+
 
 {% capture media_gallery %}
   <div x-data="mediaGalleryBundle" data-media-gallery-bundle-container>
@@ -188,14 +209,18 @@
 {% endif %}
 
 <div x-data="productForm({{ product.id }},{{ product.selected_or_first_available_variant.id }},
-{% if selling_plan_id %}{{ selling_plan_id }}{% else %}null{% endif %},{{ landing_page }})">
+{% if selling_plan_id %}{{ selling_plan_id }}{% else %}null{% endif %},{{ landing_page }})"
+class="section-{{ section.id }}"
+style="{{ background_style }}"
+>
 {% render 'product-information-content',
   product_media_size: closest.product.media.size,
   section_id: section.id,
   settings: section.settings,
   media_gallery: media_gallery,
   product_details: product_details,
-  additional_blocks: additional_blocks
+  additional_blocks: additional_blocks,
+  savings_badge: savings_badge
 %}
 </div>
 {% stylesheet %}
@@ -389,7 +414,7 @@
   "blocks": [
     {
       "type": "@app"
-    }
+    },
   ],
   "disabled_on": {
     "groups": ["header", "footer"]
@@ -490,6 +515,29 @@
       "id": "color_scheme",
       "label": "t:settings.color_scheme",
       "default": "scheme-1"
+    },
+    {
+      "type": "select",
+      "id": "background_type",
+      "label": "Background Type",
+      "options": [
+        {
+          "value": "gradient",
+          "label": "Gradient"
+        },
+        {
+          "value": "color",
+          "label": "Color"
+        }
+      ],
+      "default": "gradient"
+    },
+    {
+      "type": "color_background",
+      "id": "background_gradient",
+      "label": "Background Gradient",
+      "default": "linear-gradient(180deg, #F8F8F8 0%, #FFFFFF 100%)",
+      "visible_if": "{{ section.settings.background_type == 'gradient' }}"
     },
     {
       "type": "header",

@@ -166,7 +166,7 @@
                     "stars_style": "shaded",
                     "show_number": true,
                     "text_color": "#000000",
-                    "star_color": "#BD8053",
+                    "star_color": "#bd8053",
                     "rating_color": "primary",
                     "type_preset": "paragraph",
                     "width": "100%",
@@ -229,7 +229,11 @@
               "type": "flavor-selector",
               "name": "Flavor Selector",
               "settings": {
-                "title": ""
+                "title": "",
+                "show_bundle": true,
+                "bundle_url": "https://wanderingbearcoffee.com/products/extra-strong-cold-brew-on-tap-96oz-straight-black?view=96oz",
+                "bundle_swatch": "shopify://shop_images/bundle_swatch.png",
+                "bundle_label": "Bundle"
               },
               "blocks": {}
             },
@@ -249,7 +253,20 @@
                 "padding-inline-start-mobile": 0,
                 "padding-inline-end-mobile": 0
               },
-              "blocks": {}
+              "blocks": {
+                "savings_badge_7RhBEK": {
+                  "type": "savings-badge",
+                  "name": "Savings Badge",
+                  "settings": {
+                    "color_scheme": "scheme-53a30445-4815-46e7-b861-da7f32359d08",
+                    "text": "<p>SAVE 20% OFF YOUR FIRST AUTOSHIP ORDER WITH CODE: <span style=\"text-decoration:underline\">NEWONTAP</span></p>"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "savings_badge_7RhBEK"
+              ]
             }
           },
           "block_order": [
@@ -271,6 +288,8 @@
         "hide_thumbnails_desktop": false,
         "disable_gallery_background": false,
         "color_scheme": "",
+        "background_type": "gradient",
+        "background_gradient": "linear-gradient(180deg, rgba(242, 230, 220, 1) 60%, rgba(175, 116, 4, 1) 100%)",
         "padding-block-start": 70,
         "padding-block-end": 0,
         "padding-block-start-mobile": 0,
@@ -484,6 +503,7 @@
           "type": "aw-review-carousel",
           "name": "AW Review Carousel",
           "settings": {
+            "section_id": "product-reviews",
             "image_1": "shopify://shop_images/pureWow-logo.png",
             "desktop_width_1": 92,
             "mobile_width_1": 66,

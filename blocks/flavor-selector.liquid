@@ -3,17 +3,43 @@
     assign product_data = product.metafields.custom.product_group.value
     assign collection = product_data.collection_handle
     assign checked = false
+    assign show_bundle = block.settings.show_bundle
+    assign bundle_url = block.settings.bundle_url
+    assign bundle_swatch = block.settings.bundle_swatch
+    assign bundle_label = block.settings.bundle_label
 %}
 
 {% style %}
-    input[name="flavor"]:checked + .flavor-swatch::after {
+    .flavor-swatch::after {
         content: '';
         position: absolute;
+        top: 50%;
+        left: 50%;
         width: 50px;
         height: 50px;
-        outline: 2px solid black;
-        outline-offset: -2px;
+        box-sizing: border-box;
+        border: 2px solid black;
         border-radius: 100%;
+        pointer-events: none;
+        transform: translate(-50%, -50%) scale(0.6);
+        transition: transform 0.3s ease;
+        opacity: 0;
+    }
+
+    .swatch-label:hover .flavor-swatch::after {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+
+    input[name="flavor"]:checked + .flavor-swatch::after {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .flavor-swatch::after {
+            transition: none;
+        }
     }
 {% endstyle %}
 
@@ -35,6 +61,9 @@
             {% render 'flavor-swatch', product_resource: product_resource, checked: checked %}
         {% endunless %}
     {% endfor %}
+    {% if show_bundle %}
+        {% render 'flavor-swatch', type: 'bundle', bundle_url: bundle_url, bundle_swatch: bundle_swatch, bundle_label: bundle_label %}
+    {% endif %}
 </div>
 
 
@@ -46,6 +75,30 @@
                 "type": "text",
                 "id": "title",
                 "label": "Title"
+            },
+            {
+                "type": "checkbox",
+                "id": "show_bundle",
+                "label": "Show Bundle Swatch",
+                "default": true
+            },
+            {
+                "type": "url",
+                "id": "bundle_url",
+                "label": "Bundle URL",
+                "visible_if":  "{{ block.settings.show_bundle == true }}"
+            },
+            {
+                "type": "image_picker",
+                "id": "bundle_swatch",
+                "label": "Bundle Image",
+                "visible_if":  "{{ block.settings.show_bundle == true }}"
+            },
+            {
+                "type": "text",
+                "id": "bundle_label",
+                "label": "Bundle Label",
+                "visible_if":  "{{ block.settings.show_bundle == true }}"
             }
         ],
         "presets": [

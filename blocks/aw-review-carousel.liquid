@@ -5,6 +5,7 @@
     assign arrow_icon = s.arrow_icon_color | default: '#431A03'
     assign button_text = s.button_text | default: 'Shop Now'
     assign button_url = s.button_url | default: '/collections/all'
+    assign section_id = s.section_id | default: 'product-reviews'
 %}
 
 {% style %}
@@ -17,7 +18,11 @@
     }
 {% endstyle %}
 
-<div x-data="reviewCarouselBlock" class="mx-auto max-w-[650px] pt-[100px] md:!pt-[54px] relative z-[2] mb-20 px-4">
+<div x-data="reviewCarouselBlock" class="mx-auto max-w-[650px] pt-[100px] md:!pt-[54px] relative z-[2] mb-20 px-4"
+{% if section_id != blank %}
+    id="{{ section_id }}"
+{% endif %}
+>
     <div class="hidden md:flex items-center justify-center gap-[40px] relative z-[2] mb-10">
         {% for i in (1..3) %}
         {% assign index = i | minus: 1 %}
@@ -86,6 +91,12 @@
 {
   "name": "AW Review Carousel",
   "settings": [
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section ID",
+      "default": "product-reviews"
+    },
     {
       "type": "image_picker",
       "id": "image_1",
