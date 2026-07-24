@@ -77,7 +77,8 @@
     </div>
 
     {% if s.show_dots %}
-      <div class="review-carousel__dots wb-flex items-center justify-center !gap-2 mt-6"></div>
+      {% comment %} Dots sit closer together on mobile (Figma), wider from 750. {% endcomment %}
+      <div class="review-carousel__dots wb-flex items-center justify-center !gap-1 smd:!gap-2 mt-6"></div>
     {% endif %}
   </div>
 </div>
@@ -107,6 +108,15 @@
        drop-shadow (not box-shadow) so it traces the tail too. */
     filter: drop-shadow(-2px 4px 4px rgba(0, 0, 0, 0.25));
   }
+
+  /* Mobile: the single card had too much empty space around the quote — tighten the box. */
+  @media screen and (max-width: 749px) {
+    .wb-reviews__bubble {
+      min-height: 0;
+      padding: 14px 18px;
+    }
+  }
+
 
   /* Tail sits in a bottom corner and overhangs the card — not centred.
      Figma draws each bubble by hand: tails alternate right/left/right and every card is

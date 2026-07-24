@@ -123,6 +123,16 @@
     }
   }
 
+  /* Tablet (two columns, but the image column is narrower than desktop): the fixed ratio makes
+     the image shorter than the copy, leaving a gap in the image column. Drop the ratio so the
+     media stretches to the row height (driven by the taller text) and object-cover fills it. */
+  @media screen and (min-width: 750px) and (max-width: 1023px) {
+    .wb-listicle__media {
+      aspect-ratio: auto;
+      height: 100%;
+    }
+  }
+
   .wb-listicle__title-size {
     font-size: var(--font-size) !important;
   }
